@@ -6,24 +6,38 @@ import net.minecraft.item.Item
 import net.minecraft.item.Item.Settings
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
+import net.minecraft.registry.RegistryKey
+import net.minecraft.registry.RegistryKeys
 import net.minecraft.util.Identifier
 
 object ModItems {
 
-    val VENT_ITEM : Item = registerBlockItem(ModBlocks.VENT, id = "vent")
+    val VENT_ITEM: Item = registerBlockItem(ModBlocks.VENT, "vent")
 
 
-    private fun registerItem(item: Item, id: String, namespace: String = DustyDecorMod.MODID) : Item {
-        return Registry.register(Registries.ITEM, Identifier.of(namespace, id), item)
+    private fun registerItem(
+        itemFactory: (Settings) -> Item,
+        id: String,
+        settings: Settings = Settings(),
+        namespace: String = DustyDecorMod.MODID
+    ): Item {
+        val key: RegistryKey<Item> = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(namespace, id))
+        settings.registryKey(key)
+        return Registry.register(Registries.ITEM, key, itemFactory.invoke(settings))
     }
 
-    private fun registerBlockItem (
+    private fun registerBlockItem(
         block: Block,
-        itemSettings: Settings = Settings(),
         id: String,
+        itemSettings: Settings = Settings(),
         namespace: String = DustyDecorMod.MODID
-    ) : Item {
-        return registerItem(BlockItem(block, itemSettings), id, namespace)
+    ): Item {
+        return registerItem(
+            { settings: Settings -> BlockItem(block, settings) },
+            id,
+            settings = itemSettings,
+            namespace
+        )
     }
 
     fun init() {
