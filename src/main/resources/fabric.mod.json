@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "dustydecor",
+	"id": "${mod_id}",
 	"version": "${version}",
 	"name": "Template Mod",
 	"description": "This is an example description! Tell everyone what your mod is about!",
@@ -29,7 +29,7 @@
 		],
 		"fabric-datagen": [
 			{
-				"value": "grauly.dustydecor.datagen.DustyDecorDatagen",
+				"value": "grauly.dustydecor.DustyDecorDatagen",
 				"adapter": "kotlin"
 			}
 		]

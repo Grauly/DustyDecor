@@ -1,0 +1,68 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "dustydecor:block/vent_core"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vent_cover",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vent_cover",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vent_cover",
+        "uvlock": true
+      },
+      "when": {
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vent_cover",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vent_cover",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vent_cover",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "false"
+      }
+    }
+  ]
+}

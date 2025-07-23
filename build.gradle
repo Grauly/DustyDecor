@@ -32,7 +32,12 @@ loom {
 }
 
 fabricApi {
-	configureDataGeneration()
+	configureDataGeneration {
+		it.client = true
+		it.createSourceSet = true
+		it.modId = "${project.mod_id}-datagen"
+		it.createRunConfiguration = true
+	}
 }
 
 dependencies {
@@ -50,7 +55,8 @@ processResources {
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand 	"version": project.version,
+				"mod_id": project.mod_id
 	}
 }
 
