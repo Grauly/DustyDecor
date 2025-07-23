@@ -1,3 +1,6 @@
 {
-  "parent": "dustydecor:block/vent"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "dustydecor:block/vent"
+  }
 }

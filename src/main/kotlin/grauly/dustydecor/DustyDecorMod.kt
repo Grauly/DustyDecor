@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 
 object DustyDecorMod : ModInitializer {
 	const val MODID = "dustydecor"
-    private val logger = LoggerFactory.getLogger(MODID)
+    val logger = LoggerFactory.getLogger(MODID)
 
 	override fun onInitialize() {
 		ModBlocks.init()

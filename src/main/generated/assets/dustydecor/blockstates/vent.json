@@ -12,7 +12,7 @@
         "x": 270
       },
       "when": {
-        "up": "false"
+        "up": "true"
       }
     },
     {
@@ -22,7 +22,7 @@
         "x": 90
       },
       "when": {
-        "down": "false"
+        "down": "true"
       }
     },
     {
@@ -31,7 +31,7 @@
         "uvlock": true
       },
       "when": {
-        "north": "false"
+        "north": "true"
       }
     },
     {
@@ -41,7 +41,7 @@
         "y": 180
       },
       "when": {
-        "south": "false"
+        "south": "true"
       }
     },
     {
@@ -51,7 +51,7 @@
         "y": 270
       },
       "when": {
-        "west": "false"
+        "west": "true"
       }
     },
     {
@@ -61,7 +61,7 @@
         "y": 90
       },
       "when": {
-        "east": "false"
+        "east": "true"
       }
     }
   ]

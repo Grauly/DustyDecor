@@ -52,6 +52,7 @@ class ModBlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(ge
         }
 
         blockStateModelGenerator.blockStateCollector?.accept(ventModel)
+        blockStateModelGenerator.registerItemModel(ModItems.VENT_ITEM, blockStateModelGenerator.uploadBlockItemModel(ModItems.VENT_ITEM, ModBlocks.VENT))
     }
 
     private fun ventSideModel(
@@ -70,4 +71,6 @@ class ModBlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(ge
     override fun generateItemModels(itemModelGenerator: ItemModelGenerator) {
         //[Intentionally Left Blank]
     }
+
+    override fun getName(): String = "Block Model Definitions"
 }
