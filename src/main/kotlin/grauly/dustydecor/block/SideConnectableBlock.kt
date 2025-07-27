@@ -81,7 +81,7 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
         return returnState
     }
 
-    private fun getStateForDirection(direction: Direction): BooleanProperty = when (direction) {
+    fun getStateForDirection(direction: Direction): BooleanProperty = when (direction) {
         Direction.UP -> UP
         Direction.DOWN -> DOWN
         Direction.NORTH -> NORTH
