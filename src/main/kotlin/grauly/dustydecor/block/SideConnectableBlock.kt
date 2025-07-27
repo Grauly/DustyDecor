@@ -25,7 +25,7 @@ open class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaque()
         val placeDirection: Direction = ctx.side.opposite
         val placeAgainstPos = ctx.blockPos.offset(placeDirection)
         val placedAgainstBlock: BlockState = ctx.world.getBlockState(placeAgainstPos)
-        TODO("seperate connection code")
+        //TODO("seperate connection code")
         if (!placedAgainstBlock.isOf(this)) return defaultState
         val returnState = defaultState.with(getStateForDirection(placeDirection), true)
         if (ctx.shouldCancelInteraction()) return returnState
