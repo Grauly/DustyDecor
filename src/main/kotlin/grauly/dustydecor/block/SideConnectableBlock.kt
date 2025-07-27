@@ -71,7 +71,15 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
             )
         }
 
-    //TODO rotation
+    override fun rotate(state: BlockState, rotation: BlockRotation): BlockState {
+        var returnState: BlockState = state
+        for (direction: Direction in Direction.entries) {
+            if (state.get(getStateForDirection(direction))) {
+                returnState = returnState.with(getStateForDirection(rotation.rotate(direction)), false)
+            }
+        }
+        return returnState
+    }
 
     private fun getStateForDirection(direction: Direction): BooleanProperty = when (direction) {
         Direction.UP -> UP
