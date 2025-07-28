@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.collection.Pool
 import net.minecraft.util.math.AxisRotation
 
-class ModBlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(generator) {
+class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(generator) {
 
     private val VENT_COVER: WeightedVariant = WeightedVariant(
         Pool.of(

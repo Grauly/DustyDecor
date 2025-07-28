@@ -8,8 +8,8 @@ object DustyDecorDatagen : DataGeneratorEntrypoint {
 	val logger = LoggerFactory.getLogger("${DustyDecorMod.MODID}-datagen")
 	override fun onInitializeDataGenerator(fabricDataGenerator: FabricDataGenerator) {
 		val pack = fabricDataGenerator.createPack()
-		pack.addProvider(::ModBlockModelDatagen)
-		pack.addProvider(::ModItemModelDatagen)
+		pack.addProvider(::BlockModelDatagen)
+		pack.addProvider(::ItemModelDatagen)
 	}
 
 	override fun getEffectiveModId(): String {
