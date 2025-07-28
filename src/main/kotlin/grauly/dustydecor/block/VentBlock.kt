@@ -18,7 +18,7 @@ class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBound
                 var shape = FRAME_SHAPE
                 for (direction: Direction in Direction.entries) {
                     if (state.get(getStateForDirection(direction), false)) {
-                        shape = VoxelShapes.union(shape, COVER_SHAPE_MAP.get(direction))
+                        shape = VoxelShapes.union(shape, COVER_SHAPE_MAP[direction])
                     }
                 }
                 shape
@@ -50,10 +50,11 @@ class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBound
 
     companion object {
         val SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()
-        val COVER_SHAPE_MAP = VoxelShapes.createFacingShapeMap(VoxelShapes.cuboid(0.0,0.0,0.0,1.0,1.0,1.0/16))
+        val COVER_SHAPE_MAP: Map<Direction, VoxelShape> =
+            VoxelShapes.createFacingShapeMap(VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 1.0, 1.0 / 16))
         val FRAME_SHAPE: VoxelShape = run {
             var fourPostShape = VoxelShapes.empty()
-            val singlePost = VoxelShapes.cuboid(0.0,0.0,0.0,1.0/16,1.0,1.0/16)
+            val singlePost = VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0 / 16, 1.0, 1.0 / 16)
             for (rotation: AxisRotation in AxisRotation.entries) {
                 fourPostShape = VoxelShapes.union(
                     fourPostShape,
@@ -65,9 +66,15 @@ class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBound
             }
             VoxelShapes.union(
                 fourPostShape,
-                VoxelShapes.transform(fourPostShape, DirectionTransformation.fromRotations(AxisRotation.R90, AxisRotation.R0)),
-                VoxelShapes.transform(fourPostShape, DirectionTransformation.fromRotations(AxisRotation.R90, AxisRotation.R90))
+                VoxelShapes.transform(
+                    fourPostShape,
+                    DirectionTransformation.fromRotations(AxisRotation.R90, AxisRotation.R0)
+                ),
+                VoxelShapes.transform(
+                    fourPostShape,
+                    DirectionTransformation.fromRotations(AxisRotation.R90, AxisRotation.R90)
                 )
+            )
         }
     }
 }

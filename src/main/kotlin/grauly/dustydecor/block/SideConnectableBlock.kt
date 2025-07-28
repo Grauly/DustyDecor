@@ -18,19 +18,19 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
 
     init {
         defaultState = defaultState
-            .with(UP, FACE_CLOSED)
-            .with(DOWN, FACE_CLOSED)
-            .with(NORTH, FACE_CLOSED)
-            .with(SOUTH, FACE_CLOSED)
-            .with(EAST, FACE_CLOSED)
-            .with(WEST, FACE_CLOSED)
+            .with(UP, FACE_COVERED)
+            .with(DOWN, FACE_COVERED)
+            .with(NORTH, FACE_COVERED)
+            .with(SOUTH, FACE_COVERED)
+            .with(EAST, FACE_COVERED)
+            .with(WEST, FACE_COVERED)
     }
 
     private fun getConnectionState(pos: BlockPos, world: WorldView): BlockState {
         var returnState: BlockState = defaultState
         for (direction: Direction in Direction.entries) {
             if (canConnectTo(world.getBlockState(pos.offset(direction)))) {
-                returnState = returnState.with(getStateForDirection(direction), !FACE_CLOSED)
+                returnState = returnState.with(getStateForDirection(direction), !FACE_COVERED)
             }
         }
         return returnState
@@ -74,8 +74,8 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
     override fun rotate(state: BlockState, rotation: BlockRotation): BlockState {
         var returnState: BlockState = state
         for (direction: Direction in Direction.entries) {
-            if (state.get(getStateForDirection(direction))) {
-                returnState = returnState.with(getStateForDirection(rotation.rotate(direction)), false)
+            if (state.get(getStateForDirection(direction), FACE_COVERED) == !FACE_COVERED) {
+                returnState = returnState.with(getStateForDirection(rotation.rotate(direction)), !FACE_COVERED)
             }
         }
         return returnState
@@ -95,7 +95,7 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
     }
 
     companion object {
-        const val FACE_CLOSED: Boolean = true
+        const val FACE_COVERED: Boolean = true
     }
 
 }
