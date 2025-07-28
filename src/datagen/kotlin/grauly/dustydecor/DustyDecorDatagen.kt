@@ -10,6 +10,7 @@ object DustyDecorDatagen : DataGeneratorEntrypoint {
 		val pack = fabricDataGenerator.createPack()
 		pack.addProvider(::BlockModelDatagen)
 		pack.addProvider(::ItemModelDatagen)
+		pack.addProvider(::BlockTagDatagen)
 	}
 
 	override fun getEffectiveModId(): String {

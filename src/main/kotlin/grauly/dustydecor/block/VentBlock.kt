@@ -1,5 +1,6 @@
 package grauly.dustydecor.block
 
+import grauly.dustydecor.ModBlockTags
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
 import net.minecraft.util.math.AxisRotation
@@ -27,7 +28,7 @@ class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBound
     }
 
     override fun canConnectTo(state: BlockState): Boolean {
-        return state.block is VentBlock
+        return state.isIn(ModBlockTags.LARGE_VENT_CONNECTABLE)
     }
 
     override fun getOutlineShape(
