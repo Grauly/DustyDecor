@@ -1,10 +1,11 @@
 {
-	"required": true,
-	"package": "grauly.dustydecor.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "grauly.dustydecor.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PlayerEntityVentCrawlingMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }
