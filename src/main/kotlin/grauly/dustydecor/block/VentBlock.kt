@@ -1,8 +1,10 @@
 package grauly.dustydecor.block
 
 import grauly.dustydecor.ModBlockTags
+import grauly.dustydecor.ModBlocks
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
+import net.minecraft.block.TrapdoorBlock
 import net.minecraft.util.math.AxisRotation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -27,8 +29,15 @@ class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBound
         }
     }
 
-    override fun canConnectTo(state: BlockState): Boolean {
-        return state.isIn(ModBlockTags.LARGE_VENT_CONNECTABLE)
+    override fun canConnectTo(state: BlockState, connectingSide: Direction): Boolean {
+        if (!state.isIn(ModBlockTags.LARGE_VENT_CONNECTABLE)) return false
+        if (state.isOf(ModBlocks.VENT_COVER)) {
+            if (!(connectingSide == Direction.UP || connectingSide == Direction.DOWN)) {
+                if (!state.get(TrapdoorBlock.FACING).equals(connectingSide)) return false
+            }
+        }
+        //TODO: Fix the "edge" case of cover at downwards bend (needs more context than this)
+        return true
     }
 
     override fun getOutlineShape(

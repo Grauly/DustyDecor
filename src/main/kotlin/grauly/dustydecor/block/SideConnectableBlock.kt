@@ -29,7 +29,7 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
     private fun getConnectionState(pos: BlockPos, world: WorldView): BlockState {
         var returnState: BlockState = defaultState
         for (direction: Direction in Direction.entries) {
-            if (canConnectTo(world.getBlockState(pos.offset(direction)))) {
+            if (canConnectTo(world.getBlockState(pos.offset(direction)), direction)) {
                 returnState = returnState.with(getStateForDirection(direction), !FACE_COVERED)
             }
         }
@@ -38,7 +38,7 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
 
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState = getConnectionState(ctx.blockPos, ctx.world)
 
-    abstract fun canConnectTo(state: BlockState): Boolean
+    abstract fun canConnectTo(state: BlockState, connectingSide: Direction): Boolean
 
     override fun getStateForNeighborUpdate(
         state: BlockState,
