@@ -12,8 +12,7 @@ import net.minecraft.util.Identifier
 
 object ModItems {
 
-    val VENT_ITEM: Item = registerBlockItem(ModBlocks.VENT, "vent")
-
+    val VENT: Item = registerBlockItem(ModBlocks.VENT, "vent")
 
     private fun registerItem(
         itemFactory: (Settings) -> Item,

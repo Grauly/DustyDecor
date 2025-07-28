@@ -52,7 +52,7 @@ class ModBlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(ge
         }
 
         blockStateModelGenerator.blockStateCollector?.accept(ventModel)
-        blockStateModelGenerator.registerItemModel(ModItems.VENT_ITEM, Identifier.of(DustyDecorMod.MODID, "block/vent_inventory"))
+        blockStateModelGenerator.registerItemModel(ModItems.VENT, Identifier.of(DustyDecorMod.MODID, "block/vent_inventory"))
     }
 
     private fun ventSideModel(
