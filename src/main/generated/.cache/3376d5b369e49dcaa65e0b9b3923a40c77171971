@@ -1,3 +1,8 @@
 // 1.21.8	-999999999-01-01T00:00:00	Template Mod/Block Model Definitions
 48c6da3fc10ed8cfcaab1a8d9234a107fbe79c80 assets/dustydecor/blockstates/vent.json
+9d26cc023c183106fb35e9e8a25f29a6cee91b63 assets/dustydecor/blockstates/vent_cover.json
 27997f07ec70078c8dd0bafbb701485612976227 assets/dustydecor/items/vent.json
+8416a7f85e99c62af6930f3dcadea48c65b2bf60 assets/dustydecor/items/vent_cover.json
+35a1dc08875a47eb3109677c0e9db091625f0de5 assets/dustydecor/models/block/vent_cover_bottom.json
+3d2ef50055d49e86900108b8517b4ac0d40729e5 assets/dustydecor/models/block/vent_cover_open.json
+21743deea5a6cb009a45ab4f01a88087e6b7511e assets/dustydecor/models/block/vent_cover_top.json

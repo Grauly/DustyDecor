@@ -53,6 +53,7 @@ class ModBlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(ge
 
         blockStateModelGenerator.blockStateCollector?.accept(ventModel)
         blockStateModelGenerator.registerItemModel(ModItems.VENT, Identifier.of(DustyDecorMod.MODID, "block/vent_inventory"))
+        blockStateModelGenerator.registerOrientableTrapdoor(ModBlocks.VENT_COVER)
     }
 
     private fun ventSideModel(

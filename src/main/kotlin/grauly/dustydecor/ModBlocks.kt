@@ -13,7 +13,7 @@ import net.minecraft.util.Identifier
 object ModBlocks {
 
     val VENT: Block = registerBlock(::VentBlock, "vent")
-    val VENT_COVER: Block = registerBlock(::VentCoverBlock, "vent_cover", Settings.create().ticksRandomly())
+    val VENT_COVER: Block = registerBlock(::VentCoverBlock, "vent_cover", Settings.create().ticksRandomly().nonOpaque())
 
     private fun registerBlock(
         blockFactory: (Settings) -> Block,
