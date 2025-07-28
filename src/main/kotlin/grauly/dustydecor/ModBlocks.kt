@@ -1,6 +1,7 @@
 package grauly.dustydecor
 
 import grauly.dustydecor.block.VentBlock
+import grauly.dustydecor.block.VentCoverBlock
 import net.minecraft.block.AbstractBlock.Settings
 import net.minecraft.block.Block
 import net.minecraft.registry.Registries
@@ -12,6 +13,7 @@ import net.minecraft.util.Identifier
 object ModBlocks {
 
     val VENT: Block = registerBlock(::VentBlock, "vent")
+    val VENT_COVER: Block = registerBlock(::VentCoverBlock, "vent_cover", Settings.create().ticksRandomly())
 
     private fun registerBlock(
         blockFactory: (Settings) -> Block,

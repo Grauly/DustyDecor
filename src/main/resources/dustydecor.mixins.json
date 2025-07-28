@@ -3,7 +3,7 @@
 	"package": "grauly.dustydecor.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"TrapdoorBlockFlipInvoker"
 	],
 	"injectors": {
 		"defaultRequire": 1

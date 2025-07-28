@@ -13,6 +13,7 @@ import net.minecraft.util.Identifier
 object ModItems {
 
     val VENT: Item = registerBlockItem(ModBlocks.VENT, "vent")
+    val VENT_COVER: Item = registerBlockItem(ModBlocks.VENT_COVER, "vent_cover")
 
     private fun registerItem(
         itemFactory: (Settings) -> Item,
