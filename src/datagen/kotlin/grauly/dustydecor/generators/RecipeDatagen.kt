@@ -1,5 +1,6 @@
-package grauly.dustydecor
+package grauly.dustydecor.generators
 
+import grauly.dustydecor.ModItems
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider
 import net.minecraft.data.recipe.RecipeExporter

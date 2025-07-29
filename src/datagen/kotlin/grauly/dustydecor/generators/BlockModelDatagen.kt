@@ -1,5 +1,9 @@
-package grauly.dustydecor
+package grauly.dustydecor.generators
 
+import grauly.dustydecor.BlockDatagenWrapper
+import grauly.dustydecor.DustyDecorMod
+import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.ModItems
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.minecraft.client.data.BlockStateModelGenerator
@@ -44,6 +48,7 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
     )
 
     override fun generateBlockStateModels(blockStateModelGenerator: BlockStateModelGenerator) {
+        BlockDatagenWrapper.entries.filter { it.generateBlockBlockModel }.forEach { blockStateModelGenerator.registerSimpleCubeAll(it.block) }
         val ventModel = MultipartBlockModelDefinitionCreator.create(ModBlocks.VENT)
             .with(VENT_CORE)
 

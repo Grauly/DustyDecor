@@ -1,5 +1,7 @@
-package grauly.dustydecor
+package grauly.dustydecor.generators
 
+import grauly.dustydecor.BlockDatagenWrapper
+import grauly.dustydecor.ModBlocks
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider
 import net.minecraft.registry.RegistryWrapper
@@ -11,7 +13,6 @@ class BlockLootTableDatagen(
 ) : FabricBlockLootTableProvider(dataOutput, registryLookup) {
 
     override fun generate() {
-        addDrop(ModBlocks.VENT)
-        addDrop(ModBlocks.VENT_COVER)
+        BlockDatagenWrapper.entries.filter { it.generateLootTable }.forEach { addDrop(it.block) }
     }
 }
