@@ -34,18 +34,7 @@ class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBound
     override fun canConnectTo(state: BlockState, pos: BlockPos, world: WorldView, connectingSide: Direction): Boolean {
         if (!state.isIn(ModBlockTags.LARGE_VENT_CONNECTABLE)) return false
         if (state.isOf(ModBlocks.VENT_COVER)) {
-            if (state.get(TrapdoorBlock.HALF) == BlockHalf.BOTTOM) {
-                if (connectingSide == Direction.DOWN) return false
-                if (connectingSide != Direction.UP) {
-                    if (world.getBlockState(pos.offset(Direction.DOWN)).isOf(ModBlocks.VENT)) return false
-                }
-            } else {
-                if (connectingSide == Direction.UP) return false
-                if (connectingSide != Direction.DOWN) {
-                    if (world.getBlockState(pos.offset(Direction.UP)).isOf(ModBlocks.VENT)) return false
-                }
-            }
-            if (connectingSide != Direction.UP && connectingSide != Direction.DOWN && state.get(TrapdoorBlock.FACING)!= connectingSide) return false
+            if (state.get(VentCoverBlock.COVERS_FACE).opposite != connectingSide) return false
         }
         return true
     }
