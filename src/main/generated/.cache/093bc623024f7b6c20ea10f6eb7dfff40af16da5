@@ -1,0 +1,7 @@
+// 1.21.8	-999999999-01-01T00:00:00	Template Mod/Recipe Provider
+840c029386d7ca9287deaec8b9b995eae800ee27 data/dustydecor/advancement/recipes/decorations/iron_trapdoor.json
+cb269babd679d848cd2e353d8eda53b895bcf891 data/dustydecor/advancement/recipes/decorations/vent.json
+924696a9ade6565b793eaa880d1b2ce4cdc825e9 data/dustydecor/advancement/recipes/decorations/vent_cover.json
+41d2ce65fa9da8b5f03412621e112b0fe0a84373 data/dustydecor/recipe/iron_trapdoor.json
+05bb5ecb2893095fd2833a5e5363b901a910abe3 data/dustydecor/recipe/vent.json
+fb28bd04f1aba1bb4868d5053256ef5fbee8a198 data/dustydecor/recipe/vent_cover.json
