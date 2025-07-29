@@ -11,5 +11,6 @@ object DustyDecorMod : ModInitializer {
         ModBlocks.init()
         ModItems.init()
         ModItemGroups.init()
+        ModSoundEvents.init()
     }
 }

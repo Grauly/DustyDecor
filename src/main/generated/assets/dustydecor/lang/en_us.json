@@ -2,5 +2,8 @@
   "block.dustydecor.vent": "Vent",
   "block.dustydecor.vent_cover": "Vent grate",
   "item.dustydecor.vent": "Vent",
-  "item.dustydecor.vent_cover": "Vent grate"
+  "item.dustydecor.vent_cover": "Vent grate",
+  "subtitles.dustydecor.block.vent.lock": "Vent locks",
+  "subtitles.dustydecor.block.vent.rattle": "Vent rattles",
+  "subtitles.dustydecor.block.vent.unlock": "Vent unlocks"
 }

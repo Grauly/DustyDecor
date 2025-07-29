@@ -1,0 +1,32 @@
+{
+  "block.vent.lock": {
+    "category": "block",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:block.vault.deactivate"
+      }
+    ],
+    "subtitle": "subtitles.dustydecor.block.vent.lock"
+  },
+  "block.vent.rattle": {
+    "category": "block",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:block.vault.close_shutter"
+      }
+    ],
+    "subtitle": "subtitles.dustydecor.block.vent.rattle"
+  },
+  "block.vent.unlock": {
+    "category": "block",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:block.vault.activate"
+      }
+    ],
+    "subtitle": "subtitles.dustydecor.block.vent.unlock"
+  }
+}

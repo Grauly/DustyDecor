@@ -16,6 +16,7 @@ object DustyDecorDatagen : DataGeneratorEntrypoint {
 		pack.addProvider(::BlockLootTableDatagen)
 		pack.addProvider(::RecipeDatagen)
 		pack.addProvider(::LangDatagen)
+		pack.addProvider(::SoundEventDatagen)
 	}
 
 	override fun getEffectiveModId(): String {
