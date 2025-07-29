@@ -19,5 +19,13 @@ class BlockTagDatagen(
         valueLookupBuilder(BlockTags.CLIMBABLE).add(
             ModBlocks.VENT
         )
+        valueLookupBuilder(BlockTags.NEEDS_STONE_TOOL).add(
+            ModBlocks.VENT,
+            ModBlocks.VENT_COVER
+        )
+        valueLookupBuilder(BlockTags.PICKAXE_MINEABLE).add(
+            ModBlocks.VENT,
+            ModBlocks.VENT_COVER
+        )
     }
 }

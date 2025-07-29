@@ -1,3 +1,5 @@
 // 1.21.8	-999999999-01-01T00:00:00	Template Mod/Tags for minecraft:block
 a5a14121fe579bd119ed341c6ae888b5f9ecebd3 data/dustydecor/tags/block/large_vent_connectable.json
 5911d2ddc794198f7f1508962c1dbb0553d39a58 data/minecraft/tags/block/climbable.json
+a5a14121fe579bd119ed341c6ae888b5f9ecebd3 data/minecraft/tags/block/mineable/pickaxe.json
+a5a14121fe579bd119ed341c6ae888b5f9ecebd3 data/minecraft/tags/block/needs_stone_tool.json
