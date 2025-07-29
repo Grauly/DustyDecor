@@ -25,7 +25,7 @@ class VentCoverBlock(settings: Settings) : TrapdoorBlock(BlockSetType.COPPER, se
         val directionPlacedAgainst = ctx.side
         return super.getPlacementState(ctx)
             ?.with(COVERS_FACE, directionPlacedAgainst.opposite)
-            ?.with(OPEN, !directionPlacedAgainst.axis.isHorizontal)
+            ?.with(OPEN, directionPlacedAgainst.axis.isHorizontal)
     }
 
     override fun randomTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
