@@ -5,6 +5,7 @@ import grauly.dustydecor.ModBlocks
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
 import net.minecraft.block.TrapdoorBlock
+import net.minecraft.block.enums.BlockHalf
 import net.minecraft.util.math.AxisRotation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -12,6 +13,7 @@ import net.minecraft.util.math.DirectionTransformation
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
+import net.minecraft.world.WorldView
 
 class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBounds().solid()) {
 
@@ -29,14 +31,22 @@ class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBound
         }
     }
 
-    override fun canConnectTo(state: BlockState, connectingSide: Direction): Boolean {
+    override fun canConnectTo(state: BlockState, pos: BlockPos, world: WorldView, connectingSide: Direction): Boolean {
         if (!state.isIn(ModBlockTags.LARGE_VENT_CONNECTABLE)) return false
         if (state.isOf(ModBlocks.VENT_COVER)) {
-            if (!(connectingSide == Direction.UP || connectingSide == Direction.DOWN)) {
-                if (!state.get(TrapdoorBlock.FACING).equals(connectingSide)) return false
+            if (state.get(TrapdoorBlock.HALF) == BlockHalf.BOTTOM) {
+                if (connectingSide == Direction.DOWN) return false
+                if (connectingSide != Direction.UP) {
+                    if (world.getBlockState(pos.offset(Direction.DOWN)).isOf(ModBlocks.VENT)) return false
+                }
+            } else {
+                if (connectingSide == Direction.UP) return false
+                if (connectingSide != Direction.DOWN) {
+                    if (world.getBlockState(pos.offset(Direction.UP)).isOf(ModBlocks.VENT)) return false
+                }
             }
+            if (connectingSide != Direction.UP && connectingSide != Direction.DOWN && state.get(TrapdoorBlock.FACING)!= connectingSide) return false
         }
-        //TODO: Fix the "edge" case of cover at downwards bend (needs more context than this)
         return true
     }
 
