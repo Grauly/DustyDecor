@@ -2,6 +2,9 @@ package grauly.dustydecor.block
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
+import net.minecraft.block.Waterloggable
+import net.minecraft.fluid.FluidState
+import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
@@ -14,7 +17,7 @@ import net.minecraft.util.math.random.Random
 import net.minecraft.world.WorldView
 import net.minecraft.world.tick.ScheduledTickView
 
-abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaque()) {
+abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaque()), Waterloggable {
 
     init {
         defaultState = defaultState
@@ -24,6 +27,7 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
             .with(SOUTH, FACE_COVERED)
             .with(EAST, FACE_COVERED)
             .with(WEST, FACE_COVERED)
+            .with(WATERLOGGED, false)
     }
 
     private fun getConnectionState(pos: BlockPos, world: WorldView): BlockState {
@@ -36,7 +40,11 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
         return returnState
     }
 
-    override fun getPlacementState(ctx: ItemPlacementContext): BlockState = getConnectionState(ctx.blockPos, ctx.world)
+    override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
+        val connectionState = getConnectionState(ctx.blockPos, ctx.world)
+        val fluidState = ctx.world.getFluidState(ctx.blockPos)
+        return connectionState.with(WATERLOGGED, fluidState.fluid == Fluids.WATER)
+    }
 
     abstract fun canConnectTo(state: BlockState, pos: BlockPos, world: WorldView, connectingSide: Direction): Boolean
 
@@ -49,7 +57,20 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
         neighborPos: BlockPos,
         neighborState: BlockState,
         random: Random
-    ): BlockState = getConnectionState(pos, world)
+    ): BlockState {
+        if (state.get(WATERLOGGED, false)) {
+            tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world))
+        }
+        return getConnectionState(pos, world).with(WATERLOGGED, state.get(WATERLOGGED, false))
+    }
+
+    override fun getFluidState(state: BlockState): FluidState {
+        return if (state.get(WATERLOGGED)) {
+            Fluids.WATER.getStill(false)
+        } else {
+            super.getFluidState(state)
+        }
+    }
 
     override fun mirror(state: BlockState, mirror: BlockMirror): BlockState =
         when (mirror) {
@@ -91,7 +112,7 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
     }
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>?) {
-        builder?.add(UP, DOWN, NORTH, SOUTH, EAST, WEST)
+        builder?.add(UP, DOWN, NORTH, SOUTH, EAST, WEST, WATERLOGGED)
     }
 
     companion object {
