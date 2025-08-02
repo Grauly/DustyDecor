@@ -63,6 +63,7 @@ object BlockDatagenWrapper {
         NONE,
         WOOD,
         STONE,
+        COPPER,
         GOLD,
         IRON,
         DIAMOND,
@@ -71,7 +72,7 @@ object BlockDatagenWrapper {
 
     fun getToolNeed(need: ToolNeed): TagKey<Block>? =
         when (need) {
-            STONE, GOLD -> BlockTags.NEEDS_STONE_TOOL
+            STONE, GOLD, COPPER -> BlockTags.NEEDS_STONE_TOOL
             IRON -> BlockTags.NEEDS_IRON_TOOL
             DIAMOND, NETHERITE -> BlockTags.NEEDS_DIAMOND_TOOL
             NONE, WOOD -> null
