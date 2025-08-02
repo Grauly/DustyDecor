@@ -10,5 +10,9 @@ object ModItemGroups {
             .register {
                 it.addAfter(Items.CHAIN, ModItems.VENT, ModItems.VENT_COVER)
             }
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)
+            .register {
+                it.add(ModItems.SCREWDRIVER)
+            }
     }
 }
