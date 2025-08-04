@@ -4,6 +4,7 @@ import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
+import grauly.dustydecor.block.SideConnectableBlock
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.minecraft.client.data.BlockStateModelGenerator
@@ -67,7 +68,7 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
         operator: ModelVariantOperator
     ) {
         creator.with(
-            MultipartModelConditionBuilder().put(direction, true),
+            MultipartModelConditionBuilder().put(direction, !SideConnectableBlock.FACE_CONNECTED),
             VENT_COVER
                 .apply(ModelVariantOperator.UV_LOCK.withValue(true))
                 .apply(operator)

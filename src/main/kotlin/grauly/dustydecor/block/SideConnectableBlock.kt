@@ -21,27 +21,27 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
 
     init {
         defaultState = defaultState
-            .with(UP, FACE_COVERED)
-            .with(DOWN, FACE_COVERED)
-            .with(NORTH, FACE_COVERED)
-            .with(SOUTH, FACE_COVERED)
-            .with(EAST, FACE_COVERED)
-            .with(WEST, FACE_COVERED)
+            .with(UP, !FACE_CONNECTED)
+            .with(DOWN, !FACE_CONNECTED)
+            .with(NORTH, !FACE_CONNECTED)
+            .with(SOUTH, !FACE_CONNECTED)
+            .with(EAST, !FACE_CONNECTED)
+            .with(WEST, !FACE_CONNECTED)
             .with(WATERLOGGED, false)
     }
 
-    private fun getConnectionState(pos: BlockPos, world: WorldView): BlockState {
+    protected open fun getConnectionState(ownState: BlockState, connectionPos: BlockPos, world: WorldView): BlockState {
         var returnState: BlockState = defaultState
         for (direction: Direction in Direction.entries) {
-            if (canConnectTo(world.getBlockState(pos.offset(direction)), pos.offset(direction), world, direction)) {
-                returnState = returnState.with(getStateForDirection(direction), !FACE_COVERED)
+            if (canConnectTo(world.getBlockState(connectionPos.offset(direction)), connectionPos.offset(direction), world, direction)) {
+                returnState = returnState.with(getStateForDirection(direction), FACE_CONNECTED)
             }
         }
         return returnState
     }
 
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
-        val connectionState = getConnectionState(ctx.blockPos, ctx.world)
+        val connectionState = getConnectionState(defaultState, ctx.blockPos, ctx.world)
         val fluidState = ctx.world.getFluidState(ctx.blockPos)
         return connectionState.with(WATERLOGGED, fluidState.fluid == Fluids.WATER)
     }
@@ -61,7 +61,7 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
         if (state.get(WATERLOGGED, false)) {
             tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world))
         }
-        return getConnectionState(pos, world).with(WATERLOGGED, state.get(WATERLOGGED, false))
+        return getConnectionState(state, pos, world).with(WATERLOGGED, state.get(WATERLOGGED, false))
     }
 
     override fun getFluidState(state: BlockState): FluidState {
@@ -95,8 +95,8 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
     override fun rotate(state: BlockState, rotation: BlockRotation): BlockState {
         var returnState: BlockState = state
         for (direction: Direction in Direction.entries) {
-            if (state.get(getStateForDirection(direction), FACE_COVERED) == !FACE_COVERED) {
-                returnState = returnState.with(getStateForDirection(rotation.rotate(direction)), !FACE_COVERED)
+            if (state.get(getStateForDirection(direction), !FACE_CONNECTED) == FACE_CONNECTED) {
+                returnState = returnState.with(getStateForDirection(rotation.rotate(direction)), FACE_CONNECTED)
             }
         }
         return returnState
@@ -116,7 +116,7 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
     }
 
     companion object {
-        const val FACE_COVERED: Boolean = true
+        const val FACE_CONNECTED: Boolean = true
     }
 
 }
