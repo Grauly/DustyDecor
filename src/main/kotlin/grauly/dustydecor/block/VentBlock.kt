@@ -22,7 +22,7 @@ class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBound
             SHAPES[state] = run {
                 var shape = FRAME_SHAPE
                 for (direction: Direction in Direction.entries) {
-                    if (state.get(getStateForDirection(direction), false)) {
+                    if (state.get(getStateForDirection(direction), !FACE_CONNECTED) == !FACE_CONNECTED) {
                         shape = VoxelShapes.union(shape, COVER_SHAPE_MAP[direction])
                     }
                 }
