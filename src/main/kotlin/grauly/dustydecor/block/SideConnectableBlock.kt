@@ -30,10 +30,10 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
             .with(WATERLOGGED, false)
     }
 
-    protected open fun getConnectionState(ownState: BlockState, connectionPos: BlockPos, world: WorldView): BlockState {
+    protected open fun getConnectionState(ownState: BlockState, ownPos: BlockPos, world: WorldView): BlockState {
         var returnState: BlockState = defaultState
         for (direction: Direction in Direction.entries) {
-            if (canConnectTo(world.getBlockState(connectionPos.offset(direction)), connectionPos.offset(direction), world, direction)) {
+            if (canConnectTo(world.getBlockState(ownPos.offset(direction)), ownPos.offset(direction), world, direction)) {
                 returnState = returnState.with(getStateForDirection(direction), FACE_CONNECTED)
             }
         }
@@ -74,7 +74,7 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
 
     override fun mirror(state: BlockState, mirror: BlockMirror): BlockState =
         when (mirror) {
-            BlockMirror.NONE -> state.mirror(mirror)
+            BlockMirror.NONE -> state
             BlockMirror.FRONT_BACK -> state.with(
                 EAST,
                 state.get(WEST)
@@ -96,7 +96,9 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
         var returnState: BlockState = state
         for (direction: Direction in Direction.entries) {
             if (state.get(getStateForDirection(direction), !FACE_CONNECTED) == FACE_CONNECTED) {
-                returnState = returnState.with(getStateForDirection(rotation.rotate(direction)), FACE_CONNECTED)
+                returnState = returnState
+                    .with(getStateForDirection(direction), !FACE_CONNECTED)
+                    .with(getStateForDirection(rotation.rotate(direction)), FACE_CONNECTED)
             }
         }
         return returnState
