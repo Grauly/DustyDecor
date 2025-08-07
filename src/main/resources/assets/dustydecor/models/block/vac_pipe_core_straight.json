@@ -1,0 +1,35 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "dustydecor:block/vac_pipe",
+		"particle": "dustydecor:block/vac_pipe"
+	},
+	"elements": [
+		{
+			"name": "core",
+			"from": [5, 6, 5],
+			"to": [11, 12, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 8, 7]},
+			"faces": {
+				"north": {"uv": [5, 10, 11, 16], "texture": "#0"},
+				"east": {"uv": [5, 10, 11, 16], "texture": "#0"},
+				"south": {"uv": [5, 10, 11, 16], "texture": "#0"},
+				"west": {"uv": [5, 10, 11, 16], "texture": "#0"},
+				"up": {"uv": [5, 10, 11, 16], "texture": "#0"},
+				"down": {"uv": [5, 10, 11, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "core_overlay_straight",
+			"from": [4.5, 5.5, 4.5],
+			"to": [11.5, 12.5, 11.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 8, 7]},
+			"faces": {
+				"east": {"uv": [7, 0, 14, 7], "texture": "#0"},
+				"west": {"uv": [7, 0, 14, 7], "texture": "#0"},
+				"up": {"uv": [7, 0, 14, 7], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [7, 0, 14, 7], "rotation": 90, "texture": "#0"}
+			}
+		}
+	]
+}
