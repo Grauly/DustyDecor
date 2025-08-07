@@ -1,0 +1,446 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "a": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight"
+      },
+      "when": {
+        "a": "up",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "up",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "up",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "up",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "up",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "up",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "a": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight"
+      },
+      "when": {
+        "a": "down",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true
+      },
+      "when": {
+        "a": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true
+      },
+      "when": {
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight"
+      },
+      "when": {
+        "a": "north",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "a": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight"
+      },
+      "when": {
+        "a": "south",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "a": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight"
+      },
+      "when": {
+        "a": "west",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "a": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "east",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "east",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "east",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "east",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight"
+      },
+      "when": {
+        "a": "east",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "east",
+        "b": "east"
+      }
+    }
+  ]
+}

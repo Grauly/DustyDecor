@@ -19,7 +19,7 @@ object VentBlockModel {
             .with(VENT_CORE)
 
         BlockModelDatagen.NORTH_FACING_ROTATION_MAP.forEach { (direction, operator) ->
-            ventSideModel(ventModel, direction, operator)
+            ventSideModel(ventModel, BlockModelDatagen.DIRECTION_TO_PROPERTY_MAP[direction]!!, operator)
         }
 
         blockStateModelGenerator.blockStateCollector?.accept(ventModel)

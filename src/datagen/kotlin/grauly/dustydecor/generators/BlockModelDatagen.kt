@@ -3,6 +3,7 @@ package grauly.dustydecor.generators
 import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.generators.block.VacPipeBlockModel
 import grauly.dustydecor.generators.block.VentBlockModel
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
@@ -11,11 +12,12 @@ import net.minecraft.client.data.ItemModelGenerator
 import net.minecraft.client.render.model.json.ModelVariant
 import net.minecraft.client.render.model.json.ModelVariantOperator
 import net.minecraft.client.render.model.json.WeightedVariant
-import net.minecraft.state.property.BooleanProperty
 import net.minecraft.state.property.Properties
+import net.minecraft.state.property.Property
 import net.minecraft.util.Identifier
 import net.minecraft.util.collection.Pool
 import net.minecraft.util.math.AxisRotation
+import net.minecraft.util.math.Direction
 
 class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(generator) {
 
@@ -24,6 +26,7 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
             .forEach { blockStateModelGenerator.registerSimpleCubeAll(it.block) }
         blockStateModelGenerator.registerOrientableTrapdoor(ModBlocks.VENT_COVER)
         VentBlockModel.get(blockStateModelGenerator)
+        VacPipeBlockModel.get(blockStateModelGenerator)
     }
 
 
@@ -43,14 +46,23 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
                     )
                 )
             )
+
         fun singleVariant(id: String) = singleVariant(Identifier.of(DustyDecorMod.MODID, id))
-        val NORTH_FACING_ROTATION_MAP: Map<BooleanProperty, ModelVariantOperator> = mapOf(
-            Properties.UP to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R270),
-            Properties.DOWN to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R90),
-            Properties.NORTH to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R0),
-            Properties.SOUTH to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R180),
-            Properties.WEST to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R270),
-            Properties.EAST to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R90)
+        val NORTH_FACING_ROTATION_MAP: Map<Direction, ModelVariantOperator> = mapOf(
+            Direction.UP to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R270),
+            Direction.DOWN to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R90),
+            Direction.NORTH to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R0),
+            Direction.SOUTH to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R180),
+            Direction.WEST to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R270),
+            Direction.EAST to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R90)
+        )
+        val DIRECTION_TO_PROPERTY_MAP: Map<Direction, Property<Boolean>> = mapOf(
+            Direction.UP to Properties.UP,
+            Direction.DOWN to Properties.DOWN,
+            Direction.NORTH to Properties.NORTH,
+            Direction.SOUTH to Properties.SOUTH,
+            Direction.WEST to Properties.WEST,
+            Direction.EAST to Properties.EAST
         )
     }
 }
