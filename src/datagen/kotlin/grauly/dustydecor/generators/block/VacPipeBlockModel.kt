@@ -1,7 +1,8 @@
 package grauly.dustydecor.generators.block
 
 import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.block.AbConnectableBlock
+import grauly.dustydecor.block.NConnectableBlock
+import grauly.dustydecor.block.VacPipeBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.BlockStateModelGenerator
 import net.minecraft.client.data.MultipartBlockModelDefinitionCreator
@@ -16,7 +17,7 @@ object VacPipeBlockModel {
         BlockModelDatagen.NORTH_FACING_ROTATION_MAP.forEach {
             singleConnectorRotation(vacPipeModel, it.key, it.value)
         }
-        AbConnectableBlock.ConnectionState.entries.forEach { makeCore(vacPipeModel, it) }
+        NConnectableBlock.ConnectionState.entries.forEach { makeCore(vacPipeModel, it) }
         blockStateModelGenerator.blockStateCollector?.accept(vacPipeModel)
     }
 
@@ -25,9 +26,9 @@ object VacPipeBlockModel {
         direction: Direction,
         operator: ModelVariantOperator
     ) {
-        listOf(AbConnectableBlock.A, AbConnectableBlock.B).forEach {
+        (ModBlocks.VAC_PIPE as VacPipeBlock).connections.forEach {
             creator.with(
-                MultipartModelConditionBuilder().put(it, AbConnectableBlock.ConnectionState.fromDirection(direction)),
+                MultipartModelConditionBuilder().put(it, NConnectableBlock.ConnectionState.fromDirection(direction)),
                 VAC_CONNECTOR
                     .apply(ModelVariantOperator.UV_LOCK.withValue(true))
                     .apply(operator)
@@ -37,14 +38,15 @@ object VacPipeBlockModel {
 
     private fun makeCore(
         creator: MultipartBlockModelDefinitionCreator,
-        aState: AbConnectableBlock.ConnectionState
+        aState: NConnectableBlock.ConnectionState
     ) {
-        for(bState: AbConnectableBlock.ConnectionState in AbConnectableBlock.ConnectionState.entries) {
+        val connections = (ModBlocks.VAC_PIPE as VacPipeBlock).connections
+        for (bState: NConnectableBlock.ConnectionState in NConnectableBlock.ConnectionState.entries) {
             creator.with(
                 MultipartModelConditionBuilder()
-                    .put(AbConnectableBlock.A, aState)
-                    .put(AbConnectableBlock.B, bState),
-                if (aState == AbConnectableBlock.ConnectionState.NONE || bState == AbConnectableBlock.ConnectionState.NONE) {
+                    .put(connections[0], aState)
+                    .put(connections[1], bState),
+                if (aState == NConnectableBlock.ConnectionState.NONE || bState == NConnectableBlock.ConnectionState.NONE) {
                     VAC_CORE
                 } else if (aState.direction?.opposite!! == bState.direction!!) {
                     VAC_CORE_STRAIGHT
