@@ -441,6 +441,15 @@
         "a": "east",
         "b": "east"
       }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "none",
+        "b": "none"
+      }
     }
   ]
 }

@@ -17,6 +17,12 @@ object VacPipeBlockModel {
             singleConnectorRotation(vacPipeModel, it.key, it.value)
             makeCore(vacPipeModel, it.key)
         }
+        vacPipeModel.with(
+            MultipartModelConditionBuilder()
+                .put(AbConnectableBlock.A, AbConnectableBlock.ConnectionState.NONE)
+                .put(AbConnectableBlock.B, AbConnectableBlock.ConnectionState.NONE),
+            VAC_CORE
+        )
         blockStateModelGenerator.blockStateCollector?.accept(vacPipeModel)
     }
 
