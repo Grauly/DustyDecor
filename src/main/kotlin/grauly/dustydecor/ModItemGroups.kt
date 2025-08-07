@@ -8,7 +8,7 @@ object ModItemGroups {
     fun init() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS)
             .register {
-                it.addAfter(Items.CHAIN, ModItems.VENT, ModItems.VENT_COVER)
+                it.addAfter(Items.IRON_CHAIN, ModItems.VENT, ModItems.VENT_COVER)
             }
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)
             .register {
