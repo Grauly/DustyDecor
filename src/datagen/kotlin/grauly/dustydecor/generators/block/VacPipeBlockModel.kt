@@ -1,7 +1,7 @@
 package grauly.dustydecor.generators.block
 
 import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.block.NConnectableBlock
+import grauly.dustydecor.block.ConnectionState
 import grauly.dustydecor.block.VacPipeBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.BlockStateModelGenerator
@@ -17,7 +17,7 @@ object VacPipeBlockModel {
         BlockModelDatagen.NORTH_FACING_ROTATION_MAP.forEach {
             singleConnectorRotation(vacPipeModel, it.key, it.value)
         }
-        NConnectableBlock.ConnectionState.entries.forEach { makeCore(vacPipeModel, it) }
+        ConnectionState.entries.forEach { makeCore(vacPipeModel, it) }
         blockStateModelGenerator.blockStateCollector?.accept(vacPipeModel)
     }
 
@@ -28,7 +28,7 @@ object VacPipeBlockModel {
     ) {
         (ModBlocks.VAC_PIPE as VacPipeBlock).connections.forEach {
             creator.with(
-                MultipartModelConditionBuilder().put(it, NConnectableBlock.ConnectionState.fromDirection(direction)),
+                MultipartModelConditionBuilder().put(it, ConnectionState.fromDirection(direction)),
                 VAC_CONNECTOR
                     .apply(ModelVariantOperator.UV_LOCK.withValue(true))
                     .apply(operator)
@@ -38,15 +38,15 @@ object VacPipeBlockModel {
 
     private fun makeCore(
         creator: MultipartBlockModelDefinitionCreator,
-        aState: NConnectableBlock.ConnectionState
+        aState: ConnectionState
     ) {
         val connections = (ModBlocks.VAC_PIPE as VacPipeBlock).connections
-        for (bState: NConnectableBlock.ConnectionState in NConnectableBlock.ConnectionState.entries) {
+        for (bState: ConnectionState in ConnectionState.entries) {
             creator.with(
                 MultipartModelConditionBuilder()
                     .put(connections[0], aState)
                     .put(connections[1], bState),
-                if (aState == NConnectableBlock.ConnectionState.NONE || bState == NConnectableBlock.ConnectionState.NONE) {
+                if (aState == ConnectionState.NONE || bState == ConnectionState.NONE) {
                     VAC_CORE
                 } else if (aState.direction?.opposite!! == bState.direction!!) {
                     VAC_CORE_STRAIGHT

@@ -11,7 +11,6 @@ import net.minecraft.state.property.EnumProperty
 import net.minecraft.state.property.Properties
 import net.minecraft.util.BlockMirror
 import net.minecraft.util.BlockRotation
-import net.minecraft.util.StringIdentifiable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.random.Random
@@ -175,34 +174,5 @@ abstract class NConnectableBlock(n: Int, settings: Settings) : Block(settings), 
     override fun getFluidState(state: BlockState): FluidState =
         if (state.get(Properties.WATERLOGGED, false)) Fluids.WATER.getStill(true) else super.getFluidState(state)
 
-    enum class ConnectionState(
-        val string: String,
-        val direction: Direction?
-    ) : StringIdentifiable {
-        UP("up", Direction.UP),
-        DOWN("down", Direction.DOWN),
-        NORTH("north", Direction.NORTH),
-        SOUTH("south", Direction.SOUTH),
-        WEST("west", Direction.WEST),
-        EAST("east", Direction.EAST),
-        NONE("none", null);
-
-        override fun asString(): String = string
-
-        companion object {
-            val CODEC: StringIdentifiable.EnumCodec<ConnectionState> =
-                StringIdentifiable.createCodec(ConnectionState.entries::toTypedArray)
-
-            fun fromDirection(direction: Direction?) = when (direction) {
-                Direction.UP -> UP
-                Direction.DOWN -> DOWN
-                Direction.NORTH -> NORTH
-                Direction.SOUTH -> SOUTH
-                Direction.WEST -> WEST
-                Direction.EAST -> EAST
-                else -> NONE
-            }
-        }
-    }
 }
 
