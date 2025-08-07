@@ -5,6 +5,7 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.block.SideConnectableBlock
+import grauly.dustydecor.generators.block.VentBlockModel
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.minecraft.client.data.BlockStateModelGenerator
@@ -23,61 +24,27 @@ import net.minecraft.util.math.AxisRotation
 
 class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(generator) {
 
-    private val VENT_COVER: WeightedVariant = WeightedVariant(
-        Pool.of(
-            ModelVariant(
-                Identifier.of(DustyDecorMod.MODID, "block/vent_cover"),
-                ModelVariant.ModelState.DEFAULT
-            )
-        )
-    )
-    private val VENT_CORE: WeightedVariant = WeightedVariant(
-        Pool.of(
-            ModelVariant(
-                Identifier.of(DustyDecorMod.MODID, "block/vent_core"),
-                ModelVariant.ModelState.DEFAULT
-            )
-        )
-    )
-    private val NORTH_FACING_ROTATION_MAP: Map<BooleanProperty, ModelVariantOperator> = mapOf(
-        Properties.UP to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R270),
-        Properties.DOWN to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R90),
-        Properties.NORTH to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R0),
-        Properties.SOUTH to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R180),
-        Properties.WEST to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R270),
-        Properties.EAST to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R90)
-    )
-
     override fun generateBlockStateModels(blockStateModelGenerator: BlockStateModelGenerator) {
         BlockDatagenWrapper.entries.filter { it.generateBlockBlockModel }.forEach { blockStateModelGenerator.registerSimpleCubeAll(it.block) }
-        val ventModel = MultipartBlockModelDefinitionCreator.create(ModBlocks.VENT)
-            .with(VENT_CORE)
-
-        NORTH_FACING_ROTATION_MAP.forEach { (direction, operator) ->
-            ventSideModel(ventModel, direction, operator)
-        }
-
-        blockStateModelGenerator.blockStateCollector?.accept(ventModel)
-        blockStateModelGenerator.registerItemModel(ModItems.VENT, Identifier.of(DustyDecorMod.MODID, "block/vent_inventory"))
         blockStateModelGenerator.registerOrientableTrapdoor(ModBlocks.VENT_COVER)
+        VentBlockModel.get(blockStateModelGenerator)
     }
 
-    private fun ventSideModel(
-        creator: MultipartBlockModelDefinitionCreator,
-        direction: Property<Boolean>,
-        operator: ModelVariantOperator
-    ) {
-        creator.with(
-            MultipartModelConditionBuilder().put(direction, !SideConnectableBlock.FACE_CONNECTED),
-            VENT_COVER
-                .apply(ModelVariantOperator.UV_LOCK.withValue(true))
-                .apply(operator)
-        )
-    }
 
     override fun generateItemModels(itemModelGenerator: ItemModelGenerator) {
         //[Intentionally Left Blank]
     }
 
     override fun getName(): String = "Block Model Definitions"
+
+    companion object {
+        val NORTH_FACING_ROTATION_MAP: Map<BooleanProperty, ModelVariantOperator> = mapOf(
+            Properties.UP to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R270),
+            Properties.DOWN to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R90),
+            Properties.NORTH to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R0),
+            Properties.SOUTH to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R180),
+            Properties.WEST to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R270),
+            Properties.EAST to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R90)
+        )
+    }
 }
