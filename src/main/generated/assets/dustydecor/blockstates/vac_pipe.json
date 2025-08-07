@@ -22,60 +22,6 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_straight"
-      },
-      "when": {
-        "a": "up",
-        "b": "down"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "up",
-        "b": "up"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "up",
-        "b": "north"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "up",
-        "b": "south"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "up",
-        "b": "west"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "up",
-        "b": "east"
-      }
-    },
-    {
-      "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
         "uvlock": true,
         "x": 90
@@ -96,60 +42,6 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "down",
-        "b": "down"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_straight"
-      },
-      "when": {
-        "a": "down",
-        "b": "up"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "down",
-        "b": "north"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "down",
-        "b": "south"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "down",
-        "b": "west"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "down",
-        "b": "east"
-      }
-    },
-    {
-      "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
         "uvlock": true
       },
@@ -164,60 +56,6 @@
       },
       "when": {
         "b": "north"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "north",
-        "b": "down"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "north",
-        "b": "up"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "north",
-        "b": "north"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_straight"
-      },
-      "when": {
-        "a": "north",
-        "b": "south"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "north",
-        "b": "west"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "north",
-        "b": "east"
       }
     },
     {
@@ -242,60 +80,6 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "south",
-        "b": "down"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "south",
-        "b": "up"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_straight"
-      },
-      "when": {
-        "a": "south",
-        "b": "north"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "south",
-        "b": "south"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "south",
-        "b": "west"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "south",
-        "b": "east"
-      }
-    },
-    {
-      "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
         "uvlock": true,
         "y": 270
@@ -312,60 +96,6 @@
       },
       "when": {
         "b": "west"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "west",
-        "b": "down"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "west",
-        "b": "up"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "west",
-        "b": "north"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "west",
-        "b": "south"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "a": "west",
-        "b": "west"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_straight"
-      },
-      "when": {
-        "a": "west",
-        "b": "east"
       }
     },
     {
@@ -393,8 +123,323 @@
         "model": "dustydecor:block/vac_pipe_core"
       },
       "when": {
-        "a": "east",
+        "a": "up",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "a": "up",
         "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "up",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "up",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "up",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "up",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "up",
+        "b": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "a": "down",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "down",
+        "b": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight",
+        "uvlock": true
+      },
+      "when": {
+        "a": "north",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "north",
+        "b": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "a": "south",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "south",
+        "b": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core_straight",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "a": "west",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "west",
+        "b": "none"
       }
     },
     {
@@ -404,6 +449,15 @@
       "when": {
         "a": "east",
         "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "east",
+        "b": "down"
       }
     },
     {
@@ -426,7 +480,9 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_straight"
+        "model": "dustydecor:block/vac_pipe_core_straight",
+        "uvlock": true,
+        "y": 90
       },
       "when": {
         "a": "east",
@@ -439,6 +495,69 @@
       },
       "when": {
         "a": "east",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "east",
+        "b": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "none",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "none",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "none",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "none",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "none",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_core"
+      },
+      "when": {
+        "a": "none",
         "b": "east"
       }
     },

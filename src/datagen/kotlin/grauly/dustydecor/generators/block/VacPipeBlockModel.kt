@@ -15,14 +15,8 @@ object VacPipeBlockModel {
         val vacPipeModel = MultipartBlockModelDefinitionCreator.create(ModBlocks.VAC_PIPE)
         BlockModelDatagen.NORTH_FACING_ROTATION_MAP.forEach {
             singleConnectorRotation(vacPipeModel, it.key, it.value)
-            makeCore(vacPipeModel, it.key)
         }
-        vacPipeModel.with(
-            MultipartModelConditionBuilder()
-                .put(AbConnectableBlock.A, AbConnectableBlock.ConnectionState.NONE)
-                .put(AbConnectableBlock.B, AbConnectableBlock.ConnectionState.NONE),
-            VAC_CORE
-        )
+        AbConnectableBlock.ConnectionState.entries.forEach { makeCore(vacPipeModel, it) }
         blockStateModelGenerator.blockStateCollector?.accept(vacPipeModel)
     }
 
@@ -43,14 +37,22 @@ object VacPipeBlockModel {
 
     private fun makeCore(
         creator: MultipartBlockModelDefinitionCreator,
-        aDirection: Direction
+        aState: AbConnectableBlock.ConnectionState
     ) {
-        for(bDirection: Direction in Direction.entries) {
+        for(bState: AbConnectableBlock.ConnectionState in AbConnectableBlock.ConnectionState.entries) {
             creator.with(
                 MultipartModelConditionBuilder()
-                    .put(AbConnectableBlock.A, AbConnectableBlock.ConnectionState.fromDirection(aDirection))
-                    .put(AbConnectableBlock.B, AbConnectableBlock.ConnectionState.fromDirection(bDirection)),
-                if (aDirection.opposite == bDirection) VAC_CORE_STRAIGHT else VAC_CORE
+                    .put(AbConnectableBlock.A, aState)
+                    .put(AbConnectableBlock.B, bState),
+                if (aState == AbConnectableBlock.ConnectionState.NONE || bState == AbConnectableBlock.ConnectionState.NONE) {
+                    VAC_CORE
+                } else if (aState.direction?.opposite!! == bState.direction!!) {
+                    VAC_CORE_STRAIGHT
+                        .apply(ModelVariantOperator.UV_LOCK.withValue(true))
+                        .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aState.direction])
+                } else {
+                    VAC_CORE
+                }
             )
         }
     }
