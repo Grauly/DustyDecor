@@ -7,9 +7,9 @@
 	"elements": [
 		{
 			"name": "north_overlay",
-			"from": [4.5, 5.5, 0],
-			"to": [11.5, 12.5, 4.5],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 8, 0]},
+			"from": [4.5, 4.5, 0],
+			"to": [11.5, 11.5, 4.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 7, 0]},
 			"faces": {
 				"east": {"uv": [11, 0, 15.5, 7], "texture": "#0"},
 				"west": {"uv": [11, 0, 15.5, 7], "rotation": 180, "texture": "#0"},
@@ -19,9 +19,9 @@
 		},
 		{
 			"name": "north_connector",
-			"from": [5, 6, 0],
-			"to": [11, 12, 5],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 8, 1]},
+			"from": [5, 5, 0],
+			"to": [11, 11, 5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 7, 1]},
 			"faces": {
 				"east": {"uv": [11, 10, 16, 16], "texture": "#0"},
 				"west": {"uv": [11, 10, 16, 16], "rotation": 180, "texture": "#0"},
