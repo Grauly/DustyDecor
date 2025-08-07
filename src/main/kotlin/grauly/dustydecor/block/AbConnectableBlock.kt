@@ -57,6 +57,7 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
     protected open fun getConnectionState(ownState: BlockState, ownPos: BlockPos, world: WorldView): BlockState {
         val ownConnection = getFreeConnection(ownState) ?: return ownState
         val connection = findConnection(ownPos, world, ownState.get(getOtherState(ownConnection)).direction)
+        if (connection == ConnectionState.NONE) return ownState.with(ownConnection, connection)
         return getConnectionState(ownState, ownPos, world).with(ownConnection, connection)
     }
 
