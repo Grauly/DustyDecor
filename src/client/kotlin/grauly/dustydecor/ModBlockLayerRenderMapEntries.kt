@@ -6,5 +6,6 @@ import net.minecraft.client.render.BlockRenderLayer
 object ModBlockLayerRenderMapEntries {
     fun init() {
         BlockRenderLayerMap.putBlock(ModBlocks.VENT_COVER, BlockRenderLayer.CUTOUT)
+        BlockRenderLayerMap.putBlock(ModBlocks.VAC_PIPE, BlockRenderLayer.CUTOUT)
     }
 }
