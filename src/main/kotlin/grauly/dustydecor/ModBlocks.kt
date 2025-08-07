@@ -1,5 +1,6 @@
 package grauly.dustydecor
 
+import grauly.dustydecor.block.VacPipeBlock
 import grauly.dustydecor.block.VentBlock
 import grauly.dustydecor.block.VentCoverBlock
 import net.minecraft.block.AbstractBlock.Settings
@@ -15,6 +16,7 @@ object ModBlocks {
 
     val VENT: Block = registerBlock(::VentBlock, "vent", Settings.copy(Blocks.IRON_BLOCK))
     val VENT_COVER: Block = registerBlock(::VentCoverBlock, "vent_cover", Settings.copy(Blocks.IRON_TRAPDOOR).ticksRandomly().nonOpaque())
+    val VAC_PIPE: Block = registerBlock(::VacPipeBlock, "vac_pipe", Settings.copy(Blocks.HOPPER))
 
     private fun registerBlock(
         blockFactory: (Settings) -> Block,

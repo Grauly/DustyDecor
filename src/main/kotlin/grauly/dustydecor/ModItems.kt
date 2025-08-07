@@ -14,6 +14,7 @@ object ModItems {
 
     val VENT: Item = registerBlockItem(ModBlocks.VENT, "vent")
     val VENT_COVER: Item = registerBlockItem(ModBlocks.VENT_COVER, "vent_cover")
+    val VAC_PIPE: Item = registerBlockItem(ModBlocks.VAC_PIPE, "vac_pipe")
     val SCREWDRIVER: Item = registerItem(::Item, "screwdriver", Settings().maxCount(1))
 
     private fun registerItem(
