@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.WorldView
 
-class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
+class VacPipeBlock(settings: Settings) : NConnectableBlock(2, settings) {
     override fun isConnectable(
         state: BlockState,
         pos: BlockPos,

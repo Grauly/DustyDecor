@@ -15,16 +15,28 @@ import net.minecraft.util.StringIdentifiable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.random.Random
-import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import net.minecraft.world.tick.ScheduledTickView
 
-abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterloggable {
+abstract class NConnectableBlock(n: Int, settings: Settings) : Block(settings), Waterloggable {
+    val connections: List<EnumProperty<ConnectionState>>
+
     init {
-        defaultState = defaultState
-            .with(A, ConnectionState.NONE)
-            .with(B, ConnectionState.NONE)
-            .with(Properties.WATERLOGGED, false)
+        if (n < 1) {
+            throw IllegalArgumentException("Amount of connections must be at least 1")
+        }
+        if (n > 6) {
+            //really, 6 would already be inefficient, since at that point, SideConnectableBlock would do the same ALOT simpler
+            throw IllegalArgumentException("Amount of connections must be at most 6")
+        }
+        connections = mutableListOf("a", "b", "c", "d", "e", "f")
+            .subList(0, n)
+            .map { EnumProperty.of(it, ConnectionState::class.java) }
+            .toList()
+        connections.forEach {
+            defaultState = defaultState.with(it, ConnectionState.NONE)
+        }
+        defaultState = defaultState.with(Properties.WATERLOGGED, false)
     }
 
     abstract fun isConnectable(
@@ -55,10 +67,33 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
     }
 
     protected open fun getConnectionState(ownState: BlockState, ownPos: BlockPos, world: WorldView): BlockState {
-        val ownConnection = getFreeConnection(ownState) ?: return ownState
-        val connection = findConnection(ownPos, world, ownState.get(getOtherState(ownConnection)).direction)
-        if (connection == ConnectionState.NONE) return ownState.with(ownConnection, connection)
-        return getConnectionState(ownState, ownPos, world).with(ownConnection, connection)
+        val updatableConnections: List<EnumProperty<ConnectionState>> =
+            connections.filter { !needsUpdating(it, ownState, ownPos, world) }
+        if (updatableConnections.isEmpty()) return ownState
+        val takenDirections: MutableList<Direction> =
+            connections.toMutableList().filter { updatableConnections.contains(it) }
+                .map { ownState.get(it).direction!! }.toMutableList()
+        var workingState = ownState
+        for (updateConnection: EnumProperty<ConnectionState> in updatableConnections) {
+            val foundConnection = findConnection(ownPos, world, *takenDirections.toTypedArray())
+            workingState = workingState.with(updateConnection, foundConnection)
+            if (foundConnection != ConnectionState.NONE) {
+                takenDirections.add(foundConnection.direction!!)
+            }
+        }
+        return workingState
+    }
+
+    private fun needsUpdating(
+        connection: EnumProperty<ConnectionState>,
+        ownState: BlockState,
+        ownPos: BlockPos,
+        world: WorldView
+    ): Boolean {
+        val currentConnection = ownState.get(connection)
+        if (currentConnection == ConnectionState.NONE) return false
+        val offsetPos = ownPos.offset(currentConnection.direction)
+        return canConnectTo(world.getBlockState(offsetPos), offsetPos, world, currentConnection.direction!!)
     }
 
     private fun canConnectTo(
@@ -68,8 +103,8 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
         connectionDirection: Direction
     ): Boolean {
         if (!isConnectable(state, pos, world, connectionDirection)) return false
-        if (state.block !is AbConnectableBlock) return true
-        return getFreeConnection(state) != null
+        if (state.block !is NConnectableBlock) return true
+        return getUnusedConnection(state) != null
     }
 
     private fun needsConnecting(
@@ -78,44 +113,19 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
         world: WorldView,
         connectionDirection: Direction
     ): Boolean {
-        if (state.get(A, ConnectionState.NONE).direction == connectionDirection.opposite) return true
-        if (state.get(B, ConnectionState.NONE).direction == connectionDirection.opposite) return true
-        return false
+        return (state.block as NConnectableBlock).connections
+            .filter { state.get(it) != ConnectionState.NONE }
+            .any { state.get(it).direction == connectionDirection.opposite }
     }
 
-    private fun connectPipes(
-        start: BlockPos,
-        other: BlockPos,
-        startState: BlockState,
-        otherState: BlockState,
-        world: World,
-        direction: Direction
-    ) {
-        world.setBlockState(
-            start,
-            startState.with(getFreeConnection(startState), ConnectionState.fromDirection(direction)),
-            NOTIFY_LISTENERS
-        )
-        world.setBlockState(
-            other,
-            otherState.with(getFreeConnection(otherState), ConnectionState.fromDirection(direction.opposite)),
-            NOTIFY_LISTENERS
-        )
+    private fun getUnusedConnection(state: BlockState): EnumProperty<ConnectionState>? {
+        return (state.block as NConnectableBlock).connections.firstOrNull { state.get(it) == ConnectionState.NONE }
     }
 
-    private fun getFreeConnection(state: BlockState): EnumProperty<ConnectionState>? {
-        val a = state.get(A)
-        val b = state.get(B)
-        if (a == b) return B
-        if (a == ConnectionState.NONE) return A
-        if (b == ConnectionState.NONE) return B
-        return null
-    }
-
-    private fun findConnection(pos: BlockPos, world: WorldView, except: Direction?): ConnectionState {
+    private fun findConnection(pos: BlockPos, world: WorldView, vararg except: Direction): ConnectionState {
         var foundDirection: Direction? = null
         for (direction: Direction in Direction.entries) {
-            if (except != null && direction == except) continue
+            if (except.contains(direction)) continue
             val offsetPos = pos.offset(direction)
             if (canConnectTo(world.getBlockState(offsetPos), pos, world, direction)) {
                 if (needsConnecting(world.getBlockState(offsetPos), pos, world, direction)) {
@@ -129,46 +139,41 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
         return ConnectionState.fromDirection(foundDirection)
     }
 
-    private fun getOtherState(property: EnumProperty<ConnectionState>): EnumProperty<ConnectionState> =
-        if (property == A) B else A
-
     override fun mirror(state: BlockState, mirror: BlockMirror): BlockState {
         if (mirror == BlockMirror.NONE) return state
         var returnState = state
-        if (state.get(A, ConnectionState.NONE) != ConnectionState.NONE) {
-            returnState =
-                returnState.with(A, ConnectionState.fromDirection(mirror.apply(state.get(A).direction)))
-        }
-        if (state.get(B, ConnectionState.NONE) != ConnectionState.NONE) {
-            returnState =
-                returnState.with(A, ConnectionState.fromDirection(mirror.apply(state.get(B).direction)))
+        for (connection in connections) {
+            if (state.get(connection, ConnectionState.NONE) != ConnectionState.NONE) {
+                returnState =
+                    returnState.with(
+                        connection,
+                        ConnectionState.fromDirection(mirror.apply(state.get(connection).direction))
+                    )
+            }
         }
         return returnState
     }
 
     override fun rotate(state: BlockState, rotation: BlockRotation): BlockState {
         var returnState = state
-        if (state.get(A, ConnectionState.NONE) != ConnectionState.NONE) {
-            returnState = returnState.with(A, ConnectionState.fromDirection(rotation.rotate(state.get(A).direction)))
-        }
-        if (state.get(B, ConnectionState.NONE) != ConnectionState.NONE) {
-            returnState = returnState.with(A, ConnectionState.fromDirection(rotation.rotate(state.get(B).direction)))
+        for (connection in connections) {
+            if (state.get(connection, ConnectionState.NONE) != ConnectionState.NONE) {
+                returnState = returnState.with(
+                    connection,
+                    ConnectionState.fromDirection(rotation.rotate(state.get(connection).direction))
+                )
+            }
         }
         return returnState
     }
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         super.appendProperties(builder)
-        builder.add(A, B, Properties.WATERLOGGED)
+        builder.add(*connections.toTypedArray(), Properties.WATERLOGGED)
     }
 
     override fun getFluidState(state: BlockState): FluidState =
         if (state.get(Properties.WATERLOGGED, false)) Fluids.WATER.getStill(true) else super.getFluidState(state)
-
-    companion object {
-        val A: EnumProperty<ConnectionState> = EnumProperty.of("a", ConnectionState::class.java)
-        val B: EnumProperty<ConnectionState> = EnumProperty.of("b", ConnectionState::class.java)
-    }
 
     enum class ConnectionState(
         val string: String,
