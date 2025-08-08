@@ -26,7 +26,7 @@ object VacPipeBlockModel {
         direction: Direction,
         operator: ModelVariantOperator
     ) {
-        (ModBlocks.VAC_PIPE as VacPipeBlock).connections.forEach {
+        (ModBlocks.VAC_PIPE as VacPipeBlock).getConnections().forEach {
             creator.with(
                 MultipartModelConditionBuilder().put(it, ConnectionState.fromDirection(direction)),
                 VAC_CONNECTOR
@@ -40,7 +40,7 @@ object VacPipeBlockModel {
         creator: MultipartBlockModelDefinitionCreator,
         aState: ConnectionState
     ) {
-        val connections = (ModBlocks.VAC_PIPE as VacPipeBlock).connections
+        val connections = (ModBlocks.VAC_PIPE as VacPipeBlock).getConnections()
         for (bState: ConnectionState in ConnectionState.entries) {
             creator.with(
                 MultipartModelConditionBuilder()

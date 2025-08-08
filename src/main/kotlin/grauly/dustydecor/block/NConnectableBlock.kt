@@ -17,21 +17,10 @@ import net.minecraft.util.math.random.Random
 import net.minecraft.world.WorldView
 import net.minecraft.world.tick.ScheduledTickView
 
-abstract class NConnectableBlock(n: Int, settings: Settings) : Block(settings), Waterloggable {
-    val connections: List<EnumProperty<ConnectionState>>
+abstract class NConnectableBlock(settings: Settings) : Block(settings), Waterloggable {
+    private var connections: List<EnumProperty<ConnectionState>> = mutableListOf()
 
     init {
-        if (n < 1) {
-            throw IllegalArgumentException("Amount of connections must be at least 1")
-        }
-        if (n > 6) {
-            //really, 6 would already be inefficient, since at that point, SideConnectableBlock would do the same ALOT simpler
-            throw IllegalArgumentException("Amount of connections must be at most 6")
-        }
-        connections = mutableListOf("a", "b", "c", "d", "e", "f")
-            .subList(0, n)
-            .map { EnumProperty.of(it, ConnectionState::class.java) }
-            .toList()
         connections.forEach {
             defaultState = defaultState.with(it, ConnectionState.NONE)
         }
@@ -44,6 +33,27 @@ abstract class NConnectableBlock(n: Int, settings: Settings) : Block(settings), 
         world: WorldView,
         connectionDirection: Direction
     ): Boolean
+
+    abstract fun getN(): Int
+
+    private fun getConnectionCount(): Int {
+        val n = getN()
+        if (n < 1) {
+            throw IllegalStateException("N must be greater than 1")
+        }
+        if (n > 5) {
+            throw IllegalStateException("N must be smaller than 5")
+        }
+        return n
+    }
+
+    //ok, I dont like this, but it seems to work so far. Lets see in what fun and novel ways this will break in the future
+    fun getConnections(): List<EnumProperty<ConnectionState>> {
+        return listOf("a", "b", "c", "d", "e", "f")
+            .subList(0, getConnectionCount())
+            .map { EnumProperty.of(it, ConnectionState::class.java) }
+            .toList()
+    }
 
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
         return getConnectionState(defaultState, ctx.blockPos, ctx.world)
@@ -168,7 +178,7 @@ abstract class NConnectableBlock(n: Int, settings: Settings) : Block(settings), 
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         super.appendProperties(builder)
-        builder.add(*connections.toTypedArray(), Properties.WATERLOGGED)
+        builder.add(*getConnections().toTypedArray(), Properties.WATERLOGGED)
     }
 
     override fun getFluidState(state: BlockState): FluidState =
