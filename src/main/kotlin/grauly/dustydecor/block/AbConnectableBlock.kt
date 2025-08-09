@@ -1,6 +1,7 @@
 package grauly.dustydecor.block
 
 import grauly.dustydecor.DustyDecorMod
+import grauly.dustydecor.util.DebugUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Waterloggable
@@ -57,7 +58,6 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
     protected open fun getConnectionState(ownState: BlockState, ownPos: BlockPos, world: WorldView): BlockState {
         val updatableConnections: List<EnumProperty<ConnectionState>> =
             connections.filter { needsUpdating(it, ownState, ownPos, world) }
-        DustyDecorMod.logger.info(connections.toString())
         if (updatableConnections.isEmpty()) return ownState
         val takenDirections: MutableList<Direction> =
             connections.filter { !updatableConnections.contains(it) }
@@ -93,7 +93,12 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
     ): Boolean {
         if (!isConnectable(state, pos, world, connectionDirection)) return false
         if (state.block !is AbConnectableBlock) return true
-        return getUnusedConnection(state) != null
+        for (connection in connections) {
+            val activeConnection = state.get(connection)
+            if (activeConnection == ConnectionState.NONE) return true
+            if (activeConnection.direction!!.opposite == connectionDirection) return true
+        }
+        return false
     }
 
     private fun needsConnecting(
@@ -105,10 +110,6 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
         return connections
             .filter { state.get(it) != ConnectionState.NONE }
             .any { state.get(it).direction == connectionDirection.opposite }
-    }
-
-    private fun getUnusedConnection(state: BlockState): EnumProperty<ConnectionState>? {
-        return connections.firstOrNull { state.get(it) == ConnectionState.NONE }
     }
 
     private fun findConnection(pos: BlockPos, world: WorldView, vararg except: Direction): ConnectionState {
