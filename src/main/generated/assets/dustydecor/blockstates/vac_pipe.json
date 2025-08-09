@@ -3,7 +3,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -14,7 +13,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -26,13 +24,13 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true,
         "x": 270
       },
       "when": {
         "AND": [
           {
-            "a": "up"
+            "a": "up",
+            "a_window": "true"
           },
           {
             "OR": [
@@ -47,7 +45,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -58,7 +55,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -70,13 +66,13 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true,
         "x": 270
       },
       "when": {
         "AND": [
           {
-            "b": "up"
+            "b": "up",
+            "b_window": "true"
           },
           {
             "OR": [
@@ -91,7 +87,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -102,7 +97,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -114,13 +108,13 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true,
         "x": 90
       },
       "when": {
         "AND": [
           {
-            "a": "down"
+            "a": "down",
+            "a_window": "true"
           },
           {
             "OR": [
@@ -135,7 +129,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -146,7 +139,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -158,13 +150,13 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true,
         "x": 90
       },
       "when": {
         "AND": [
           {
-            "b": "down"
+            "b": "down",
+            "b_window": "true"
           },
           {
             "OR": [
@@ -178,8 +170,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe_connector"
       },
       "when": {
         "a": "north",
@@ -188,8 +179,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe_connector_transparent"
       },
       "when": {
         "a": "north",
@@ -199,13 +189,13 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe_connector_window"
       },
       "when": {
         "AND": [
           {
-            "a": "north"
+            "a": "north",
+            "a_window": "true"
           },
           {
             "OR": [
@@ -219,8 +209,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe_connector"
       },
       "when": {
         "b": "north",
@@ -229,8 +218,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe_connector_transparent"
       },
       "when": {
         "a_window": "true",
@@ -240,13 +228,13 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe_connector_window"
       },
       "when": {
         "AND": [
           {
-            "b": "north"
+            "b": "north",
+            "b_window": "true"
           },
           {
             "OR": [
@@ -261,7 +249,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -272,7 +259,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -284,13 +270,13 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "a": "south"
+            "a": "south",
+            "a_window": "true"
           },
           {
             "OR": [
@@ -305,7 +291,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -316,7 +301,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -328,13 +312,13 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true,
         "y": 180
       },
       "when": {
         "AND": [
           {
-            "b": "south"
+            "b": "south",
+            "b_window": "true"
           },
           {
             "OR": [
@@ -349,7 +333,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -360,7 +343,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -372,13 +354,13 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "a": "west"
+            "a": "west",
+            "a_window": "true"
           },
           {
             "OR": [
@@ -393,7 +375,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -404,7 +385,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -416,13 +396,13 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true,
         "y": 270
       },
       "when": {
         "AND": [
           {
-            "b": "west"
+            "b": "west",
+            "b_window": "true"
           },
           {
             "OR": [
@@ -437,7 +417,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -448,7 +427,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -460,13 +438,13 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "a": "east"
+            "a": "east",
+            "a_window": "true"
           },
           {
             "OR": [
@@ -481,7 +459,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector",
-        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -492,7 +469,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -504,13 +480,13 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_window",
-        "uvlock": true,
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "b": "east"
+            "b": "east",
+            "b_window": "true"
           },
           {
             "OR": [
@@ -709,7 +685,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_core_transparent",
-        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -1010,7 +985,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_core_transparent",
-        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -1402,8 +1376,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_transparent",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe_core_transparent"
       },
       "when": {
         "AND": [
@@ -1703,7 +1676,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_core_transparent",
-        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -2096,7 +2068,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_core_transparent",
-        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -2397,7 +2368,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_core_transparent",
-        "uvlock": true,
         "y": 90
       },
       "when": {

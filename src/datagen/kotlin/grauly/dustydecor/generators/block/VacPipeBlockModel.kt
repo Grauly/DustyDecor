@@ -52,12 +52,13 @@ object VacPipeBlockModel {
                 .map { f -> MultipartModelConditionBuilder().put(VacPipeBlock.windowMap[f], false).build() }
             val directionCondition = MultipartModelConditionBuilder()
                 .put(it, ConnectionState.fromDirection(direction))
+                .put(VacPipeBlock.windowMap[it], true)
                 .build()
-            val orCondition =
+            val anyNotWindow =
                 MultipartModelCombinedCondition(MultipartModelCombinedCondition.LogicalOperator.OR, orList)
             val windowCondition = MultipartModelCombinedCondition(
                 MultipartModelCombinedCondition.LogicalOperator.AND,
-                listOf(directionCondition, orCondition)
+                listOf(directionCondition, anyNotWindow)
             )
             creator.with(
                 windowCondition,
