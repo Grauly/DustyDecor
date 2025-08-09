@@ -1,5 +1,6 @@
 package grauly.dustydecor.block
 
+import grauly.dustydecor.DustyDecorMod
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Waterloggable
@@ -17,8 +18,7 @@ import net.minecraft.util.math.random.Random
 import net.minecraft.world.WorldView
 import net.minecraft.world.tick.ScheduledTickView
 
-abstract class NConnectableBlock(settings: Settings) : Block(settings), Waterloggable {
-    private var connections: List<EnumProperty<ConnectionState>> = mutableListOf()
+abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterloggable {
 
     init {
         connections.forEach {
@@ -33,27 +33,6 @@ abstract class NConnectableBlock(settings: Settings) : Block(settings), Waterlog
         world: WorldView,
         connectionDirection: Direction
     ): Boolean
-
-    abstract fun getN(): Int
-
-    private fun getConnectionCount(): Int {
-        val n = getN()
-        if (n < 1) {
-            throw IllegalStateException("N must be greater than 1")
-        }
-        if (n > 5) {
-            throw IllegalStateException("N must be smaller than 5")
-        }
-        return n
-    }
-
-    //ok, I dont like this, but it seems to work so far. Lets see in what fun and novel ways this will break in the future
-    fun getConnections(): List<EnumProperty<ConnectionState>> {
-        return listOf("a", "b", "c", "d", "e", "f")
-            .subList(0, getConnectionCount())
-            .map { EnumProperty.of(it, ConnectionState::class.java) }
-            .toList()
-    }
 
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
         return getConnectionState(defaultState, ctx.blockPos, ctx.world)
@@ -77,10 +56,11 @@ abstract class NConnectableBlock(settings: Settings) : Block(settings), Waterlog
 
     protected open fun getConnectionState(ownState: BlockState, ownPos: BlockPos, world: WorldView): BlockState {
         val updatableConnections: List<EnumProperty<ConnectionState>> =
-            connections.filter { !needsUpdating(it, ownState, ownPos, world) }
+            connections.filter { needsUpdating(it, ownState, ownPos, world) }
+        DustyDecorMod.logger.info(connections.toString())
         if (updatableConnections.isEmpty()) return ownState
         val takenDirections: MutableList<Direction> =
-            connections.toMutableList().filter { updatableConnections.contains(it) }
+            connections.filter { !updatableConnections.contains(it) }
                 .map { ownState.get(it).direction!! }.toMutableList()
         var workingState = ownState
         for (updateConnection: EnumProperty<ConnectionState> in updatableConnections) {
@@ -100,9 +80,9 @@ abstract class NConnectableBlock(settings: Settings) : Block(settings), Waterlog
         world: WorldView
     ): Boolean {
         val currentConnection = ownState.get(connection)
-        if (currentConnection == ConnectionState.NONE) return false
+        if (currentConnection == ConnectionState.NONE) return true
         val offsetPos = ownPos.offset(currentConnection.direction)
-        return canConnectTo(world.getBlockState(offsetPos), offsetPos, world, currentConnection.direction!!)
+        return !canConnectTo(world.getBlockState(offsetPos), offsetPos, world, currentConnection.direction!!)
     }
 
     private fun canConnectTo(
@@ -112,7 +92,7 @@ abstract class NConnectableBlock(settings: Settings) : Block(settings), Waterlog
         connectionDirection: Direction
     ): Boolean {
         if (!isConnectable(state, pos, world, connectionDirection)) return false
-        if (state.block !is NConnectableBlock) return true
+        if (state.block !is AbConnectableBlock) return true
         return getUnusedConnection(state) != null
     }
 
@@ -122,13 +102,13 @@ abstract class NConnectableBlock(settings: Settings) : Block(settings), Waterlog
         world: WorldView,
         connectionDirection: Direction
     ): Boolean {
-        return (state.block as NConnectableBlock).connections
+        return connections
             .filter { state.get(it) != ConnectionState.NONE }
             .any { state.get(it).direction == connectionDirection.opposite }
     }
 
     private fun getUnusedConnection(state: BlockState): EnumProperty<ConnectionState>? {
-        return (state.block as NConnectableBlock).connections.firstOrNull { state.get(it) == ConnectionState.NONE }
+        return connections.firstOrNull { state.get(it) == ConnectionState.NONE }
     }
 
     private fun findConnection(pos: BlockPos, world: WorldView, vararg except: Direction): ConnectionState {
@@ -178,11 +158,18 @@ abstract class NConnectableBlock(settings: Settings) : Block(settings), Waterlog
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         super.appendProperties(builder)
-        builder.add(*getConnections().toTypedArray(), Properties.WATERLOGGED)
+        builder.add(*connections.toTypedArray(), Properties.WATERLOGGED)
     }
 
     override fun getFluidState(state: BlockState): FluidState =
         if (state.get(Properties.WATERLOGGED, false)) Fluids.WATER.getStill(true) else super.getFluidState(state)
 
+    companion object {
+        var connections: List<EnumProperty<ConnectionState>> = listOf("a", "b", "c", "d", "e", "f")
+            .subList(0, 2)
+            .map { EnumProperty.of(it, ConnectionState::class.java) }
+            .toList()
+
+    }
 }
 
