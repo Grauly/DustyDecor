@@ -166,7 +166,7 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
         if (state.get(Properties.WATERLOGGED, false)) Fluids.WATER.getStill(true) else super.getFluidState(state)
 
     companion object {
-        var connections: List<EnumProperty<ConnectionState>> = listOf("a", "b", "c", "d", "e", "f")
+        val connections: List<EnumProperty<ConnectionState>> = listOf("a", "b", "c", "d", "e", "f")
             .subList(0, 2)
             .map { EnumProperty.of(it, ConnectionState::class.java) }
             .toList()
