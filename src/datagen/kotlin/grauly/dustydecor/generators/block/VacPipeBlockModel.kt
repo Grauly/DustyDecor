@@ -32,7 +32,7 @@ object VacPipeBlockModel {
                     .put(it, ConnectionState.fromDirection(direction))
                     .put(VacPipeBlock.windowMap[it], false),
                 VAC_CONNECTOR
-                    .apply(ModelVariantOperator.UV_LOCK.withValue(true))
+                    .apply(ModelVariantOperator.UV_LOCK.withValue(false))
                     .apply(operator)
             )
 
@@ -43,7 +43,7 @@ object VacPipeBlockModel {
             creator.with(
                 transparentCondition,
                 VAC_CONNECTOR_TRANSPARENT
-                    .apply(ModelVariantOperator.UV_LOCK.withValue(true))
+                    .apply(ModelVariantOperator.UV_LOCK.withValue(false))
                     .apply(operator)
             )
 
@@ -62,7 +62,7 @@ object VacPipeBlockModel {
             creator.with(
                 windowCondition,
                 VAC_CONNECTOR_WINDOW
-                    .apply(ModelVariantOperator.UV_LOCK.withValue(true))
+                    .apply(ModelVariantOperator.UV_LOCK.withValue(false))
                     .apply(operator)
             )
         }
@@ -119,7 +119,7 @@ object VacPipeBlockModel {
                     if (aState != ConnectionState.NONE && bState != ConnectionState.NONE) {
                         if (aState.direction!!.opposite == bState.direction) {
                             return@run VAC_CORE_TRANSPARENT
-                                .apply(ModelVariantOperator.UV_LOCK.withValue(true))
+                                .apply(ModelVariantOperator.UV_LOCK.withValue(false))
                                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aState.direction])
                         }
                     }
