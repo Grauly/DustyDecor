@@ -2,7 +2,19 @@
   "multipart": [
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "a": "up",
+        "a_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -13,678 +25,445 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "a": "down",
+        "a_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "a": "down",
+        "a_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true
+      },
+      "when": {
+        "a": "north",
+        "a_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true
+      },
+      "when": {
+        "a": "north",
+        "a_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "a": "south",
+        "a_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "a": "south",
+        "a_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "a": "west",
+        "a_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "a": "west",
+        "a_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "a": "east",
+        "a_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "a": "east",
+        "a_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "b": "up",
+        "b_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "b": "up",
+        "b_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "b": "down",
+        "b_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "b": "down",
+        "b_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true
+      },
+      "when": {
+        "b": "north",
+        "b_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true
+      },
+      "when": {
+        "b": "north",
+        "b_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "b": "south",
+        "b_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "b": "south",
+        "b_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "b": "west",
+        "b_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "b": "west",
+        "b_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "b": "east",
+        "b_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "b": "east",
+        "b_window": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_none_core_opaque"
+      },
+      "when": {
+        "AND": [
+          {
+            "a": "none"
+          },
+          {
+            "b": "none"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "x": 270
       },
       "when": {
         "a": "up",
-        "a_window": "true",
-        "b_window": "true"
+        "b": "none"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "x": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "up",
-            "a_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "none",
+        "b": "up"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "x": 270
       },
       "when": {
-        "b": "up",
-        "b_window": "false"
+        "a": "up",
+        "b": "up"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "x": 270
-      },
-      "when": {
-        "a_window": "true",
-        "b": "up",
-        "b_window": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "x": 270
-      },
-      "when": {
-        "AND": [
-          {
-            "b": "up",
-            "b_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "x": 90
       },
       "when": {
         "a": "down",
-        "a_window": "false"
+        "b": "none"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "x": 90
+      },
+      "when": {
+        "a": "none",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "x": 90
       },
       "when": {
         "a": "down",
-        "a_window": "true",
-        "b_window": "true"
+        "b": "down"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "x": 90
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "a_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
-        "x": 90
-      },
-      "when": {
-        "b": "down",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "x": 90
-      },
-      "when": {
-        "a_window": "true",
-        "b": "down",
-        "b_window": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "x": 90
-      },
-      "when": {
-        "AND": [
-          {
-            "b": "down",
-            "b_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector"
+        "model": "dustydecor:block/vac_pipe_north_core_opaque"
       },
       "when": {
         "a": "north",
-        "a_window": "false"
+        "b": "none"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent"
+        "model": "dustydecor:block/vac_pipe_north_core_opaque"
+      },
+      "when": {
+        "a": "none",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_core_opaque"
       },
       "when": {
         "a": "north",
-        "a_window": "true",
-        "b_window": "true"
+        "b": "north"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "north",
-            "a_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector"
-      },
-      "when": {
-        "b": "north",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent"
-      },
-      "when": {
-        "a_window": "true",
-        "b": "north",
-        "b_window": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "b": "north",
-            "b_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "y": 180
       },
       "when": {
         "a": "south",
-        "a_window": "false"
+        "b": "none"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "y": 180
+      },
+      "when": {
+        "a": "none",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "y": 180
       },
       "when": {
         "a": "south",
-        "a_window": "true",
-        "b_window": "true"
+        "b": "south"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "y": 180
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "south",
-            "a_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
-        "y": 180
-      },
-      "when": {
-        "b": "south",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "y": 180
-      },
-      "when": {
-        "a_window": "true",
-        "b": "south",
-        "b_window": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "y": 180
-      },
-      "when": {
-        "AND": [
-          {
-            "b": "south",
-            "b_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "y": 270
       },
       "when": {
         "a": "west",
-        "a_window": "false"
+        "b": "none"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "y": 270
+      },
+      "when": {
+        "a": "none",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "y": 270
       },
       "when": {
         "a": "west",
-        "a_window": "true",
-        "b_window": "true"
+        "b": "west"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "y": 270
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "west",
-            "a_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
-        "y": 270
-      },
-      "when": {
-        "b": "west",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "y": 270
-      },
-      "when": {
-        "a_window": "true",
-        "b": "west",
-        "b_window": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "y": 270
-      },
-      "when": {
-        "AND": [
-          {
-            "b": "west",
-            "b_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "y": 90
       },
       "when": {
         "a": "east",
-        "a_window": "false"
+        "b": "none"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "y": 90
+      },
+      "when": {
+        "a": "none",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_core_opaque",
         "y": 90
       },
       "when": {
         "a": "east",
-        "a_window": "true",
-        "b_window": "true"
+        "b": "east"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "y": 90
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque"
       },
       "when": {
-        "AND": [
-          {
-            "a": "east",
-            "a_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "up",
+        "b": "up"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector",
-        "y": 90
-      },
-      "when": {
-        "b": "east",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "y": 90
-      },
-      "when": {
-        "a_window": "true",
-        "b": "east",
-        "b_window": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window",
-        "y": 90
-      },
-      "when": {
-        "AND": [
-          {
-            "b": "east",
-            "b_window": "true"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "up"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "down"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "north"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "south"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "west"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "east"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "none"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "up"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_transparent",
+        "model": "dustydecor:block/vac_pipe_straight_core_opaque",
         "x": 270
       },
       "when": {
@@ -694,144 +473,6 @@
             "b": "down"
           },
           {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "north"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "south"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "west"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "east"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "up",
-            "b": "none"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "up"
-          },
-          {
             "OR": [
               {
                 "a_window": "false"
@@ -846,312 +487,73 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_straight_core_transparent",
+        "x": 270
       },
       "when": {
         "AND": [
           {
-            "a": "down",
+            "a": "up",
             "b": "down"
           },
           {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
+            "a_window": "true",
+            "b_window": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "north"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "south"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "west"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "east"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "none"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_transparent",
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
         "x": 90
       },
       "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "up"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
+        "a": "up",
+        "b": "north"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90
+      },
+      "when": {
+        "a": "up",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "a": "up",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "a": "up",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_straight_core_opaque",
+        "x": 270
       },
       "when": {
         "AND": [
           {
             "a": "down",
-            "b": "down"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "north"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "south"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "west"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "east"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "down",
-            "b": "none"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "north",
             "b": "up"
           },
           {
@@ -1169,53 +571,104 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_straight_core_transparent",
+        "x": 270
       },
       "when": {
         "AND": [
           {
-            "a": "north",
-            "b": "down"
+            "a": "down",
+            "b": "up"
           },
           {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
+            "a_window": "true",
+            "b_window": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque"
       },
       "when": {
-        "AND": [
-          {
-            "a": "north",
-            "b": "north"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "down",
+        "b": "down"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90
+      },
+      "when": {
+        "a": "down",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90
+      },
+      "when": {
+        "a": "down",
+        "b": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "a": "down",
+        "b": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "a": "down",
+        "b": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque"
+      },
+      "when": {
+        "a": "north",
+        "b": "up"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque"
+      },
+      "when": {
+        "a": "north",
+        "b": "down"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90
+      },
+      "when": {
+        "a": "north",
+        "b": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe_straight_core_opaque"
       },
       "when": {
         "AND": [
@@ -1238,145 +691,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "north",
-            "b": "west"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "north",
-            "b": "east"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "north",
-            "b": "none"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "north",
-            "b": "up"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "north",
-            "b": "down"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "north",
-            "b": "north"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_transparent"
+        "model": "dustydecor:block/vac_pipe_straight_core_transparent"
       },
       "when": {
         "AND": [
@@ -1385,136 +700,55 @@
             "b": "south"
           },
           {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
+            "a_window": "true",
+            "b_window": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "north",
-            "b": "west"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
+        "a": "north",
+        "b": "west"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "north",
-            "b": "east"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
+        "a": "north",
+        "b": "east"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque"
       },
       "when": {
-        "AND": [
-          {
-            "a": "north",
-            "b": "none"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
+        "a": "south",
+        "b": "up"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque"
       },
       "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "up"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "south",
+        "b": "down"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "down"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_straight_core_opaque"
       },
       "when": {
         "AND": [
@@ -1537,146 +771,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "south"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "west"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "east"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "none"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "up"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "down"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_transparent",
-        "y": 180
+        "model": "dustydecor:block/vac_pipe_straight_core_transparent"
       },
       "when": {
         "AND": [
@@ -1685,389 +780,100 @@
             "b": "north"
           },
           {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
+            "a_window": "true",
+            "b_window": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90
       },
       "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "south"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
+        "a": "south",
+        "b": "south"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "west"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
+        "a": "south",
+        "b": "west"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "east"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
+        "a": "south",
+        "b": "east"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "south",
-            "b": "none"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
+        "a": "west",
+        "b": "up"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "up"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "west",
+        "b": "down"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "down"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "west",
+        "b": "north"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "north"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "west",
+        "b": "south"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "south"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "west",
+        "b": "west"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "west"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "east"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "none"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "up"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "down"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "north"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "south"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "west",
-            "b": "west"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_transparent",
+        "model": "dustydecor:block/vac_pipe_straight_core_opaque",
         "y": 270
       },
       "when": {
@@ -2077,12 +883,12 @@
             "b": "east"
           },
           {
-            "AND": [
+            "OR": [
               {
-                "a_window": "true"
+                "a_window": "false"
               },
               {
-                "b_window": "true"
+                "b_window": "false"
               }
             ]
           }
@@ -2091,122 +897,68 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
+        "model": "dustydecor:block/vac_pipe_straight_core_transparent",
+        "y": 270
       },
       "when": {
         "AND": [
           {
             "a": "west",
-            "b": "none"
+            "b": "east"
           },
           {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
+            "a_window": "true",
+            "b_window": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "up"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "east",
+        "b": "up"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "down"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "east",
+        "b": "down"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "north"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "east",
+        "b": "north"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "south"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
+        "a": "east",
+        "b": "south"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
+        "model": "dustydecor:block/vac_pipe_straight_core_opaque",
+        "y": 270
       },
       "when": {
         "AND": [
@@ -2229,146 +981,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "east"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "none"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "up"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "down"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "north"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "south"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_transparent",
-        "y": 90
+        "model": "dustydecor:block/vac_pipe_straight_core_transparent",
+        "y": 270
       },
       "when": {
         "AND": [
@@ -2377,384 +991,21 @@
             "b": "west"
           },
           {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
+            "a_window": "true",
+            "b_window": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
+        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
+        "x": 90,
+        "y": 270
       },
       "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "east"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "east",
-            "b": "none"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "up"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "down"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "north"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "south"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "west"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "east"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "none"
-          },
-          {
-            "OR": [
-              {
-                "a_window": "false"
-              },
-              {
-                "b_window": "false"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "up"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "down"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "north"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "south"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "west"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "east"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_core_window"
-      },
-      "when": {
-        "AND": [
-          {
-            "a": "none",
-            "b": "none"
-          },
-          {
-            "AND": [
-              {
-                "a_window": "true"
-              },
-              {
-                "b_window": "true"
-              }
-            ]
-          }
-        ]
+        "a": "east",
+        "b": "east"
       }
     }
   ]

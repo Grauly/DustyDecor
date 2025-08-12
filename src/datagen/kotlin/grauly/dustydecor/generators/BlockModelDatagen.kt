@@ -56,6 +56,14 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
             Direction.WEST to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R270),
             Direction.EAST to ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R90)
         )
+        val TOP_FACING_ROTATION_MAP: Map<Direction, ModelVariantOperator> = mapOf(
+            Direction.UP to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R0),
+            Direction.DOWN to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R180),
+            Direction.NORTH to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R90),
+            Direction.SOUTH to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R270),
+            Direction.WEST to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R90).then(ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R270)),
+            Direction.EAST to ModelVariantOperator.ROTATION_X.withValue(AxisRotation.R90).then(ModelVariantOperator.ROTATION_Y.withValue(AxisRotation.R90))
+        )
         val DIRECTION_TO_PROPERTY_MAP: Map<Direction, Property<Boolean>> = mapOf(
             Direction.UP to Properties.UP,
             Direction.DOWN to Properties.DOWN,
