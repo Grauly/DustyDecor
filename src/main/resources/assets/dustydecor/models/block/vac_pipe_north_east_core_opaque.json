@@ -1,0 +1,24 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"4": "dustydecor:block/vac_pipe/pipe_opaque_1",
+		"5": "dustydecor:block/vac_pipe/cap_pieces_1",
+		"particle": "dustydecor:block/vac_pipe/pipe_opaque_1"
+	},
+	"elements": [
+		{
+			"name": "north_top_core",
+			"from": [4, 4, 4],
+			"to": [12, 12, 12],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 8, 8], "rotation": 270, "texture": "#5"},
+				"east": {"uv": [0, 0, 8, 8], "rotation": 180, "texture": "#5"},
+				"south": {"uv": [4, 4, 12, 12], "rotation": 180, "texture": "#4"},
+				"west": {"uv": [4, 4, 12, 12], "texture": "#4"},
+				"up": {"uv": [0, 8, 8, 16], "rotation": 90, "texture": "#5"},
+				"down": {"uv": [0, 8, 8, 16], "rotation": 180, "texture": "#5"}
+			}
+		}
+	]
+}

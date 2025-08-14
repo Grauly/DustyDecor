@@ -10,7 +10,7 @@
 			"name": "north_top_core",
 			"from": [4, 4, 4],
 			"to": [12, 12, 12],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 8, 8]},
 			"faces": {
 				"north": {"uv": [0, 0, 8, 8], "texture": "#5"},
 				"east": {"uv": [0, 8, 8, 16], "rotation": 90, "texture": "#5"},
