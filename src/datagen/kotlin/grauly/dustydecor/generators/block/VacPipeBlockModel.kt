@@ -11,8 +11,6 @@ import net.minecraft.client.render.model.json.*
 import net.minecraft.state.property.EnumProperty
 import net.minecraft.util.math.AxisRotation
 import net.minecraft.util.math.Direction
-import kotlin.math.abs
-import kotlin.math.sign
 
 object VacPipeBlockModel {
     fun get(blockStateModelGenerator: BlockStateModelGenerator) {
@@ -34,18 +32,21 @@ object VacPipeBlockModel {
         if (direction == ConnectionState.NONE) return //none states dont need to put anything down
         singleConnector(direction, connection, true, creator)
         singleConnector(direction, connection, false, creator)
-        return
+
         val windowFalseList: List<MultipartModelCondition> = AbConnectableBlock.connections
             .filter { it != connection }
             .map { VacPipeBlock.windowMap[it] }
             .map { MultipartModelConditionBuilder().put(it, false).build() }
-        val anyWindowFalseCondition = combineOr(*windowFalseList.toTypedArray())
+        val anyNotWindow = combineOr(*windowFalseList.toTypedArray())
         val directionIsWindowCondition =
-            MultipartModelConditionBuilder().put(VacPipeBlock.windowMap[connection], true).build()
+            MultipartModelConditionBuilder()
+                .put(connection, direction)
+                .put(VacPipeBlock.windowMap[connection], true)
+                .build()
         creator.with(
             combineAnd(
                 directionIsWindowCondition,
-                anyWindowFalseCondition
+                anyNotWindow
             ),
             VAC_CONNECTOR_WINDOW_ATTACHMENT
                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction.direction])
