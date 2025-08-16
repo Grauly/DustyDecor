@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "i": "minecraft:iron_ingot",
-    "r": "minecraft:red_dye"
+    "i": "#c:ingots/iron",
+    "r": "#c:dyes/red"
   },
   "pattern": [
     " i",

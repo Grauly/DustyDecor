@@ -3,6 +3,7 @@ package grauly.dustydecor.generators
 import grauly.dustydecor.ModItems
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.data.recipe.RecipeExporter
 import net.minecraft.data.recipe.RecipeGenerator
 import net.minecraft.item.Items
@@ -23,7 +24,7 @@ class RecipeDatagen(
             override fun generate() {
                 createShapeless(RecipeCategory.DECORATIONS, ModItems.VENT_COVER, 2)
                     .input(Items.IRON_TRAPDOOR)
-                    .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
+                    .criterion("has_iron", conditionsFromTag(ConventionalItemTags.IRON_INGOTS))
                     .offerTo(exporter)
                 createShapeless(RecipeCategory.DECORATIONS, Items.IRON_TRAPDOOR)
                     .input(ModItems.VENT_COVER, 2)
@@ -34,31 +35,31 @@ class RecipeDatagen(
                     .pattern("ccc")
                     .pattern("c c")
                     .pattern("ccc")
-                    .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
+                    .criterion("has_iron", conditionsFromTag(ConventionalItemTags.IRON_INGOTS))
                     .offerTo(exporter)
                 createShaped(RecipeCategory.TOOLS, ModItems.SCREWDRIVER)
-                    .input('i', Items.IRON_INGOT)
-                    .input('r', Items.RED_DYE)
+                    .input('i', ConventionalItemTags.IRON_INGOTS)
+                    .input('r', ConventionalItemTags.RED_DYES)
                     .pattern(" i")
                     .pattern("r ")
-                    .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
+                    .criterion("has_iron", conditionsFromTag(ConventionalItemTags.IRON_INGOTS))
                     .offerTo(exporter)
                 createShaped(RecipeCategory.TOOLS, ModItems.WRENCH)
-                    .input('i', Items.IRON_INGOT)
-                    .input('b', Items.BLUE_DYE)
+                    .input('i', ConventionalItemTags.IRON_INGOTS)
+                    .input('b', ConventionalItemTags.BLUE_DYES)
                     .input('t', Items.IRON_TRAPDOOR)
                     .pattern(" ti")
                     .pattern("ti ")
                     .pattern("b  ")
-                    .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
+                    .criterion("has_iron", conditionsFromTag(ConventionalItemTags.IRON_INGOTS))
                     .offerTo(exporter)
                 createShaped(RecipeCategory.REDSTONE, ModItems.VAC_PIPE, 6)
-                    .input('c', Items.COPPER_INGOT)
-                    .input('g', Items.GLASS_PANE)
+                    .input('c', ConventionalItemTags.COPPER_INGOTS)
+                    .input('g', ConventionalItemTags.GLASS_PANES_COLORLESS)
                     .pattern("ccc")
                     .pattern("g g")
                     .pattern("ccc")
-                    .criterion(hasItem(Items.COPPER_INGOT), conditionsFromItem(Items.COPPER_INGOT))
+                    .criterion("has_copper", conditionsFromTag(ConventionalItemTags.COPPER_INGOTS))
                     .offerTo(exporter)
             }
         }

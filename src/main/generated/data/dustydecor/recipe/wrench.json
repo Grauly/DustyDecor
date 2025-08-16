@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "b": "minecraft:blue_dye",
-    "i": "minecraft:iron_ingot",
+    "b": "#c:dyes/blue",
+    "i": "#c:ingots/iron",
     "t": "minecraft:iron_trapdoor"
   },
   "pattern": [
