@@ -33,6 +33,7 @@ object VacPipeBlockModel {
         singleConnector(direction, connection, true, creator)
         singleConnector(direction, connection, false, creator)
 
+        //windows for all partial windowed connections
         val windowFalseList: List<MultipartModelCondition> = AbConnectableBlock.connections
             .filter { it != connection }
             .map { VacPipeBlock.windowMap[it] }
@@ -52,6 +53,28 @@ object VacPipeBlockModel {
                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction.direction])
                 .apply(uvLock(false))
         )
+
+        //windows for all non-straight windowed
+        val windowTrueList: List<MultipartModelCondition> = AbConnectableBlock.connections
+            .map { VacPipeBlock.windowMap[it] }
+            .map { MultipartModelConditionBuilder().put(it, true).build() }
+        val allWindowCondition = combineAnd(*windowTrueList.toTypedArray())
+        val otherConnection = AbConnectableBlock.connections.first { it != connection }
+        for (otherDirection in ConnectionState.entries.filter { it != ConnectionState.NONE && it != direction }) {
+            if (direction.direction!!.opposite == otherDirection.direction) continue //ignore straight connections
+            creator.with(
+                combineAnd(
+                    MultipartModelConditionBuilder()
+                        .put(connection, direction)
+                        .put(otherConnection, otherDirection)
+                        .build(),
+                    allWindowCondition
+                ),
+                VAC_CONNECTOR_WINDOW_ATTACHMENT
+                    .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction.direction])
+                    .apply(uvLock(false))
+            )
+        }
     }
 
     private fun core(
