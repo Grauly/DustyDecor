@@ -100,7 +100,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
     private fun isFullWindow(state: BlockState): Boolean {
         var isFullWindow = true
         for (window in windowStates) {
-            isFullWindow = isFullWindow && state.get(window)
+            isFullWindow = isFullWindow && state.get(window, false)
         }
         return isFullWindow
     }
