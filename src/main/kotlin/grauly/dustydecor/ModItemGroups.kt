@@ -12,8 +12,11 @@ object ModItemGroups {
             }
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)
             .register {
-                it.add(ModItems.SCREWDRIVER)
-                it.add(ModItems.WRENCH)
+                it.addAfter(Items.BRUSH, ModItems.SCREWDRIVER, ModItems.WRENCH)
+            }
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL)
+            .register {
+                it.addAfter(Items.WAXED_OXIDIZED_COPPER_CHEST, ModItems.VAC_PIPE)
             }
     }
 }
