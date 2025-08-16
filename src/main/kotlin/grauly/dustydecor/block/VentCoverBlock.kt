@@ -1,7 +1,9 @@
 package grauly.dustydecor.block
 
+import grauly.dustydecor.ModComponentTypes
 import grauly.dustydecor.ModConventionalItemTags
 import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.util.ToolUtils
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.block.Block
 import net.minecraft.block.BlockSetType
@@ -101,7 +103,7 @@ class VentCoverBlock(settings: Settings) : TrapdoorBlock(BlockSetType.COPPER, se
         return super.hasRandomTicks(state) && !state.get(POWERED, false) && !state.get(Properties.LOCKED)
     }
 
-    private fun isModifyTool(stack: ItemStack): Boolean = stack.isIn(ModConventionalItemTags.SCREWDRIVER_TOOLS)
+    private fun isModifyTool(stack: ItemStack): Boolean = ToolUtils.isScrewdriver(stack)
 
     private fun playLockSound(world: World, player: PlayerEntity?, pos: BlockPos) {
         world.playSound(

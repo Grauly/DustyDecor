@@ -2,6 +2,7 @@ package grauly.dustydecor.block
 
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModConventionalItemTags
+import grauly.dustydecor.util.ToolUtils
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -87,14 +88,16 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         hand: Hand,
         hit: BlockHitResult
     ): ActionResult {
-        if (stack.isIn(ModConventionalItemTags.SCREWDRIVER_TOOLS)) {
+        if (ToolUtils.isScrewdriver(stack)) {
             togglePipeWindow(state, pos, world)
             //TODO play screwdriver sounds
-        } else if (stack.isIn(ConventionalItemTags.WRENCH_TOOLS)) {
+        } else if (ToolUtils.isWrench(stack)) {
             //TODO: adjustment of pipe connections
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
     }
+
+
 
     override fun getStateForNeighborUpdate(
         state: BlockState,
