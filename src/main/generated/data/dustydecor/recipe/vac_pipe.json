@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "c": "minecraft:copper_ingot",
+    "g": "minecraft:glass_pane"
+  },
+  "pattern": [
+    "ccc",
+    "g g",
+    "ccc"
+  ],
+  "result": {
+    "count": 6,
+    "id": "dustydecor:vac_pipe"
+  }
+}

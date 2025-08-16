@@ -23,6 +23,7 @@ object ModItems {
     - ItemDatagen Entry
     - ModItemGroups Entry
     - Texture/Model
+    - Recipes
      */
 
     val VENT: Item = registerBlockItem(ModBlocks.VENT, "vent")

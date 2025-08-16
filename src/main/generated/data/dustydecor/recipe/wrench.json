@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "b": "minecraft:blue_dye",
+    "i": "minecraft:iron_ingot",
+    "t": "minecraft:iron_trapdoor"
+  },
+  "pattern": [
+    " ti",
+    "ti ",
+    "b  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "dustydecor:wrench"
+  }
+}

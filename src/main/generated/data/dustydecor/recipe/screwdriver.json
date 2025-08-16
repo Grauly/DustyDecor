@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "i": "minecraft:iron_ingot",
+    "r": "minecraft:red_dye"
+  },
+  "pattern": [
+    " i",
+    "r "
+  ],
+  "result": {
+    "count": 1,
+    "id": "dustydecor:screwdriver"
+  }
+}
