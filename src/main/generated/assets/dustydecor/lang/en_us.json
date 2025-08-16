@@ -1,10 +1,12 @@
 {
+  "block.dustydecor.vac_pipe": "Vacuum tube",
   "block.dustydecor.vent": "Vent",
   "block.dustydecor.vent_cover": "Vent grate",
   "component.screwdriver.dustydecor.tooltip.vac_tube": "Can toggle windows on %s's",
   "component.screwdriver.dustydecor.tooltip.vent_cover": "Can lock/unlock %s's",
   "component.wrench.dustydecor.tooltip": "Can edit %s connections.",
   "item.dustydecor.screwdriver": "Screwdriver",
+  "item.dustydecor.vac_pipe": "Vacuum tube",
   "item.dustydecor.vent": "Vent",
   "item.dustydecor.vent_cover": "Vent grate",
   "item.dustydecor.wrench": "Wrench",
