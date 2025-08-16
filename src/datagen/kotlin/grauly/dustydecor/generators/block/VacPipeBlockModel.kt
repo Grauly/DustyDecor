@@ -1,6 +1,8 @@
 package grauly.dustydecor.generators.block
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.ModItems
 import grauly.dustydecor.block.AbConnectableBlock
 import grauly.dustydecor.block.ConnectionState
 import grauly.dustydecor.block.VacPipeBlock
@@ -9,6 +11,7 @@ import net.minecraft.client.data.BlockStateModelGenerator
 import net.minecraft.client.data.MultipartBlockModelDefinitionCreator
 import net.minecraft.client.render.model.json.*
 import net.minecraft.state.property.EnumProperty
+import net.minecraft.util.Identifier
 import net.minecraft.util.math.AxisRotation
 import net.minecraft.util.math.Direction
 
@@ -22,6 +25,10 @@ object VacPipeBlockModel {
         }
         core(vacPipeModel)
         blockStateModelGenerator.blockStateCollector?.accept(vacPipeModel)
+        blockStateModelGenerator.registerItemModel(
+            ModItems.VAC_PIPE,
+            Identifier.of(DustyDecorMod.MODID, "block/vac_pipe_inventory")
+        )
     }
 
     private fun directionalConnector(
@@ -151,7 +158,9 @@ object VacPipeBlockModel {
                     )
                 } else {
                     listOf(true, false).forEach { shouldHaveWindow ->
-                        val shouldHaveWindowCondition = MultipartModelConditionBuilder().put(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow).build()
+                        val shouldHaveWindowCondition =
+                            MultipartModelConditionBuilder().put(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow)
+                                .build()
                         creator.with(
                             combineAnd(directionCondition, anyNotWindow),
                             VAC_CORE_STRAIGHT_OPAQUE

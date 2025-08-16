@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dustydecor:block/vac_pipe"
+    "model": "dustydecor:block/vac_pipe_inventory"
   }
 }
