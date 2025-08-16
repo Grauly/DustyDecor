@@ -24,12 +24,17 @@ object WrenchComponent : TooltipAppender {
     ) {
         textConsumer.accept(Text.empty())
         textConsumer.accept(
-            Text.translatable(TRANSLATION_KEY, ModBlocks.VAC_PIPE.name)
+            Text.translatable(TRANSLATION_KEY_0, ModBlocks.VAC_PIPE.name)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+        )
+        textConsumer.accept(
+            Text.translatable(TRANSLATION_KEY_1)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
         )
     }
 
-    const val TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.tooltip"
+    const val TRANSLATION_KEY_0 = "component.wrench.${DustyDecorMod.MODID}.tooltip0"
+    const val TRANSLATION_KEY_1 = "component.wrench.${DustyDecorMod.MODID}.tooltip1"
 
     val CODEC: Codec<WrenchComponent> = Codec.unit(this)
     val PACKET_CODEC: PacketCodec<ByteBuf, WrenchComponent> = PacketCodec.unit(this)
