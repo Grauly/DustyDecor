@@ -61,13 +61,16 @@ object VacPipeBlockModel {
         val allWindowCondition = combineAnd(*windowTrueList.toTypedArray())
         val otherConnection = AbConnectableBlock.connections.first { it != connection }
         for (otherDirection in ConnectionState.entries.filter { it != direction }) {
-            if (direction.direction!!.opposite == otherDirection.direction) continue //ignore straight connections
+            val directionCondition = MultipartModelConditionBuilder()
+                .put(connection, direction)
+                .put(otherConnection, otherDirection)
+            //ignore straight connections only if they are supposed to have a window
+            if (direction.direction!!.opposite == otherDirection.direction) {
+                directionCondition.put(VacPipeBlock.SHOULD_HAVE_WINDOW, false)
+            }
             creator.with(
                 combineAnd(
-                    MultipartModelConditionBuilder()
-                        .put(connection, direction)
-                        .put(otherConnection, otherDirection)
-                        .build(),
+                    directionCondition.build(),
                     allWindowCondition
                 ),
                 VAC_CONNECTOR_WINDOW_ATTACHMENT
@@ -147,18 +150,21 @@ object VacPipeBlockModel {
                             .apply(uvLock(false))
                     )
                 } else {
-                    creator.with(
-                        combineAnd(directionCondition, anyNotWindow),
-                        VAC_CORE_STRAIGHT_OPAQUE
-                            .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.fallDown!!])
-                            .apply(uvLock(false))
-                    )
-                    creator.with(
-                        combineAnd(directionCondition, allWindow),
-                        VAC_CORE_STRAIGHT_TRANSPARENT
-                            .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.fallDown!!])
-                            .apply(uvLock(false))
-                    )
+                    listOf(true, false).forEach { shouldHaveWindow ->
+                        val shouldHaveWindowCondition = MultipartModelConditionBuilder().put(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow).build()
+                        creator.with(
+                            combineAnd(directionCondition, anyNotWindow),
+                            VAC_CORE_STRAIGHT_OPAQUE
+                                .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.fallDown!!])
+                                .apply(uvLock(false))
+                        )
+                        creator.with(
+                            combineAnd(directionCondition, allWindow, shouldHaveWindowCondition),
+                            (if (shouldHaveWindow) VAC_CORE_STRAIGHT_TRANSPARENT else VAC_CORE_STRAIGHT_OPAQUE)
+                                .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.fallDown!!])
+                                .apply(uvLock(false))
+                        )
+                    }
                 }
             }
         }
@@ -199,9 +205,12 @@ object VacPipeBlockModel {
 
     private fun rotatePlanarZ(aDirection: Direction, bDirection: Direction): ModelVariantOperator {
         //assuming N-E Connector
-        val xRotation = if (aDirection == Direction.DOWN || bDirection == Direction.DOWN) AxisRotation.R90 else AxisRotation.R270
-        val yRotation = if (aDirection == Direction.WEST || bDirection == Direction.WEST) AxisRotation.R180 else AxisRotation.R0
-        return ModelVariantOperator.ROTATION_X.withValue(xRotation).then(ModelVariantOperator.ROTATION_Y.withValue(yRotation))
+        val xRotation =
+            if (aDirection == Direction.DOWN || bDirection == Direction.DOWN) AxisRotation.R90 else AxisRotation.R270
+        val yRotation =
+            if (aDirection == Direction.WEST || bDirection == Direction.WEST) AxisRotation.R180 else AxisRotation.R0
+        return ModelVariantOperator.ROTATION_X.withValue(xRotation)
+            .then(ModelVariantOperator.ROTATION_Y.withValue(yRotation))
     }
 
     private fun rotatePlanarY(aDirection: Direction, bDirection: Direction): ModelVariantOperator {
