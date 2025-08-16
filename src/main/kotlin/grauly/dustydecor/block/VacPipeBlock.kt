@@ -2,6 +2,7 @@ package grauly.dustydecor.block
 
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModConventionalItemTags
+import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.util.ToolUtils
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.block.Block
@@ -9,6 +10,7 @@ import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.sound.SoundCategory
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
 import net.minecraft.state.property.EnumProperty
@@ -89,8 +91,13 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         hit: BlockHitResult
     ): ActionResult {
         if (ToolUtils.isScrewdriver(stack)) {
-            togglePipeWindow(state, pos, world)
-            //TODO play screwdriver sounds
+            val newWindowState: Boolean = togglePipeWindow(state, pos, world)
+            world.playSound(
+                player,
+                pos,
+                if (newWindowState) ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW else ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
+                SoundCategory.BLOCKS
+            )
         } else if (ToolUtils.isWrench(stack)) {
             //TODO: adjustment of pipe connections
         }
@@ -137,8 +144,10 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         )
     }
 
-    private fun togglePipeWindow(state: BlockState, pos: BlockPos, world: World) {
-        world.setBlockState(pos, state.with(SHOULD_HAVE_WINDOW, !state.get(SHOULD_HAVE_WINDOW, false)))
+    private fun togglePipeWindow(state: BlockState, pos: BlockPos, world: World): Boolean {
+        val newState = !state.get(SHOULD_HAVE_WINDOW)
+        world.setBlockState(pos, state.with(SHOULD_HAVE_WINDOW, newState), NOTIFY_LISTENERS)
+        return newState
     }
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {

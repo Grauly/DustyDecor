@@ -1,4 +1,28 @@
 {
+  "block.vac_pipe.add_window": {
+    "category": "block",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:block.vault.activate"
+      },
+      {
+        "type": "event",
+        "name": "minecraft:block.glass.place"
+      }
+    ],
+    "subtitle": "subtitles.dustydecor.block.vac_pipe.add_window"
+  },
+  "block.vac_pipe.remove_window": {
+    "category": "block",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:block.vault.deactivate"
+      }
+    ],
+    "subtitle": "subtitles.dustydecor.block.vac_pipe.remove_window"
+  },
   "block.vent.lock": {
     "category": "block",
     "sounds": [
