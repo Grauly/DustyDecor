@@ -3,7 +3,7 @@
 	"textures": {
 		"4": "dustydecor:block/vac_pipe/pipe_opaque_1",
 		"5": "dustydecor:block/vac_pipe/cap_pieces_1",
-		"particle": "dustydecor:block/vac_pipe/pipe_opaque_1"
+		"particle": "dustydecor:block/vac_pipe/cap_pieces_1"
 	},
 	"elements": [
 		{

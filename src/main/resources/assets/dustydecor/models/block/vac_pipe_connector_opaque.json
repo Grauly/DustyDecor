@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"4": "dustydecor:block/vac_pipe/pipe_opaque_1",
-		"particle": "dustydecor:block/vac_pipe/pipe_transparent_1"
+		"particle": "dustydecor:block/vac_pipe/pipe_opaque_1"
 	},
 	"elements": [
 		{
