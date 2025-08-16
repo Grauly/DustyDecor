@@ -60,7 +60,7 @@ object VacPipeBlockModel {
             .map { MultipartModelConditionBuilder().put(it, true).build() }
         val allWindowCondition = combineAnd(*windowTrueList.toTypedArray())
         val otherConnection = AbConnectableBlock.connections.first { it != connection }
-        for (otherDirection in ConnectionState.entries.filter { it != ConnectionState.NONE && it != direction }) {
+        for (otherDirection in ConnectionState.entries.filter { it != direction }) {
             if (direction.direction!!.opposite == otherDirection.direction) continue //ignore straight connections
             creator.with(
                 combineAnd(
