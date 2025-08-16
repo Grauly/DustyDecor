@@ -15,7 +15,7 @@ public abstract class PlayerEntityVentCrawlingMixin {
 
     @Unique
     private boolean isPlayerInVent(PlayerEntity player) {
-        return player.getWorld().getBlockState(player.getBlockPos()).isOf(ModBlocks.INSTANCE.getVENT());
+        return player.getEntityWorld().getBlockState(player.getBlockPos()).isOf(ModBlocks.INSTANCE.getVENT());
     }
 
     @Inject(method = "canChangeIntoPose", at = @At("HEAD"), cancellable = true)
