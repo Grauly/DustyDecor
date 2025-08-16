@@ -13,8 +13,8 @@ object BlockDatagenWrapper {
         entries.addAll(
             listOf(
                 DatagenSpec(ModBlocks.VENT, "Vent", STONE, PICKAXE),
-                DatagenSpec(ModBlocks.VENT_COVER, "Vent grate", STONE, PICKAXE),
-                DatagenSpec(ModBlocks.VAC_PIPE, "Vacuum tube", STONE, PICKAXE)
+                DatagenSpec(ModBlocks.VENT_COVER, "Vent Grate", STONE, PICKAXE),
+                DatagenSpec(ModBlocks.VAC_PIPE, "Vacuum Tube", STONE, PICKAXE)
             )
         )
     }
