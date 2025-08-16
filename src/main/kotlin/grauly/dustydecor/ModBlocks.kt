@@ -14,6 +14,13 @@ import net.minecraft.util.Identifier
 
 object ModBlocks {
 
+    /*
+    Checklist for adding a new Block:
+    - BlockItem in ModItems (follow item addition checklist)
+    - BlockDatagen entry
+    - Texture/Model
+     */
+
     val VENT: Block = registerBlock(::VentBlock, "vent", Settings.copy(Blocks.IRON_BLOCK))
     val VENT_COVER: Block = registerBlock(::VentCoverBlock, "vent_cover", Settings.copy(Blocks.IRON_TRAPDOOR).ticksRandomly().nonOpaque())
     val VAC_PIPE: Block = registerBlock(::VacPipeBlock, "vac_pipe", Settings.copy(Blocks.HOPPER))

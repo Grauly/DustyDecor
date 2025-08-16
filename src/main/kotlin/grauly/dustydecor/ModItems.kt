@@ -18,6 +18,13 @@ import net.minecraft.util.Unit
 
 object ModItems {
 
+    /*
+    Checklist for adding a new Item:
+    - ItemDatagen Entry
+    - ModItemGroups Entry
+    - Texture/Model
+     */
+
     val VENT: Item = registerBlockItem(ModBlocks.VENT, "vent")
     val VENT_COVER: Item = registerBlockItem(ModBlocks.VENT_COVER, "vent_cover")
     val VAC_PIPE: Item = registerBlockItem(ModBlocks.VAC_PIPE, "vac_pipe")
