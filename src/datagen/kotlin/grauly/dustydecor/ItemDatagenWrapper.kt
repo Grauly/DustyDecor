@@ -7,13 +7,29 @@ import net.minecraft.registry.tag.TagKey
 object ItemDatagenWrapper {
     val entries: MutableList<DatagenSpec> = mutableListOf()
     fun init() {
+        item(
+            ModItems.SCREWDRIVER,
+            "Screwdriver",
+            listOf(ModConventionalItemTags.SCREWDRIVER_TOOLS),
+            generateBaseModel = true
+        )
+        item(
+            ModItems.WRENCH,
+            "Wrench",
+            listOf(ConventionalItemTags.WRENCH_TOOLS),
+            generateBaseModel = true
+        )
+    }
+
+    private fun item(
+        item: Item,
+        lang: String,
+        tags: List<TagKey<Item>> = listOf(),
+        toolSpec: ToolSpec = ToolSpec(),
+        generateBaseModel: Boolean = false
+    ) {
         entries.add(
-            DatagenSpec(
-                ModItems.SCREWDRIVER,
-                "Screwdriver",
-                listOf(ConventionalItemTags.WRENCH_TOOLS),
-                generateBaseModel = true
-            )
+            DatagenSpec(item, lang, tags, toolSpec, generateBaseModel)
         )
     }
 

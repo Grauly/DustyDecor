@@ -22,6 +22,7 @@ object ModItems {
     val VENT_COVER: Item = registerBlockItem(ModBlocks.VENT_COVER, "vent_cover")
     val VAC_PIPE: Item = registerBlockItem(ModBlocks.VAC_PIPE, "vac_pipe")
     val SCREWDRIVER: Item = registerItem(::Item, "screwdriver", Settings().sword(ModToolMaterials.SCREWDRIVER_TOOL_MATERIAL, -0.5f, 2.0f).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE))
+    val WRENCH: Item = registerItem(::Item, "wrench", Settings().sword(ModToolMaterials.WRENCH_TOOL_MATERIAL, 1.0f, -3.2f).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE))
 
     private fun registerItem(
         itemFactory: (Settings) -> Item,

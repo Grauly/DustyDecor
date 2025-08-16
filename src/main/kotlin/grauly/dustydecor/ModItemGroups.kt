@@ -13,6 +13,7 @@ object ModItemGroups {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)
             .register {
                 it.add(ModItems.SCREWDRIVER)
+                it.add(ModItems.WRENCH)
             }
     }
 }
