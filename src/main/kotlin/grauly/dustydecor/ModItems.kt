@@ -1,11 +1,9 @@
 package grauly.dustydecor
 
+import grauly.dustydecor.component.ScrewdriverComponent
+import grauly.dustydecor.component.WrenchComponent
 import net.minecraft.block.Block
 import net.minecraft.component.DataComponentTypes
-import net.minecraft.component.type.AttributeModifierSlot
-import net.minecraft.component.type.AttributeModifiersComponent
-import net.minecraft.entity.attribute.EntityAttributeModifier
-import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.Item.Settings
@@ -29,8 +27,22 @@ object ModItems {
     val VENT: Item = registerBlockItem(ModBlocks.VENT, "vent")
     val VENT_COVER: Item = registerBlockItem(ModBlocks.VENT_COVER, "vent_cover")
     val VAC_PIPE: Item = registerBlockItem(ModBlocks.VAC_PIPE, "vac_pipe")
-    val SCREWDRIVER: Item = registerItem(::Item, "screwdriver", Settings().sword(ModToolMaterials.SCREWDRIVER_TOOL_MATERIAL, -0.5f, 2.0f).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE))
-    val WRENCH: Item = registerItem(::Item, "wrench", Settings().sword(ModToolMaterials.WRENCH_TOOL_MATERIAL, 1.0f, -3.2f).component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE))
+    val SCREWDRIVER: Item = registerItem(
+        ::Item,
+        "screwdriver",
+        Settings()
+            .sword(ModToolMaterials.SCREWDRIVER_TOOL_MATERIAL, -0.5f, 2.0f)
+            .component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE)
+            .component(ModComponentTypes.SCREWDRIVER, ScrewdriverComponent)
+    )
+    val WRENCH: Item = registerItem(
+        ::Item,
+        "wrench",
+        Settings()
+            .sword(ModToolMaterials.WRENCH_TOOL_MATERIAL, 1.0f, -3.2f)
+            .component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE)
+            .component(ModComponentTypes.WRENCH, WrenchComponent)
+    )
 
     private fun registerItem(
         itemFactory: (Settings) -> Item,

@@ -3,6 +3,8 @@ package grauly.dustydecor.generators
 import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.ItemDatagenWrapper
 import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.component.ScrewdriverComponent
+import grauly.dustydecor.component.WrenchComponent
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
 import net.minecraft.registry.RegistryWrapper
@@ -23,5 +25,8 @@ class LangDatagen(
         builder.add(SoundEventDatagen.getSubtitle(ModSoundEvents.BLOCK_VENT_LOCK), "Vent locks")
         builder.add(SoundEventDatagen.getSubtitle(ModSoundEvents.BLOCK_VENT_UNLOCK), "Vent unlocks")
         builder.add(SoundEventDatagen.getSubtitle(ModSoundEvents.BLOCK_VENT_RATTLE), "Vent rattles")
+        builder.add(WrenchComponent.TRANSLATION_KEY, "Can edit %s connections.")
+        builder.add(ScrewdriverComponent.VAC_TUBE_TRANSLATION_KEY, "Can toggle windows on %s's")
+        builder.add(ScrewdriverComponent.VENT_COVER_TRANSLATION_KEY, "Can lock/unlock %s's")
     }
 }
