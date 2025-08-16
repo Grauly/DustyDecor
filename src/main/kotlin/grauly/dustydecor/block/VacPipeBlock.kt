@@ -1,6 +1,7 @@
 package grauly.dustydecor.block
 
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.ModConventionalItemTags
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -25,6 +26,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         windowStates.forEach {
             defaultState = defaultState.with(it, false)
         }
+        defaultState = defaultState.with(SHOULD_HAVE_WINDOW, false)
     }
 
     override fun isConnectable(
@@ -45,12 +47,11 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         hand: Hand,
         hit: BlockHitResult
     ): ActionResult {
-        if (stack.isIn(ConventionalItemTags.WRENCH_TOOLS)) {
-            if (player.isSneaking) {
-                togglePipeWindow(state, pos, world)
-            } else {
-                //TODO: adjust pipe connections
-            }
+        if (stack.isIn(ModConventionalItemTags.SCREWDRIVER_TOOLS)) {
+            togglePipeWindow(state, pos, world)
+            //TODO play screwdriver sounds
+        } else if (stack.isIn(ConventionalItemTags.WRENCH_TOOLS)) {
+            //TODO: adjustment of pipe connections
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
     }
@@ -66,15 +67,20 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         random: Random
     ): BlockState {
         var workingState = state
+        val shouldHaveWindow = state.get(SHOULD_HAVE_WINDOW, false)
         for (connection in connections) {
-            val connectionState = state.get(connection)
-            if (connectionState == ConnectionState.NONE) continue
-            val checkState = world.getBlockState(pos.offset(connectionState.direction!!))
-            if (isFullWindow(checkState)) {
+            if (shouldHaveWindow) {
                 workingState = workingState.with(windowMap[connection], true)
-            } else {
-                workingState = workingState.with(windowMap[connection], false)
+                continue
             }
+            val connectionDirection = state.get(connection, ConnectionState.NONE)
+            if (connectionDirection == ConnectionState.NONE) continue
+            val checkState = world.getBlockState(pos.offset(connectionDirection.direction))
+            if (checkState.get(SHOULD_HAVE_WINDOW, false)) {
+                workingState = workingState.with(windowMap[connection], true)
+                continue
+            }
+            workingState = workingState.with(windowMap[connection], false)
         }
         return super.getStateForNeighborUpdate(
             workingState,
@@ -89,25 +95,12 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
     }
 
     private fun togglePipeWindow(state: BlockState, pos: BlockPos, world: World) {
-        if (state.get(windowStates[0]) == state.get(windowStates[1])) {
-            val targetState = !state.get(windowStates[0])
-            world.setBlockState(pos, state.with(windowStates[0], targetState).with(windowStates[1], targetState), NOTIFY_LISTENERS)
-        } else {
-            world.setBlockState(pos, state.with(windowStates[0], true).with(windowStates[1], true), NOTIFY_LISTENERS)
-        }
-    }
-
-    private fun isFullWindow(state: BlockState): Boolean {
-        var isFullWindow = true
-        for (window in windowStates) {
-            isFullWindow = isFullWindow && state.get(window, false)
-        }
-        return isFullWindow
+        world.setBlockState(pos, state.with(SHOULD_HAVE_WINDOW, !state.get(SHOULD_HAVE_WINDOW, false)))
     }
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         super.appendProperties(builder)
-        builder.add(*windowStates.toTypedArray())
+        builder.add(*windowStates.toTypedArray(), SHOULD_HAVE_WINDOW)
     }
 
     companion object {
@@ -116,5 +109,6 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
             connections[0] to windowStates[0],
             connections[1] to windowStates[1]
         )
+        val SHOULD_HAVE_WINDOW: BooleanProperty = BooleanProperty.of("should_have_window")
     }
 }
