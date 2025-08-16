@@ -5,6 +5,7 @@ import grauly.dustydecor.ModConventionalItemTags
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
+import net.minecraft.block.ShapeContext
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.state.StateManager
@@ -16,6 +17,9 @@ import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.random.Random
+import net.minecraft.util.shape.VoxelShape
+import net.minecraft.util.shape.VoxelShapes
+import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import net.minecraft.world.tick.ScheduledTickView
@@ -27,6 +31,42 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
             defaultState = defaultState.with(it, false)
         }
         defaultState = defaultState.with(SHOULD_HAVE_WINDOW, false)
+        for (state: BlockState in stateManager.states) {
+            val normalizedState = normalizeStateForShape(state)
+            if (SHAPES.containsKey(normalizedState)) continue
+            var workingShape = CORE_SHAPE
+            connections.forEach {
+                val connectionDirection = normalizedState.get(it)
+                if (connectionDirection != ConnectionState.NONE) {
+                    workingShape = VoxelShapes.union(workingShape, CONNECTOR_SHAPE_MAP[connectionDirection.direction])
+                }
+            }
+            SHAPES[normalizedState] = workingShape
+        }
+    }
+
+    override fun getOutlineShape(
+        state: BlockState,
+        world: BlockView,
+        pos: BlockPos,
+        context: ShapeContext?
+    ): VoxelShape {
+        return SHAPES[normalizeStateForShape(state)]!!
+    }
+
+    override fun getCollisionShape(
+        state: BlockState,
+        world: BlockView,
+        pos: BlockPos,
+        context: ShapeContext?
+    ): VoxelShape {
+        return SHAPES[normalizeStateForShape(state)]!!
+    }
+
+    private fun normalizeStateForShape(state: BlockState): BlockState {
+        var workingState = defaultState
+        connections.forEach { workingState = workingState.with(it, state.get(it)) }
+        return workingState
     }
 
     override fun isConnectable(
@@ -109,6 +149,11 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
             connections[0] to windowStates[0],
             connections[1] to windowStates[1]
         )
+        val SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()
         val SHOULD_HAVE_WINDOW: BooleanProperty = BooleanProperty.of("should_have_window")
+        val CONNECTOR_SHAPE_MAP: Map<Direction, VoxelShape> = VoxelShapes.createFacingShapeMap(
+            VoxelShapes.cuboid(4.0 / 16, 4.0 / 16, 0.0, 12.0 / 16, 12.0 / 16, 4.0 / 16)
+        )
+        val CORE_SHAPE: VoxelShape = VoxelShapes.cuboid(4.0 / 16, 4.0 / 16, 4.0 / 16, 12.0 / 16, 12.0 / 16, 12.0 / 16)
     }
 }
