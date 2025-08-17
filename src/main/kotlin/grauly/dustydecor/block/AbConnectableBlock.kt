@@ -112,7 +112,7 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
             .any { state.get(it).direction == connectionDirection.opposite }
     }
 
-    private fun findConnection(pos: BlockPos, world: WorldView, vararg except: Direction): ConnectionState {
+    protected fun findConnection(pos: BlockPos, world: WorldView, vararg except: Direction): ConnectionState {
         var foundDirection: Direction? = null
         for (direction: Direction in Direction.entries) {
             if (except.contains(direction)) continue

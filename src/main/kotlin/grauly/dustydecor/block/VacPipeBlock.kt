@@ -1,15 +1,17 @@
 package grauly.dustydecor.block
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.ModConventionalItemTags
 import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.extensions.spawnParticle
 import grauly.dustydecor.util.ToolUtils
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.particle.ParticleTypes
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
@@ -19,6 +21,7 @@ import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.random.Random
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
@@ -99,12 +102,39 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
                 SoundCategory.BLOCKS
             )
         } else if (ToolUtils.isWrench(stack)) {
-            //TODO: adjustment of pipe connections
+            val boxExpansion = 0.01
+            val relativePos = hit.pos.subtract(Vec3d.of(pos))
+            val clickedConnection: EnumProperty<ConnectionState>? = connections.firstOrNull {
+                val connectionDirection = state.get(it, ConnectionState.NONE)
+                if (connectionDirection == ConnectionState.NONE) {
+                    return@firstOrNull false
+                }
+                val boundingBox = CONNECTOR_SHAPE_MAP[connectionDirection.direction]!!.boundingBox.expand(boxExpansion)
+                return@firstOrNull boundingBox.contains(relativePos)
+            }
+            if (clickedConnection != null) {
+                tryDisableConnection(pos, state, clickedConnection, world)
+            }
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
     }
 
-
+    private fun tryDisableConnection(pos: BlockPos, state: BlockState, connection: EnumProperty<ConnectionState>, world: World, canTraverse: Boolean = true) {
+        val connectionDirection = state.get(connection, ConnectionState.NONE)
+        if (connectionDirection == ConnectionState.NONE) return
+        val usedConnections = connections.map { state.get(it) }.filter { it != ConnectionState.NONE }.map { it.direction!! }
+        val foundConnection = findConnection(pos, world, connectionDirection.direction!!, *usedConnections.toTypedArray())
+        if (foundConnection == ConnectionState.NONE) {
+            if (!canTraverse) return
+            val offsetPos = pos.offset(connectionDirection.direction)
+            val offsetState = world.getBlockState(offsetPos)
+            val otherConnection = connections.firstOrNull{ offsetState.get(it) != ConnectionState.NONE && offsetState.get(it).direction!!.opposite == connectionDirection.direction}
+            if (otherConnection == null) return
+            tryDisableConnection(offsetPos, offsetState, otherConnection, world, false)
+            return
+        }
+        world.setBlockState(pos, updateWindows(state.with(connection, foundConnection), world, pos), NOTIFY_LISTENERS)
+    }
 
     override fun getStateForNeighborUpdate(
         state: BlockState,
@@ -115,6 +145,23 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         neighborPos: BlockPos,
         neighborState: BlockState,
         random: Random
+    ): BlockState {
+        return super.getStateForNeighborUpdate(
+            updateWindows(state, world, pos),
+            world,
+            tickView,
+            pos,
+            direction,
+            neighborPos,
+            neighborState,
+            random
+        )
+    }
+
+    private fun updateWindows(
+        state: BlockState,
+        world: WorldView,
+        pos: BlockPos
     ): BlockState {
         var workingState = state
         val shouldHaveWindow = state.get(SHOULD_HAVE_WINDOW, false)
@@ -132,16 +179,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
             }
             workingState = workingState.with(windowMap[connection], false)
         }
-        return super.getStateForNeighborUpdate(
-            workingState,
-            world,
-            tickView,
-            pos,
-            direction,
-            neighborPos,
-            neighborState,
-            random
-        )
+        return workingState
     }
 
     private fun togglePipeWindow(state: BlockState, pos: BlockPos, world: World): Boolean {
