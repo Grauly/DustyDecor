@@ -22,7 +22,7 @@ import net.minecraft.util.math.Direction
 class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(generator) {
 
     override fun generateBlockStateModels(blockStateModelGenerator: BlockStateModelGenerator) {
-        BlockDatagenWrapper.entries.filter { it.generateBlockBlockModel }
+        BlockDatagenWrapper.entries.filter { it.generateCubeAllModel }
             .forEach { blockStateModelGenerator.registerSimpleCubeAll(it.block) }
         blockStateModelGenerator.registerOrientableTrapdoor(ModBlocks.VENT_COVER)
         VentBlockModel.get(blockStateModelGenerator)

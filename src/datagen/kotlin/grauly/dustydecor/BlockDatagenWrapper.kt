@@ -25,7 +25,7 @@ object BlockDatagenWrapper {
         val toolNeed: ToolNeedSpec = ToolNeedSpec(NONE),
         val mineable: MiningNeedSpec = MiningNeedSpec(listOf(ANY)),
         val generateLootTable: Boolean = true,
-        val generateBlockBlockModel: Boolean = false
+        val generateCubeAllModel: Boolean = false
     ) {
         constructor(
             block: Block,
