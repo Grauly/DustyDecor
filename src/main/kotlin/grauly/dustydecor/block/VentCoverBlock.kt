@@ -40,6 +40,7 @@ class VentCoverBlock(settings: Settings) : TrapdoorBlock(BlockSetType.COPPER, se
         hit: BlockHitResult
     ): ActionResult {
         if (isModifyTool(stack)) {
+            ToolUtils.playScrewdriverSound(world, pos, player)
             world.setBlockState(
                 pos,
                 state.with(Properties.LOCKED, !state.get(Properties.LOCKED)),
@@ -74,6 +75,7 @@ class VentCoverBlock(settings: Settings) : TrapdoorBlock(BlockSetType.COPPER, se
         val checkHand = if (ctx.hand == Hand.MAIN_HAND) Hand.OFF_HAND else Hand.MAIN_HAND
         val isHoldingScrewdriver = isModifyTool(ctx.player?.getStackInHand(checkHand) ?: ItemStack.EMPTY)
         if (isHoldingScrewdriver) {
+            ToolUtils.playScrewdriverSound(ctx.world, ctx.blockPos, ctx.player)
             playLockSound(ctx.world, ctx.player, ctx.blockPos)
         }
         return super.getPlacementState(ctx)

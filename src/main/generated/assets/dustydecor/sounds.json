@@ -4,7 +4,7 @@
     "sounds": [
       {
         "type": "event",
-        "name": "dustydecor:item.screwdriver.use"
+        "name": "minecraft:entity.item_frame.add_item"
       }
     ],
     "subtitle": "subtitles.dustydecor.block.vac_pipe.add_window"
@@ -14,7 +14,7 @@
     "sounds": [
       {
         "type": "event",
-        "name": "dustydecor:item.screwdriver.use"
+        "name": "minecraft:entity.item_frame.remove_item"
       }
     ],
     "subtitle": "subtitles.dustydecor.block.vac_pipe.remove_window"
@@ -24,7 +24,7 @@
     "sounds": [
       {
         "type": "event",
-        "name": "dustydecor:item.screwdriver.use"
+        "name": "minecraft:block.vault.deactivate"
       }
     ],
     "subtitle": "subtitles.dustydecor.block.vent.lock"
@@ -44,7 +44,7 @@
     "sounds": [
       {
         "type": "event",
-        "name": "dustydecor:item.screwdriver.use"
+        "name": "minecraft:block.vault.activate"
       }
     ],
     "subtitle": "subtitles.dustydecor.block.vent.unlock"

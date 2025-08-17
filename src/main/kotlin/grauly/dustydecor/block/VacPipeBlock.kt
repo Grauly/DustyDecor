@@ -91,6 +91,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
     ): ActionResult {
         if (ToolUtils.isScrewdriver(stack)) {
             val newWindowState: Boolean = togglePipeWindow(state, pos, world)
+            ToolUtils.playScrewdriverSound(world, pos, player)
             world.playSound(
                 player,
                 pos,
@@ -111,15 +112,11 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
             if (clickedConnection != null) {
                 val success = tryDisableConnection(pos, state, clickedConnection, world)
                 if (success) {
-                    world.playSound(
-                        player,
-                        pos,
-                        ModSoundEvents.ITEM_WRENCH_USE,
-                        SoundCategory.BLOCKS
-                    )
+                    //TODO: success sound
                 }
                 //TODO: some fail sound
             }
+            ToolUtils.playWrenchSound(world, pos, player)
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
     }
@@ -131,6 +128,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         world: World,
         canTraverse: Boolean = true
     ): Boolean {
+        //TODO: there are still window errors when connecting to new block
         val connectionDirection = state.get(connection, ConnectionState.NONE)
         if (connectionDirection == ConnectionState.NONE) return false
         val usedConnections =
