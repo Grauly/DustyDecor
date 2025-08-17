@@ -1,4 +1,58 @@
 {
+  "block.lighting_fixture.break": {
+    "category": "block",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:block.glass.break"
+      }
+    ],
+    "subtitle": "subtitles.dustydecor.block.lighting_fixture.break"
+  },
+  "block.lighting_fixture.invert": {
+    "category": "block",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:block.stone_button.click_on"
+      },
+      {
+        "type": "event",
+        "name": "minecraft:block.stone_button.click_off"
+      }
+    ],
+    "subtitle": "subtitles.dustydecor.block.lighting_fixture.invert"
+  },
+  "block.lighting_fixture.repair": {
+    "category": "block",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.iron_golem.repair"
+      }
+    ],
+    "subtitle": "subtitles.dustydecor.block.lighting_fixture.repair"
+  },
+  "block.lighting_fixture.turn_off": {
+    "category": "block",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:block.copper_bulb.turn_off"
+      }
+    ],
+    "subtitle": "subtitles.dustydecor.block.lighting_fixture.turn_off"
+  },
+  "block.lighting_fixture.turn_on": {
+    "category": "block",
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:block.copper_bulb.turn_on"
+      }
+    ],
+    "subtitle": "subtitles.dustydecor.block.lighting_fixture.turn_on"
+  },
   "block.vac_pipe.add_window": {
     "category": "block",
     "sounds": [

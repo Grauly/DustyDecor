@@ -70,6 +70,37 @@ class SoundEventDatagen(
             "screwdriver5",
             "screwdriver6",
         )
+        simpleRedirect(
+            ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_ON,
+            SoundEvents.BLOCK_COPPER_BULB_TURN_ON,
+            SoundCategory.BLOCKS,
+            exporter
+        )
+        simpleRedirect(
+            ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_OFF,
+            SoundEvents.BLOCK_COPPER_BULB_TURN_OFF,
+            SoundCategory.BLOCKS,
+            exporter
+        )
+        simpleRedirect(
+            ModSoundEvents.BLOCK_LIGHTING_FIXTURE_BREAK,
+            SoundEvents.BLOCK_GLASS_BREAK,
+            SoundCategory.BLOCKS,
+            exporter
+        )
+        simpleRedirect(
+            ModSoundEvents.BLOCK_LIGHTING_FIXTURE_REPAIR,
+            SoundEvents.ENTITY_IRON_GOLEM_REPAIR,
+            SoundCategory.BLOCKS,
+            exporter
+        )
+        multiRedirect(
+            ModSoundEvents.BLOCK_LIGHTING_FIXTURE_INVERT,
+            SoundCategory.BLOCKS,
+            exporter,
+            SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON,
+            SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF
+        )
     }
 
     private fun simpleRedirect(
