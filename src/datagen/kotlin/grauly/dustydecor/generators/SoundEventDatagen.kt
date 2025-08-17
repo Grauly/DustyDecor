@@ -21,13 +21,13 @@ class SoundEventDatagen(
     override fun configure(wrapper: RegistryWrapper.WrapperLookup, exporter: SoundExporter) {
         simpleRedirect(
             ModSoundEvents.BLOCK_VENT_LOCK,
-            SoundEvents.BLOCK_VAULT_DEACTIVATE,
+            ModSoundEvents.ITEM_SCREWDRIVER_USE,
             SoundCategory.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_VENT_UNLOCK,
-            SoundEvents.BLOCK_VAULT_ACTIVATE,
+            ModSoundEvents.ITEM_SCREWDRIVER_USE,
             SoundCategory.BLOCKS,
             exporter
         )
@@ -41,14 +41,13 @@ class SoundEventDatagen(
             ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW,
             SoundCategory.BLOCKS,
             exporter,
-            SoundEvents.BLOCK_VAULT_ACTIVATE,
-            SoundEvents.BLOCK_GLASS_PLACE
+            ModSoundEvents.ITEM_SCREWDRIVER_USE
         )
         multiRedirect(
             ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
             SoundCategory.BLOCKS,
             exporter,
-            SoundEvents.BLOCK_VAULT_DEACTIVATE
+            ModSoundEvents.ITEM_SCREWDRIVER_USE
         )
         fromFiles(
             ModSoundEvents.ITEM_WRENCH_USE,
