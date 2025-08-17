@@ -194,7 +194,7 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         super.appendProperties(builder)
-        builder.add(LIT, INVERTED, BROKEN)
+        builder.add(LIT, INVERTED, BROKEN, Properties.WATERLOGGED)
     }
 
     abstract override fun mirror(state: BlockState, mirror: BlockMirror): BlockState
