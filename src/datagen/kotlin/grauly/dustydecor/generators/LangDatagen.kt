@@ -29,6 +29,7 @@ class LangDatagen(
         builder.add(SoundEventDatagen.getSubtitle(ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW), "Window removed")
         builder.add(SoundEventDatagen.getSubtitle(ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW), "Window added")
         builder.add(SoundEventDatagen.getSubtitle(ModSoundEvents.ITEM_WRENCH_USE), "Wrench used")
+        builder.add(SoundEventDatagen.getSubtitle(ModSoundEvents.ITEM_SCREWDRIVER_USE), "Screwdriver ratchets")
 
         builder.add(WrenchComponent.TRANSLATION_KEY_0, "Can edit %s connections")
         builder.add(

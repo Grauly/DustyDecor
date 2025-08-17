@@ -60,6 +60,17 @@ class SoundEventDatagen(
             "wrench4",
             "wrench5"
         )
+        fromFiles(
+            ModSoundEvents.ITEM_SCREWDRIVER_USE,
+            SoundCategory.PLAYERS,
+            exporter,
+            "screwdriver1",
+            "screwdriver2",
+            "screwdriver3",
+            "screwdriver4",
+            "screwdriver5",
+            "screwdriver6",
+        )
     }
 
     private fun simpleRedirect(

@@ -53,6 +53,18 @@
     ],
     "subtitle": "subtitles.dustydecor.block.vent.unlock"
   },
+  "item.screwdriver.use": {
+    "category": "player",
+    "sounds": [
+      "dustydecor:screwdriver1",
+      "dustydecor:screwdriver2",
+      "dustydecor:screwdriver3",
+      "dustydecor:screwdriver4",
+      "dustydecor:screwdriver5",
+      "dustydecor:screwdriver6"
+    ],
+    "subtitle": "subtitles.dustydecor.item.screwdriver.use"
+  },
   "item.wrench.use": {
     "category": "player",
     "sounds": [
