@@ -1,7 +1,5 @@
 package grauly.dustydecor.block
 
-import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.util.DebugUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Waterloggable

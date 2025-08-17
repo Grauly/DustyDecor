@@ -1,17 +1,13 @@
 package grauly.dustydecor.block
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModSoundEvents
-import grauly.dustydecor.extensions.spawnParticle
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
-import net.minecraft.particle.ParticleTypes
-import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
@@ -119,16 +115,25 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
     }
 
-    private fun tryDisableConnection(pos: BlockPos, state: BlockState, connection: EnumProperty<ConnectionState>, world: World, canTraverse: Boolean = true) {
+    private fun tryDisableConnection(
+        pos: BlockPos,
+        state: BlockState,
+        connection: EnumProperty<ConnectionState>,
+        world: World,
+        canTraverse: Boolean = true
+    ) {
         val connectionDirection = state.get(connection, ConnectionState.NONE)
         if (connectionDirection == ConnectionState.NONE) return
-        val usedConnections = connections.map { state.get(it) }.filter { it != ConnectionState.NONE }.map { it.direction!! }
-        val foundConnection = findConnection(pos, world, connectionDirection.direction!!, *usedConnections.toTypedArray())
+        val usedConnections =
+            connections.map { state.get(it) }.filter { it != ConnectionState.NONE }.map { it.direction!! }
+        val foundConnection =
+            findConnection(pos, world, connectionDirection.direction!!, *usedConnections.toTypedArray())
         if (foundConnection == ConnectionState.NONE) {
             if (!canTraverse) return
             val offsetPos = pos.offset(connectionDirection.direction)
             val offsetState = world.getBlockState(offsetPos)
-            val otherConnection = connections.firstOrNull{ offsetState.get(it) != ConnectionState.NONE && offsetState.get(it).direction!!.opposite == connectionDirection.direction}
+            val otherConnection =
+                connections.firstOrNull { offsetState.get(it) != ConnectionState.NONE && offsetState.get(it).direction!!.opposite == connectionDirection.direction }
             if (otherConnection == null) return
             tryDisableConnection(offsetPos, offsetState, otherConnection, world, false)
             return

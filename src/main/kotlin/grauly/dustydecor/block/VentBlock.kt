@@ -4,8 +4,6 @@ import grauly.dustydecor.ModBlockTags
 import grauly.dustydecor.ModBlocks
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
-import net.minecraft.block.TrapdoorBlock
-import net.minecraft.block.enums.BlockHalf
 import net.minecraft.util.math.AxisRotation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction

@@ -1,6 +1,5 @@
 package grauly.dustydecor.mixin;
 
-import grauly.dustydecor.DustyDecorMod;
 import grauly.dustydecor.ModBlocks;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.player.PlayerEntity;

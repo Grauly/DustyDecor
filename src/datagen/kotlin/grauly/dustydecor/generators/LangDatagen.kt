@@ -30,7 +30,10 @@ class LangDatagen(
         builder.add(SoundEventDatagen.getSubtitle(ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW), "Window added")
 
         builder.add(WrenchComponent.TRANSLATION_KEY_0, "Can edit %s connections")
-        builder.add(WrenchComponent.TRANSLATION_KEY_1, "Use on a exiting connection to attempt a different connection for it")
+        builder.add(
+            WrenchComponent.TRANSLATION_KEY_1,
+            "Use on a exiting connection to attempt a different connection for it"
+        )
         builder.add(ScrewdriverComponent.VAC_TUBE_TRANSLATION_KEY, "Can toggle windows on %s's")
         builder.add(ScrewdriverComponent.VENT_COVER_TRANSLATION_KEY, "Can lock/unlock %s's")
     }

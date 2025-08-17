@@ -1,10 +1,7 @@
 package grauly.dustydecor.block
 
-import grauly.dustydecor.ModComponentTypes
-import grauly.dustydecor.ModConventionalItemTags
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.util.ToolUtils
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.block.Block
 import net.minecraft.block.BlockSetType
 import net.minecraft.block.BlockState

@@ -33,7 +33,13 @@ abstract class SideConnectableBlock(settings: Settings) : Block(settings.nonOpaq
     protected open fun getConnectionState(ownState: BlockState, ownPos: BlockPos, world: WorldView): BlockState {
         var returnState: BlockState = defaultState
         for (direction: Direction in Direction.entries) {
-            if (canConnectTo(world.getBlockState(ownPos.offset(direction)), ownPos.offset(direction), world, direction)) {
+            if (canConnectTo(
+                    world.getBlockState(ownPos.offset(direction)),
+                    ownPos.offset(direction),
+                    world,
+                    direction
+                )
+            ) {
                 returnState = returnState.with(getStateForDirection(direction), FACE_CONNECTED)
             }
         }

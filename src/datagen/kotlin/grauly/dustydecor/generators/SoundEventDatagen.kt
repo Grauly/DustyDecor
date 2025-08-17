@@ -18,14 +18,45 @@ class SoundEventDatagen(
     override fun getName(): String = "Sound Event generator"
 
     override fun configure(wrapper: RegistryWrapper.WrapperLookup, exporter: SoundExporter) {
-        simpleRedirect(ModSoundEvents.BLOCK_VENT_LOCK, SoundEvents.BLOCK_VAULT_DEACTIVATE, SoundCategory.BLOCKS, exporter)
-        simpleRedirect(ModSoundEvents.BLOCK_VENT_UNLOCK, SoundEvents.BLOCK_VAULT_ACTIVATE, SoundCategory.BLOCKS, exporter)
-        simpleRedirect(ModSoundEvents.BLOCK_VENT_RATTLE, SoundEvents.BLOCK_VAULT_CLOSE_SHUTTER, SoundCategory.BLOCKS, exporter)
-        multiRedirect(ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW, SoundCategory.BLOCKS, exporter, SoundEvents.BLOCK_VAULT_ACTIVATE, SoundEvents.BLOCK_GLASS_PLACE)
-        multiRedirect(ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW, SoundCategory.BLOCKS, exporter, SoundEvents.BLOCK_VAULT_DEACTIVATE)
+        simpleRedirect(
+            ModSoundEvents.BLOCK_VENT_LOCK,
+            SoundEvents.BLOCK_VAULT_DEACTIVATE,
+            SoundCategory.BLOCKS,
+            exporter
+        )
+        simpleRedirect(
+            ModSoundEvents.BLOCK_VENT_UNLOCK,
+            SoundEvents.BLOCK_VAULT_ACTIVATE,
+            SoundCategory.BLOCKS,
+            exporter
+        )
+        simpleRedirect(
+            ModSoundEvents.BLOCK_VENT_RATTLE,
+            SoundEvents.BLOCK_VAULT_CLOSE_SHUTTER,
+            SoundCategory.BLOCKS,
+            exporter
+        )
+        multiRedirect(
+            ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW,
+            SoundCategory.BLOCKS,
+            exporter,
+            SoundEvents.BLOCK_VAULT_ACTIVATE,
+            SoundEvents.BLOCK_GLASS_PLACE
+        )
+        multiRedirect(
+            ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
+            SoundCategory.BLOCKS,
+            exporter,
+            SoundEvents.BLOCK_VAULT_DEACTIVATE
+        )
     }
 
-    private fun simpleRedirect(from: SoundEvent, to: SoundEvent, soundCategory: SoundCategory, exporter: SoundExporter) {
+    private fun simpleRedirect(
+        from: SoundEvent,
+        to: SoundEvent,
+        soundCategory: SoundCategory,
+        exporter: SoundExporter
+    ) {
         exporter.add(
             from,
             SoundTypeBuilder.of()
@@ -35,7 +66,12 @@ class SoundEventDatagen(
         )
     }
 
-    private fun multiRedirect(from: SoundEvent, soundCategory: SoundCategory, exporter: SoundExporter, vararg to: SoundEvent) {
+    private fun multiRedirect(
+        from: SoundEvent,
+        soundCategory: SoundCategory,
+        exporter: SoundExporter,
+        vararg to: SoundEvent
+    ) {
         val soundBuilder = SoundTypeBuilder.of()
         to.iterator().forEach { soundBuilder.sound(SoundTypeBuilder.EntryBuilder.ofEvent(it)) }
         exporter.add(

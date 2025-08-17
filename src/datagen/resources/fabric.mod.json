@@ -1,21 +1,21 @@
 {
-	"schemaVersion": 1,
-	"id": "dustydecor-datagen",
-	"version": "0.0.1",
-	"environment": "*",
-	"entrypoints": {
-		"fabric-datagen": [
-			{
-				"value": "grauly.dustydecor.DustyDecorDatagen",
-				"adapter": "kotlin"
-			}
-		]
-	},
-	"depends": {
-		"fabricloader": ">=0.15.11",
-		"minecraft": "~1.21",
-		"java": ">=21",
-		"fabric-api": "*",
-		"fabric-language-kotlin": "*"
-	}
+  "schemaVersion": 1,
+  "id": "dustydecor-datagen",
+  "version": "0.0.1",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      {
+        "value": "grauly.dustydecor.DustyDecorDatagen",
+        "adapter": "kotlin"
+      }
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": "~1.21",
+    "java": ">=21",
+    "fabric-api": "*",
+    "fabric-language-kotlin": "*"
+  }
 }

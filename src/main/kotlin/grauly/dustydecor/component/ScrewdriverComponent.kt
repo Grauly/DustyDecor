@@ -15,7 +15,7 @@ import net.minecraft.text.TextColor
 import net.minecraft.util.Colors
 import java.util.function.Consumer
 
-object ScrewdriverComponent: TooltipAppender {
+object ScrewdriverComponent : TooltipAppender {
     override fun appendTooltip(
         context: Item.TooltipContext,
         textConsumer: Consumer<Text>,
@@ -23,11 +23,13 @@ object ScrewdriverComponent: TooltipAppender {
         components: ComponentsAccess
     ) {
         textConsumer.accept(Text.empty())
-        textConsumer.accept(Text.translatable(VENT_COVER_TRANSLATION_KEY, ModBlocks.VENT_COVER.name)
-            .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+        textConsumer.accept(
+            Text.translatable(VENT_COVER_TRANSLATION_KEY, ModBlocks.VENT_COVER.name)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
         )
-        textConsumer.accept(Text.translatable(VAC_TUBE_TRANSLATION_KEY, ModBlocks.VAC_PIPE.name)
-            .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+        textConsumer.accept(
+            Text.translatable(VAC_TUBE_TRANSLATION_KEY, ModBlocks.VAC_PIPE.name)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
         )
     }
 
