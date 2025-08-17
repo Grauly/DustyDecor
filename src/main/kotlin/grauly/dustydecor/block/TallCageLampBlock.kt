@@ -17,6 +17,15 @@ class TallCageLampBlock(settings: Settings?) : LightingFixtureBlock(settings) {
     init {
         defaultState = defaultState
             .with(Properties.FACING, Direction.UP)
+        //TODO: transparency
+        //TODO: tinting
+        //TODO: light emission
+        //TODO: supporting requirement (dont place in mid air)
+        //TODO: placementState handing
+    }
+
+    private fun getShape(state: BlockState): VoxelShape {
+        return SHAPES[state.get(Properties.FACING).opposite]!!
     }
 
     override fun getOutlineShape(
@@ -25,7 +34,7 @@ class TallCageLampBlock(settings: Settings?) : LightingFixtureBlock(settings) {
         pos: BlockPos,
         context: ShapeContext
     ): VoxelShape {
-        return SHAPES[state.get(Properties.FACING)]!!
+        return getShape(state)
     }
 
     override fun getCollisionShape(
@@ -34,7 +43,7 @@ class TallCageLampBlock(settings: Settings?) : LightingFixtureBlock(settings) {
         pos: BlockPos,
         context: ShapeContext
     ): VoxelShape {
-        return SHAPES[state.get(Properties.FACING)]!!
+        return getShape(state)
     }
 
     override fun mirror(state: BlockState, mirror: BlockMirror): BlockState {
