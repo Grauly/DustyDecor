@@ -30,7 +30,7 @@ object ModBlocks {
 
     val TALL_CAGE_LAMPS: List<TallCageLampBlock> = DyeUtils.COLOR_ORDER.map {
         val id = "${it.id}_tall_cage_lamp"
-        (registerBlock(::TallCageLampBlock, id, Settings.copy(Blocks.IRON_BARS)) as TallCageLampBlock)
+        (registerBlock(::TallCageLampBlock, id, Settings.copy(Blocks.LANTERN)) as TallCageLampBlock)
     }
 
     private fun registerBlock(
