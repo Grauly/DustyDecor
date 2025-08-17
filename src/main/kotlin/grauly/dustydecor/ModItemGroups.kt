@@ -18,5 +18,9 @@ object ModItemGroups {
             .register {
                 it.addAfter(Items.WAXED_OXIDIZED_COPPER_CHEST, ModItems.VAC_PIPE)
             }
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS)
+            .register {
+                it.addAfter(Items.PINK_CANDLE, *ModItems.TALL_CAGE_LAMPS.toTypedArray())
+            }
     }
 }

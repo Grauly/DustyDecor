@@ -1,8 +1,10 @@
 package grauly.dustydecor
 
+import grauly.dustydecor.block.TallCageLampBlock
 import grauly.dustydecor.block.VacPipeBlock
 import grauly.dustydecor.block.VentBlock
 import grauly.dustydecor.block.VentCoverBlock
+import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.AbstractBlock.Settings
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
@@ -25,6 +27,11 @@ object ModBlocks {
     val VENT_COVER: Block =
         registerBlock(::VentCoverBlock, "vent_cover", Settings.copy(Blocks.IRON_TRAPDOOR).ticksRandomly().nonOpaque())
     val VAC_PIPE: Block = registerBlock(::VacPipeBlock, "vac_pipe", Settings.copy(Blocks.HOPPER))
+
+    val TALL_CAGE_LAMPS: List<TallCageLampBlock> = DyeUtils.COLOR_ORDER.map {
+        val id = "${it.id}_tall_cage_lamp"
+        (registerBlock(::TallCageLampBlock, id, Settings.copy(Blocks.IRON_BARS)) as TallCageLampBlock)
+    }
 
     private fun registerBlock(
         blockFactory: (Settings) -> Block,

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "c": "minecraft:iron_nugget",
+    "d": "#c:dyes/green",
+    "g": "minecraft:glowstone_dust",
+    "i": "#c:ingots/iron"
+  },
+  "pattern": [
+    "ccc",
+    "gdg",
+    "iii"
+  ],
+  "result": {
+    "count": 3,
+    "id": "dustydecor:green_tall_cage_lamp"
+  }
+}

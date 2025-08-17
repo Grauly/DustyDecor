@@ -2,6 +2,7 @@ package grauly.dustydecor
 
 import grauly.dustydecor.component.ScrewdriverComponent
 import grauly.dustydecor.component.WrenchComponent
+import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.Block
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.BlockItem
@@ -18,7 +19,7 @@ object ModItems {
 
     /*
     Checklist for adding a new Item:
-    - ItemDatagen Entry
+    - ItemDatagen Entry (optional for BlockItems)
     - ModItemGroups Entry
     - Texture/Model
     - Recipes
@@ -43,6 +44,11 @@ object ModItems {
             .component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE)
             .component(ModComponentTypes.WRENCH, WrenchComponent)
     )
+
+    val TALL_CAGE_LAMPS: List<Item> = ModBlocks.TALL_CAGE_LAMPS.map {
+        val id = "${DyeUtils.COLOR_ORDER[ModBlocks.TALL_CAGE_LAMPS.indexOf(it)]}_tall_cage_lamp"
+        registerBlockItem(it, id)
+    }
 
     private fun registerItem(
         itemFactory: (Settings) -> Item,

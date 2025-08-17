@@ -3,6 +3,7 @@ package grauly.dustydecor.generators
 import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.generators.block.CageLampModel
 import grauly.dustydecor.generators.block.VacPipeBlockModel
 import grauly.dustydecor.generators.block.VentBlockModel
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
@@ -27,6 +28,7 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
         blockStateModelGenerator.registerOrientableTrapdoor(ModBlocks.VENT_COVER)
         VentBlockModel.get(blockStateModelGenerator)
         VacPipeBlockModel.get(blockStateModelGenerator)
+        CageLampModel.get(blockStateModelGenerator)
     }
 
 

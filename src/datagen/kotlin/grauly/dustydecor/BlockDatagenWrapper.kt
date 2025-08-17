@@ -2,6 +2,7 @@ package grauly.dustydecor
 
 import grauly.dustydecor.BlockDatagenWrapper.MinedBy.*
 import grauly.dustydecor.BlockDatagenWrapper.ToolNeed.*
+import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.Block
 import net.minecraft.registry.tag.BlockTags
 import net.minecraft.registry.tag.TagKey
@@ -17,6 +18,10 @@ object BlockDatagenWrapper {
                 DatagenSpec(ModBlocks.VAC_PIPE, "Vacuum Tube", STONE, PICKAXE)
             )
         )
+        entries.addAll(ModBlocks.TALL_CAGE_LAMPS.map {
+            val colorString: String = DyeUtils.COLOR_ORDER[ModBlocks.TALL_CAGE_LAMPS.indexOf(it)].id.uppercase()
+            DatagenSpec(it, "Tall $colorString Cage Lamp", STONE, PICKAXE)
+        })
     }
 
     class DatagenSpec(

@@ -1,6 +1,7 @@
 package grauly.dustydecor.generators
 
 import grauly.dustydecor.ModItems
+import grauly.dustydecor.util.DyeUtils
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
@@ -61,6 +62,19 @@ class RecipeDatagen(
                     .pattern("ccc")
                     .criterion("has_copper", conditionsFromTag(ConventionalItemTags.COPPER_INGOTS))
                     .offerTo(exporter)
+                ModItems.TALL_CAGE_LAMPS.forEach {
+                    val dye = DyeUtils.DYE_TAG_ORDER[ModItems.TALL_CAGE_LAMPS.indexOf(it)]
+                    createShaped(RecipeCategory.REDSTONE, it, 3)
+                        .input('c', Items.IRON_NUGGET)
+                        .input('g', Items.GLOWSTONE_DUST)
+                        .input('d', dye)
+                        .input('i', ConventionalItemTags.IRON_INGOTS)
+                        .pattern("ccc")
+                        .pattern("gdg")
+                        .pattern("iii")
+                        .criterion("has_iron", conditionsFromTag(ConventionalItemTags.IRON_INGOTS))
+                        .offerTo(exporter)
+                }
             }
         }
     }
