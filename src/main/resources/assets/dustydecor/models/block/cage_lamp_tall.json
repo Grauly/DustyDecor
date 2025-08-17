@@ -1,0 +1,97 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "dustydecor:block/cage_lamp_tall",
+		"1": "dustydecor:block/cage_lamp_tall_lamp",
+		"particle": "dustydecor:block/cage_lamp_tall"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [5, 5, 0],
+			"to": [11, 11, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 11, 0]},
+			"faces": {
+				"north": {"uv": [0, 10, 6, 16], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [6, 8, 12, 10], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [0, 10, 6, 16], "texture": "#0"},
+				"west": {"uv": [6, 6, 12, 8], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [0, 6, 6, 8], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [0, 8, 6, 10], "texture": "#0"}
+			}
+		},
+		{
+			"name": "lamp",
+			"from": [6, 6, 2],
+			"to": [10, 10, 8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 11, 2]},
+			"faces": {
+				"east": {"uv": [8, 4, 12, 10], "rotation": 270, "texture": "#1", "tintindex": 0},
+				"south": {"uv": [8, 4, 4, 0], "texture": "#1", "tintindex": 0},
+				"west": {"uv": [4, 4, 8, 10], "rotation": 90, "texture": "#1", "tintindex": 0},
+				"up": {"uv": [12, 4, 16, 10], "rotation": 180, "texture": "#1", "tintindex": 0},
+				"down": {"uv": [0, 4, 4, 10], "texture": "#1", "tintindex": 0}
+			}
+		},
+		{
+			"name": "cage",
+			"from": [5, 11, 2],
+			"to": [11, 11, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 11, 2]},
+			"faces": {
+				"up": {"uv": [6, 10, 13, 16], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [6, 10, 13, 16], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "cage",
+			"from": [5, 5, 2],
+			"to": [11, 5, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 11, 2]},
+			"faces": {
+				"up": {"uv": [6, 10, 13, 16], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [6, 10, 13, 16], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "cage",
+			"from": [11, 5, 2],
+			"to": [11, 11, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 11, 2]},
+			"faces": {
+				"east": {"uv": [6, 0, 13, 6], "texture": "#0"},
+				"west": {"uv": [6, 0, 13, 6], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "cage",
+			"from": [5, 5, 2],
+			"to": [5, 11, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 11, 2]},
+			"faces": {
+				"east": {"uv": [6, 0, 13, 6], "texture": "#0"},
+				"west": {"uv": [6, 0, 13, 6], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "cage",
+			"from": [5, 5, 9],
+			"to": [11, 11, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 11, 2]},
+			"faces": {
+				"north": {"uv": [0, 0, 6, 6], "rotation": 180, "texture": "#0"},
+				"south": {"uv": [0, 0, 6, 6], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		0,
+		1,
+		{
+			"name": "cage",
+			"origin": [5, 2, 5],
+			"color": 0,
+			"children": [2, 3, 4, 5, 6]
+		}
+	]
+}
