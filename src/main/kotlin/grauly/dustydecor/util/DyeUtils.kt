@@ -1,5 +1,6 @@
 package grauly.dustydecor.util
 
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.item.Items
 import net.minecraft.util.DyeColor
 
@@ -38,5 +39,23 @@ object DyeUtils {
         Items.PURPLE_DYE,
         Items.MAGENTA_DYE,
         Items.PINK_DYE
+    )
+
+    val DYE_TAG_ORDER = listOf(
+        ConventionalItemTags.WHITE_DYES,
+        ConventionalItemTags.LIGHT_GRAY_DYES,
+        ConventionalItemTags.GRAY_DYES,
+        ConventionalItemTags.BLACK_DYES,
+        ConventionalItemTags.BROWN_DYES,
+        ConventionalItemTags.RED_DYES,
+        ConventionalItemTags.ORANGE_DYES,
+        ConventionalItemTags.YELLOW_DYES,
+        ConventionalItemTags.LIME_DYES,
+        ConventionalItemTags.GREEN_DYES,
+        ConventionalItemTags.CYAN_DYES,
+        ConventionalItemTags.LIGHT_BLUE_DYES,
+        ConventionalItemTags.PURPLE_DYES,
+        ConventionalItemTags.MAGENTA_DYES,
+        ConventionalItemTags.PINK_DYES
     )
 }
