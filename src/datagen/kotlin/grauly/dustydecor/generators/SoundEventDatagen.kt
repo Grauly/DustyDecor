@@ -9,6 +9,7 @@ import net.minecraft.registry.RegistryWrapper
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
 import net.minecraft.sound.SoundEvents
+import net.minecraft.util.Identifier
 import java.util.concurrent.CompletableFuture
 
 class SoundEventDatagen(
@@ -49,6 +50,16 @@ class SoundEventDatagen(
             exporter,
             SoundEvents.BLOCK_VAULT_DEACTIVATE
         )
+        fromFiles(
+            ModSoundEvents.ITEM_WRENCH_USE,
+            SoundCategory.PLAYERS,
+            exporter,
+            "wrench1",
+            "wrench2",
+            "wrench3",
+            "wrench4",
+            "wrench5"
+        )
     }
 
     private fun simpleRedirect(
@@ -80,6 +91,31 @@ class SoundEventDatagen(
                 .category(soundCategory)
                 .subtitle(getSubtitle(from))
         )
+    }
+
+    private fun fromFiles(
+        event: SoundEvent,
+        soundCategory: SoundCategory,
+        exporter: SoundExporter,
+        vararg files: Identifier
+    ) {
+        val soundBuilder = SoundTypeBuilder.of()
+        files.iterator().forEach { soundBuilder.sound(SoundTypeBuilder.EntryBuilder.ofFile(it)) }
+        exporter.add(
+            event,
+            soundBuilder
+                .category(soundCategory)
+                .subtitle(getSubtitle(event))
+        )
+    }
+
+    private fun fromFiles(
+        event: SoundEvent,
+        soundCategory: SoundCategory,
+        exporter: SoundExporter,
+        vararg files: String
+    ) {
+        fromFiles(event, soundCategory, exporter, *files.asList().map { Identifier.of(DustyDecorMod.MODID, it) }.toTypedArray())
     }
 
     companion object {

@@ -52,5 +52,16 @@
       }
     ],
     "subtitle": "subtitles.dustydecor.block.vent.unlock"
+  },
+  "item.wrench.use": {
+    "category": "player",
+    "sounds": [
+      "dustydecor:wrench1",
+      "dustydecor:wrench2",
+      "dustydecor:wrench3",
+      "dustydecor:wrench4",
+      "dustydecor:wrench5"
+    ],
+    "subtitle": "subtitles.dustydecor.item.wrench.use"
   }
 }

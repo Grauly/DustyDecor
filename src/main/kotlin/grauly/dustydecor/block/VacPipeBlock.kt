@@ -110,6 +110,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
             }
             if (clickedConnection != null) {
                 tryDisableConnection(pos, state, clickedConnection, world)
+                //TODO: play sounds
             }
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit)

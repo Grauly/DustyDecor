@@ -15,5 +15,6 @@
   "subtitles.dustydecor.block.vac_pipe.remove_window": "Window removed",
   "subtitles.dustydecor.block.vent.lock": "Vent locks",
   "subtitles.dustydecor.block.vent.rattle": "Vent rattles",
-  "subtitles.dustydecor.block.vent.unlock": "Vent unlocks"
+  "subtitles.dustydecor.block.vent.unlock": "Vent unlocks",
+  "subtitles.dustydecor.item.wrench.use": "Wrench used"
 }

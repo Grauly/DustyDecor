@@ -18,6 +18,7 @@ object ModSoundEvents {
     val BLOCK_VENT_RATTLE = registerSound("block.vent.rattle")
     val BLOCK_VAP_PIPE_ADD_WINDOW = registerSound("block.vac_pipe.add_window")
     val BLOCK_VAP_PIPE_REMOVE_WINDOW = registerSound("block.vac_pipe.remove_window")
+    val ITEM_WRENCH_USE = registerSound("item.wrench.use")
 
     private fun registerSound(id: String): SoundEvent {
         val identifier: Identifier = Identifier.of(DustyDecorMod.MODID, id)
