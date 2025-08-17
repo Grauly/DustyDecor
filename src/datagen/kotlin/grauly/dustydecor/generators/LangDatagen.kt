@@ -42,13 +42,15 @@ class LangDatagen(
         sub(ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_ON, "Lighting fixture turns on")
         sub(ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_OFF, "Lighting fixture turns off")
 
-        builder.add(WrenchComponent.TRANSLATION_KEY_0, "Can edit %s connections")
+        builder.add(WrenchComponent.VAC_PIPE_TRANSLATION_KEY, "Can edit %s connections")
         builder.add(
-            WrenchComponent.TRANSLATION_KEY_1,
+            WrenchComponent.VAC_PIPE_CONNECTION_TRANSLATION_KEY,
             "Use on a exiting connection to attempt a different connection for it"
         )
+        builder.add(WrenchComponent.LAMPS_TRANSLATION_KEY, "Can break and repair some lamps")
         builder.add(ScrewdriverComponent.VAC_TUBE_TRANSLATION_KEY, "Can toggle windows on %s's")
         builder.add(ScrewdriverComponent.VENT_COVER_TRANSLATION_KEY, "Can lock/unlock %s's")
+        builder.add(ScrewdriverComponent.LAMPS_TRANSLATION_KEY, "Can invert some lamps")
 
         subtitles.forEach { (e, t) ->
             builder.add(SoundEventDatagen.getSubtitle(e), t)

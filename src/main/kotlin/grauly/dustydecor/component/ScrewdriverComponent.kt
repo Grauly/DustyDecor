@@ -35,6 +35,7 @@ object ScrewdriverComponent : TooltipAppender {
 
     const val VENT_COVER_TRANSLATION_KEY = "component.screwdriver.${DustyDecorMod.MODID}.tooltip.vent_cover"
     const val VAC_TUBE_TRANSLATION_KEY = "component.screwdriver.${DustyDecorMod.MODID}.tooltip.vac_tube"
+    const val LAMPS_TRANSLATION_KEY = "component.screwdriver.${DustyDecorMod.MODID}.tooltip."
 
     val CODEC: Codec<ScrewdriverComponent> = Codec.unit(this)
     val PACKET_CODEC: PacketCodec<ByteBuf, ScrewdriverComponent> = PacketCodec.unit(this)

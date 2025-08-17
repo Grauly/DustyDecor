@@ -24,17 +24,22 @@ object WrenchComponent : TooltipAppender {
     ) {
         textConsumer.accept(Text.empty())
         textConsumer.accept(
-            Text.translatable(TRANSLATION_KEY_0, ModBlocks.VAC_PIPE.name)
+            Text.translatable(VAC_PIPE_TRANSLATION_KEY, ModBlocks.VAC_PIPE.name)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
         )
         textConsumer.accept(
-            Text.translatable(TRANSLATION_KEY_1)
+            Text.translatable(VAC_PIPE_CONNECTION_TRANSLATION_KEY)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+        )
+        textConsumer.accept(
+            Text.translatable(LAMPS_TRANSLATION_KEY)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
         )
     }
 
-    const val TRANSLATION_KEY_0 = "component.wrench.${DustyDecorMod.MODID}.tooltip0"
-    const val TRANSLATION_KEY_1 = "component.wrench.${DustyDecorMod.MODID}.tooltip1"
+    const val VAC_PIPE_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.tooltip.vac_pipe.edit"
+    const val VAC_PIPE_CONNECTION_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.vac_pipe.connection"
+    const val LAMPS_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.lamps"
 
     val CODEC: Codec<WrenchComponent> = Codec.unit(this)
     val PACKET_CODEC: PacketCodec<ByteBuf, WrenchComponent> = PacketCodec.unit(this)
