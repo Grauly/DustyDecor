@@ -109,8 +109,16 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
                 return@firstOrNull boundingBox.contains(relativePos)
             }
             if (clickedConnection != null) {
-                tryDisableConnection(pos, state, clickedConnection, world)
-                //TODO: play sounds
+                val success = tryDisableConnection(pos, state, clickedConnection, world)
+                if (success) {
+                    world.playSound(
+                        player,
+                        pos,
+                        ModSoundEvents.ITEM_WRENCH_USE,
+                        SoundCategory.BLOCKS
+                    )
+                }
+                //TODO: some fail sound
             }
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
@@ -122,24 +130,24 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         connection: EnumProperty<ConnectionState>,
         world: World,
         canTraverse: Boolean = true
-    ) {
+    ): Boolean {
         val connectionDirection = state.get(connection, ConnectionState.NONE)
-        if (connectionDirection == ConnectionState.NONE) return
+        if (connectionDirection == ConnectionState.NONE) return false
         val usedConnections =
             connections.map { state.get(it) }.filter { it != ConnectionState.NONE }.map { it.direction!! }
         val foundConnection =
             findConnection(pos, world, connectionDirection.direction!!, *usedConnections.toTypedArray())
         if (foundConnection == ConnectionState.NONE) {
-            if (!canTraverse) return
+            if (!canTraverse) return false
             val offsetPos = pos.offset(connectionDirection.direction)
             val offsetState = world.getBlockState(offsetPos)
             val otherConnection =
                 connections.firstOrNull { offsetState.get(it) != ConnectionState.NONE && offsetState.get(it).direction!!.opposite == connectionDirection.direction }
-            if (otherConnection == null) return
-            tryDisableConnection(offsetPos, offsetState, otherConnection, world, false)
-            return
+            if (otherConnection == null) return false
+            return tryDisableConnection(offsetPos, offsetState, otherConnection, world, false)
         }
         world.setBlockState(pos, updateWindows(state.with(connection, foundConnection), world, pos), NOTIFY_LISTENERS)
+        return true
     }
 
     override fun getStateForNeighborUpdate(
