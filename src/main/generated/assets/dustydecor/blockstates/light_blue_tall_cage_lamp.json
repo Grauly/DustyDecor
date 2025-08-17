@@ -2,25 +2,27 @@
   "variants": {
     "facing=down": {
       "model": "dustydecor:block/cage_lamp_tall",
-      "x": 90
+      "x": 180
     },
     "facing=east": {
       "model": "dustydecor:block/cage_lamp_tall",
+      "x": 90,
       "y": 90
     },
     "facing=north": {
-      "model": "dustydecor:block/cage_lamp_tall"
+      "model": "dustydecor:block/cage_lamp_tall",
+      "x": 90
     },
     "facing=south": {
       "model": "dustydecor:block/cage_lamp_tall",
-      "y": 180
+      "x": 270
     },
     "facing=up": {
-      "model": "dustydecor:block/cage_lamp_tall",
-      "x": 270
+      "model": "dustydecor:block/cage_lamp_tall"
     },
     "facing=west": {
       "model": "dustydecor:block/cage_lamp_tall",
+      "x": 90,
       "y": 270
     }
   }

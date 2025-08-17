@@ -29,6 +29,6 @@ object CageLampModel {
 
     private val facingRotator = Direction.entries.fold(BlockStateVariantMap.operations(Properties.FACING))
     {
-        builder, element -> builder.register(element, BlockModelDatagen.NORTH_FACING_ROTATION_MAP[element])
+        builder, element -> builder.register(element, BlockModelDatagen.TOP_FACING_ROTATION_MAP[element])
     }
 }
