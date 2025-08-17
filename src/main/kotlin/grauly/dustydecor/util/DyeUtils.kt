@@ -2,7 +2,7 @@ package grauly.dustydecor.util
 
 import net.minecraft.util.DyeColor
 
-object ColorUtils {
+object DyeUtils {
     val COLOR_ORDER = listOf(
         DyeColor.WHITE,
         DyeColor.LIGHT_GRAY,
