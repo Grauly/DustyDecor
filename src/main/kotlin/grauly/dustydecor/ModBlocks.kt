@@ -1,5 +1,8 @@
 package grauly.dustydecor
 
+import grauly.dustydecor.block.LightingFixtureBlock.Companion.BROKEN
+import grauly.dustydecor.block.LightingFixtureBlock.Companion.INVERTED
+import grauly.dustydecor.block.LightingFixtureBlock.Companion.LIT
 import grauly.dustydecor.block.TallCageLampBlock
 import grauly.dustydecor.block.VacPipeBlock
 import grauly.dustydecor.block.VentBlock
@@ -30,7 +33,16 @@ object ModBlocks {
 
     val TALL_CAGE_LAMPS: List<TallCageLampBlock> = DyeUtils.COLOR_ORDER.map {
         val id = "${it.id}_tall_cage_lamp"
-        (registerBlock(::TallCageLampBlock, id, Settings.copy(Blocks.LANTERN)) as TallCageLampBlock)
+        (registerBlock(
+            ::TallCageLampBlock,
+            id,
+            Settings.copy(Blocks.LANTERN)
+                .luminance { state ->
+                    if (state.get(LIT) == state.get(INVERTED)) return@luminance 0
+                    if (state.get(BROKEN)) return@luminance 3
+                    return@luminance 15
+                }
+        ) as TallCageLampBlock)
     }
 
     private fun registerBlock(
