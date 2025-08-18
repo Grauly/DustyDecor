@@ -22,7 +22,6 @@ class TallCageLampBlock(settings: Settings?) : LightingFixtureBlock(settings) {
     init {
         defaultState = defaultState
             .with(Properties.FACING, Direction.UP)
-        //TODO: tinting
     }
 
     override fun getStateForNeighborUpdate(
