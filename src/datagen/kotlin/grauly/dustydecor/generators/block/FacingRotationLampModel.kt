@@ -50,6 +50,7 @@ class FacingRotationLampModel(lamps: List<FacingRotationLampBlock>, lampPrefix: 
                 }
             }
         }
+        blockStateModelGenerator.blockStateCollector.accept(creator)
     }
 
     //I hate this, but there is no better way. Why can I not just rotate around Z axis?
