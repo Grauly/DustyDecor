@@ -8,7 +8,7 @@ import net.minecraft.util.shape.VoxelShapes
 
 class WideCageLampBlock(settings: Settings?) : FacingRotationLampBlock(settings) {
     override fun getShape(state: BlockState): VoxelShape {
-        return (SHAPES[state.get(ROTATED)]!!)[state.get(Properties.FACING)]!!
+        return (SHAPES[state.get(ROTATED)]!!)[state.get(Properties.FACING).opposite]!!
     }
 
     companion object {
