@@ -3,6 +3,7 @@ package grauly.dustydecor.block
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
+import net.minecraft.item.ItemPlacementContext
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.Properties
 import net.minecraft.util.BlockMirror
@@ -21,7 +22,11 @@ class TallCageLampBlock(settings: Settings?) : LightingFixtureBlock(settings) {
         //TODO: tinting
         //TODO: light emission
         //TODO: supporting requirement (dont place in mid air)
-        //TODO: placementState handing
+    }
+
+    override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
+        val superState = super.getPlacementState(ctx)!!
+        return superState.with(Properties.FACING, ctx.side)
     }
 
     private fun getShape(state: BlockState): VoxelShape {
