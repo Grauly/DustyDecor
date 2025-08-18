@@ -4,9 +4,8 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.block.TallCageLampBlock
 import grauly.dustydecor.generators.BlockModelDatagen
-import net.minecraft.client.data.BlockStateModelGenerator
-import net.minecraft.client.data.BlockStateVariantMap
-import net.minecraft.client.data.VariantsBlockModelDefinitionCreator
+import grauly.dustydecor.util.DyeUtils
+import net.minecraft.client.data.*
 import net.minecraft.state.property.Properties
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Direction
@@ -24,7 +23,10 @@ object CageLampModel {
                 lamp,
                 BlockModelDatagen.singleVariant("block/cage_lamp_tall")
             ).coordinate(facingRotator))
-        blockStateModelGenerator.registerItemModel(lamp.asItem(), Identifier.of(DustyDecorMod.MODID, "block/cage_lamp_tall"))
+        val color = DyeUtils.COLOR_ORDER[ModBlocks.TALL_CAGE_LAMPS.indexOf(lamp)].signColor
+        val tint = ItemModels.constantTintSource(color)
+        val model = ItemModels.tinted(Identifier.of(DustyDecorMod.MODID, "block/cage_lamp_tall"), tint)
+        blockStateModelGenerator.itemModelOutput.accept(lamp.asItem(), model)
     }
 
     private val facingRotator = Direction.entries.fold(BlockStateVariantMap.operations(Properties.FACING))
