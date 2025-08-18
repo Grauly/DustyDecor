@@ -16,10 +16,15 @@ import net.minecraft.world.BlockView
 
 class TallCageLampBlock(settings: Settings?) : LightingFixtureBlock(settings) {
     init {
+        settings?.luminance { state ->
+            if (!state.get(LIT)) return@luminance 0
+            if (state.get(BROKEN)) return@luminance 3
+            return@luminance 15
+        }
+
         defaultState = defaultState
             .with(Properties.FACING, Direction.UP)
         //TODO: tinting
-        //TODO: light emission
         //TODO: supporting requirement (dont place in mid air)
     }
 
