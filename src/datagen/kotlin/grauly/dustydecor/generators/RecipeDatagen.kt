@@ -76,6 +76,19 @@ class RecipeDatagen(
                         .criterion("has_iron", conditionsFromTag(ConventionalItemTags.IRON_INGOTS))
                         .offerTo(exporter)
                 }
+                ModItems.WIDE_CAGE_LAMPS.forEach {
+                    val dye = DyeUtils.DYE_TAG_ORDER[ModItems.WIDE_CAGE_LAMPS.indexOf(it)]
+                    createShaped(RecipeCategory.REDSTONE, it, 3)
+                        .input('c', Items.IRON_NUGGET)
+                        .input('g', Items.GLOWSTONE_DUST)
+                        .input('d', dye)
+                        .input('i', ConventionalItemTags.IRON_INGOTS)
+                        .pattern("ccc")
+                        .pattern("gdg")
+                        .pattern("ici")
+                        .criterion("has_iron", conditionsFromTag(ConventionalItemTags.IRON_INGOTS))
+                        .offerTo(exporter)
+                }
             }
         }
     }

@@ -18,13 +18,15 @@ object BlockDatagenWrapper {
                 DatagenSpec(ModBlocks.VAC_PIPE, "Vacuum Tube", STONE, PICKAXE)
             )
         )
-        entries.addAll(ModBlocks.TALL_CAGE_LAMPS.map { lamp ->
-            val colorString: String = DyeUtils.COLOR_ORDER[ModBlocks.TALL_CAGE_LAMPS.indexOf(lamp)].id
-                .split("_")
-                .map { it.replaceFirstChar { c -> c.titlecase() } }
-                .reduce { acc, s -> "$acc $s" }
-            DatagenSpec(lamp, "Tall $colorString Cage Lamp", STONE, PICKAXE)
-        })
+        entries.addAll(DyeUtils.COLOR_ORDER.map {
+            val lookupValue = DyeUtils.COLOR_ORDER.indexOf(it)
+            val colorString =
+                it.id.split("_").map { s -> s.replaceFirstChar { c -> c.titlecase() } }.reduce { acc, s -> "$acc $s" }
+            return@map mutableListOf(
+                DatagenSpec(ModBlocks.TALL_CAGE_LAMPS[lookupValue], "Tall $colorString Cage Lamp", STONE, PICKAXE),
+                DatagenSpec(ModBlocks.WIDE_CAGE_LAMPS[lookupValue], "Wide $colorString Cage Lamp", STONE, PICKAXE)
+            )
+        }.reduce { acc: MutableList<DatagenSpec>, elem: MutableList<DatagenSpec> -> acc.addAll(elem); acc })
     }
 
     class DatagenSpec(
@@ -43,12 +45,7 @@ object BlockDatagenWrapper {
             generateLootTable: Boolean = true,
             generateBlockBlockModel: Boolean = false
         ) : this(
-            block,
-            name,
-            ToolNeedSpec(toolNeed),
-            MiningNeedSpec(mineable),
-            generateLootTable,
-            generateBlockBlockModel
+            block, name, ToolNeedSpec(toolNeed), MiningNeedSpec(mineable), generateLootTable, generateBlockBlockModel
         )
     }
 
@@ -69,39 +66,26 @@ object BlockDatagenWrapper {
     }
 
     enum class ToolNeed {
-        NONE,
-        WOOD,
-        STONE,
-        COPPER,
-        GOLD,
-        IRON,
-        DIAMOND,
-        NETHERITE;
+        NONE, WOOD, STONE, COPPER, GOLD, IRON, DIAMOND, NETHERITE;
     }
 
-    fun getToolNeed(need: ToolNeed): TagKey<Block>? =
-        when (need) {
-            STONE, GOLD, COPPER -> BlockTags.NEEDS_STONE_TOOL
-            IRON -> BlockTags.NEEDS_IRON_TOOL
-            DIAMOND, NETHERITE -> BlockTags.NEEDS_DIAMOND_TOOL
-            NONE, WOOD -> null
-        }
+    fun getToolNeed(need: ToolNeed): TagKey<Block>? = when (need) {
+        STONE, GOLD, COPPER -> BlockTags.NEEDS_STONE_TOOL
+        IRON -> BlockTags.NEEDS_IRON_TOOL
+        DIAMOND, NETHERITE -> BlockTags.NEEDS_DIAMOND_TOOL
+        NONE, WOOD -> null
+    }
 
     enum class MinedBy {
-        PICKAXE,
-        AXE,
-        SHOVEL,
-        HOE,
-        ANY;
+        PICKAXE, AXE, SHOVEL, HOE, ANY;
     }
 
-    fun getMineable(mineing: MinedBy): TagKey<Block>? =
-        when (mineing) {
-            PICKAXE -> BlockTags.PICKAXE_MINEABLE
-            AXE -> BlockTags.AXE_MINEABLE
-            SHOVEL -> BlockTags.SHOVEL_MINEABLE
-            HOE -> BlockTags.HOE_MINEABLE
-            ANY -> null
-        }
+    fun getMineable(mineing: MinedBy): TagKey<Block>? = when (mineing) {
+        PICKAXE -> BlockTags.PICKAXE_MINEABLE
+        AXE -> BlockTags.AXE_MINEABLE
+        SHOVEL -> BlockTags.SHOVEL_MINEABLE
+        HOE -> BlockTags.HOE_MINEABLE
+        ANY -> null
+    }
 
 }

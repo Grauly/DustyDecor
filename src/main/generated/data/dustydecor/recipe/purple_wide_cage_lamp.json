@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "c": "minecraft:iron_nugget",
+    "d": "#c:dyes/purple",
+    "g": "minecraft:glowstone_dust",
+    "i": "#c:ingots/iron"
+  },
+  "pattern": [
+    "ccc",
+    "gdg",
+    "ici"
+  ],
+  "result": {
+    "count": 3,
+    "id": "dustydecor:purple_wide_cage_lamp"
+  }
+}

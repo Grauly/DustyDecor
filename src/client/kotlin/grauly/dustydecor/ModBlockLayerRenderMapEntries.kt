@@ -10,5 +10,8 @@ object ModBlockLayerRenderMapEntries {
         ModBlocks.TALL_CAGE_LAMPS.forEach {
             BlockRenderLayerMap.putBlock(it, BlockRenderLayer.CUTOUT)
         }
+        ModBlocks.WIDE_CAGE_LAMPS.forEach {
+            BlockRenderLayerMap.putBlock(it, BlockRenderLayer.CUTOUT)
+        }
     }
 }

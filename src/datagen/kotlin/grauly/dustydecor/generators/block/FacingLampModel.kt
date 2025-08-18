@@ -60,7 +60,7 @@ open class FacingLampModel(private val lamps: List<FacingLampBlock>, private val
     }
 
     protected open fun createItemModel(lamp: FacingLampBlock, blockStateModelGenerator: BlockStateModelGenerator) {
-        val color = DyeUtils.COLOR_ORDER[ModBlocks.TALL_CAGE_LAMPS.indexOf(lamp)].signColor
+        val color = DyeUtils.COLOR_ORDER[lamps.indexOf(lamp)].signColor
         val tint = ItemModels.constantTintSource(color)
         val model = ItemModels.tinted(Identifier.of(DustyDecorMod.MODID, "block/${lampPrefix}_inventory"), tint)
         blockStateModelGenerator.itemModelOutput.accept(lamp.asItem(), model)

@@ -20,7 +20,7 @@ object ModItemGroups {
             }
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS)
             .register {
-                it.addAfter(Items.PINK_CANDLE, *ModItems.TALL_CAGE_LAMPS.toTypedArray())
+                it.addAfter(Items.PINK_CANDLE, *ModItems.TALL_CAGE_LAMPS.toTypedArray(), *ModItems.WIDE_CAGE_LAMPS.toTypedArray())
             }
     }
 }
