@@ -1,12 +1,9 @@
 package grauly.dustydecor
 
+import grauly.dustydecor.block.*
 import grauly.dustydecor.block.LightingFixtureBlock.Companion.BROKEN
 import grauly.dustydecor.block.LightingFixtureBlock.Companion.INVERTED
 import grauly.dustydecor.block.LightingFixtureBlock.Companion.LIT
-import grauly.dustydecor.block.TallCageLampBlock
-import grauly.dustydecor.block.VacPipeBlock
-import grauly.dustydecor.block.VentBlock
-import grauly.dustydecor.block.VentCoverBlock
 import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.AbstractBlock.Settings
 import net.minecraft.block.Block
@@ -37,11 +34,7 @@ object ModBlocks {
             ::TallCageLampBlock,
             id,
             Settings.copy(Blocks.LANTERN)
-                .luminance { state ->
-                    if (state.get(LIT) == state.get(INVERTED)) return@luminance 0
-                    if (state.get(BROKEN)) return@luminance 3
-                    return@luminance 15
-                }
+                .luminance(LightingFixtureBlock.getLightingFunction(3, 15))
         ) as TallCageLampBlock)
     }
 

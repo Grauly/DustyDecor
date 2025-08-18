@@ -27,6 +27,7 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import net.minecraft.world.block.WireOrientation
 import net.minecraft.world.tick.ScheduledTickView
+import java.util.function.ToIntFunction
 
 abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Waterloggable {
 
@@ -204,5 +205,12 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
         val LIT: BooleanProperty = BooleanProperty.of("on")
         val INVERTED: BooleanProperty = BooleanProperty.of("inverted")
         val BROKEN: BooleanProperty = BooleanProperty.of("broken")
+        fun getLightingFunction(broken: Int, active: Int): (BlockState) -> Int {
+            return lambda@{ state:BlockState ->
+                if (state.get(LIT) == state.get(INVERTED)) return@lambda 0
+                if (state.get(BROKEN)) return@lambda broken
+                return@lambda active
+            }
+        }
     }
 }
