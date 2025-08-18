@@ -6,7 +6,6 @@ import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.Block
 import net.minecraft.registry.tag.BlockTags
 import net.minecraft.registry.tag.TagKey
-import java.util.*
 
 object BlockDatagenWrapper {
     val entries: MutableList<DatagenSpec> = mutableListOf()
@@ -20,11 +19,10 @@ object BlockDatagenWrapper {
             )
         )
         entries.addAll(ModBlocks.TALL_CAGE_LAMPS.map { lamp ->
-            val colorString: String = DyeUtils.COLOR_ORDER[ModBlocks.TALL_CAGE_LAMPS.indexOf(lamp)].id.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(
-                    Locale.getDefault()
-                ) else it.toString()
-            }
+            val colorString: String = DyeUtils.COLOR_ORDER[ModBlocks.TALL_CAGE_LAMPS.indexOf(lamp)].id
+                .split("_")
+                .map { it.replaceFirstChar { c -> c.titlecase() } }
+                .reduce { acc, s -> "$acc $s" }
             DatagenSpec(lamp, "Tall $colorString Cage Lamp", STONE, PICKAXE)
         })
     }
