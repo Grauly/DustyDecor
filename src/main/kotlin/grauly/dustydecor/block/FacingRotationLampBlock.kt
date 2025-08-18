@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
+import net.minecraft.text.Text
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
@@ -34,10 +35,10 @@ abstract class FacingRotationLampBlock(settings: Settings?) : FacingLampBlock(se
         val x = makeMaskValue(vec.x)
         val y = makeMaskValue(vec.y)
         val z = makeMaskValue(vec.z)
-        return Vec3d(x.toDouble(),y.toDouble(),z.toDouble())
+        return Vec3d(x, y, z)
     }
 
-    private fun makeMaskValue(number: Number): Number = if (number != 0) 0 else 1
+    private fun makeMaskValue(number: Double): Double = if (number == 0.0) 1.0 else 0.0
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         super.appendProperties(builder)
