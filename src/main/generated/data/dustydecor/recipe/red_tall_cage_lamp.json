@@ -5,12 +5,13 @@
     "c": "minecraft:iron_nugget",
     "d": "#c:dyes/red",
     "g": "minecraft:glowstone_dust",
-    "i": "#c:ingots/iron"
+    "i": "#c:ingots/iron",
+    "r": "#c:dusts/redstone"
   },
   "pattern": [
     "ccc",
     "gdg",
-    "iii"
+    "iri"
   ],
   "result": {
     "count": 3,

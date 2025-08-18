@@ -67,11 +67,12 @@ class RecipeDatagen(
                     createShaped(RecipeCategory.REDSTONE, it, 3)
                         .input('c', Items.IRON_NUGGET)
                         .input('g', Items.GLOWSTONE_DUST)
+                        .input('r', ConventionalItemTags.REDSTONE_DUSTS)
                         .input('d', dye)
                         .input('i', ConventionalItemTags.IRON_INGOTS)
                         .pattern("ccc")
                         .pattern("gdg")
-                        .pattern("iii")
+                        .pattern("iri")
                         .criterion("has_iron", conditionsFromTag(ConventionalItemTags.IRON_INGOTS))
                         .offerTo(exporter)
                 }
