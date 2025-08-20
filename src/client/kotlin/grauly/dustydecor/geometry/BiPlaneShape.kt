@@ -4,19 +4,25 @@ import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 
 object BiPlaneShape: ShapeDefinition {
-    override fun getPoints(): List<Vec3d> = POINTS
-
-    override fun getUvs(): List<Vec2f> = UVS
-
+    override fun getPoints(): List<Vec3d> = run {
+        val points = PlaneShape.getPoints().toMutableList()
+        points.addAll(InvertedPlaneShape.getPoints())
+        points
+    }
+    override fun getUvs(): List<Vec2f> = run {
+        val uvs = PlaneShape.getUvs().toMutableList()
+        uvs.addAll(InvertedPlaneShape.getUvs())
+        uvs
+    }
     private val POINTS: List<Vec3d> = run {
         val points = PlaneShape.getPoints().toMutableList()
-        points.addAll(PlaneShape.getTransformed(Vec3d.ZERO, Vec3d(1.0, 1.0, 1.0), Vec3d(Math.PI, 0.0, 0.0)).getPoints())
+        points.addAll(InvertedPlaneShape.getPoints())
         points
     }
 
     private val UVS: List<Vec2f> = run {
         val uvs = PlaneShape.getUvs().toMutableList()
-        uvs.addAll(PlaneShape.getUvs())
+        uvs.addAll(InvertedPlaneShape.getUvs())
         uvs
     }
 }

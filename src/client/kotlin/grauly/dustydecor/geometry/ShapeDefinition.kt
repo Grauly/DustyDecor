@@ -15,15 +15,9 @@ interface ShapeDefinition {
     }
     fun apply(vertexConsumer: VertexConsumer, light: Int, color: Int, minUv: Vec2f, maxUv: Vec2f) {
         val uvDiff = maxUv.add(minUv.negate())
-        val uvMuls = listOf(
-            uvDiff,
-            Vec2f(uvDiff.x, 0f),
-            Vec2f(0f, 0f),
-            Vec2f(0f, uvDiff.y)
-        )
         for (i in 0..<getPoints().size) {
             val uv = getUvs()[i]
-            val uvMul = uvMuls[i % 4]
+            val uvMul = Vec2f(uv.x * uvDiff.x, uv.y * uvDiff.y)
             vertexConsumer.vertex(getPoints()[i].toVector3f()).texture(minUv.x + uv.x * uvMul.x, minUv.y + uv.y * uvMul.y).light(light).color(color)
         }
     }
