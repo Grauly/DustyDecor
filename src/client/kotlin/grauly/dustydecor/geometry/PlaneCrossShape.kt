@@ -9,17 +9,17 @@ object PlaneCrossShape : ShapeDefinition {
     override fun getUvs(): List<Vec2f> = UVS
 
     private val POINTS: List<Vec3d> = run {
-        val points: MutableList<Vec3d> = PlaneShape
+        val points: MutableList<Vec3d> = BiPlaneShape
             .getPoints()
             .toMutableList()
         points.addAll(
-            PlaneShape.getTransformed(Vec3d.ZERO, Vec3d(1.0, 1.0, 1.0), Vec3d(Math.PI / 2, 0.0, 0.0)).getPoints()
+            BiPlaneShape.getTransformed(Vec3d.ZERO, Vec3d(1.0, 1.0, 1.0), Vec3d(Math.PI / 2, 0.0, 0.0)).getPoints()
         )
         points
     }
     private val UVS: List<Vec2f> = run {
-        val uvs: MutableList<Vec2f> = PlaneShape.getUvs().toMutableList()
-        uvs.addAll(PlaneShape.getUvs())
+        val uvs: MutableList<Vec2f> = BiPlaneShape.getUvs().toMutableList()
+        uvs.addAll(BiPlaneShape.getUvs())
         uvs
     }
 }
