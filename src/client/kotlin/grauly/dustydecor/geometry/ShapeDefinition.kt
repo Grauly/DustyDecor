@@ -3,13 +3,14 @@ package grauly.dustydecor.geometry
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
+import org.joml.Quaternionf
 
 interface ShapeDefinition {
     fun getPoints(): List<Vec3d>
     fun getUvs(): List<Vec2f>
-    fun getTransformed(posOffset: Vec3d, scale: Vec3d, axisRotations: Vec3d): MutatedShape {
+    fun getTransformed(posOffset: Vec3d, scale: Vec3d, rotation: Quaternionf): MutatedShape {
         return MutatedShape(
-            getPoints().map { transformPoint(it, posOffset, scale, axisRotations) },
+            getPoints().map { transformPoint(it, posOffset, scale, rotation) },
             getUvs()
         )
     }
@@ -21,12 +22,7 @@ interface ShapeDefinition {
             vertexConsumer.vertex(getPoints()[i].toVector3f()).texture(minUv.x + uv.x * uvMul.x, minUv.y + uv.y * uvMul.y).light(light).color(color)
         }
     }
-    fun transformPoint(point: Vec3d, posOffset: Vec3d, scale: Vec3d, axisRotations: Vec3d): Vec3d {
-        return point
-            .rotateX(axisRotations.x.toFloat())
-            .rotateY(axisRotations.y.toFloat())
-            .rotateZ(axisRotations.z.toFloat())
-            .multiply(scale)
-            .add(posOffset)
+    fun transformPoint(point: Vec3d, posOffset: Vec3d, scale: Vec3d, rotation: Quaternionf): Vec3d {
+        return Vec3d(point.toVector3f().mul(scale.x.toFloat(), scale.y.toFloat(), scale.z.toFloat()).rotate(rotation).add(posOffset.toVector3f()))
     }
 }

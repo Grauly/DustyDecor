@@ -2,6 +2,9 @@ package grauly.dustydecor.geometry
 
 import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
+import org.joml.Quaternionf
+import org.joml.Vector3f
+import kotlin.math.PI
 
 object PlaneCrossShape : ShapeDefinition {
     override fun getPoints(): List<Vec3d> = POINTS
@@ -13,7 +16,7 @@ object PlaneCrossShape : ShapeDefinition {
             .getPoints()
             .toMutableList()
         points.addAll(
-            BiPlaneShape.getTransformed(Vec3d.ZERO, Vec3d(1.0, 1.0, 1.0), Vec3d(Math.PI / 2, 0.0, 0.0)).getPoints()
+            BiPlaneShape.getTransformed(Vec3d.ZERO, Vec3d(1.0, 1.0, 1.0), Quaternionf().fromAxisAngleRad(Vector3f(1f, 0f, 0f), (PI/2).toFloat())).getPoints()
         )
         points
     }
