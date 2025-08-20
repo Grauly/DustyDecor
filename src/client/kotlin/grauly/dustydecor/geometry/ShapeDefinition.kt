@@ -3,7 +3,6 @@ package grauly.dustydecor.geometry
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
-import org.joml.Vector4f
 
 interface ShapeDefinition {
     fun getPoints(): List<Vec3d>
@@ -15,7 +14,7 @@ interface ShapeDefinition {
         )
     }
     fun apply(vertexConsumer: VertexConsumer, light: Int, color: Int) {
-        for (i in 0..getPoints().size) {
+        for (i in 0..<getPoints().size) {
             val uv = getUvs()[i]
             vertexConsumer.vertex(getPoints()[i].toVector3f()).texture(uv.x, uv.y).light(light).color(color)
         }
