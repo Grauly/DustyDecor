@@ -6,5 +6,6 @@ object DustyDecorClient : ClientModInitializer {
     override fun onInitializeClient() {
         ModBlockLayerRenderMapEntries.init()
         ModColorProviders.init()
+        ModParticles.init()
     }
 }
