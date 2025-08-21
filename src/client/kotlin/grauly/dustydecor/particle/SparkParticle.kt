@@ -1,23 +1,23 @@
 package grauly.dustydecor.particle
 
-import com.mojang.blaze3d.systems.RenderSystem
-import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.geometry.BiPlaneShape
 import grauly.dustydecor.geometry.PlaneCrossShape
-import grauly.dustydecor.geometry.PlaneShape
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
+import net.minecraft.client.render.LightmapTextureManager
 import net.minecraft.client.render.VertexConsumer
-import net.minecraft.client.render.VertexRendering
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.entity.Entity
 import net.minecraft.particle.SimpleParticleType
 import net.minecraft.util.Colors
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.random.Random
+import net.minecraft.world.LightType
 import org.joml.Quaternionf
 import org.joml.Vector3f
+import kotlin.math.max
+import kotlin.math.roundToInt
 
 /**
  * Implemented with very generous lookups from https://github.com/Enchanted-Games/block-place-particles
@@ -32,13 +32,18 @@ class SparkParticle(
     velocityY: Double,
     velocityZ: Double,
     gravity: Double,
-    drag: Double,
-    spriteProvider: SpriteProvider
+    lifetime: Int,
+    drag: Double = 1.0,
+    private val lengthFactor: Float = 4f,
+    sparkWidthPixels: Double = 1.0,
+    private val spriteProvider: SpriteProvider
 ) :
     SpriteBillboardParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ) {
     private var lastLastX = 0.0
     private var lastLastY = 0.0
     private var lastLastZ = 0.0
+    private val bounceFactor = 0.8
+    private val sparkWidth: Double = sparkWidthPixels / 16
 
     init {
         this.gravityStrength = gravity.toFloat()
@@ -46,11 +51,11 @@ class SparkParticle(
         this.velocityX = velocityX
         this.velocityY = velocityY
         this.velocityZ = velocityZ
-        maxAge = 200
+        maxAge = lifetime
         lastLastX = lastX
         lastLastY = lastY
         lastLastZ = lastZ
-        setSprite(spriteProvider)
+        setSprite(spriteProvider.getSprite(age, maxAge))
     }
 
     override fun tick() {
@@ -63,6 +68,7 @@ class SparkParticle(
         velocityX = if (collision.x == 0.0) -velocityX * bounceFactor else collision.x
         velocityY = if (collision.y == 0.0) -velocityY * bounceFactor else collision.y
         velocityZ = if (collision.z == 0.0) -velocityZ * bounceFactor else collision.z
+        setSprite(spriteProvider.getSprite(age, maxAge))
         super.tick()
     }
 
@@ -78,8 +84,9 @@ class SparkParticle(
             Vec3d(lastLastX, lastLastY, lastLastZ).lerp(Vec3d(lastX, lastY, lastZ), tickProgress.toDouble())
                 .subtract(camera.pos)
         val spanVector = renderLocalPos.subtract(renderLocalLastPos)
+        val speedSquared = spanVector.lengthSquared()
         val centerPos = renderLocalLastPos.lerp(renderLocalPos, 0.5)
-        val scaleVector = Vec3d(spanVector.length(), 1.0 / 16, 1.0 / 16)
+        val scaleVector = Vec3d(max(lengthFactor * speedSquared, sparkWidth), sparkWidth, sparkWidth)
         val rotation = Quaternionf().rotationTo(Vector3f(1f, 0f, 0f), spanVector.normalize().toVector3f())
         val minUv = Vec2f(minU, minV)
         val maxUv = Vec2f(maxU, maxV)
@@ -89,9 +96,17 @@ class SparkParticle(
             .apply(vertexConsumer, getBrightness(tickProgress), Colors.WHITE, minUv, maxUv)
     }
 
+    override fun getBrightness(tint: Float): Int {
+        val sparkBrightness: Int = ((age.toFloat() / maxAge) * 15).roundToInt()
+        val pos: BlockPos = BlockPos.ofFloored(x,y,z)
+        val blockLight: Int = world.getLightLevel(LightType.BLOCK, pos)
+        val skyLight: Int = world.getLightLevel(LightType.SKY, pos)
+        return LightmapTextureManager.pack(max(sparkBrightness, blockLight), skyLight)
+    }
+
     override fun getType(): ParticleTextureSheet = ParticleTextureSheet.PARTICLE_SHEET_OPAQUE
 
-    class Factory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
+    class LargeSparkFactory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
         override fun createParticle(
             parameters: SimpleParticleType?,
             world: ClientWorld,
@@ -102,18 +117,54 @@ class SparkParticle(
             velocityY: Double,
             velocityZ: Double
         ): Particle {
-            return SparkParticle(world, x, y, z, velocityX, velocityY, velocityZ, randomDoubleBetween(world.random, 0.2, 0.3), 1.0, spriteProvider)
+            return SparkParticle(
+                world,
+                x,
+                y,
+                z,
+                velocityX,
+                velocityY,
+                velocityZ,
+                randomDoubleBetween(world.random, 2.3, 2.4),
+                world.random.nextInt(20) + 100,
+                lengthFactor = 2.5f,
+                spriteProvider = spriteProvider
+            )
         }
+    }
 
+    class SmallSparkFactory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
+        override fun createParticle(
+            parameters: SimpleParticleType?,
+            world: ClientWorld,
+            x: Double,
+            y: Double,
+            z: Double,
+            velocityX: Double,
+            velocityY: Double,
+            velocityZ: Double
+        ): Particle {
+            return SparkParticle(
+                world,
+                x,
+                y,
+                z,
+                velocityX,
+                velocityY,
+                velocityZ,
+                randomDoubleBetween(world.random, 1.2, 1.3),
+                world.random.nextInt(10) + 50,
+                lengthFactor = 3.5f,
+                spriteProvider = spriteProvider
+            )
+        }
+    }
+
+    companion object {
         private fun randomDoubleBetween(random: Random, start: Double, end: Double): Double {
             val base = random.nextDouble()
             val diff = end - start
             return start + (base * diff)
         }
-    }
-
-
-    companion object {
-        private const val bounceFactor = 0.6
     }
 }

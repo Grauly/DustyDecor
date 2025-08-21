@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier
 object ModParticleTypes {
 
     val SPARK_PARTICLE_TYPE: ParticleType<SimpleParticleType> = registerParticle("spark", FabricParticleTypes.simple())
+    val SMALL_SPARK_PARTICLE_TYPE: ParticleType<SimpleParticleType> = registerParticle("small_spark", FabricParticleTypes.simple())
 
     private fun <T: ParticleEffect> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {
         return registerParticle(Identifier.of(DustyDecorMod.MODID, id), type)
