@@ -1,10 +1,15 @@
 package grauly.dustydecor.particle
 
+import com.mojang.blaze3d.systems.RenderSystem
+import grauly.dustydecor.DustyDecorMod
+import grauly.dustydecor.geometry.BiPlaneShape
 import grauly.dustydecor.geometry.PlaneCrossShape
+import grauly.dustydecor.geometry.PlaneShape
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.LightmapTextureManager
 import net.minecraft.client.render.VertexConsumer
+import net.minecraft.client.render.VertexRendering
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.entity.Entity
 import net.minecraft.particle.SimpleParticleType
@@ -16,7 +21,9 @@ import net.minecraft.util.math.random.Random
 import net.minecraft.world.LightType
 import org.joml.Quaternionf
 import org.joml.Vector3f
+import kotlin.math.PI
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.roundToInt
 
 /**
@@ -42,6 +49,8 @@ class SparkParticle(
     private var lastLastX = 0.0
     private var lastLastY = 0.0
     private var lastLastZ = 0.0
+    private var lastSpanVector = Vec3d(velocityX, velocityY, velocityZ)
+
     private val bounceFactor = 0.8
     private val sparkWidth: Double = sparkWidthPixels / 16
 
@@ -56,6 +65,8 @@ class SparkParticle(
         lastLastY = lastY
         lastLastZ = lastZ
         setSprite(spriteProvider.getSprite(age, maxAge))
+
+        gravityStrength = 0f
     }
 
     override fun tick() {
@@ -83,22 +94,109 @@ class SparkParticle(
         val renderLocalLastPos =
             Vec3d(lastLastX, lastLastY, lastLastZ).lerp(Vec3d(lastX, lastY, lastZ), tickProgress.toDouble())
                 .subtract(camera.pos)
+        //super.render(vertexConsumer, camera, quaternionf, tickProgress)
+        renderParticle(renderLocalPos, renderLocalLastPos, camera, vertexConsumer)
+    }
+
+    private fun renderParticle(
+        renderLocalPos: Vec3d,
+        renderLocalLastPos: Vec3d,
+        camera: Camera,
+        vertexConsumer: VertexConsumer
+    ) {
+        val centerPos = renderLocalLastPos.lerp(renderLocalPos, 0.5)
         val spanVector = renderLocalPos.subtract(renderLocalLastPos)
         val speedSquared = spanVector.lengthSquared()
-        val centerPos = renderLocalLastPos.lerp(renderLocalPos, 0.5)
         val scaleVector = Vec3d(max(lengthFactor * speedSquared, sparkWidth), sparkWidth, sparkWidth)
         val rotation = Quaternionf().rotationTo(Vector3f(1f, 0f, 0f), spanVector.normalize().toVector3f())
         val minUv = Vec2f(minU, minV)
         val maxUv = Vec2f(maxU, maxV)
 
+        renderPlaneParticle(
+            centerPos,
+            scaleVector,
+            rotation,
+            vertexConsumer,
+            camera
+        )
+    }
+
+    private fun renderCrossParticle(
+        centerPos: Vec3d,
+        scaleVector: Vec3d,
+        rotation: Quaternionf,
+        vertexConsumer: VertexConsumer,
+        camera: Camera? = null,
+    ) {
         PlaneCrossShape
             .getTransformed(centerPos, scaleVector, rotation)
-            .apply(vertexConsumer, getBrightness(tickProgress), Colors.WHITE, minUv, maxUv)
+            .apply(vertexConsumer, getBrightness(0f), -1, Vec2f(minU, minV), Vec2f(maxU, maxV))
+    }
+
+    private fun renderPlaneParticle(
+        centerPos: Vec3d,
+        scaleVector: Vec3d,
+        rotation: Quaternionf,
+        vertexConsumer: VertexConsumer,
+        camera: Camera
+    ) {
+        val baseVector = Vector3f(scaleVector.x.toFloat(), 0f, 0f).rotate(rotation).mul(0.5f)
+        renderParticle(centerPos.toVector3f().add(baseVector), centerPos.toVector3f().add(baseVector.negate()), camera, vertexConsumer)
+/*
+        val camRot = Quaternionf().rotateX((PI/2 - Math.toRadians(camera.pitch.toDouble())).toFloat())
+        PlaneShape
+            .getTransformed(centerPos, scaleVector, camRot.mul(rotation))
+            .apply(vertexConsumer, getBrightness(0f), -1, Vec2f(minU, minV), Vec2f(maxU, maxV))
+*/
+    }
+
+    private fun renderSimplerParticle(
+        renderLocalPos: Vec3d,
+        renderLocalLastPos: Vec3d,
+        camera: Camera,
+        vertexConsumer: VertexConsumer
+    ) {
+        val centerPos = renderLocalLastPos.lerp(renderLocalPos, 0.5)
+        var spanVector = renderLocalPos.subtract(renderLocalLastPos)
+        if (spanVector.lengthSquared() < sparkWidth.pow(2)) {
+            spanVector = spanVector.normalize().multiply(sparkWidth)
+        }
+        if (!spanVector.x.isFinite() || !spanVector.y.isFinite() || !spanVector.z.isFinite()) {
+            spanVector = this.lastSpanVector
+        }
+        val speedSquared = spanVector.lengthSquared()
+        val partialTargetLength = speedSquared * lengthFactor / 2
+        val cToPos = renderLocalPos.subtract(centerPos).normalize().multiply(partialTargetLength)
+        val cToLastPos = renderLocalLastPos.subtract(centerPos).normalize().multiply(partialTargetLength)
+        renderParticle(cToLastPos.toVector3f(), cToPos.toVector3f(), camera, vertexConsumer)
+        this.lastSpanVector = spanVector
+    }
+
+    private fun renderParticle(from: Vector3f, to: Vector3f, camera: Camera, vertexConsumer: VertexConsumer) {
+        val up = Vector3f(0f, 1f, 0f).rotate(camera.rotation)
+        val side = Vector3f(to).sub(from)
+        val cross = Vector3f(up).cross(side).normalize()
+/*
+        val fromToCamera = Vector3f(from).sub(camera.pos.toVector3f()).normalize()
+        if (cross.distanceSquared(fromToCamera) > Vector3f(cross).negate().distanceSquared(fromToCamera)) {
+            renderParticle(to, from, camera, vertexConsumer)
+            return
+        }
+*/
+        val camForward = Vector3f(-1f, 0f, 0f).rotate(camera.rotation)
+        val sparkUp = Vector3f(side).cross(camForward).normalize().mul((sparkWidth / 2).toFloat())
+        val light = getBrightness(0f)
+
+        vertexConsumer.vertex(Vector3f(from).add(Vector3f(sparkUp).negate())).light(light).color(Colors.WHITE).texture(maxU, maxV)
+        vertexConsumer.vertex(Vector3f(from).add(sparkUp)).light(light).color(Colors.WHITE).texture(maxU, minV)
+        vertexConsumer.vertex(Vector3f(to).add(sparkUp)).light(light).color(Colors.WHITE).texture(minU, minV)
+        vertexConsumer.vertex(Vector3f(to).add(Vector3f(sparkUp).negate())).light(light).color(Colors.WHITE).texture(minU, maxV)
+
     }
 
     override fun getBrightness(tint: Float): Int {
         val sparkBrightness: Int = ((age.toFloat() / maxAge) * 15).roundToInt()
-        val pos: BlockPos = BlockPos.ofFloored(x,y,z)
+        val pos: BlockPos = BlockPos.ofFloored(x, y, z)
         val blockLight: Int = world.getLightLevel(LightType.BLOCK, pos)
         val skyLight: Int = world.getLightLevel(LightType.SKY, pos)
         return LightmapTextureManager.pack(max(sparkBrightness, blockLight), skyLight)
