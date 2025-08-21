@@ -22,15 +22,11 @@ class BlockSparkEmitterParticle(
 
     override fun tick() {
         val pos: BlockPos = BlockPos.ofFloored(x, y, z)
-        val collisionShape: VoxelShape = world.getBlockState(pos).getCollisionShape(world, pos).simplify()
-        val faces = mutableListOf<Face>()
-        collisionShape.forEachBox { minX, minY, minZ, maxX, maxY, maxZ ->
-            faces.add(Face(Vec3d(minX, minY, minZ), Vec3d(minX, maxY, maxZ)))
-            faces.add(Face(Vec3d(minX, minY, minZ), Vec3d(maxX, minY, maxZ)))
-            faces.add(Face(Vec3d(minX, minY, minZ), Vec3d(maxX, maxY, minZ)))
-            faces.add(Face(Vec3d(maxX, minY, minZ), Vec3d(maxX, maxY, maxZ)))
-            faces.add(Face(Vec3d(minX, maxY, minZ), Vec3d(maxX, maxY, maxZ)))
-            faces.add(Face(Vec3d(minX, minY, maxZ), Vec3d(maxX, maxY, maxZ)))
+        val collisionShape: VoxelShape = world.getBlockState(pos).getCollisionShape(world, pos)
+        val faces = getFaceRepresentation(collisionShape)
+        if (faces.isEmpty()) {
+            this.markDead()
+            return
         }
         val faceAreaMap: MutableMap<Face, Double> = faces.associateWith { it.area() }.toMutableMap()
         val totalSurface: Double = faceAreaMap.values.reduce { acc, elem -> acc + elem }
@@ -38,7 +34,7 @@ class BlockSparkEmitterParticle(
         for (i in 1..amount) {
             val face = faceAreaMap.filter { it.value > 0.0 }.entries.random().key
             faceAreaMap[face]?.minus(areaPerParticle)
-            val point = face.randomPointOn(random)
+            val point = face.randomPointOn(random).add(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
             val xOffset = (random.nextDouble() - 0.5) * spread
             val yOffset = (random.nextDouble() - 0.5) * spread
             val zOffset = (random.nextDouble() - 0.5) * spread
@@ -48,6 +44,22 @@ class BlockSparkEmitterParticle(
             )
         }
         markDead()
+    }
+
+    private fun getFaceRepresentation(shape: VoxelShape): List<Face> {
+        val lookup = SHAPE_FACE_CACHE[shape]
+        if (lookup != null) return lookup
+        val faces = mutableListOf<Face>()
+        shape.forEachBox { minX, minY, minZ, maxX, maxY, maxZ ->
+            faces.add(Face(Vec3d(minX, minY, minZ), Vec3d(minX, maxY, maxZ)))
+            faces.add(Face(Vec3d(minX, minY, minZ), Vec3d(maxX, minY, maxZ)))
+            faces.add(Face(Vec3d(minX, minY, minZ), Vec3d(maxX, maxY, minZ)))
+            faces.add(Face(Vec3d(maxX, minY, minZ), Vec3d(maxX, maxY, maxZ)))
+            faces.add(Face(Vec3d(minX, maxY, minZ), Vec3d(maxX, maxY, maxZ)))
+            faces.add(Face(Vec3d(minX, minY, maxZ), Vec3d(maxX, maxY, maxZ)))
+        }
+        SHAPE_FACE_CACHE[shape] = faces
+        return faces
     }
 
     private class Face(
@@ -70,4 +82,7 @@ class BlockSparkEmitterParticle(
         }
     }
 
+    companion object {
+        private val SHAPE_FACE_CACHE: MutableMap<VoxelShape, List<Face>> = mutableMapOf()
+    }
 }
