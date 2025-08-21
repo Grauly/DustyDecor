@@ -31,29 +31,4 @@ class SparkEmitterParticle(
         }
         this.markDead()
     }
-
-    class Factory(spriteProvider: SpriteProvider) : ParticleFactory<SparkEmitterParticleEffect> {
-        override fun createParticle(
-            parameters: SparkEmitterParticleEffect,
-            world: ClientWorld,
-            x: Double,
-            y: Double,
-            z: Double,
-            velocityX: Double,
-            velocityY: Double,
-            velocityZ: Double
-        ): Particle {
-            return SparkEmitterParticle(
-                world,
-                x,
-                y,
-                z,
-                velocityX,
-                velocityY,
-                velocityZ,
-                parameters.spread,
-                parameters.amount
-            )
-        }
-    }
 }
