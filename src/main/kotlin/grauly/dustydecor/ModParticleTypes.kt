@@ -1,5 +1,6 @@
 package grauly.dustydecor
 
+import grauly.dustydecor.particle.SparkEmitterParticleEffect
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes
 import net.minecraft.particle.ParticleEffect
 import net.minecraft.particle.ParticleType
@@ -10,8 +11,9 @@ import net.minecraft.util.Identifier
 
 object ModParticleTypes {
 
-    val SPARK_PARTICLE_TYPE: ParticleType<SimpleParticleType> = registerParticle("spark", FabricParticleTypes.simple())
-    val SMALL_SPARK_PARTICLE_TYPE: ParticleType<SimpleParticleType> = registerParticle("small_spark", FabricParticleTypes.simple())
+    val SPARK_PARTICLE_TYPE: SimpleParticleType = registerSimple("spark", FabricParticleTypes.simple())
+    val SMALL_SPARK_PARTICLE_TYPE: SimpleParticleType = registerSimple("small_spark", FabricParticleTypes.simple())
+    val SPARK_EMITTER_PARTICLE_TYPE: ParticleType<SparkEmitterParticleEffect> = registerParticle("spark_emitter", FabricParticleTypes.complex(SparkEmitterParticleEffect.CODEC, SparkEmitterParticleEffect.PACKET_CODEC))
 
     private fun <T: ParticleEffect> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {
         return registerParticle(Identifier.of(DustyDecorMod.MODID, id), type)
@@ -19,6 +21,10 @@ object ModParticleTypes {
 
     private fun <T: ParticleEffect> registerParticle(id: Identifier, type: ParticleType<T>): ParticleType<T> {
         return Registry.register(Registries.PARTICLE_TYPE, id, type)
+    }
+
+    private fun registerSimple(id: String, type: SimpleParticleType): SimpleParticleType {
+        return Registry.register(Registries.PARTICLE_TYPE, Identifier.of(DustyDecorMod.MODID, id), type)
     }
 
     fun init() {
