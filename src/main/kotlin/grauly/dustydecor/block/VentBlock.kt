@@ -4,6 +4,7 @@ import grauly.dustydecor.ModBlockTags
 import grauly.dustydecor.ModBlocks
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
+import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.util.math.AxisRotation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -54,6 +55,8 @@ class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBound
     ): VoxelShape {
         return getOutlineShape(state, world, pos, context)
     }
+
+    override fun canPathfindThrough(state: BlockState?, type: NavigationType?): Boolean = false
 
     companion object {
         val SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()

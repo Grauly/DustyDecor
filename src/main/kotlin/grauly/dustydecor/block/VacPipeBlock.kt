@@ -6,6 +6,7 @@ import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
+import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.sound.SoundCategory
@@ -204,6 +205,8 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         super.appendProperties(builder)
         builder.add(*windowStates.toTypedArray(), SHOULD_HAVE_WINDOW)
     }
+
+    override fun canPathfindThrough(state: BlockState?, type: NavigationType?): Boolean = false
 
     companion object {
         val windowStates: List<BooleanProperty> = listOf("a_window", "b_window").map { BooleanProperty.of(it) }

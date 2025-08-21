@@ -1,6 +1,7 @@
 package grauly.dustydecor.block
 
 import net.minecraft.block.BlockState
+import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
 import net.minecraft.util.shape.VoxelShape
@@ -10,6 +11,8 @@ class TallCageLampBlock(settings: Settings?) : FacingLampBlock(settings) {
     override fun getShape(state: BlockState): VoxelShape {
         return SHAPES[state.get(Properties.FACING).opposite]!!
     }
+
+    override fun canPathfindThrough(state: BlockState?, type: NavigationType?): Boolean = false
 
     companion object {
         val SHAPES: Map<Direction, VoxelShape> = VoxelShapes.createFacingShapeMap(
