@@ -5,6 +5,7 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.geometry.BiPlaneShape
 import grauly.dustydecor.geometry.PlaneCrossShape
 import grauly.dustydecor.geometry.PlaneShape
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.LightmapTextureManager
@@ -13,14 +14,17 @@ import net.minecraft.client.render.VertexRendering
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.entity.Entity
 import net.minecraft.particle.SimpleParticleType
+import net.minecraft.text.Text
 import net.minecraft.util.Colors
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.RotationCalculator
 import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.random.Random
 import net.minecraft.world.LightType
 import org.joml.Quaternionf
 import org.joml.Vector3f
+import java.text.NumberFormat
 import kotlin.math.PI
 import kotlin.math.max
 import kotlin.math.pow
@@ -65,8 +69,6 @@ class SparkParticle(
         lastLastY = lastY
         lastLastZ = lastZ
         setSprite(spriteProvider.getSprite(age, maxAge))
-
-        gravityStrength = 0f
     }
 
     override fun tick() {
@@ -174,7 +176,7 @@ class SparkParticle(
 
     private fun renderParticle(from: Vector3f, to: Vector3f, camera: Camera, vertexConsumer: VertexConsumer) {
         val up = Vector3f(0f, 1f, 0f).rotate(camera.rotation)
-        val side = Vector3f(to).sub(from)
+        val side = Vector3f(to).sub(from).normalize()
         val cross = Vector3f(up).cross(side).normalize()
 /*
         val fromToCamera = Vector3f(from).sub(camera.pos.toVector3f()).normalize()
@@ -183,7 +185,16 @@ class SparkParticle(
             return
         }
 */
-        val camForward = Vector3f(-1f, 0f, 0f).rotate(camera.rotation)
+        val camForward = Vector3f(to).lerp(from, 0.5f)
+
+/*
+        val camForward = Vector3f(0f, 0f, -1f).rotateX(camera.pitch * PI.toFloat() / 180).rotateY(camera.yaw * PI.toFloat() / 180).normalize()
+        MinecraftClient.getInstance().player?.sendMessage(
+            Text.literal("${camera.horizontalPlane.toString(NumberFormat.getInstance())}")
+            , true
+        )
+*/
+        //MinecraftClient.getInstance().player?.sendMessage(Text.literal("${camForward.toString(NumberFormat.getInstance())} @ ${camForward.length()}"), true)
         val sparkUp = Vector3f(side).cross(camForward).normalize().mul((sparkWidth / 2).toFloat())
         val light = getBrightness(0f)
 
@@ -192,6 +203,11 @@ class SparkParticle(
         vertexConsumer.vertex(Vector3f(to).add(sparkUp)).light(light).color(Colors.WHITE).texture(minU, minV)
         vertexConsumer.vertex(Vector3f(to).add(Vector3f(sparkUp).negate())).light(light).color(Colors.WHITE).texture(minU, maxV)
 
+
+        vertexConsumer.vertex(Vector3f(to).add(Vector3f(sparkUp).negate())).light(light).color(Colors.WHITE).texture(minU, maxV)
+        vertexConsumer.vertex(Vector3f(to).add(sparkUp)).light(light).color(Colors.WHITE).texture(minU, minV)
+        vertexConsumer.vertex(Vector3f(from).add(sparkUp)).light(light).color(Colors.WHITE).texture(maxU, minV)
+        vertexConsumer.vertex(Vector3f(from).add(Vector3f(sparkUp).negate())).light(light).color(Colors.WHITE).texture(maxU, maxV)
     }
 
     override fun getBrightness(tint: Float): Int {
