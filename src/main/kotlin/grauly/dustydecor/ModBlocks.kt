@@ -35,6 +35,7 @@ object ModBlocks {
             id,
             Settings.copy(Blocks.LANTERN)
                 .luminance(LightingFixtureBlock.getLightingFunction(3, 15))
+                .ticksRandomly()
         ) as TallCageLampBlock)
     }
 
@@ -45,6 +46,7 @@ object ModBlocks {
             id,
             Settings.copy(Blocks.LANTERN)
                 .luminance(LightingFixtureBlock.getLightingFunction(3, 15))
+                .ticksRandomly()
         ) as WideCageLampBlock)
     }
 

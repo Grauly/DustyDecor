@@ -101,9 +101,13 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
         super.onBlockBreakStart(state, world, pos, player)
     }
 
-    override fun randomDisplayTick(state: BlockState, world: World, pos: BlockPos, random: Random) {
-        if (random.nextInt(20 * 60) != 1) return
+    override fun randomTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
+        if (!state.get(BROKEN)) return
         spark(state, pos, world)
+    }
+
+    override fun hasRandomTicks(state: BlockState): Boolean {
+        return super.hasRandomTicks(state) && state.get(BROKEN)
     }
 
     protected open fun changeOnState(shouldBeOn: Boolean, state: BlockState, pos: BlockPos, world: World): Boolean {
