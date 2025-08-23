@@ -17,7 +17,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "down"
+        "facing": "down",
+        "rotated": "true"
       }
     },
     {
@@ -89,7 +90,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "down"
+        "facing": "down",
+        "rotated": "false"
       }
     },
     {
@@ -159,7 +161,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "up"
+        "facing": "up",
+        "rotated": "true"
       }
     },
     {
@@ -225,7 +228,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "up"
+        "facing": "up",
+        "rotated": "false"
       }
     },
     {
@@ -293,7 +297,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "north"
+        "facing": "north",
+        "rotated": "true"
       }
     },
     {
@@ -365,7 +370,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "north"
+        "facing": "north",
+        "rotated": "false"
       }
     },
     {
@@ -437,7 +443,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "south"
+        "facing": "south",
+        "rotated": "true"
       }
     },
     {
@@ -509,7 +516,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "south"
+        "facing": "south",
+        "rotated": "false"
       }
     },
     {
@@ -583,7 +591,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "west"
+        "facing": "west",
+        "rotated": "true"
       }
     },
     {
@@ -661,7 +670,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "west"
+        "facing": "west",
+        "rotated": "false"
       }
     },
     {
@@ -739,7 +749,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "east"
+        "facing": "east",
+        "rotated": "true"
       }
     },
     {
@@ -817,7 +828,8 @@
       },
       "when": {
         "broken": "true",
-        "facing": "east"
+        "facing": "east",
+        "rotated": "false"
       }
     },
     {

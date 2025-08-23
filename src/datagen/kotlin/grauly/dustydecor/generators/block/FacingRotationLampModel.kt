@@ -7,6 +7,7 @@ import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.BlockStateModelGenerator
 import net.minecraft.client.data.MultipartBlockModelDefinitionCreator
 import net.minecraft.client.render.model.json.MultipartModelConditionBuilder
+import net.minecraft.datafixer.fix.ChunkPalettedStorageFix.Facing
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
 
@@ -26,7 +27,8 @@ class FacingRotationLampModel(lamps: List<FacingRotationLampBlock>, lampPrefix: 
                 creator.with(
                     MultipartModelConditionBuilder()
                         .put(Properties.FACING, direction)
-                        .put(LightingFixtureBlock.BROKEN, true),
+                        .put(LightingFixtureBlock.BROKEN, true)
+                        .put(FacingRotationLampBlock.ROTATED, rotated),
                     (if (rotated) BROKEN_LAMP_R else BROKEN_LAMP)
                         .apply(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
                 )
