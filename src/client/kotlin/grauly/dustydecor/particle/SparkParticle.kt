@@ -18,6 +18,7 @@ import org.joml.Vector3f
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.roundToInt
+import kotlin.math.sqrt
 
 /**
  * Implemented with very generous lookups from https://github.com/Enchanted-Games/block-place-particles
@@ -67,29 +68,47 @@ class SparkParticle(
         lastLastZ = lastZ
 
         var velocity = Vec3d(velocityX, velocityY, velocityZ)
+        val speedSquared = velocity.lengthSquared()
         val collision = Entity.adjustMovementForCollisions(null, velocity, boundingBox, world, listOf())
         velocityX = if (collision.x == 0.0) -velocityX * bounceFactor else collision.x
         velocityY = if (collision.y == 0.0) -velocityY * bounceFactor else collision.y
         velocityZ = if (collision.z == 0.0) -velocityZ * bounceFactor else collision.z
         velocity = Vec3d(velocityX, velocityY, velocityZ)
+        if (speedSquared < velocity.lengthSquared()) {
+            val speed = sqrt(speedSquared)
+            velocity = velocity.normalize().multiply(speed)
+            velocityX = velocity.x
+            velocityY = velocity.y
+            velocityZ = velocity.z
+        }
+        if (speedSquared > 0.8) {
+            split(velocity)
+            velocityX *= 0.5
+            velocityY *= 0.5
+            velocityZ *= 0.5
+        }
         if (collision.lengthSquared() != 0.0 && velocity.lengthSquared() > 0.01 && random.nextDouble() < .05f) {
-            val velocitySpread = velocity.length() * 0.6
-            world.addParticleClient(ModParticleTypes.SPARK_FLASH, x, y, z, velocityX, velocityY, velocityZ)
-            if (!hasSplit) {
-                hasSplit = true
-                world.addParticleClient(
-                    ModParticleTypes.SMALL_SPARK_PARTICLE_TYPE,
-                    x,
-                    y,
-                    z,
-                    velocityX * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
-                    velocityY * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
-                    velocityZ * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
-                )
-            }
+            split(velocity)
         }
         setSprite(spriteProvider.getSprite(age, maxAge))
         super.tick()
+    }
+
+    private fun split(velocity: Vec3d) {
+        world.addParticleClient(ModParticleTypes.SPARK_FLASH, x, y, z, velocityX, velocityY, velocityZ)
+        if (!hasSplit) {
+            val velocitySpread = velocity.length() * 0.6
+            hasSplit = true
+            world.addParticleClient(
+                ModParticleTypes.SMALL_SPARK_PARTICLE_TYPE,
+                x,
+                y,
+                z,
+                velocityX * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
+                velocityY * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
+                velocityZ * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
+            )
+        }
     }
 
     override fun render(
