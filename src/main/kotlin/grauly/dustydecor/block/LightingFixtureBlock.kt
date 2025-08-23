@@ -112,7 +112,7 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
 
     protected open fun changeOnState(shouldBeOn: Boolean, state: BlockState, pos: BlockPos, world: World): Boolean {
         val isLit = state.get(LIT)
-        val isBroken = state.get(LIT)
+        val isBroken = state.get(BROKEN)
         if (isBroken) { //Broken lamps can turn off, but no longer on
             spark(state, pos, world)
             if (!shouldBeOn && isLit) {
