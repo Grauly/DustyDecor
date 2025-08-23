@@ -1,24 +1,27 @@
 package grauly.dustydecor.particle
 
 import grauly.dustydecor.ModParticleTypes
+import net.minecraft.block.ShapeContext
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.LightmapTextureManager
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.world.ClientWorld
-import net.minecraft.entity.Entity
 import net.minecraft.particle.SimpleParticleType
 import net.minecraft.util.Colors
+import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
+import net.minecraft.util.math.Vec3i
 import net.minecraft.util.math.random.Random
 import net.minecraft.world.LightType
+import net.minecraft.world.RaycastContext
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.roundToInt
-import kotlin.math.sqrt
 
 /**
  * Implemented with very generous lookups from https://github.com/Enchanted-Games/block-place-particles
@@ -40,73 +43,86 @@ class SparkParticle(
     private val spriteProvider: SpriteProvider
 ) :
     SpriteBillboardParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ) {
-    private var lastLastX = 0.0
-    private var lastLastY = 0.0
-    private var lastLastZ = 0.0
+    private var pos: Vec3d = Vec3d(x,y,z)
+    private var lastPos: Vec3d = pos
+    private var lastLastPos: Vec3d = lastPos
+    private var velocity: Vec3d = Vec3d(velocityX,velocityY,velocityZ)
 
-    private val bounceFactor = 0.8
+    private val bounceFactor = 0.6
     private val sparkWidth: Double = sparkWidthPixels / 16
     private var hasSplit = false
+    private var lastBouncedBlockPos = BlockPos.ZERO
 
     init {
         this.gravityStrength = gravity.toFloat()
         this.velocityMultiplier = drag.toFloat()
-        this.velocityX = velocityX
-        this.velocityY = velocityY
-        this.velocityZ = velocityZ
         maxAge = lifetime
-        lastLastX = lastX
-        lastLastY = lastY
-        lastLastZ = lastZ
         setSprite(spriteProvider.getSprite(age, maxAge))
         scale = 0.9f + random.nextFloat() * 0.2f
     }
 
     override fun tick() {
-        lastLastX = lastX
-        lastLastY = lastY
-        lastLastZ = lastZ
-
-        var velocity = Vec3d(velocityX, velocityY, velocityZ)
-        val speedSquared = velocity.lengthSquared()
-        val collision = Entity.adjustMovementForCollisions(null, velocity, boundingBox, world, listOf())
-        velocityX = if (collision.x == 0.0) -velocityX * bounceFactor else collision.x
-        velocityY = if (collision.y == 0.0) -velocityY * bounceFactor else collision.y
-        velocityZ = if (collision.z == 0.0) -velocityZ * bounceFactor else collision.z
-        velocity = Vec3d(velocityX, velocityY, velocityZ)
-        if (speedSquared < velocity.lengthSquared()) {
-            val speed = sqrt(speedSquared)
-            velocity = velocity.normalize().multiply(speed)
-            velocityX = velocity.x
-            velocityY = velocity.y
-            velocityZ = velocity.z
+        if (this.dead) return
+        if (age++ > maxAge) {
+            this.markDead()
+            return
         }
-        if (speedSquared > 0.8) {
-            split(velocity)
-            velocityX *= 0.5
-            velocityY *= 0.5
-            velocityZ *= 0.5
+        lastLastPos = lastPos
+        lastPos = pos
+        velocity = velocity.multiply(velocityMultiplier.toDouble()).add(0.0, -0.04 * gravityStrength, 0.0)
+        var prospectivePos = pos.add(velocity)
+        val hit = world.raycast(RaycastContext(
+            pos, prospectivePos, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, ShapeContext.absent()
+        ))
+        if (hit.type != HitResult.Type.MISS) {
+            if (lastBouncedBlockPos == hit.blockPos) {
+                //bounced again too fast in same block, presumed in block
+                this.markDead()
+                return
+            }
+            lastBouncedBlockPos = hit.blockPos
+            val multVector = when (hit.side.axis) {
+                Direction.Axis.X -> Vec3d(-1.0, 1.0, 1.0)
+                Direction.Axis.Y -> Vec3d(1.0, -1.0, 1.0)
+                Direction.Axis.Z -> Vec3d(1.0, 1.0, -1.0)
+                null -> Vec3d(1.0,1.0,1.0)
+            }
+            val distanceToBounce = hit.pos.subtract(pos).length()
+            velocity = velocity.multiply(multVector).multiply(bounceFactor)
+            val speed = velocity.length()
+            val afterBounceLength = speed - distanceToBounce
+            prospectivePos = hit.pos.add(velocity.normalize().multiply(afterBounceLength))
+            onBounce()
+        } else {
+            lastBouncedBlockPos = BlockPos.ZERO
         }
-        if (collision.lengthSquared() != 0.0 && velocity.lengthSquared() > 0.01 && random.nextDouble() < .05f) {
-            split(velocity)
-        }
+        pos = prospectivePos
         setSprite(spriteProvider.getSprite(age, maxAge))
-        super.tick()
     }
 
-    private fun split(velocity: Vec3d) {
-        world.addParticleClient(ModParticleTypes.SPARK_FLASH, x, y, z, velocityX, velocityY, velocityZ)
+    private fun onBounce() {
+        val randomNum = random.nextInt(10)
+        if (randomNum < 2) {
+            world.addParticleClient(ModParticleTypes.SPARK_FLASH, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z)
+        }
+        if (randomNum < 1) {
+            split()
+        }
+    }
+
+    private fun split() {
+        world.addParticleClient(ModParticleTypes.SPARK_FLASH, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z)
         if (!hasSplit) {
             val velocitySpread = velocity.length() * 0.6
             hasSplit = true
             world.addParticleClient(
                 ModParticleTypes.SMALL_SPARK_PARTICLE_TYPE,
-                x,
-                y,
-                z,
-                velocityX * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
-                velocityY * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
-                velocityZ * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
+                pos.x,
+                pos.y,
+                pos.z,
+                velocity.x * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
+                velocity.y * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
+                velocity.z * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
             )
         }
     }
@@ -118,9 +134,9 @@ class SparkParticle(
         tickProgress: Float
     ) {
         val renderLocalPos =
-            Vec3d(lastX, lastY, lastZ).lerp(Vec3d(x, y, z), tickProgress.toDouble()).subtract(camera.pos)
+            lastPos.lerp(pos, tickProgress.toDouble()).subtract(camera.pos)
         val renderLocalLastPos =
-            Vec3d(lastLastX, lastLastY, lastLastZ).lerp(Vec3d(lastX, lastY, lastZ), tickProgress.toDouble())
+            lastLastPos.lerp(lastPos, tickProgress.toDouble())
                 .subtract(camera.pos)
         renderParticle(renderLocalPos, renderLocalLastPos, vertexConsumer, tickProgress)
     }
@@ -192,7 +208,7 @@ class SparkParticle(
 
     override fun getBrightness(tint: Float): Int {
         val sparkBrightness: Int = ((age.toFloat() / maxAge) * 15).roundToInt()
-        val pos: BlockPos = BlockPos.ofFloored(x, y, z)
+        val pos: BlockPos = BlockPos.ofFloored(pos)
         val blockLight: Int = world.getLightLevel(LightType.BLOCK, pos)
         val skyLight: Int = world.getLightLevel(LightType.SKY, pos)
         return LightmapTextureManager.pack(max(sparkBrightness, blockLight), skyLight)
