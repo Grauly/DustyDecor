@@ -1,6 +1,8 @@
 package grauly.dustydecor.block
 
 import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.extensions.spawnParticle
+import grauly.dustydecor.particle.SparkEmitterParticleEffect
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -11,6 +13,7 @@ import net.minecraft.fluid.FluidState
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.item.ItemStack
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
@@ -27,7 +30,6 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import net.minecraft.world.block.WireOrientation
 import net.minecraft.world.tick.ScheduledTickView
-import java.util.function.ToIntFunction
 
 abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Waterloggable {
 
@@ -99,6 +101,11 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
         super.onBlockBreakStart(state, world, pos, player)
     }
 
+    override fun randomDisplayTick(state: BlockState, world: World, pos: BlockPos, random: Random) {
+        if (random.nextInt(20 * 60) != 1) return
+        spark(state, pos, world)
+    }
+
     protected open fun changeOnState(shouldBeOn: Boolean, state: BlockState, pos: BlockPos, world: World): Boolean {
         val isLit = state.get(LIT)
         val isBroken = state.get(LIT)
@@ -122,9 +129,11 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
     }
 
     protected open fun spark(state: BlockState, pos: BlockPos, world: World) {
-        //TODO: check for server
-        //TODO: implement particles
         //TODO: implement sounds
+        if (world !is ServerWorld) return
+        val sparkEffect = SparkEmitterParticleEffect(0.1, 12, true)
+        val sparkDirection = state.get(Properties.FACING)
+        world.spawnParticle(sparkEffect, pos.toCenterPos(), sparkDirection.doubleVector, 0.4)
     }
 
     protected open fun breakFixture(state: BlockState, pos: BlockPos, world: World): Boolean {
@@ -206,7 +215,7 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
         val INVERTED: BooleanProperty = BooleanProperty.of("inverted")
         val BROKEN: BooleanProperty = BooleanProperty.of("broken")
         fun getLightingFunction(broken: Int, active: Int): (BlockState) -> Int {
-            return lambda@{ state:BlockState ->
+            return lambda@{ state: BlockState ->
                 if (state.get(LIT) == state.get(INVERTED)) return@lambda 0
                 if (state.get(BROKEN)) return@lambda broken
                 return@lambda active
