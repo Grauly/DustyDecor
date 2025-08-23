@@ -39,7 +39,7 @@ class BlockSparkEmitterParticle(
             val yOffset = (random.nextDouble() - 0.5) * spread
             val zOffset = (random.nextDouble() - 0.5) * spread
             world.addParticleClient(
-                if (random.nextDouble() > 0.4) ModParticleTypes.SPARK_PARTICLE_TYPE else ModParticleTypes.SMALL_SPARK_PARTICLE_TYPE,
+                if (random.nextDouble() > 0.4) ModParticleTypes.SPARK_PARTICLE else ModParticleTypes.SMALL_SPARK_PARTICLE,
                 point.x, point.y, point.z, xDir + xOffset, yDir + yOffset, zDir + zOffset
             )
         }

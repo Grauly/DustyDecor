@@ -13,7 +13,6 @@ import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
-import net.minecraft.util.math.Vec3i
 import net.minecraft.util.math.random.Random
 import net.minecraft.world.LightType
 import net.minecraft.world.RaycastContext
@@ -116,7 +115,7 @@ class SparkParticle(
             val velocitySpread = velocity.length() * 0.6
             hasSplit = true
             world.addParticleClient(
-                ModParticleTypes.SMALL_SPARK_PARTICLE_TYPE,
+                ModParticleTypes.SMALL_SPARK_PARTICLE,
                 pos.x,
                 pos.y,
                 pos.z,

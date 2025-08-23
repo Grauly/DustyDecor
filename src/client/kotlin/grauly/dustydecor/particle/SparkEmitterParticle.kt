@@ -2,9 +2,6 @@ package grauly.dustydecor.particle
 
 import grauly.dustydecor.ModParticleTypes
 import net.minecraft.client.particle.NoRenderParticle
-import net.minecraft.client.particle.Particle
-import net.minecraft.client.particle.ParticleFactory
-import net.minecraft.client.particle.SpriteProvider
 import net.minecraft.client.world.ClientWorld
 
 class SparkEmitterParticle(
@@ -25,7 +22,7 @@ class SparkEmitterParticle(
             val yOffset = (random.nextDouble() - 0.5) * spread
             val zOffset = (random.nextDouble() - 0.5) * spread
             world.addParticleClient(
-                if (random.nextDouble() > 0.4) ModParticleTypes.SPARK_PARTICLE_TYPE else ModParticleTypes.SMALL_SPARK_PARTICLE_TYPE,
+                if (random.nextDouble() > 0.4) ModParticleTypes.SPARK_PARTICLE else ModParticleTypes.SMALL_SPARK_PARTICLE,
                 x, y, z, xDir + xOffset, yDir + yOffset, zDir + zOffset
             )
         }

@@ -2,7 +2,6 @@ package grauly.dustydecor.particle
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.OptionalFieldCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.ModParticleTypes
 import io.netty.buffer.ByteBuf
@@ -12,7 +11,7 @@ import net.minecraft.particle.ParticleEffect
 import net.minecraft.particle.ParticleType
 
 class SparkEmitterParticleEffect(val spread: Double, val amount: Int = 6, val block: Boolean = false) : ParticleEffect {
-    override fun getType(): ParticleType<*> = ModParticleTypes.SPARK_EMITTER_PARTICLE_TYPE
+    override fun getType(): ParticleType<*> = ModParticleTypes.SPARK_EMITTER_PARTICLE
 
     companion object {
         val CODEC: MapCodec<SparkEmitterParticleEffect> = RecordCodecBuilder.mapCodec {
