@@ -1,5 +1,6 @@
 package grauly.dustydecor.particle
 
+import grauly.dustydecor.ModParticleTypes
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.LightmapTextureManager
@@ -15,6 +16,7 @@ import net.minecraft.world.LightType
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.roundToInt
 
 /**
@@ -43,6 +45,7 @@ class SparkParticle(
 
     private val bounceFactor = 0.8
     private val sparkWidth: Double = sparkWidthPixels / 16
+    private var hasSplit = false
 
     init {
         this.gravityStrength = gravity.toFloat()
@@ -63,11 +66,28 @@ class SparkParticle(
         lastLastY = lastY
         lastLastZ = lastZ
 
-        val velocity = Vec3d(velocityX, velocityY, velocityZ)
+        var velocity = Vec3d(velocityX, velocityY, velocityZ)
         val collision = Entity.adjustMovementForCollisions(null, velocity, boundingBox, world, listOf())
         velocityX = if (collision.x == 0.0) -velocityX * bounceFactor else collision.x
         velocityY = if (collision.y == 0.0) -velocityY * bounceFactor else collision.y
         velocityZ = if (collision.z == 0.0) -velocityZ * bounceFactor else collision.z
+        velocity = Vec3d(velocityX, velocityY, velocityZ)
+        if (collision.lengthSquared() != 0.0 && velocity.lengthSquared() > 0.01 && random.nextDouble() < .05f) {
+            val velocitySpread = velocity.length() * 0.6
+            world.addParticleClient(ModParticleTypes.SPARK_FLASH, x, y, z, velocityX, velocityY, velocityZ)
+            if (!hasSplit) {
+                hasSplit = true
+                world.addParticleClient(
+                    ModParticleTypes.SMALL_SPARK_PARTICLE_TYPE,
+                    x,
+                    y,
+                    z,
+                    velocityX * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
+                    velocityY * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
+                    velocityZ * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
+                )
+            }
+        }
         setSprite(spriteProvider.getSprite(age, maxAge))
         super.tick()
     }
