@@ -105,6 +105,7 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
 
     override fun randomTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
         if (!state.get(BROKEN)) return
+        if (random.nextInt(40) != 1) return
         spark(state, pos, world)
     }
 
