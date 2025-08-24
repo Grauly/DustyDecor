@@ -15,5 +15,6 @@ object DustyDecorMod : ModInitializer {
         ModComponentTypes.init()
         ModTooltips.init()
         ModParticleTypes.init()
+        ModBlockEntityTypes.init()
     }
 }
