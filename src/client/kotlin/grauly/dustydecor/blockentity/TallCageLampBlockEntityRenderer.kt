@@ -1,6 +1,8 @@
 package grauly.dustydecor.blockentity
 
 import grauly.dustydecor.DustyDecorMod
+import grauly.dustydecor.geometry.AlertBeamsShape
+import grauly.dustydecor.geometry.BacksideBeamShape
 import grauly.dustydecor.geometry.BiPlaneShape
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.RenderLayer
@@ -38,16 +40,31 @@ class TallCageLampBlockEntityRenderer(
                 .rotationZ((PI / 2).toFloat())
                 .mul(Quaternionf().rotateX((time * rotationPerTick).toFloat()))
                 .mul(Quaternionf().rotateY((PI/2).toFloat()))
+        val beam = BacksideBeamShape(
+            1.0,
+            4.0/16,
+            6.0/16,
+            8.0/16,
+            10.0/16
+        )
         orderedRenderCommandQueue.submitCustom(
             matrices,
-            RenderLayer.getEntityCutout(Identifier.of(DustyDecorMod.MODID, "textures/block/cage_lamp_beam.png"))
+            RenderLayer.getBeaconBeam(Identifier.of(DustyDecorMod.MODID, "textures/block/cage_lamp_beam.png"), true)
         ) { matrixStack, vertexConsumer ->
+            AlertBeamsShape
+                .getTransformed(entity.pos.toCenterPos().subtract(cameraPos).add(0.0, -3/16.0, 0.0), rotation = betterRotation)
+                .apply(vertexConsumer, Vec2f(0f, 0f), Vec2f(1f, 1f)) {
+                    it.color(entity.color).light(light).normal(0f, 1f, 0f).overlay(OverlayTexture.DEFAULT_UV)
+                }
+/*
             BiPlaneShape.getTransformed(entity.pos.toCenterPos().subtract(cameraPos).add(0.0, -3/16.0, 0.0), rotation = betterRotation)
                 .apply(vertexConsumer, Vec2f(0f, 0f), Vec2f(1f, 1f)) {
                     it.color(entity.color).light(light).normal(0f, 1f, 0f).overlay(OverlayTexture.DEFAULT_UV)
                 }
+*/
         }
         matrices.pop()
+        //TODO: flash particle if looking into the lamp
     }
 
 }
