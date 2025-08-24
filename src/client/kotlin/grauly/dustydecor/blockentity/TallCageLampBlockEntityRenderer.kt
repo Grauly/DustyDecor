@@ -15,6 +15,7 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 import org.joml.Quaternionf
+import org.joml.Vector3f
 import kotlin.math.PI
 
 class TallCageLampBlockEntityRenderer(
@@ -34,34 +35,28 @@ class TallCageLampBlockEntityRenderer(
         orderedRenderCommandQueue: OrderedRenderCommandQueue
     ) {
         if (!entity.shouldShowBeams()) return
-        matrices.push()
         val time = entity.age + tickProgress
+        val rotation = Quaternionf()
+            .rotateTo(Vector3f(0f, 1f, 0f), entity.getRotationDirection().toVector3f())
+            .mul(Quaternionf().rotateY((time * rotationPerTick).toFloat()))
+        val offset = entity.pos.toCenterPos().subtract(cameraPos)
+            .add(entity.getRotationDirection().multiply(-3/16.0))
+
         val betterRotation = Quaternionf()
-                .rotationZ((PI / 2).toFloat())
-                .mul(Quaternionf().rotateX((time * rotationPerTick).toFloat()))
-                .mul(Quaternionf().rotateY((PI/2).toFloat()))
-        val beam = BacksideBeamShape(
-            1.0,
-            4.0/16,
-            6.0/16,
-            8.0/16,
-            10.0/16
-        )
+            .rotationZ((PI / 2).toFloat())
+            .mul(Quaternionf().rotateX((time * rotationPerTick).toFloat()))
+            .mul(Quaternionf().rotateY((PI/2).toFloat()))
+
+        matrices.push()
         orderedRenderCommandQueue.submitCustom(
             matrices,
             RenderLayer.getBeaconBeam(Identifier.of(DustyDecorMod.MODID, "textures/block/cage_lamp_beam.png"), true)
         ) { matrixStack, vertexConsumer ->
             AlertBeamsShape
-                .getTransformed(entity.pos.toCenterPos().subtract(cameraPos).add(0.0, -3/16.0, 0.0), rotation = betterRotation)
+                .getTransformed(offset, rotation = rotation)
                 .apply(vertexConsumer, Vec2f(0f, 0f), Vec2f(1f, 1f)) {
                     it.color(entity.color).light(light).normal(0f, 1f, 0f).overlay(OverlayTexture.DEFAULT_UV)
                 }
-/*
-            BiPlaneShape.getTransformed(entity.pos.toCenterPos().subtract(cameraPos).add(0.0, -3/16.0, 0.0), rotation = betterRotation)
-                .apply(vertexConsumer, Vec2f(0f, 0f), Vec2f(1f, 1f)) {
-                    it.color(entity.color).light(light).normal(0f, 1f, 0f).overlay(OverlayTexture.DEFAULT_UV)
-                }
-*/
         }
         matrices.pop()
         //TODO: flash particle if looking into the lamp

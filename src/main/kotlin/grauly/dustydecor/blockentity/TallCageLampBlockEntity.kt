@@ -7,7 +7,9 @@ import grauly.dustydecor.block.LightingFixtureBlock
 import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
+import net.minecraft.state.property.Properties
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import kotlin.random.Random
 
@@ -29,6 +31,10 @@ class TallCageLampBlockEntity(
     fun shouldShowBeams(): Boolean {
         if (cachedState.get(LightingFixtureBlock.BROKEN)) return false
         return cachedState.get(LightingFixtureBlock.LIT) != cachedState.get(LightingFixtureBlock.INVERTED)
+    }
+
+    fun getRotationDirection(): Vec3d {
+        return cachedState.get(Properties.FACING).doubleVector
     }
 
     fun tick(world: World, pos: BlockPos, state: BlockState, blockEntity: TallCageLampBlockEntity) {
