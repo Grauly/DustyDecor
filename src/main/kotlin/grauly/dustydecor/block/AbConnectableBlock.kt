@@ -34,7 +34,9 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
     ): Boolean
 
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
-        return getConnectionState(defaultState, ctx.blockPos, ctx.world)
+        val workingState = getConnectionState(defaultState, ctx.blockPos, ctx.world)
+        return workingState
+            .with(Properties.WATERLOGGED, ctx.world.getFluidState(ctx.blockPos).fluid == Fluids.WATER)
     }
 
     override fun getStateForNeighborUpdate(

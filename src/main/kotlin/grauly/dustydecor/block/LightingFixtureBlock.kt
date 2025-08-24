@@ -42,7 +42,9 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
     }
 
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
-        return defaultState.with(LIT, ctx.world.isReceivingRedstonePower(ctx.blockPos))
+        return defaultState
+            .with(LIT, ctx.world.isReceivingRedstonePower(ctx.blockPos))
+            .with(Properties.WATERLOGGED, ctx.world.getFluidState(ctx.blockPos).fluid == Fluids.WATER)
     }
 
     override fun neighborUpdate(
