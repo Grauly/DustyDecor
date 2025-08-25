@@ -52,7 +52,7 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
 
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
         return super.getPlacementState(ctx)
-            ?.with(FACING, ctx.verticalPlayerLookDirection)
+            ?.with(FACING, ctx.horizontalPlayerFacing)
             ?.with(Properties.WATERLOGGED, ctx.world.getFluidState(ctx.blockPos).fluid == Fluids.WATER)
     }
 
