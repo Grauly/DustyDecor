@@ -129,7 +129,6 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         world: World,
         canTraverse: Boolean = true
     ): Boolean {
-        //TODO: there are still window errors when connecting to new block
         val connectionDirection = state.get(connection, ConnectionState.NONE)
         if (connectionDirection == ConnectionState.NONE) return false
         val usedConnections =
@@ -159,8 +158,8 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         neighborState: BlockState,
         random: Random
     ): BlockState {
-        return super.getStateForNeighborUpdate(
-            updateWindows(state, world, pos),
+        val superState = super.getStateForNeighborUpdate(
+            state,
             world,
             tickView,
             pos,
@@ -169,6 +168,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
             neighborState,
             random
         )
+        return updateWindows(superState, world, pos)
     }
 
     private fun updateWindows(
@@ -184,7 +184,10 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
                 continue
             }
             val connectionDirection = state.get(connection, ConnectionState.NONE)
-            if (connectionDirection == ConnectionState.NONE) continue
+            if (connectionDirection == ConnectionState.NONE) {
+                workingState = workingState.with(windowMap[connection], shouldHaveWindow)
+                continue
+            }
             val checkState = world.getBlockState(pos.offset(connectionDirection.direction))
             if (checkState.get(SHOULD_HAVE_WINDOW, false)) {
                 workingState = workingState.with(windowMap[connection], true)
