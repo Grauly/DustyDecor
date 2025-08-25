@@ -21,6 +21,7 @@ class LightFlashParticle(
         this.gravityStrength = 0f
         setSprite(spriteProvider)
         maxAge = 4
+        scale = 15/16f/2f
     }
 
     override fun getType(): ParticleTextureSheet = ParticleTextureSheet.PARTICLE_SHEET_OPAQUE
