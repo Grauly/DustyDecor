@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    "dustydecor:vac_pipe",
+    "minecraft:hopper"
+  ],
+  "result": {
+    "count": 1,
+    "id": "dustydecor:vac_pipe_station"
+  }
+}

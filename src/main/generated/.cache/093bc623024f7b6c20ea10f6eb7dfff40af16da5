@@ -1,4 +1,4 @@
-// 25w33a	-999999999-01-01T00:00:00	Template Mod/Recipe Provider
+// 25w34b	-999999999-01-01T00:00:00	Template Mod/Recipe Provider
 840c029386d7ca9287deaec8b9b995eae800ee27 data/dustydecor/advancement/recipes/decorations/iron_trapdoor.json
 3af88093e279a18c2aa2906c624d59adbd46baee data/dustydecor/advancement/recipes/decorations/vent.json
 afa166d3d3b621d5659fca8f42e0c80d2e88bd75 data/dustydecor/advancement/recipes/decorations/vent_cover.json
@@ -29,6 +29,7 @@ cfa7ba7cf719ef87db9227bf6ab008da560bfbd0 data/dustydecor/advancement/recipes/red
 65a396ca29b40c4e655d0a6955fce58ab2a843fa data/dustydecor/advancement/recipes/redstone/red_tall_cage_lamp.json
 48f96e1af87747a216ddccad2af4c6744f0aaf15 data/dustydecor/advancement/recipes/redstone/red_wide_cage_lamp.json
 510e777263ce2c64ff293da2cb6b0751392a3425 data/dustydecor/advancement/recipes/redstone/vac_pipe.json
+294d16e428d98a41442b9523fbb72193db351480 data/dustydecor/advancement/recipes/redstone/vac_pipe_station.json
 5397e148ac9796ec9483c63451b220ddf27897b1 data/dustydecor/advancement/recipes/redstone/white_tall_cage_lamp.json
 0335fdfe16ae77ceef6f577b23aef7ad4dad0852 data/dustydecor/advancement/recipes/redstone/white_wide_cage_lamp.json
 3ac49974aae0393f22183b46c65164e434ca09d2 data/dustydecor/advancement/recipes/redstone/yellow_tall_cage_lamp.json
@@ -64,6 +65,7 @@ c5e0b9009b6c21b06640bdf9ae55fc2f8b55fa6b data/dustydecor/recipe/pink_wide_cage_l
 23abd7ed85189c12a245a821596a9a12c92b8de9 data/dustydecor/recipe/red_wide_cage_lamp.json
 787783b6c6269813e9e61a320197604829f52047 data/dustydecor/recipe/screwdriver.json
 8c14f5a7637a736315ff32b8670c49ceea19aa59 data/dustydecor/recipe/vac_pipe.json
+93464b514b93d9c266f2fc2dbd6a1ee5a61734c0 data/dustydecor/recipe/vac_pipe_station.json
 05bb5ecb2893095fd2833a5e5363b901a910abe3 data/dustydecor/recipe/vent.json
 fb28bd04f1aba1bb4868d5053256ef5fbee8a198 data/dustydecor/recipe/vent_cover.json
 a08512a4766981712d6f5377341b05ed83e435e2 data/dustydecor/recipe/white_tall_cage_lamp.json
