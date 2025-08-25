@@ -1,18 +1,25 @@
 package grauly.dustydecor.block
 
 import com.mojang.serialization.MapCodec
+import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.HorizontalFacingBlock
 import net.minecraft.block.Waterloggable
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
+import net.minecraft.item.ItemStack
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
 import net.minecraft.state.property.Properties
+import net.minecraft.util.ActionResult
+import net.minecraft.util.Hand
+import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.random.Random
+import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import net.minecraft.world.tick.ScheduledTickView
 
@@ -23,6 +30,28 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             .with(FACING, Direction.NORTH)
             .with(Properties.WATERLOGGED, false)
             .with(SENDING, false)
+    }
+
+    override fun onUseWithItem(
+        stack: ItemStack,
+        state: BlockState,
+        world: World,
+        pos: BlockPos,
+        player: PlayerEntity,
+        hand: Hand,
+        hit: BlockHitResult
+    ): ActionResult {
+        if (ToolUtils.isWrench(stack)) {
+            invertSending(state, pos, world)
+            ToolUtils.playWrenchSound(world, pos, player)
+            return ActionResult.SUCCESS
+        }
+        return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
+    }
+
+    private fun invertSending(state: BlockState, pos: BlockPos, world: World) {
+        //TODO: add sounds
+        world.setBlockState(pos, state.with(SENDING, !state.get(SENDING)), NOTIFY_LISTENERS)
     }
 
     override fun getStateForNeighborUpdate(

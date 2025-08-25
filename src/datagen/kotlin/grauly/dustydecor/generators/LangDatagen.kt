@@ -47,6 +47,7 @@ class LangDatagen(
             WrenchComponent.VAC_PIPE_CONNECTION_TRANSLATION_KEY,
             "Use on a exiting connection to attempt a different connection for it"
         )
+        builder.add(WrenchComponent.VAC_PIPE_STATION_TRANSLATION_KEY, "Can toggle whether %s's send or receive")
         builder.add(WrenchComponent.LAMPS_TRANSLATION_KEY, "Can break and repair some lamps")
         builder.add(ScrewdriverComponent.VAC_TUBE_TRANSLATION_KEY, "Can toggle windows on %s's")
         builder.add(ScrewdriverComponent.VENT_COVER_TRANSLATION_KEY, "Can lock/unlock %s's")

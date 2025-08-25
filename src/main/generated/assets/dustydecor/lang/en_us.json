@@ -39,6 +39,7 @@
   "component.wrench.dustydecor.lamps": "Can break and repair some lamps",
   "component.wrench.dustydecor.tooltip.vac_pipe.edit": "Can edit %s connections",
   "component.wrench.dustydecor.vac_pipe.connection": "Use on a exiting connection to attempt a different connection for it",
+  "component.wrench.dustydecor.vac_station.toggle": "Can toggle whether %s's send or receive",
   "item.dustydecor.black_tall_cage_lamp": "Tall Black Cage Lamp",
   "item.dustydecor.black_wide_cage_lamp": "Wide Black Cage Lamp",
   "item.dustydecor.brown_tall_cage_lamp": "Tall Brown Cage Lamp",
