@@ -78,7 +78,11 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
         world: WorldView,
         connectionDirection: Direction
     ): Boolean {
-        return state.isOf(ModBlocks.VAC_PIPE)
+        if (state.isOf(ModBlocks.VAC_PIPE)) return true
+        if (state.isOf(ModBlocks.VAC_PIPE_STATION)) {
+            if (connectionDirection == Direction.DOWN) return true
+        }
+        return false
     }
 
     override fun onUseWithItem(

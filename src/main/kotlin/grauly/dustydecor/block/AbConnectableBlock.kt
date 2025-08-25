@@ -108,7 +108,7 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
         connectionDirection: Direction
     ): Boolean {
         return connections
-            .filter { state.get(it) != ConnectionState.NONE }
+            .filter { state.get(it, ConnectionState.NONE) != ConnectionState.NONE }
             .any { state.get(it).direction == connectionDirection.opposite }
     }
 
