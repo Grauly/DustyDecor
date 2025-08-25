@@ -32,7 +32,7 @@ object WrenchComponent : TooltipAppender {
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
         )
         textConsumer.accept(
-            Text.translatable(VAC_PIPE_STATION_TRANSLATION_KEY)
+            Text.translatable(VAC_PIPE_STATION_TRANSLATION_KEY, ModBlocks.VAC_PIPE_STATION.name)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
         )
         textConsumer.accept(
