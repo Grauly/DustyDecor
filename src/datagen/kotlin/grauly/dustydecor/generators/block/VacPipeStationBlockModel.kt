@@ -16,7 +16,7 @@ object VacPipeStationBlockModel {
     fun get(blockStateModelGenerator: BlockStateModelGenerator) {
         val creator = MultipartBlockModelDefinitionCreator.create(ModBlocks.VAC_PIPE_STATION)
         listOf(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST).forEach directionLoop@{ direction ->
-            val operator = BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction]
+            val operator = BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction]
             creator.with(
                 MultipartModelConditionBuilder()
                     .put(Properties.FACING, direction),

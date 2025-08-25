@@ -2,8 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_station",
-        "x": 90
+        "model": "dustydecor:block/vac_pipe_station"
       },
       "when": {
         "facing": "north"
@@ -11,8 +10,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_station_sign_send",
-        "x": 90
+        "model": "dustydecor:block/vac_pipe_station_sign_send"
       },
       "when": {
         "facing": "north",
@@ -21,8 +19,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_station_sign_receive",
-        "x": 90
+        "model": "dustydecor:block/vac_pipe_station_sign_receive"
       },
       "when": {
         "facing": "north",
@@ -32,7 +29,7 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_station",
-        "x": 270
+        "y": 180
       },
       "when": {
         "facing": "south"
@@ -41,7 +38,7 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_station_sign_send",
-        "x": 270
+        "y": 180
       },
       "when": {
         "facing": "south",
@@ -51,7 +48,7 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_station_sign_receive",
-        "x": 270
+        "y": 180
       },
       "when": {
         "facing": "south",
@@ -61,7 +58,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_station",
-        "x": 90,
         "y": 270
       },
       "when": {
@@ -71,7 +67,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_station_sign_send",
-        "x": 90,
         "y": 270
       },
       "when": {
@@ -82,7 +77,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_station_sign_receive",
-        "x": 90,
         "y": 270
       },
       "when": {
@@ -93,7 +87,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_station",
-        "x": 90,
         "y": 90
       },
       "when": {
@@ -103,7 +96,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_station_sign_send",
-        "x": 90,
         "y": 90
       },
       "when": {
@@ -114,7 +106,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_station_sign_receive",
-        "x": 90,
         "y": 90
       },
       "when": {
