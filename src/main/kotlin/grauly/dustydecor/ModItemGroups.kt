@@ -16,7 +16,7 @@ object ModItemGroups {
             }
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL)
             .register {
-                it.addAfter(Items.WAXED_OXIDIZED_COPPER_CHEST, ModItems.VAC_PIPE)
+                it.addAfter(Items.WAXED_OXIDIZED_COPPER_CHEST, ModItems.VAC_PIPE, ModItems.VAC_PIPE_STATION)
             }
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS)
             .register {

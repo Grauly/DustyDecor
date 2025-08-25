@@ -62,6 +62,13 @@ class RecipeDatagen(
                     .pattern("ccc")
                     .criterion("has_copper", conditionsFromTag(ConventionalItemTags.COPPER_INGOTS))
                     .offerTo(exporter)
+                createShapeless(RecipeCategory.REDSTONE, ModItems.VAC_PIPE_STATION)
+                    .input(ModItems.VAC_PIPE)
+                    .input(Items.HOPPER)
+                    .criterion("has_vac_pipe", conditionsFromItem(ModItems.VAC_PIPE))
+                    .offerTo(exporter)
+
+
                 ModItems.TALL_CAGE_LAMPS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.TALL_CAGE_LAMPS.indexOf(it)]
                     createShaped(RecipeCategory.REDSTONE, it, 3)

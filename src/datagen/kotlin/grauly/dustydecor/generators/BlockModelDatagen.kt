@@ -4,10 +4,7 @@ import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.block.FacingRotationLampBlock
-import grauly.dustydecor.generators.block.FacingLampModel
-import grauly.dustydecor.generators.block.FacingRotationLampModel
-import grauly.dustydecor.generators.block.VacPipeBlockModel
-import grauly.dustydecor.generators.block.VentBlockModel
+import grauly.dustydecor.generators.block.*
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.minecraft.client.data.BlockStateModelGenerator
@@ -32,6 +29,7 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
         VacPipeBlockModel.get(blockStateModelGenerator)
         FacingLampModel(ModBlocks.TALL_CAGE_LAMPS,"cage_lamp_tall").get(blockStateModelGenerator)
         FacingRotationLampModel(ModBlocks.WIDE_CAGE_LAMPS,"cage_lamp_wide").get(blockStateModelGenerator)
+        VacPipeStationBlockModel.get(blockStateModelGenerator)
     }
 
 
