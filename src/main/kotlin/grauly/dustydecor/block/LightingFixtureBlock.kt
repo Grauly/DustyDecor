@@ -78,7 +78,7 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
         if (ToolUtils.isWrench(stack)) {
             val hasRepaired = repair(state, pos, world, player)
             if (hasRepaired) {
-                ToolUtils.playScrewdriverSound(world, pos, player)
+                ToolUtils.playWrenchSound(world, pos, player)
                 return ActionResult.SUCCESS
             }
         }
