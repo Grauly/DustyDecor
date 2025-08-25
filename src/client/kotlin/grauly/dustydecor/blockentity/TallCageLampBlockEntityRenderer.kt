@@ -22,9 +22,6 @@ class TallCageLampBlockEntityRenderer(
     private val blockRenderContext: BlockEntityRendererFactory.Context
 ) : BlockEntityRenderer<TallCageLampBlockEntity> {
 
-    private val rotationPerTick: Double = PI / 20
-    private val blindingThreshold: Double = 0.02
-    private val maxBlindingDistance: Double = 6.0
 
     override fun render(
         entity: TallCageLampBlockEntity,
@@ -42,15 +39,13 @@ class TallCageLampBlockEntityRenderer(
         val camRelativeOffset = offsetWorldPos.subtract(cameraPos)
         val rotation = Quaternionf()
             .rotateTo(Vector3f(0f, 1f, 0f), entity.getRotationDirection().toVector3f())
-            .mul(Quaternionf().rotateY((time * rotationPerTick).toFloat()))
+            .mul(Quaternionf().rotateY((time * ROTATION_PER_TICK).toFloat()))
 
         val blindingTestVector = Vector3f(1f, 0f, 0f).rotate(rotation)
-        val blindingThreshold = 0.03
-
-        if (camRelativeOffset.lengthSquared() < maxBlindingDistance.pow(2)) {
+        if (camRelativeOffset.lengthSquared() < MAX_BLINDING_DISTANCE.pow(2)) {
             if (
-                camRelativeOffset.normalize().squaredDistanceTo(Vec3d(blindingTestVector)) < blindingThreshold.pow(2) ||
-                camRelativeOffset.normalize().squaredDistanceTo(Vec3d(blindingTestVector.negate())) < blindingThreshold.pow(2)
+                camRelativeOffset.normalize().squaredDistanceTo(Vec3d(blindingTestVector)) < BLINDING_THRESHOLD.pow(2) ||
+                camRelativeOffset.normalize().squaredDistanceTo(Vec3d(blindingTestVector.negate())) < BLINDING_THRESHOLD.pow(2)
             ) {
                 val spawnPoint = camRelativeOffset.negate().normalize().multiply(5 / 16.0).add(offsetWorldPos)
                 blockRenderContext.renderDispatcher.world.addParticleClient(
@@ -68,7 +63,7 @@ class TallCageLampBlockEntityRenderer(
         matrices.push()
         orderedRenderCommandQueue.submitCustom(
             matrices,
-            RenderLayer.getBeaconBeam(Identifier.of(DustyDecorMod.MODID, "textures/block/cage_lamp_beam.png"), true)
+            renderLayer
         ) { matrixStack, vertexConsumer ->
             AlertBeamsShape
                 .getTransformed(camRelativeOffset, rotation = rotation)
@@ -77,6 +72,13 @@ class TallCageLampBlockEntityRenderer(
                 }
         }
         matrices.pop()
+    }
+
+    companion object {
+        private const val ROTATION_PER_TICK: Double = PI / 20
+        private const val BLINDING_THRESHOLD: Double = 0.02
+        private const val MAX_BLINDING_DISTANCE: Double = 6.0
+        private val renderLayer = RenderLayer.getBeaconBeam(Identifier.of(DustyDecorMod.MODID, "textures/block/cage_lamp_beam.png"), true)
     }
 
 }
