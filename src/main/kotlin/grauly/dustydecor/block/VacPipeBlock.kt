@@ -100,6 +100,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
                 SoundCategory.BLOCKS
             )
         } else if (ToolUtils.isWrench(stack)) {
+            ToolUtils.playWrenchSound(world, pos, player)
             val boxExpansion = 0.01
             val relativePos = hit.pos.subtract(Vec3d.of(pos))
             val clickedConnection: EnumProperty<ConnectionState>? = connections.firstOrNull {
@@ -113,11 +114,11 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
             if (clickedConnection != null) {
                 val success = tryDisableConnection(pos, state, clickedConnection, world)
                 if (success) {
+                    return ActionResult.SUCCESS
                     //TODO: success sound
                 }
                 //TODO: some fail sound
             }
-            ToolUtils.playWrenchSound(world, pos, player)
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
     }
