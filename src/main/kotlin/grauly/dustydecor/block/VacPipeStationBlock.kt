@@ -47,6 +47,19 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         (ModBlocks.VAC_PIPE as VacPipeBlock).alignPipeNetwork(nextState, state, nextPos, pos, Direction.UP, world)
     }
 
+    override fun onUse(
+        state: BlockState,
+        world: World,
+        pos: BlockPos,
+        player: PlayerEntity,
+        hit: BlockHitResult
+    ): ActionResult {
+        if (world.isClient) return ActionResult.SUCCESS
+        val screenHandlerFactory = state.createScreenHandlerFactory(world, pos)
+        if (screenHandlerFactory != null) player.openHandledScreen(screenHandlerFactory)
+        return ActionResult.SUCCESS
+    }
+
     override fun onUseWithItem(
         stack: ItemStack,
         state: BlockState,
@@ -104,7 +117,7 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             ?.with(FACING, ctx.horizontalPlayerFacing.opposite)
             ?.with(Properties.WATERLOGGED, ctx.world.getFluidState(ctx.blockPos).fluid == Fluids.WATER)
     }
-    
+
     override fun onStateReplaced(state: BlockState, world: ServerWorld, pos: BlockPos, moved: Boolean) {
         if (state.block != ModBlocks.VAC_PIPE) {
             val be = world.getBlockEntity(pos)

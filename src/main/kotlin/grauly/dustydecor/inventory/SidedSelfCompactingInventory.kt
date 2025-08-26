@@ -1,4 +1,4 @@
-package grauly.dustydecor.blockentity
+package grauly.dustydecor.inventory
 
 import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.SidedInventory
