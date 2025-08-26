@@ -15,7 +15,7 @@ interface SidedSelfCompactingInventory : SidedInventory {
     }
 
     override fun size(): Int = items.size
-    override fun isEmpty(): Boolean = items.any { it != ItemStack.EMPTY }
+    override fun isEmpty(): Boolean = items.all { it.isEmpty }
     override fun getStack(slot: Int): ItemStack = items[slot]
 
     private fun compact() {
