@@ -111,11 +111,11 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         builder.add(FACING, Properties.WATERLOGGED, SENDING)
     }
 
-    companion object {
-        val SENDING: BooleanProperty = BooleanProperty.of("sending")
-    }
-
     override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
         return VacPipeStationBlockEntity(pos, state)
+    }
+
+    companion object {
+        val SENDING: BooleanProperty = BooleanProperty.of("sending")
     }
 }

@@ -261,6 +261,10 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
 
     override fun canPathfindThrough(state: BlockState?, type: NavigationType?): Boolean = false
 
+    override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
+        return VacPipeBlockEntity(pos, state)
+    }
+
     companion object {
         val windowStates: List<BooleanProperty> = listOf("a_window", "b_window").map { BooleanProperty.of(it) }
         val windowMap: Map<EnumProperty<ConnectionState>, BooleanProperty> = mapOf(
@@ -273,9 +277,5 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
             VoxelShapes.cuboid(4.0 / 16, 4.0 / 16, 0.0, 12.0 / 16, 12.0 / 16, 4.0 / 16)
         )
         val CORE_SHAPE: VoxelShape = VoxelShapes.cuboid(4.0 / 16, 4.0 / 16, 4.0 / 16, 12.0 / 16, 12.0 / 16, 12.0 / 16)
-    }
-
-    override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
-        return VacPipeBlockEntity(pos, state)
     }
 }
