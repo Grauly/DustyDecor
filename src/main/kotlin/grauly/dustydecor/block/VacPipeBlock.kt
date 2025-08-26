@@ -14,12 +14,14 @@ import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
 import net.minecraft.state.property.EnumProperty
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
+import net.minecraft.util.ItemScatterer
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -196,6 +198,16 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
         }
         world.setBlockState(pos, updateWindows(state.with(connection, foundConnection), world, pos), NOTIFY_LISTENERS)
         return true
+    }
+
+    override fun onStateReplaced(state: BlockState, world: ServerWorld, pos: BlockPos, moved: Boolean) {
+        if (state.block != ModBlocks.VAC_PIPE) {
+            val be = world.getBlockEntity(pos)
+            if (be is VacPipeBlockEntity) {
+                ItemScatterer.spawn(world, pos, be)
+            }
+        }
+        super.onStateReplaced(state, world, pos, moved)
     }
 
     override fun getStateForNeighborUpdate(

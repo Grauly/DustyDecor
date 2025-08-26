@@ -2,6 +2,7 @@ package grauly.dustydecor.block
 
 import com.mojang.serialization.MapCodec
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.blockentity.VacPipeBlockEntity
 import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
@@ -14,12 +15,14 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.item.ItemStack
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
 import net.minecraft.state.property.Properties
 import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
+import net.minecraft.util.ItemScatterer
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -100,6 +103,16 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         return super.getPlacementState(ctx)
             ?.with(FACING, ctx.horizontalPlayerFacing.opposite)
             ?.with(Properties.WATERLOGGED, ctx.world.getFluidState(ctx.blockPos).fluid == Fluids.WATER)
+    }
+    
+    override fun onStateReplaced(state: BlockState, world: ServerWorld, pos: BlockPos, moved: Boolean) {
+        if (state.block != ModBlocks.VAC_PIPE) {
+            val be = world.getBlockEntity(pos)
+            if (be is VacPipeBlockEntity) {
+                ItemScatterer.spawn(world, pos, be)
+            }
+        }
+        super.onStateReplaced(state, world, pos, moved)
     }
 
     override fun getCodec(): MapCodec<out HorizontalFacingBlock> {
