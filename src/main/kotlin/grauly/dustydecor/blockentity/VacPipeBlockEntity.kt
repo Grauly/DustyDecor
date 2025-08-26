@@ -2,6 +2,7 @@ package grauly.dustydecor.blockentity
 
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.block.AbConnectableBlock
+import grauly.dustydecor.inventory.SidedSelfCompactingInventory
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.player.PlayerEntity

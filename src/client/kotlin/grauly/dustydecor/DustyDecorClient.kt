@@ -8,5 +8,6 @@ object DustyDecorClient : ClientModInitializer {
         ModColorProviders.init()
         ModParticles.init()
         ModBlockEntityRenderers.init()
+        ModHandledScreens.init()
     }
 }
