@@ -1,6 +1,7 @@
 package grauly.dustydecor.block
 
 import com.mojang.serialization.MapCodec
+import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
 import net.minecraft.state.property.Properties
+import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
@@ -32,6 +34,13 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             .with(SENDING, false)
     }
 
+    private fun alignConnectedPipeNetwork(state: BlockState, pos: BlockPos, world: World) {
+        if (!world.getBlockState(pos.offset(Direction.UP)).isOf(ModBlocks.VAC_PIPE)) return
+        val nextPos = pos.offset(Direction.UP)
+        val nextState = world.getBlockState(nextPos)
+        (ModBlocks.VAC_PIPE as VacPipeBlock).alignPipeNetwork(nextState, state, nextPos, pos, Direction.UP, world)
+    }
+
     override fun onUseWithItem(
         stack: ItemStack,
         state: BlockState,
@@ -45,6 +54,11 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             invertSending(state, pos, world)
             ToolUtils.playWrenchSound(world, pos, player)
             return ActionResult.SUCCESS
+        }
+        if (ToolUtils.isScrewdriver(stack)) {
+            //TODO: make this trigger automatically
+            player.sendMessage(Text.literal("aliginig"), true)
+            alignConnectedPipeNetwork(state, pos, world)
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
     }

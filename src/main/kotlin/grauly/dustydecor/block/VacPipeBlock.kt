@@ -1,7 +1,9 @@
 package grauly.dustydecor.block
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.util.DebugUtils
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -46,6 +48,46 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
             }
             SHAPES[normalizedState] = workingShape
         }
+    }
+
+    fun alignPipeNetwork(state: BlockState, triggerState: BlockState, pos: BlockPos, triggerPos: BlockPos, triggerDirection: Direction, world: World) {
+        if (!state.isOf(ModBlocks.VAC_PIPE)) return
+        if (pos.offset(triggerDirection.opposite) != triggerPos) return
+        if (!triggerState.isOf(ModBlocks.VAC_PIPE_STATION)) {
+            if (connections.map { triggerState.get(it).direction }.none { it == triggerDirection }) return
+        }
+        if (connections.map { state.get(it).direction }.none { it == triggerDirection.opposite }) return
+        val triggerConnection = if (!triggerState.isOf(ModBlocks.VAC_PIPE_STATION)) {
+            connections.first { triggerState.get(it).direction == triggerDirection }
+        } else {
+            if (triggerState.get(VacPipeStationBlock.SENDING)) connections[1] else connections[0]
+        }
+        val oppositeConnection = connections.first { it != triggerConnection }
+        var newState = state
+        if (state.get(oppositeConnection).direction != triggerDirection.opposite) {
+            newState = flipConnections(state, pos, world)
+        }
+        val nextCheckDirection = newState.get(triggerConnection).direction ?: return
+        val nextPos = pos.offset(nextCheckDirection)
+        val nextState = world.getBlockState(nextPos)
+        if (nextState.isOf(ModBlocks.VAC_PIPE_STATION)) {
+            val sending = nextState.get(VacPipeStationBlock.SENDING)
+            val seekDirectionIsA = triggerConnection == connections[0]
+            if (sending && seekDirectionIsA) return
+            if (!sending && !seekDirectionIsA) return
+            world.setBlockState(pos, newState.with(triggerConnection, ConnectionState.NONE), NOTIFY_LISTENERS)
+        }
+        alignPipeNetwork(nextState, newState, nextPos, pos, nextCheckDirection, world)
+    }
+
+    private fun flipConnections(state: BlockState, pos: BlockPos, world: World): BlockState {
+        val newState = state
+            .with(connections[0], state.get(connections[1]))
+            .with(connections[1], state.get(connections[0]))
+            .with(windowStates[0], state.get(windowStates[1]))
+            .with(windowStates[1], state.get(windowStates[0]))
+        world.setBlockState(pos, newState, NOTIFY_LISTENERS)
+        return newState
     }
 
     override fun getOutlineShape(
