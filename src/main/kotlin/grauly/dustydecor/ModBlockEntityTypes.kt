@@ -1,6 +1,7 @@
 package grauly.dustydecor
 
 import grauly.dustydecor.blockentity.TallCageLampBlockEntity
+import grauly.dustydecor.blockentity.VacPipeBlockEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.block.entity.FabricBlockEntityTypeBuilder
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntity
@@ -12,6 +13,8 @@ import net.minecraft.util.Identifier
 object ModBlockEntityTypes {
 
     val TALL_CAGE_LAMP_ENTITY: BlockEntityType<TallCageLampBlockEntity> = register("tall_cage_lamp", ::TallCageLampBlockEntity, *ModBlocks.TALL_CAGE_LAMPS.toTypedArray())
+    val VAC_PIPE_ENTITY: BlockEntityType<VacPipeBlockEntity> = register("vac_pipe", ::VacPipeBlockEntity, ModBlocks.VAC_PIPE)
+    val VAC_PIPE_STATION_ENTITY: BlockEntityType<VacPipeBlockEntity> = register("vac_pipe_station", ::VacPipeBlockEntity, ModBlocks.VAC_PIPE_STATION)
 
     private fun <T : BlockEntity> register(
         id: String,

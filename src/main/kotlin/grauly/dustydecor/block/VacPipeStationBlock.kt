@@ -2,11 +2,14 @@ package grauly.dustydecor.block
 
 import com.mojang.serialization.MapCodec
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
+import net.minecraft.block.BlockEntityProvider
 import net.minecraft.block.BlockState
 import net.minecraft.block.HorizontalFacingBlock
 import net.minecraft.block.Waterloggable
+import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
@@ -25,7 +28,7 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import net.minecraft.world.tick.ScheduledTickView
 
-class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings), Waterloggable {
+class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings), Waterloggable, BlockEntityProvider {
 
     init {
         defaultState = defaultState
@@ -110,5 +113,9 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
 
     companion object {
         val SENDING: BooleanProperty = BooleanProperty.of("sending")
+    }
+
+    override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
+        return VacPipeStationBlockEntity(pos, state)
     }
 }

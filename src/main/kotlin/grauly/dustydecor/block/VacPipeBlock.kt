@@ -3,11 +3,14 @@ package grauly.dustydecor.block
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.blockentity.VacPipeBlockEntity
 import grauly.dustydecor.util.DebugUtils
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
+import net.minecraft.block.BlockEntityProvider
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
+import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
@@ -29,7 +32,7 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import net.minecraft.world.tick.ScheduledTickView
 
-class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
+class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEntityProvider {
 
     init {
         windowStates.forEach {
@@ -270,5 +273,9 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings) {
             VoxelShapes.cuboid(4.0 / 16, 4.0 / 16, 0.0, 12.0 / 16, 12.0 / 16, 4.0 / 16)
         )
         val CORE_SHAPE: VoxelShape = VoxelShapes.cuboid(4.0 / 16, 4.0 / 16, 4.0 / 16, 12.0 / 16, 12.0 / 16, 12.0 / 16)
+    }
+
+    override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
+        return VacPipeBlockEntity(pos, state)
     }
 }
