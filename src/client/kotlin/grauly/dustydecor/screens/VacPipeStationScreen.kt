@@ -16,7 +16,7 @@ class VacPipeStationScreen(handler: VacPipeStationScreenHandler?, inventory: Pla
 
     override fun render(context: DrawContext?, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         super.render(context, mouseX, mouseY, deltaTicks)
-        drawMouseoverTooltip(context, x, y)
+        drawMouseoverTooltip(context, mouseX, mouseY)
     }
 
     companion object {

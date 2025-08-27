@@ -12,18 +12,16 @@ import net.minecraft.screen.slot.Slot
 
 class VacPipeStationScreenHandler(syncId: Int, playerInventory: PlayerInventory, private val inventory: Inventory) :
     ScreenHandler(ModScreenHandlerTypes.VAC_PIPE_STATION_SCREEN_HANDLER, syncId) {
-    constructor(syncId: Int, playerInventory: PlayerInventory) : this(syncId, playerInventory, SimpleCompactingInventory(3)) {
-        DustyDecorMod.logger.info("sec con")
-    }
+    constructor(syncId: Int, playerInventory: PlayerInventory) : this(syncId, playerInventory, SimpleCompactingInventory(3))
 
     init {
         checkSize(inventory, 3)
         inventory.onOpen(playerInventory.player)
         for (i in 0..2) {
-            addSlot(Slot(inventory, i, 8, 8 + i * 18))
+            addSlot(Slot(inventory, i, 8, 18 + i * 18))
         }
 
-        for (y in 0..3) {
+        for (y in 0..2) {
             for (x in 0..8) {
                 addSlot(Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18))
             }

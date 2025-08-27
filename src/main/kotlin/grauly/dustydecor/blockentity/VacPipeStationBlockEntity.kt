@@ -28,7 +28,6 @@ class VacPipeStationBlockEntity(
     override fun canPlayerUse(player: PlayerEntity?): Boolean = true
 
     override fun createMenu(syncId: Int, playerInventory: PlayerInventory, player: PlayerEntity?): ScreenHandler {
-        player?.sendMessage(Text.literal("${size()}, ${items.size}"), true)
         return VacPipeStationScreenHandler(syncId, playerInventory, this)
     }
 
