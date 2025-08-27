@@ -20,14 +20,15 @@ import net.minecraft.util.math.Direction
 
 class VacPipeStationBlockEntity(
     pos: BlockPos?,
-    state: BlockState?,
-    override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(3)
+    state: BlockState?
 ) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, pos, state), SidedSelfCompactingInventory, NamedScreenHandlerFactory {
+    override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(3, ItemStack.EMPTY)
     override fun insertDirections(): Set<Direction> = setOf(Direction.UP)
     override fun extractDirections(): Set<Direction> = setOf(Direction.UP)
     override fun canPlayerUse(player: PlayerEntity?): Boolean = true
 
     override fun createMenu(syncId: Int, playerInventory: PlayerInventory, player: PlayerEntity?): ScreenHandler {
+        player?.sendMessage(Text.literal("${size()}, ${items.size}"), true)
         return VacPipeStationScreenHandler(syncId, playerInventory, this)
     }
 

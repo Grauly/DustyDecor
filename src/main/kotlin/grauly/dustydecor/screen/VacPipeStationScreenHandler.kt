@@ -1,5 +1,6 @@
 package grauly.dustydecor.screen
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModScreenHandlerTypes
 import grauly.dustydecor.inventory.SimpleCompactingInventory
 import net.minecraft.entity.player.PlayerEntity
@@ -11,7 +12,9 @@ import net.minecraft.screen.slot.Slot
 
 class VacPipeStationScreenHandler(syncId: Int, playerInventory: PlayerInventory, private val inventory: Inventory) :
     ScreenHandler(ModScreenHandlerTypes.VAC_PIPE_STATION_SCREEN_HANDLER, syncId) {
-    constructor(syncId: Int, playerInventory: PlayerInventory) : this(syncId, playerInventory, SimpleCompactingInventory(3))
+    constructor(syncId: Int, playerInventory: PlayerInventory) : this(syncId, playerInventory, SimpleCompactingInventory(3)) {
+        DustyDecorMod.logger.info("sec con")
+    }
 
     init {
         checkSize(inventory, 3)

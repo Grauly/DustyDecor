@@ -6,7 +6,7 @@ import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.Direction
 
 class SimpleCompactingInventory(slots: Int): SidedSelfCompactingInventory {
-    override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(slots)
+    override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(slots, ItemStack.EMPTY)
 
     override fun insertDirections(): Set<Direction> {
         return Direction.entries.toSet()

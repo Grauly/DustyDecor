@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
 import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
+import grauly.dustydecor.screen.VacPipeStationScreenHandler
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockEntityProvider
@@ -15,6 +16,8 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.item.ItemStack
+import net.minecraft.screen.NamedScreenHandlerFactory
+import net.minecraft.screen.SimpleNamedScreenHandlerFactory
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
@@ -55,8 +58,9 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         hit: BlockHitResult
     ): ActionResult {
         if (world.isClient) return ActionResult.SUCCESS
-        val screenHandlerFactory = state.createScreenHandlerFactory(world, pos)
-        if (screenHandlerFactory != null) player.openHandledScreen(screenHandlerFactory)
+        val be = world.getBlockEntity(pos)
+        if (be !is VacPipeStationBlockEntity) return ActionResult.SUCCESS
+        player.openHandledScreen(be)
         return ActionResult.SUCCESS
     }
 
