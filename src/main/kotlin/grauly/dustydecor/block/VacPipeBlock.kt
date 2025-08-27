@@ -1,16 +1,16 @@
 package grauly.dustydecor.block
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
-import grauly.dustydecor.util.DebugUtils
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
 import net.minecraft.block.BlockEntityProvider
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
 import net.minecraft.block.entity.BlockEntity
+import net.minecraft.block.entity.BlockEntityTicker
+import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
@@ -275,6 +275,17 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
 
     override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
         return VacPipeBlockEntity(pos, state)
+    }
+
+    override fun <T : BlockEntity?> getTicker(
+        world: World,
+        state: BlockState,
+        type: BlockEntityType<T>
+    ): BlockEntityTicker<T> {
+        return BlockEntityTicker { world, pos, state, blockEntity ->
+            if (blockEntity !is VacPipeBlockEntity) return@BlockEntityTicker
+            blockEntity.tick(world, pos, state)
+        }
     }
 
     companion object {
