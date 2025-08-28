@@ -1,6 +1,5 @@
 package grauly.dustydecor.inventory
 
-import grauly.dustydecor.DustyDecorMod
 import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.SidedInventory
 import net.minecraft.item.ItemStack
@@ -51,49 +50,34 @@ interface SidedSelfCompactingInventory : SidedInventory {
     fun extractDirections(): Set<Direction>
 
     override fun getAvailableSlots(side: Direction?): IntArray {
-        DustyDecorMod.logger.info("checking available slots")
-/*
         if (side == null) return IntArray(0)
         val combinedSet: Set<Direction> = setOf(*insertDirections().toTypedArray(), *extractDirections().toTypedArray())
-        DustyDecorMod.logger.info("lookup: $side combinedSet: $combinedSet")
-*/
         val fullAccessArray = IntArray(items.size)
         for (i in fullAccessArray.indices) {
             fullAccessArray[i] = i
         }
-        DustyDecorMod.logger.info("${fullAccessArray.contentToString()}")
-        //return if (combinedSet.contains(side)) fullAccessArray else IntArray(0)
-        return fullAccessArray
+        return if (combinedSet.contains(side)) fullAccessArray else IntArray(0)
     }
 
     override fun canInsert(slot: Int, stack: ItemStack?, dir: Direction?): Boolean {
-        DustyDecorMod.logger.info("checking insert: $slot, $stack, $dir")
         if (dir == null) return false
         if (stack == null) return false
-        DustyDecorMod.logger.info("got past null checks here")
         if (!insertDirections().contains(dir)) return false
-        DustyDecorMod.logger.info("saying yes")
-/*
         for (item in items) {
-            if (ItemStack.areItemsAndComponentsEqual(
-                    item,
-                    stack
-                ) && item.count < item.maxCount || item.isEmpty
-            ) return true
+            if (ItemStack.areItemsAndComponentsEqual(item, stack) && item.count < item.maxCount || item.isEmpty) {
+                return true
+            }
         }
-*/
-        return true
+        return false
     }
 
     override fun canExtract(slot: Int, stack: ItemStack?, dir: Direction?): Boolean {
         if (dir == null) return false
         if (stack == null) return false
         if (!extractDirections().contains(dir)) return false
-/*
         for (item in items) {
             if (ItemStack.areItemsAndComponentsEqual(item, stack)) return true
         }
-*/
         return true
     }
 }
