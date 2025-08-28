@@ -99,15 +99,10 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
     ) {
         if (world.isReceivingRedstonePower(pos)) {
             if (!world.isClient) {
-                DustyDecorMod.logger.info("trying send")
                 val ownStorage = ItemStorage.SIDED.find(world, pos, Direction.UP)
                 val targetBe = world.getBlockEntity(pos.offset(Direction.UP))
                 if (targetBe !is VacPipeBlockEntity) return
                 val targetStorage = InventoryStorage.of(targetBe, Direction.DOWN)
-                //val targetStorage = ItemStorage.SIDED.find(world, pos.offset(Direction.UP), Direction.DOWN)
-                DustyDecorMod.logger.info("${ownStorage != null} ${targetStorage != null}")
-                DustyDecorMod.logger.info("${ownStorage?.supportsExtraction()} ${targetStorage?.supportsInsertion()}")
-                DustyDecorMod.logger.info("insertDirections: ${targetBe.insertDirections()}")
                 if (ownStorage == null || targetStorage == null) return
                 StorageUtil.move(ownStorage, targetStorage, { true }, 1, null)
             }
