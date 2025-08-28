@@ -1,23 +1,20 @@
 package grauly.dustydecor.block
 
 import com.mojang.serialization.MapCodec
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
 import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
-import grauly.dustydecor.screen.VacPipeStationScreenHandler
 import grauly.dustydecor.util.ToolUtils
-import net.minecraft.block.Block
-import net.minecraft.block.BlockEntityProvider
-import net.minecraft.block.BlockState
-import net.minecraft.block.HorizontalFacingBlock
-import net.minecraft.block.Waterloggable
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
+import net.minecraft.block.*
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.item.ItemStack
-import net.minecraft.screen.NamedScreenHandlerFactory
-import net.minecraft.screen.SimpleNamedScreenHandlerFactory
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
@@ -32,6 +29,7 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.random.Random
 import net.minecraft.world.World
 import net.minecraft.world.WorldView
+import net.minecraft.world.block.WireOrientation
 import net.minecraft.world.tick.ScheduledTickView
 
 class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings), Waterloggable, BlockEntityProvider {
@@ -89,6 +87,31 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
     private fun invertSending(state: BlockState, pos: BlockPos, world: World) {
         //TODO: add sounds
         world.setBlockState(pos, state.with(SENDING, !state.get(SENDING)), NOTIFY_LISTENERS)
+    }
+
+    override fun neighborUpdate(
+        state: BlockState,
+        world: World,
+        pos: BlockPos,
+        sourceBlock: Block,
+        wireOrientation: WireOrientation?,
+        notify: Boolean
+    ) {
+        if (world.isReceivingRedstonePower(pos)) {
+            if (!world.isClient) {
+                DustyDecorMod.logger.info("trying send")
+                val ownStorage = ItemStorage.SIDED.find(world, pos, Direction.UP)
+                val targetBe = world.getBlockEntity(pos.offset(Direction.UP))
+                if (targetBe !is VacPipeBlockEntity) return
+                val targetStorage = InventoryStorage.of(targetBe, Direction.DOWN)
+                //val targetStorage = ItemStorage.SIDED.find(world, pos.offset(Direction.UP), Direction.DOWN)
+                DustyDecorMod.logger.info("${ownStorage != null} ${targetStorage != null}")
+                DustyDecorMod.logger.info("${ownStorage?.supportsExtraction()} ${targetStorage?.supportsInsertion()}")
+                DustyDecorMod.logger.info("insertDirections: ${targetBe.insertDirections()}")
+                if (ownStorage == null || targetStorage == null) return
+                StorageUtil.move(ownStorage, targetStorage, { true }, 1, null)
+            }
+        }
     }
 
     override fun getStateForNeighborUpdate(

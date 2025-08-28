@@ -23,6 +23,7 @@ class VacPipeStationBlockEntity(
     state: BlockState?
 ) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, pos, state), SidedSelfCompactingInventory, NamedScreenHandlerFactory {
     override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(3, ItemStack.EMPTY)
+    //TODO: allow based on sending state
     override fun insertDirections(): Set<Direction> = setOf(Direction.UP)
     override fun extractDirections(): Set<Direction> = setOf(Direction.UP)
     override fun canPlayerUse(player: PlayerEntity?): Boolean = true
