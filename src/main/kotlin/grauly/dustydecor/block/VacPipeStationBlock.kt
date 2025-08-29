@@ -39,6 +39,7 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             .with(FACING, Direction.NORTH)
             .with(Properties.WATERLOGGED, false)
             .with(SENDING, false)
+            .with(Properties.POWERED, false)
     }
 
     private fun alignConnectedPipeNetwork(state: BlockState, pos: BlockPos, world: World) {
@@ -89,26 +90,6 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         world.setBlockState(pos, state.with(SENDING, !state.get(SENDING)), NOTIFY_LISTENERS)
     }
 
-    override fun neighborUpdate(
-        state: BlockState,
-        world: World,
-        pos: BlockPos,
-        sourceBlock: Block,
-        wireOrientation: WireOrientation?,
-        notify: Boolean
-    ) {
-        if (world.isReceivingRedstonePower(pos)) {
-            if (!world.isClient) {
-                val ownStorage = ItemStorage.SIDED.find(world, pos, Direction.UP)
-                val targetBe = world.getBlockEntity(pos.offset(Direction.UP))
-                if (targetBe !is VacPipeBlockEntity) return
-                val targetStorage = InventoryStorage.of(targetBe, Direction.DOWN)
-                if (ownStorage == null || targetStorage == null) return
-                StorageUtil.move(ownStorage, targetStorage, { true }, 1, null)
-            }
-        }
-    }
-
     override fun getStateForNeighborUpdate(
         state: BlockState,
         world: WorldView,
@@ -143,10 +124,11 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
     override fun onStateReplaced(state: BlockState, world: ServerWorld, pos: BlockPos, moved: Boolean) {
         if (state.block != ModBlocks.VAC_PIPE) {
             val be = world.getBlockEntity(pos)
-            if (be is VacPipeBlockEntity) {
-                ItemScatterer.spawn(world, pos, be)
+            if (be is VacPipeStationBlockEntity) {
+                ItemScatterer.spawn(world, pos, be.getItemForScattering())
             }
         }
+        //TODO: do the sending
         super.onStateReplaced(state, world, pos, moved)
     }
 
@@ -156,7 +138,7 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         super.appendProperties(builder)
-        builder.add(FACING, Properties.WATERLOGGED, SENDING)
+        builder.add(FACING, Properties.WATERLOGGED, SENDING, Properties.POWERED)
     }
 
     override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
