@@ -204,7 +204,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
         if (state.block != ModBlocks.VAC_PIPE) {
             val be = world.getBlockEntity(pos)
             if (be is VacPipeBlockEntity) {
-                ItemScatterer.spawn(world, pos, be.getInventory())
+                ItemScatterer.spawn(world, pos, be.getItemsForScattering())
             }
         }
         super.onStateReplaced(state, world, pos, moved)

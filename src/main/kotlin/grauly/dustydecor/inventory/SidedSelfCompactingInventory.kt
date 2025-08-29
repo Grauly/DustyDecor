@@ -24,6 +24,7 @@ interface SidedSelfCompactingInventory : SidedInventory {
         for (i in onlyItems.indices) {
             items[i] = onlyItems[i]
         }
+        markDirty()
     }
 
     override fun removeStack(slot: Int, amount: Int): ItemStack {
