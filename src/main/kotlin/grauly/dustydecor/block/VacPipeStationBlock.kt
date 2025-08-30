@@ -1,12 +1,10 @@
 package grauly.dustydecor.block
 
 import com.mojang.serialization.MapCodec
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.blockentity.VacPipeBlockEntity
 import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
 import grauly.dustydecor.util.ToolUtils
-import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
 import net.minecraft.block.*
@@ -39,7 +37,6 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             .with(FACING, Direction.NORTH)
             .with(Properties.WATERLOGGED, false)
             .with(SENDING, false)
-            .with(Properties.POWERED, false)
     }
 
     private fun alignConnectedPipeNetwork(state: BlockState, pos: BlockPos, world: World) {
@@ -121,6 +118,29 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             ?.with(Properties.WATERLOGGED, ctx.world.getFluidState(ctx.blockPos).fluid == Fluids.WATER)
     }
 
+    override fun neighborUpdate(
+        state: BlockState,
+        world: World,
+        pos: BlockPos,
+        sourceBlock: Block,
+        wireOrientation: WireOrientation?,
+        notify: Boolean
+    ) {
+        if (world.isClient) return
+        if (!world.isReceivingRedstonePower(pos)) return
+        world.scheduleBlockTick(pos, this, 4)
+    }
+
+    override fun scheduledTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
+        val be = world.getBlockEntity(pos)
+        if (be !is VacPipeStationBlockEntity) return
+        val offsetPos = pos.offset(Direction.UP)
+        if (!world.getBlockState(offsetPos).isOf(ModBlocks.VAC_PIPE)) return
+        val otherStorage = ItemStorage.SIDED.find(world, pos.offset(Direction.UP), Direction.DOWN) ?: return
+        val ownStorage = be.storage
+        StorageUtil.move(ownStorage, otherStorage, { true }, 1, null)
+    }
+
     override fun onStateReplaced(state: BlockState, world: ServerWorld, pos: BlockPos, moved: Boolean) {
         if (state.block != ModBlocks.VAC_PIPE) {
             val be = world.getBlockEntity(pos)
@@ -128,7 +148,6 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
                 ItemScatterer.spawn(world, pos, be.getItemForScattering())
             }
         }
-        //TODO: do the sending
         super.onStateReplaced(state, world, pos, moved)
     }
 
@@ -138,7 +157,7 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         super.appendProperties(builder)
-        builder.add(FACING, Properties.WATERLOGGED, SENDING, Properties.POWERED)
+        builder.add(FACING, Properties.WATERLOGGED, SENDING)
     }
 
     override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
