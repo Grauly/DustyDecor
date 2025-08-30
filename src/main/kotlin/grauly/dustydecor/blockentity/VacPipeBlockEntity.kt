@@ -4,23 +4,12 @@ import com.mojang.serialization.Codec
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.block.AbConnectableBlock
 import grauly.dustydecor.block.ConnectionState
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext
-import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantItemStorage
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
-import net.minecraft.inventory.Inventories
-import net.minecraft.inventory.Inventory
-import net.minecraft.inventory.SidedInventory
-import net.minecraft.inventory.SimpleInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.storage.ReadView
 import net.minecraft.storage.WriteView
@@ -28,7 +17,6 @@ import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.World
-import kotlin.math.min
 
 class VacPipeBlockEntity(
     pos: BlockPos?,
@@ -42,6 +30,7 @@ class VacPipeBlockEntity(
             markDirty()
         }
     }
+    private var lastInsertTime = 0L
 
     fun getItemsForScattering(): DefaultedList<ItemStack> {
         val list = DefaultedList.ofSize<ItemStack>(1)
@@ -49,9 +38,18 @@ class VacPipeBlockEntity(
         return list
     }
 
+    fun notifyInsert(world: World) {
+        lastInsertTime = world.time
+    }
+
     fun tick(world: World, pos: BlockPos, state: BlockState) {
         if (world.isClient) return
+        handleItemMoving(world, pos, state)
+    }
+
+    private fun handleItemMoving(world: World, pos: BlockPos, state: BlockState) {
         if (storage.isResourceBlank) return
+        if (lastInsertTime == world.time) return
         val followDirection = state.get(AbConnectableBlock.connections[1])
         if (followDirection == ConnectionState.NONE) return
         val targetBe = world.getBlockEntity(pos.offset(followDirection.direction))
@@ -59,7 +57,8 @@ class VacPipeBlockEntity(
         val targetStorage =
             ItemStorage.SIDED.find(world, pos.offset(followDirection.direction), followDirection.direction?.opposite)
                 ?: return
-        StorageUtil.move(storage, targetStorage, { true }, 1, null)
+        val movedAmount = StorageUtil.move(storage, targetStorage, { true }, 1, null)
+        if (movedAmount > 0 && targetBe is VacPipeBlockEntity) targetBe.notifyInsert(world)
     }
 
     fun getInsertDirection(): Direction? = cachedState.get(AbConnectableBlock.connections[0]).direction
