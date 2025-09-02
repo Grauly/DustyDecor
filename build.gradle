@@ -58,6 +58,7 @@ processResources {
 		expand 	"version": project.mod_version,
 				"mod_id": project.mod_id,
 				"loader_version": project.loader_version,
+				//TODO: reinsert MC version into fmj when back in stable MC versions
 				"minecraft_version": project.minecraft_version
 	}
 }

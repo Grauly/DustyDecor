@@ -2,14 +2,14 @@
   "schemaVersion": 1,
   "id": "${mod_id}",
   "version": "${version}",
-  "name": "Template Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Dusty Decor",
+  "description": "Adds various more or less decor in the rough theme of what you would find in dust covered, abandoned spaces.",
   "authors": [
-    "Me!"
+    "Grauly"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "none, haha",
+    "sources": "https://github.com/grauly/DustyDecor"
   },
   "license": "CC0-1.0",
   "icon": "assets/dustydecor/icon.png",
@@ -43,7 +43,7 @@
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
-    "minecraft": "~${minecraft_version}",
+    "minecraft": "~1.21",
     "java": ">=21",
     "fabric-api": "*",
     "fabric-language-kotlin": "*"
