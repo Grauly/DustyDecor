@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "dustydecor:block/vac_pipe/window_2",
-		"2": "dustydecor:block/vac_pipe/window_1",
-		"particle": "dustydecor:block/vac_pipe/pipe_2"
+		"1": "dustydecor:block/vac_pipe/window_1",
+		"particle": "dustydecor:block/vac_pipe/window_1"
 	},
 	"elements": [
 		{
@@ -11,8 +11,8 @@
 			"to": [11, 11, 4],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 11, 2]},
 			"faces": {
-				"up": {"uv": [0, 5, 4, 11], "rotation": 90, "texture": "#2"},
-				"down": {"uv": [4, 5, 0, 11], "rotation": 90, "texture": "#2"}
+				"up": {"uv": [0, 5, 4, 11], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [4, 5, 0, 11], "rotation": 90, "texture": "#0"}
 			}
 		},
 		{
@@ -20,8 +20,8 @@
 			"to": [5, 11, 4],
 			"rotation": {"angle": 0, "axis": "y", "origin": [5, 8, 2]},
 			"faces": {
-				"east": {"uv": [4, 5, 0, 11], "texture": "#0"},
-				"west": {"uv": [0, 5, 4, 11], "texture": "#0"}
+				"east": {"uv": [4, 5, 0, 11], "texture": "#1"},
+				"west": {"uv": [0, 5, 4, 11], "texture": "#1"}
 			}
 		},
 		{
@@ -29,8 +29,8 @@
 			"to": [11, 5, 4],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5, 2]},
 			"faces": {
-				"up": {"uv": [4, 5, 0, 11], "rotation": 270, "texture": "#2"},
-				"down": {"uv": [0, 5, 4, 11], "rotation": 270, "texture": "#2"}
+				"up": {"uv": [4, 11, 0, 5], "rotation": 270, "texture": "#1"},
+				"down": {"uv": [0, 11, 4, 5], "rotation": 270, "texture": "#1"}
 			}
 		},
 		{
@@ -38,17 +38,31 @@
 			"to": [11, 11, 4],
 			"rotation": {"angle": 0, "axis": "y", "origin": [11, 8, 2]},
 			"faces": {
-				"east": {"uv": [0, 5, 4, 11], "rotation": 180, "texture": "#0"},
-				"west": {"uv": [4, 5, 0, 11], "rotation": 180, "texture": "#0"}
+				"east": {"uv": [0, 11, 4, 5], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [4, 11, 0, 5], "rotation": 180, "texture": "#0"}
 			}
 		}
 	],
 	"groups": [
 		{
-			"name": "windows north",
-			"origin": [8, 11, 8],
+			"name": "central transparent block",
+			"origin": [2, 2, 8],
 			"color": 0,
-			"children": [0, 1, 2, 3]
+			"children": [
+				{
+					"name": "north transparent connector",
+					"origin": [2, 2, 8],
+					"color": 0,
+					"children": [
+						{
+							"name": "windows north",
+							"origin": [8, 11, 8],
+							"color": 0,
+							"children": [0, 1, 2, 3]
+						}
+					]
+				}
+			]
 		}
 	]
 }
