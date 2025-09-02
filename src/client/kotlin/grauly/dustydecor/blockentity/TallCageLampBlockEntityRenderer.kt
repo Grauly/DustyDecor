@@ -20,26 +20,38 @@ import kotlin.math.pow
 
 class TallCageLampBlockEntityRenderer(
     private val blockRenderContext: BlockEntityRendererFactory.Context
-) : BlockEntityRenderer<TallCageLampBlockEntity> {
+) : BlockEntityRenderer<TallCageLampBlockEntity, TallCageLampBlockEntityRenderingContext> {
 
+
+    override fun method_74335(): TallCageLampBlockEntityRenderingContext = TallCageLampBlockEntityRenderingContext(false, 0f, Vec3d.ZERO, Vec3d.ZERO, -1)
+
+    override fun method_74331(
+        entity: TallCageLampBlockEntity,
+        ctx: TallCageLampBlockEntityRenderingContext,
+        tickProgress: Float,
+        cameraPos: Vec3d,
+        crumblingOverlayCommand: ModelCommandRenderer.CrumblingOverlayCommand?
+    ) {
+        super.method_74331(entity, ctx, tickProgress, cameraPos, crumblingOverlayCommand)
+        ctx.time = entity.age + tickProgress
+        ctx.shouldShowBeams = entity.shouldShowBeams()
+        ctx.rotationAxis = entity.getRotationDirection()
+        ctx.color = entity.color
+    }
+
+    override fun rendersOutsideBoundingBox(): Boolean = true
 
     override fun render(
-        entity: TallCageLampBlockEntity,
-        tickProgress: Float,
+        ctx: TallCageLampBlockEntityRenderingContext,
         matrices: MatrixStack,
-        light: Int,
-        overlay: Int,
-        cameraPos: Vec3d,
-        crumblingOverlayCommand: ModelCommandRenderer.CrumblingOverlayCommand?,
         orderedRenderCommandQueue: OrderedRenderCommandQueue
     ) {
-        if (!entity.shouldShowBeams()) return
-        val time = entity.age + tickProgress
-        val offsetWorldPos = entity.pos.toCenterPos().add(entity.getRotationDirection().multiply(-3 / 16.0))
-        val camRelativeOffset = offsetWorldPos.subtract(cameraPos)
+        if (!ctx.shouldShowBeams) return
+        val offsetWorldPos = ctx.field_62673.toCenterPos().add(ctx.rotationAxis.multiply(-3 / 16.0))
+        val camRelativeOffset = offsetWorldPos.subtract(ctx.cameraPos)
         val rotation = Quaternionf()
-            .rotateTo(Vector3f(0f, 1f, 0f), entity.getRotationDirection().toVector3f())
-            .mul(Quaternionf().rotateY((time * ROTATION_PER_TICK).toFloat()))
+            .rotateTo(Vector3f(0f, 1f, 0f), ctx.rotationAxis.toVector3f())
+            .mul(Quaternionf().rotateY((ctx.time * ROTATION_PER_TICK).toFloat()))
 
         val blindingTestVector = Vector3f(1f, 0f, 0f).rotate(rotation)
         if (camRelativeOffset.lengthSquared() < MAX_BLINDING_DISTANCE.pow(2)) {
@@ -68,10 +80,11 @@ class TallCageLampBlockEntityRenderer(
             AlertBeamsShape
                 .getTransformed(camRelativeOffset, rotation = rotation)
                 .apply(vertexConsumer, Vec2f(0f, 0f), Vec2f(1f, 1f)) {
-                    it.color(entity.color).light(light).normal(0f, 1f, 0f).overlay(OverlayTexture.DEFAULT_UV)
+                    it.color(ctx.color).light(ctx.field_62676).normal(0f, 1f, 0f).overlay(OverlayTexture.DEFAULT_UV)
                 }
         }
         matrices.pop()
+
     }
 
     companion object {
