@@ -2,6 +2,7 @@ package grauly.dustydecor.particle
 
 import grauly.dustydecor.ModParticleTypes
 import net.minecraft.block.ShapeContext
+import net.minecraft.class_11944
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.LightmapTextureManager
@@ -41,7 +42,7 @@ class SparkParticle(
     sparkWidthPixels: Double = 1.0,
     private val spriteProvider: SpriteProvider
 ) :
-    SpriteBillboardParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ) {
+    AnimatedParticle(clientWorld, x, y, z, spriteProvider, gravity.toFloat()) {
     private var pos: Vec3d = Vec3d(x,y,z)
     private var lastPos: Vec3d = pos
     private var lastLastPos: Vec3d = lastPos
@@ -56,7 +57,6 @@ class SparkParticle(
         this.gravityStrength = gravity.toFloat()
         this.velocityMultiplier = drag.toFloat()
         maxAge = lifetime
-        setSprite(spriteProvider.getSprite(age, maxAge))
         scale = 0.9f + random.nextFloat() * 0.2f
     }
 
@@ -96,7 +96,6 @@ class SparkParticle(
             lastBouncedBlockPos = BlockPos.ZERO
         }
         pos = prospectivePos
-        setSprite(spriteProvider.getSprite(age, maxAge))
     }
 
     private fun onBounce() {
@@ -126,18 +125,13 @@ class SparkParticle(
         }
     }
 
-    override fun render(
-        vertexConsumer: VertexConsumer,
-        camera: Camera,
-        quaternionf: Quaternionf,
-        tickProgress: Float
-    ) {
+    override fun render(arg: class_11944, camera: Camera, tickProgress: Float) {
         val renderLocalPos =
             lastPos.lerp(pos, tickProgress.toDouble()).subtract(camera.pos)
         val renderLocalLastPos =
             lastLastPos.lerp(lastPos, tickProgress.toDouble())
                 .subtract(camera.pos)
-        renderParticle(renderLocalPos, renderLocalLastPos, vertexConsumer, tickProgress)
+        renderParticle(renderLocalPos, renderLocalLastPos, arg., tickProgress)
     }
 
     private fun renderParticle(

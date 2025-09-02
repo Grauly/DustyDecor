@@ -1,8 +1,10 @@
 package grauly.dustydecor.particle
 
 import net.minecraft.client.particle.*
+import net.minecraft.client.texture.Sprite
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.particle.SimpleParticleType
+import net.minecraft.util.math.random.Random
 
 class LightFlashParticle(
     clientWorld: ClientWorld?,
@@ -12,19 +14,18 @@ class LightFlashParticle(
     velocityX: Double,
     velocityY: Double,
     velocityZ: Double,
-    spriteProvider: SpriteProvider
-) : SpriteBillboardParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ) {
+    sprite: Sprite
+) : BillboardParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ, sprite) {
     init {
         this.velocityX = velocityX
         this.velocityY = velocityY
         this.velocityZ = velocityZ
         this.gravityStrength = 0f
-        setSprite(spriteProvider)
         maxAge = 4
         scale = 15/16f/2f
     }
 
-    override fun getType(): ParticleTextureSheet = ParticleTextureSheet.PARTICLE_SHEET_OPAQUE
+    override fun method_74255(): class_11941 = class_11941.OPAQUE
 
     class Factory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
         override fun createParticle(
@@ -35,9 +36,10 @@ class LightFlashParticle(
             z: Double,
             velocityX: Double,
             velocityY: Double,
-            velocityZ: Double
+            velocityZ: Double,
+            random: Random
         ): Particle {
-            return LightFlashParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider)
+            return LightFlashParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.getSprite(random))
         }
     }
 }
