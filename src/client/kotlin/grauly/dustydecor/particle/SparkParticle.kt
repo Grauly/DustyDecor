@@ -2,7 +2,6 @@ package grauly.dustydecor.particle
 
 import grauly.dustydecor.ModParticleTypes
 import net.minecraft.block.ShapeContext
-import net.minecraft.class_11944
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.LightmapTextureManager
@@ -108,6 +107,8 @@ class SparkParticle(
         }
     }
 
+    override fun getRenderType(): RenderType = RenderType.OPAQUE
+
     private fun split() {
         world.addParticleClient(ModParticleTypes.SPARK_FLASH, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z)
         if (!hasSplit) {
@@ -125,19 +126,19 @@ class SparkParticle(
         }
     }
 
-    override fun render(arg: class_11944, camera: Camera, tickProgress: Float) {
+    override fun render(arg: BillboardParticleSubmittable, camera: Camera, tickProgress: Float) {
         val renderLocalPos =
             lastPos.lerp(pos, tickProgress.toDouble()).subtract(camera.pos)
         val renderLocalLastPos =
             lastLastPos.lerp(lastPos, tickProgress.toDouble())
                 .subtract(camera.pos)
-        renderParticle(renderLocalPos, renderLocalLastPos, arg., tickProgress)
+        renderParticle(renderLocalPos, renderLocalLastPos, arg, tickProgress)
     }
 
     private fun renderParticle(
         renderLocalPos: Vec3d,
         renderLocalLastPos: Vec3d,
-        vertexConsumer: VertexConsumer,
+        arg: BillboardParticleSubmittable,
         tickProgress: Float
     ) {
         val centerPos = renderLocalLastPos.lerp(renderLocalPos, 0.5)
@@ -158,7 +159,7 @@ class SparkParticle(
             centerPos,
             scaleVector,
             rotation,
-            vertexConsumer,
+            arg,
             tickProgress
         )
     }
@@ -167,14 +168,14 @@ class SparkParticle(
         centerPos: Vec3d,
         scaleVector: Vector3f,
         rotation: Quaternionf,
-        vertexConsumer: VertexConsumer,
+        arg: BillboardParticleSubmittable,
         tickProgress: Float
     ) {
         val baseVector = Vector3f(scaleVector.x, 0f, 0f).rotate(rotation).mul(0.5f)
         renderParticle(
             centerPos.toVector3f().add(baseVector),
             centerPos.toVector3f().add(baseVector.negate()),
-            vertexConsumer,
+            arg,
             tickProgress
         )
     }
@@ -183,7 +184,7 @@ class SparkParticle(
     private fun renderParticle(
         from: Vector3f,
         to: Vector3f,
-        vertexConsumer: VertexConsumer,
+        arg: BillboardParticleSubmittable,
         tickProgress: Float
     ) {
         val side = Vector3f(to).sub(from).normalize()
@@ -191,12 +192,14 @@ class SparkParticle(
         val sparkUp = Vector3f(side).cross(camForward).normalize().mul((getSize(tickProgress) / 2))
         val light = getBrightness(0f)
 
+/*
         vertexConsumer.vertex(Vector3f(to).add(Vector3f(sparkUp).negate())).light(light).color(Colors.WHITE)
             .texture(minU, maxV)
         vertexConsumer.vertex(Vector3f(to).add(sparkUp)).light(light).color(Colors.WHITE).texture(minU, minV)
         vertexConsumer.vertex(Vector3f(from).add(sparkUp)).light(light).color(Colors.WHITE).texture(maxU, minV)
         vertexConsumer.vertex(Vector3f(from).add(Vector3f(sparkUp).negate())).light(light).color(Colors.WHITE)
             .texture(maxU, maxV)
+*/
     }
 
     override fun getBrightness(tint: Float): Int {
@@ -211,8 +214,6 @@ class SparkParticle(
         return sparkWidth.toFloat() * scale * (1f - (age + tickProgress) / maxAge)
     }
 
-    override fun getType(): ParticleTextureSheet = ParticleTextureSheet.PARTICLE_SHEET_OPAQUE
-
     class LargeSparkFactory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
         override fun createParticle(
             parameters: SimpleParticleType?,
@@ -222,7 +223,8 @@ class SparkParticle(
             z: Double,
             velocityX: Double,
             velocityY: Double,
-            velocityZ: Double
+            velocityZ: Double,
+            random: Random
         ): Particle {
             return SparkParticle(
                 world,
@@ -249,7 +251,8 @@ class SparkParticle(
             z: Double,
             velocityX: Double,
             velocityY: Double,
-            velocityZ: Double
+            velocityZ: Double,
+            random: Random
         ): Particle {
             return SparkParticle(
                 world,
