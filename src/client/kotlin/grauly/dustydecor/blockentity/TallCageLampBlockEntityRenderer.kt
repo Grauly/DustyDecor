@@ -23,35 +23,40 @@ class TallCageLampBlockEntityRenderer(
 ) : BlockEntityRenderer<TallCageLampBlockEntity, TallCageLampBlockEntityRenderingContext> {
 
 
-    override fun method_74335(): TallCageLampBlockEntityRenderingContext = TallCageLampBlockEntityRenderingContext(false, 0f, Vec3d.ZERO, Vec3d.ZERO, -1)
+    //TODO: update with FAPI ASAP, find out what the beacon does for offset
+    override fun createRenderState(): TallCageLampBlockEntityRenderingContext {
+        return TallCageLampBlockEntityRenderingContext(false, 0f, Vec3d.ZERO, Vec3d.ZERO, -1)
+    }
 
-    override fun method_74331(
-        entity: TallCageLampBlockEntity,
-        ctx: TallCageLampBlockEntityRenderingContext,
+    override fun updateRenderState(
+        blockEntity: TallCageLampBlockEntity,
+        state: TallCageLampBlockEntityRenderingContext,
         tickProgress: Float,
         cameraPos: Vec3d,
-        crumblingOverlayCommand: ModelCommandRenderer.CrumblingOverlayCommand?
+        crumblingOverlay: ModelCommandRenderer.CrumblingOverlayCommand?
     ) {
-        super.method_74331(entity, ctx, tickProgress, cameraPos, crumblingOverlayCommand)
-        ctx.time = entity.age + tickProgress
-        ctx.shouldShowBeams = entity.shouldShowBeams()
-        ctx.rotationAxis = entity.getRotationDirection()
-        ctx.color = entity.color
+        super.updateRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay)
+        state.time = blockEntity.age + tickProgress
+        state.shouldShowBeams = blockEntity.shouldShowBeams()
+        state.rotationAxis = blockEntity.getRotationDirection()
+        state.color = blockEntity.color
+        state.cameraPos = cameraPos
     }
+
 
     override fun rendersOutsideBoundingBox(): Boolean = true
 
     override fun render(
-        ctx: TallCageLampBlockEntityRenderingContext,
+        state: TallCageLampBlockEntityRenderingContext,
         matrices: MatrixStack,
         orderedRenderCommandQueue: OrderedRenderCommandQueue
     ) {
-        if (!ctx.shouldShowBeams) return
-        val offsetWorldPos = ctx.field_62673.toCenterPos().add(ctx.rotationAxis.multiply(-3 / 16.0))
-        val camRelativeOffset = offsetWorldPos.subtract(ctx.cameraPos)
+        if (!state.shouldShowBeams) return
+        val offsetWorldPos = state.pos.toCenterPos().add(state.rotationAxis.multiply(-3 / 16.0))
+        val camRelativeOffset = offsetWorldPos.subtract(state.cameraPos)
         val rotation = Quaternionf()
-            .rotateTo(Vector3f(0f, 1f, 0f), ctx.rotationAxis.toVector3f())
-            .mul(Quaternionf().rotateY((ctx.time * ROTATION_PER_TICK).toFloat()))
+            .rotateTo(Vector3f(0f, 1f, 0f), state.rotationAxis.toVector3f())
+            .mul(Quaternionf().rotateY((state.time * ROTATION_PER_TICK).toFloat()))
 
         val blindingTestVector = Vector3f(1f, 0f, 0f).rotate(rotation)
         if (camRelativeOffset.lengthSquared() < MAX_BLINDING_DISTANCE.pow(2)) {
@@ -80,7 +85,7 @@ class TallCageLampBlockEntityRenderer(
             AlertBeamsShape
                 .getTransformed(camRelativeOffset, rotation = rotation)
                 .apply(vertexConsumer, Vec2f(0f, 0f), Vec2f(1f, 1f)) {
-                    it.color(ctx.color).light(ctx.field_62676).normal(0f, 1f, 0f).overlay(OverlayTexture.DEFAULT_UV)
+                    it.color(state.color).light(state.lightmapCoordinates).normal(0f, 1f, 0f).overlay(OverlayTexture.DEFAULT_UV)
                 }
         }
         matrices.pop()
