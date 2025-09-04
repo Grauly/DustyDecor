@@ -169,8 +169,10 @@ object VacPipeBlockModel {
                         )
                         creator.with(
                             combineAnd(directionCondition, allWindow, shouldHaveWindowCondition),
-                            (if (shouldHaveWindow) VAC_CORE_STRAIGHT_TRANSPARENT else VAC_CORE_STRAIGHT_OPAQUE)
-                                .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.fallDown!!])
+                            (if (shouldHaveWindow)
+                                    (VAC_CORE_STRAIGHT_TRANSPARENT_MAP[aDirection.fallDown!!]!!)
+                            else
+                                (VAC_CORE_STRAIGHT_OPAQUE.apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.fallDown!!])))
                                 .apply(uvLock(false))
                         )
                     }
@@ -265,8 +267,6 @@ object VacPipeBlockModel {
     }
 
     private val VAC_CORE_STRAIGHT_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_opaque")
-    private val VAC_CORE_STRAIGHT_TRANSPARENT =
-        BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_transparent")
     private val VAC_CORE_NORTH_TOP_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_north_top_core_opaque")
     private val VAC_CORE_NORTH_EAST_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_north_east_core_opaque")
     private val VAC_CORE_NORTH_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_north_core_opaque")
@@ -275,4 +275,9 @@ object VacPipeBlockModel {
     private val VAC_CONNECTOR_TRANSPARENT = BlockModelDatagen.singleVariant("block/vac_pipe_connector_transparent")
     private val VAC_CONNECTOR_WINDOW_ATTACHMENT =
         BlockModelDatagen.singleVariant("block/vac_pipe_connector_window_attachment")
+    private val VAC_CORE_STRAIGHT_TRANSPARENT_MAP = mapOf(
+        ConnectionState.NORTH.fallDown to BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_north_south_transparent"),
+        ConnectionState.WEST.fallDown to BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_west_east_transparent"),
+        ConnectionState.UP.fallDown to BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_up_down_transparent"),
+    )
 }

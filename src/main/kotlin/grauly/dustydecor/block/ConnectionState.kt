@@ -8,8 +8,8 @@ enum class ConnectionState(
     val direction: Direction?,
     val fallDown: Direction?
 ) : StringIdentifiable {
-    UP("up", Direction.UP, Direction.UP),
-    DOWN("down", Direction.DOWN, Direction.UP),
+    UP("up", Direction.UP, Direction.DOWN),
+    DOWN("down", Direction.DOWN, Direction.DOWN),
     NORTH("north", Direction.NORTH, Direction.NORTH),
     SOUTH("south", Direction.SOUTH, Direction.NORTH),
     WEST("west", Direction.WEST, Direction.WEST),
