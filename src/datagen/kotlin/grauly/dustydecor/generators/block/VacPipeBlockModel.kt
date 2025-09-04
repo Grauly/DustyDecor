@@ -46,6 +46,8 @@ object VacPipeBlockModel {
             .map { VacPipeBlock.windowMap[it] }
             .map { MultipartModelConditionBuilder().put(it, false).build() }
         val anyNotWindow = combineOr(*windowFalseList.toTypedArray())
+        val shouldNotHaveWindowCondition =
+            MultipartModelConditionBuilder().put(VacPipeBlock.SHOULD_HAVE_WINDOW, false).build()
         val directionIsWindowCondition =
             MultipartModelConditionBuilder()
                 .put(connection, direction)
@@ -54,7 +56,8 @@ object VacPipeBlockModel {
         creator.with(
             combineAnd(
                 directionIsWindowCondition,
-                anyNotWindow
+                anyNotWindow,
+                shouldNotHaveWindowCondition
             ),
             VAC_CONNECTOR_WINDOW_ATTACHMENT
                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction.direction])
@@ -78,7 +81,8 @@ object VacPipeBlockModel {
             creator.with(
                 combineAnd(
                     directionCondition.build(),
-                    allWindowCondition
+                    allWindowCondition,
+                    shouldNotHaveWindowCondition
                 ),
                 VAC_CONNECTOR_WINDOW_ATTACHMENT
                     .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction.direction])
@@ -99,37 +103,47 @@ object VacPipeBlockModel {
         val allNoneList = AbConnectableBlock.connections.map {
             MultipartModelConditionBuilder().put(it, ConnectionState.NONE).build()
         }
-        creator.with(
-            combineAnd(*allNoneList.toTypedArray()),
-            VAC_CORE_NONE_OPAQUE
-        )
+        val allNoneCondition = combineAnd(*allNoneList.toTypedArray())
+        listOf(true, false).forEach {
+            creator.with(
+                combineAnd(
+                    allNoneCondition,
+                    MultipartModelConditionBuilder().put(VacPipeBlock.SHOULD_HAVE_WINDOW, it).build()
+                ),
+                getVacCoreNone(it)
+            )
+        }
     }
 
     private fun singleDirectionalCore(creator: MultipartBlockModelDefinitionCreator) {
-        ConnectionState.entries.filter { it != ConnectionState.NONE }.forEach { currentDirection ->
-            val allSame = MultipartModelConditionBuilder()
-            AbConnectableBlock.connections.forEach { currentConnection ->
-                allSame.put(currentConnection, currentDirection)
-                val allNoneExceptCurrent = MultipartModelConditionBuilder()
-                AbConnectableBlock.connections.forEach {
-                    allNoneExceptCurrent.put(
-                        it,
-                        if (it == currentConnection) currentDirection else ConnectionState.NONE
+        listOf(true, false).forEach { shouldHaveWindow ->
+            ConnectionState.entries.filter { it != ConnectionState.NONE }.forEach { currentDirection ->
+                val allSame = MultipartModelConditionBuilder()
+                AbConnectableBlock.connections.forEach { currentConnection ->
+                    allSame.put(currentConnection, currentDirection)
+                    val allNoneExceptCurrent =
+                        MultipartModelConditionBuilder().put(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow)
+                    AbConnectableBlock.connections.forEach {
+                        allNoneExceptCurrent.put(
+                            it,
+                            if (it == currentConnection) currentDirection else ConnectionState.NONE
+                        )
+                    }
+                    creator.with(
+                        allNoneExceptCurrent,
+                        getVacCoreNorth(shouldHaveWindow)
+                            .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[currentDirection.direction])
+                            .apply(uvLock(true))
                     )
                 }
                 creator.with(
-                    allNoneExceptCurrent,
-                    VAC_CORE_NORTH_OPAQUE
+                    allSame,
+                    getVacCoreNorth(shouldHaveWindow)
                         .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[currentDirection.direction])
-                        .apply(uvLock(false))
+                        .apply(uvLock(true))
                 )
             }
-            creator.with(
-                allSame,
-                VAC_CORE_NORTH_OPAQUE
-                    .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[currentDirection.direction])
-                    .apply(uvLock(false))
-            )
+
         }
     }
 
@@ -142,35 +156,36 @@ object VacPipeBlockModel {
         val windowAllFalse = VacPipeBlock.windowStates.map { MultipartModelConditionBuilder().put(it, false).build() }
         val anyNotWindow = combineOr(*windowAllFalse.toTypedArray())
 
-        ConnectionState.entries.filter { it != ConnectionState.NONE }.forEach aLoop@{ aDirection ->
-            ConnectionState.entries.filter { it != ConnectionState.NONE }.forEach bLoop@{ bDirection ->
-                if (aDirection == bDirection) return@bLoop
-                val isStraight = aDirection.direction!!.opposite == bDirection.direction!!
-                val directionCondition = MultipartModelConditionBuilder()
-                    .put(AbConnectableBlock.connections[0], aDirection)
-                    .put(AbConnectableBlock.connections[1], bDirection)
-                    .build()
-                if (!isStraight) {
-                    creator.with(
-                        directionCondition,
-                        getMultiRotationCore(aDirection.direction!!, bDirection.direction!!)
-                            .apply(uvLock(false))
-                    )
-                } else {
-                    listOf(true, false).forEach { shouldHaveWindow ->
+        listOf(true, false).forEach shouldHaveWindowLoop@{ shouldHaveWindow ->
+            ConnectionState.entries.filter { it != ConnectionState.NONE }.forEach aLoop@{ aDirection ->
+                ConnectionState.entries.filter { it != ConnectionState.NONE }.forEach bLoop@{ bDirection ->
+                    if (aDirection == bDirection) return@bLoop
+                    val isStraight = aDirection.direction!!.opposite == bDirection.direction!!
+                    val appearanceConditon = MultipartModelConditionBuilder()
+                        .put(AbConnectableBlock.connections[0], aDirection)
+                        .put(AbConnectableBlock.connections[1], bDirection)
+                        .put(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow)
+                        .build()
+                    if (!isStraight) {
+                        creator.with(
+                            appearanceConditon,
+                            getMultiRotationCore(aDirection.direction!!, bDirection.direction!!, shouldHaveWindow)
+                                .apply(uvLock(true))
+                        )
+                    } else {
                         val shouldHaveWindowCondition =
                             MultipartModelConditionBuilder().put(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow)
                                 .build()
                         creator.with(
-                            combineAnd(directionCondition, anyNotWindow),
+                            combineAnd(appearanceConditon, anyNotWindow),
                             VAC_CORE_STRAIGHT_OPAQUE
                                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.fallDown!!])
                                 .apply(uvLock(false))
                         )
                         creator.with(
-                            combineAnd(directionCondition, allWindow, shouldHaveWindowCondition),
+                            combineAnd(appearanceConditon, allWindow, shouldHaveWindowCondition),
                             (if (shouldHaveWindow)
-                                    (VAC_CORE_STRAIGHT_TRANSPARENT_MAP[aDirection.fallDown!!]!!)
+                                (VAC_CORE_STRAIGHT_TRANSPARENT_MAP[aDirection.fallDown!!]!!)
                             else
                                 (VAC_CORE_STRAIGHT_OPAQUE.apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.fallDown!!])))
                                 .apply(uvLock(false))
@@ -192,15 +207,21 @@ object VacPipeBlockModel {
                 .put(connection, direction)
                 .put(VacPipeBlock.windowMap[connection], isWindow)
                 .build(),
-            (if (isWindow) VAC_CONNECTOR_TRANSPARENT else VAC_CONNECTOR_OPAQUE)
+            (getConnector(isWindow))
                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction.direction])
                 .apply(uvLock(true))
         )
     }
 
-    private fun getMultiRotationCore(aDirection: Direction, bDirection: Direction): WeightedVariant {
+    private fun getMultiRotationCore(
+        aDirection: Direction,
+        bDirection: Direction,
+        shouldHaveWindow: Boolean
+    ): WeightedVariant {
         val baseVariant =
-            if (isReachableViaXRotation(aDirection) && isReachableViaXRotation(bDirection)) VAC_CORE_NORTH_TOP_OPAQUE else VAC_CORE_NORTH_EAST_OPAQUE
+            if (isReachableViaXRotation(aDirection) && isReachableViaXRotation(bDirection)) getVacCoreNorthTop(
+                shouldHaveWindow
+            ) else getVacCoreNorthEast(shouldHaveWindow)
         return baseVariant.apply(getMultiRotation(aDirection, bDirection))
     }
 
@@ -266,15 +287,31 @@ object VacPipeBlockModel {
         return MultipartModelCombinedCondition(MultipartModelCombinedCondition.LogicalOperator.OR, conditions.asList())
     }
 
-    private val VAC_CORE_STRAIGHT_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_opaque")
-    private val VAC_CORE_NORTH_TOP_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_north_top_core_opaque")
-    private val VAC_CORE_NORTH_EAST_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_north_east_core_opaque")
-    private val VAC_CORE_NORTH_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_north_core_opaque")
-    private val VAC_CORE_NONE_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_none_core_opaque")
-    private val VAC_CONNECTOR_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_connector_opaque")
-    private val VAC_CONNECTOR_TRANSPARENT = BlockModelDatagen.singleVariant("block/vac_pipe_connector_transparent")
+    private fun getVariant(id: String, transparent: Boolean): WeightedVariant {
+        return BlockModelDatagen.singleVariant(id + if (transparent) "_transparent" else "_opaque")
+    }
+
+    private fun getVacCoreNorthTop(window: Boolean) = getVariant("block/vac_pipe_north_top_core", window)
+
+    //private val VAC_CORE_NORTH_TOP_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_north_top_core_opaque")
+    private fun getVacCoreNorthEast(window: Boolean) = getVariant("block/vac_pipe_north_east_core", window)
+
+    //private val VAC_CORE_NORTH_EAST_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_north_east_core_opaque")
+    private fun getVacCoreNorth(window: Boolean) = getVariant("block/vac_pipe_north_core", window)
+
+    //private val VAC_CORE_NORTH_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_north_core_opaque")
+    private fun getVacCoreNone(window: Boolean) = getVariant("block/vac_pipe_none_core", window)
+    //private val VAC_CORE_NONE_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_none_core_opaque")
+
+
+    private fun getConnector(window: Boolean): WeightedVariant = getVariant("block/vac_pipe_connector", window)
+    //private val VAC_CONNECTOR_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_connector_opaque")
+    //private val VAC_CONNECTOR_TRANSPARENT = BlockModelDatagen.singleVariant("block/vac_pipe_connector_transparent")
+
     private val VAC_CONNECTOR_WINDOW_ATTACHMENT =
         BlockModelDatagen.singleVariant("block/vac_pipe_connector_window_attachment")
+
+    private val VAC_CORE_STRAIGHT_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_opaque")
     private val VAC_CORE_STRAIGHT_TRANSPARENT_MAP = mapOf(
         ConnectionState.NORTH.fallDown to BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_north_south_transparent"),
         ConnectionState.WEST.fallDown to BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_west_east_transparent"),
