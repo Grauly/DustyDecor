@@ -59,7 +59,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -192,7 +191,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -281,7 +279,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -394,7 +391,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -499,8 +495,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe_north_core_opaque"
       },
       "when": {
         "a": "north",
@@ -585,8 +580,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe_north_core_opaque"
       },
       "when": {
         "a": "north",
@@ -717,7 +711,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -787,7 +780,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -947,7 +939,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -992,7 +983,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -1169,7 +1159,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -1193,7 +1182,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -1217,7 +1205,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -1241,7 +1228,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -1263,8 +1249,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe_north_core_opaque"
       },
       "when": {
         "a": "none",
@@ -1287,7 +1272,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -1311,7 +1295,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -1335,7 +1318,6 @@
     {
       "apply": {
         "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "uvlock": true,
         "y": 90
       },
       "when": {

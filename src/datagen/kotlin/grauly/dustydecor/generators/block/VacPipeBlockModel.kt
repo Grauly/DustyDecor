@@ -102,7 +102,7 @@ object VacPipeBlockModel {
                 .put(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow),
             getVacCoreNorth(shouldHaveWindow)
                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction])
-                .apply(uvLock(true))
+                .apply(uvLock(shouldHaveWindow))
         )
     }
 
