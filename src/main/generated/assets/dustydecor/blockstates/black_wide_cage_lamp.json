@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage_rotated",
         "x": 180
       },
       "when": {
@@ -12,91 +12,91 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken_rotated",
-        "x": 180
-      },
-      "when": {
-        "broken": "true",
-        "facing": "down",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated",
-        "x": 180
-      },
-      "when": {
-        "broken": "false",
-        "facing": "down",
-        "inverted": "true",
-        "on": "true",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated",
-        "x": 180
-      },
-      "when": {
-        "broken": "false",
-        "facing": "down",
-        "inverted": "false",
-        "on": "true",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated",
-        "x": 180
-      },
-      "when": {
-        "broken": "false",
-        "facing": "down",
-        "inverted": "true",
-        "on": "false",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated",
-        "x": 180
-      },
-      "when": {
-        "broken": "false",
-        "facing": "down",
-        "inverted": "false",
-        "on": "false",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage",
-        "x": 180
-      },
-      "when": {
-        "facing": "down",
-        "rotated": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken_rotated",
         "x": 180
       },
       "when": {
         "broken": "true",
         "facing": "down",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated",
+        "x": 180
+      },
+      "when": {
+        "broken": "false",
+        "facing": "down",
+        "inverted": "true",
+        "on": "true",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated",
+        "x": 180
+      },
+      "when": {
+        "broken": "false",
+        "facing": "down",
+        "inverted": "false",
+        "on": "true",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated",
+        "x": 180
+      },
+      "when": {
+        "broken": "false",
+        "facing": "down",
+        "inverted": "true",
+        "on": "false",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated",
+        "x": 180
+      },
+      "when": {
+        "broken": "false",
+        "facing": "down",
+        "inverted": "false",
+        "on": "false",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage",
+        "x": 180
+      },
+      "when": {
+        "facing": "down",
         "rotated": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken",
+        "x": 180
+      },
+      "when": {
+        "broken": "true",
+        "facing": "down",
+        "rotated": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive",
         "x": 180
       },
       "when": {
@@ -109,7 +109,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active",
         "x": 180
       },
       "when": {
@@ -122,7 +122,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active",
         "x": 180
       },
       "when": {
@@ -135,7 +135,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive",
         "x": 180
       },
       "when": {
@@ -148,7 +148,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage_rotated"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage_rotated"
       },
       "when": {
         "facing": "up",
@@ -157,7 +157,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken_rotated"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken_rotated"
       },
       "when": {
         "broken": "true",
@@ -167,7 +167,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated"
       },
       "when": {
         "broken": "false",
@@ -179,7 +179,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated"
       },
       "when": {
         "broken": "false",
@@ -191,7 +191,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated"
       },
       "when": {
         "broken": "false",
@@ -203,7 +203,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated"
       },
       "when": {
         "broken": "false",
@@ -215,7 +215,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage"
       },
       "when": {
         "facing": "up",
@@ -224,7 +224,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken"
       },
       "when": {
         "broken": "true",
@@ -234,7 +234,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive"
       },
       "when": {
         "broken": "false",
@@ -246,7 +246,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active"
       },
       "when": {
         "broken": "false",
@@ -258,7 +258,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active"
       },
       "when": {
         "broken": "false",
@@ -270,7 +270,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive"
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive"
       },
       "when": {
         "broken": "false",
@@ -282,7 +282,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage_rotated",
         "x": 90
       },
       "when": {
@@ -292,91 +292,91 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken_rotated",
-        "x": 90
-      },
-      "when": {
-        "broken": "true",
-        "facing": "north",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated",
-        "x": 90
-      },
-      "when": {
-        "broken": "false",
-        "facing": "north",
-        "inverted": "true",
-        "on": "true",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated",
-        "x": 90
-      },
-      "when": {
-        "broken": "false",
-        "facing": "north",
-        "inverted": "false",
-        "on": "true",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated",
-        "x": 90
-      },
-      "when": {
-        "broken": "false",
-        "facing": "north",
-        "inverted": "true",
-        "on": "false",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated",
-        "x": 90
-      },
-      "when": {
-        "broken": "false",
-        "facing": "north",
-        "inverted": "false",
-        "on": "false",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage",
-        "x": 90
-      },
-      "when": {
-        "facing": "north",
-        "rotated": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken_rotated",
         "x": 90
       },
       "when": {
         "broken": "true",
         "facing": "north",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated",
+        "x": 90
+      },
+      "when": {
+        "broken": "false",
+        "facing": "north",
+        "inverted": "true",
+        "on": "true",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated",
+        "x": 90
+      },
+      "when": {
+        "broken": "false",
+        "facing": "north",
+        "inverted": "false",
+        "on": "true",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated",
+        "x": 90
+      },
+      "when": {
+        "broken": "false",
+        "facing": "north",
+        "inverted": "true",
+        "on": "false",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated",
+        "x": 90
+      },
+      "when": {
+        "broken": "false",
+        "facing": "north",
+        "inverted": "false",
+        "on": "false",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage",
+        "x": 90
+      },
+      "when": {
+        "facing": "north",
         "rotated": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken",
+        "x": 90
+      },
+      "when": {
+        "broken": "true",
+        "facing": "north",
+        "rotated": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive",
         "x": 90
       },
       "when": {
@@ -389,7 +389,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active",
         "x": 90
       },
       "when": {
@@ -402,7 +402,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active",
         "x": 90
       },
       "when": {
@@ -415,7 +415,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive",
         "x": 90
       },
       "when": {
@@ -428,7 +428,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage_rotated",
         "x": 270
       },
       "when": {
@@ -438,7 +438,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken_rotated",
         "x": 270
       },
       "when": {
@@ -449,7 +449,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated",
         "x": 270
       },
       "when": {
@@ -462,7 +462,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated",
         "x": 270
       },
       "when": {
@@ -475,7 +475,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated",
         "x": 270
       },
       "when": {
@@ -488,7 +488,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated",
         "x": 270
       },
       "when": {
@@ -501,7 +501,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage",
         "x": 270
       },
       "when": {
@@ -511,7 +511,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken",
         "x": 270
       },
       "when": {
@@ -522,7 +522,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive",
         "x": 270
       },
       "when": {
@@ -535,7 +535,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active",
         "x": 270
       },
       "when": {
@@ -548,7 +548,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active",
         "x": 270
       },
       "when": {
@@ -561,7 +561,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive",
         "x": 270
       },
       "when": {
@@ -574,7 +574,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage_rotated",
         "x": 90,
         "y": 270
       },
@@ -585,98 +585,98 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken_rotated",
-        "x": 90,
-        "y": 270
-      },
-      "when": {
-        "broken": "true",
-        "facing": "west",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated",
-        "x": 90,
-        "y": 270
-      },
-      "when": {
-        "broken": "false",
-        "facing": "west",
-        "inverted": "true",
-        "on": "true",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated",
-        "x": 90,
-        "y": 270
-      },
-      "when": {
-        "broken": "false",
-        "facing": "west",
-        "inverted": "false",
-        "on": "true",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated",
-        "x": 90,
-        "y": 270
-      },
-      "when": {
-        "broken": "false",
-        "facing": "west",
-        "inverted": "true",
-        "on": "false",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated",
-        "x": 90,
-        "y": 270
-      },
-      "when": {
-        "broken": "false",
-        "facing": "west",
-        "inverted": "false",
-        "on": "false",
-        "rotated": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage",
-        "x": 90,
-        "y": 270
-      },
-      "when": {
-        "facing": "west",
-        "rotated": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken_rotated",
         "x": 90,
         "y": 270
       },
       "when": {
         "broken": "true",
         "facing": "west",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "facing": "west",
+        "inverted": "true",
+        "on": "true",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "facing": "west",
+        "inverted": "false",
+        "on": "true",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "facing": "west",
+        "inverted": "true",
+        "on": "false",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "facing": "west",
+        "inverted": "false",
+        "on": "false",
+        "rotated": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
         "rotated": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken",
+        "x": 90,
+        "y": 270
+      },
+      "when": {
+        "broken": "true",
+        "facing": "west",
+        "rotated": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive",
         "x": 90,
         "y": 270
       },
@@ -690,7 +690,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active",
         "x": 90,
         "y": 270
       },
@@ -704,7 +704,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active",
         "x": 90,
         "y": 270
       },
@@ -718,7 +718,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive",
         "x": 90,
         "y": 270
       },
@@ -732,7 +732,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage_rotated",
         "x": 90,
         "y": 90
       },
@@ -743,7 +743,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken_rotated",
         "x": 90,
         "y": 90
       },
@@ -755,7 +755,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated",
         "x": 90,
         "y": 90
       },
@@ -769,7 +769,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated",
         "x": 90,
         "y": 90
       },
@@ -783,7 +783,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active_rotated",
         "x": 90,
         "y": 90
       },
@@ -797,7 +797,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive_rotated",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive_rotated",
         "x": 90,
         "y": 90
       },
@@ -811,7 +811,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_cage",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_cage",
         "x": 90,
         "y": 90
       },
@@ -822,7 +822,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_broken",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_broken",
         "x": 90,
         "y": 90
       },
@@ -834,7 +834,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive",
         "x": 90,
         "y": 90
       },
@@ -848,7 +848,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active",
         "x": 90,
         "y": 90
       },
@@ -862,7 +862,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_active",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_active",
         "x": 90,
         "y": 90
       },
@@ -876,7 +876,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/cage_lamp_wide_inactive",
+        "model": "dustydecor:block/cage_lamp_wide/cage_lamp_wide_inactive",
         "x": 90,
         "y": 90
       },

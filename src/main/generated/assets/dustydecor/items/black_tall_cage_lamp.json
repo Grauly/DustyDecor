@@ -1,7 +1,7 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dustydecor:block/cage_lamp_tall_inventory",
+    "model": "dustydecor:block/cage_lamp_tall/cage_lamp_tall_inventory",
     "tints": [
       {
         "type": "minecraft:constant",
