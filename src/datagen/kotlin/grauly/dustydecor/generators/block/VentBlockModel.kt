@@ -25,7 +25,7 @@ object VentBlockModel {
         blockStateModelGenerator.blockStateCollector?.accept(ventModel)
         blockStateModelGenerator.registerItemModel(
             ModItems.VENT,
-            Identifier.of(DustyDecorMod.MODID, "block/vent_inventory")
+            Identifier.of(DustyDecorMod.MODID, "block/vent/vent_inventory")
         )
     }
 
@@ -42,6 +42,6 @@ object VentBlockModel {
         )
     }
 
-    private val VENT_COVER: WeightedVariant = BlockModelDatagen.singleVariant("block/vent_cover")
-    private val VENT_CORE: WeightedVariant = BlockModelDatagen.singleVariant("block/vent_core")
+    private val VENT_COVER: WeightedVariant = BlockModelDatagen.singleVariant("block/vent/vent_cover")
+    private val VENT_CORE: WeightedVariant = BlockModelDatagen.singleVariant("block/vent/vent_core")
 }
