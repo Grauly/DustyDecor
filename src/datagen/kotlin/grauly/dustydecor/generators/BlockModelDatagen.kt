@@ -27,7 +27,7 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
         blockStateModelGenerator.registerOrientableTrapdoor(ModBlocks.VENT_COVER)
         VentBlockModel.get(blockStateModelGenerator)
         VacPipeBlockModel.get(blockStateModelGenerator)
-        FacingLampModel(ModBlocks.TALL_CAGE_LAMPS,"cage_lamp_tall").get(blockStateModelGenerator)
+        FacingLampModel(ModBlocks.TALL_CAGE_LAMPS,"cage_lamp_tall/cage_lamp_tall").get(blockStateModelGenerator)
         FacingRotationLampModel(ModBlocks.WIDE_CAGE_LAMPS,"cage_lamp_wide/cage_lamp_wide").get(blockStateModelGenerator)
         VacPipeStationBlockModel.get(blockStateModelGenerator)
     }
