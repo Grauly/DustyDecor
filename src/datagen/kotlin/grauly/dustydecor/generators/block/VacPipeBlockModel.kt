@@ -31,7 +31,7 @@ object VacPipeBlockModel {
             //single connectors, this should take care of anything but the cores
             AbConnectableBlock.connections.forEach connections@{ connection ->
                 listOf(true, false).forEach { hasWindow ->
-                    //TODO: window connectors
+                    singleWindowAttachment(aDirection, connection, creator)
                     singleConnector(aDirection, connection, hasWindow, creator)
                 }
             }
@@ -54,6 +54,22 @@ object VacPipeBlockModel {
                 }
             }
         }
+    }
+
+    private fun singleWindowAttachment(
+        aDirection: ConnectionState,
+        connection: EnumProperty<ConnectionState>,
+        creator: MultipartBlockModelDefinitionCreator
+    ) {
+        if (aDirection == ConnectionState.NONE) return
+        creator.with(
+            MultipartModelConditionBuilder()
+                .put(connection, aDirection)
+                .put(VacPipeBlock.windowMap[connection], true)
+                .put(VacPipeBlock.SHOULD_HAVE_WINDOW, false),
+            VAC_CONNECTOR_WINDOW_ATTACHMENT
+                .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction])
+        )
     }
 
     private fun singleConnector(
