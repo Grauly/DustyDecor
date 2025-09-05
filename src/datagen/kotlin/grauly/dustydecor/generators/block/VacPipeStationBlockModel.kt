@@ -37,7 +37,7 @@ object VacPipeStationBlockModel {
         blockStateModelGenerator.registerItemModel(ModItems.VAC_PIPE_STATION, Identifier.of(DustyDecorMod.MODID, "block/vac_pipe_station"))
     }
 
-    private val MODEL = BlockModelDatagen.singleVariant("block/vac_pipe_station")
-    private val SEND_MODEL = BlockModelDatagen.singleVariant("block/vac_pipe_station_sign_send")
-    private val RECEIVE_MODEL = BlockModelDatagen.singleVariant("block/vac_pipe_station_sign_receive")
+    private val MODEL = BlockModelDatagen.singleVariant("block/vac_pipe_station/vac_pipe_station")
+    private val SEND_MODEL = BlockModelDatagen.singleVariant("block/vac_pipe_station/vac_pipe_station_sign_send")
+    private val RECEIVE_MODEL = BlockModelDatagen.singleVariant("block/vac_pipe_station/vac_pipe_station_sign_receive")
 }
