@@ -1,0 +1,82 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"3": "dustydecor:block/vac_pipe/coppr_hole",
+		"4": "dustydecor:block/vac_pipe/copper_2",
+		"particle": "dustydecor:block/vac_pipe/copper_2"
+	},
+	"elements": [
+		{
+			"from": [5, 11, 5],
+			"to": [11, 11, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"up": {"uv": [5, 5, 11, 11], "rotation": 90, "texture": "#missing"},
+				"down": {"uv": [11, 11, 5, 5], "rotation": 270, "texture": "#missing"}
+			}
+		},
+		{
+			"from": [5, 5, 5],
+			"to": [11, 5, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"up": {"uv": [5, 5, 11, 11], "rotation": 90, "texture": "#missing"},
+				"down": {"uv": [11, 11, 5, 5], "rotation": 270, "texture": "#missing"}
+			}
+		},
+		{
+			"from": [5, 5, 11],
+			"to": [11, 11, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [11, 11, 5, 5], "rotation": 180, "texture": "#missing"},
+				"south": {"uv": [5, 11, 11, 5], "rotation": 180, "texture": "#missing"}
+			}
+		},
+		{
+			"from": [5, 5, 5],
+			"to": [11, 11, 5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [11, 11, 5, 5], "rotation": 180, "texture": "#missing"},
+				"south": {"uv": [5, 11, 11, 5], "rotation": 180, "texture": "#missing"}
+			}
+		},
+		{
+			"from": [4, 4, 4],
+			"to": [12, 12, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 7, 7]},
+			"faces": {
+				"north": {"uv": [4, 4, 12, 12], "texture": "#4"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"south": {"uv": [4, 4, 12, 12], "texture": "#4"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#4"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#4"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "central transparent block",
+			"origin": [2, 2, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "core transparent",
+					"origin": [8, 11, 8],
+					"color": 0,
+					"children": [
+						{
+							"name": "windows middle",
+							"origin": [8, 11, 8],
+							"color": 0,
+							"children": [0, 1, 2, 3]
+						}
+					]
+				}
+			]
+		},
+		4
+	]
+}
