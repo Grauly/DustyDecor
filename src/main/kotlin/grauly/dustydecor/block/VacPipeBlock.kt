@@ -44,18 +44,30 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
         for (state: BlockState in stateManager.states) {
             val normalizedState = normalizeStateForShape(state)
             if (SHAPES.containsKey(normalizedState)) continue
-            var workingShape = CORE_SHAPE
+            val shouldHaveWindow = normalizedState.get(SHOULD_HAVE_WINDOW)
+            var workingShape = if (shouldHaveWindow) GLASS_CORE_SHAPE else CORE_SHAPE
             connections.forEach {
                 val connectionDirection = normalizedState.get(it)
                 if (connectionDirection != ConnectionState.NONE) {
-                    workingShape = VoxelShapes.union(workingShape, CONNECTOR_SHAPE_MAP[connectionDirection.direction])
+                    workingShape = VoxelShapes.union(
+                        workingShape,
+                        if (shouldHaveWindow) GLASS_CONNECTOR_SHAPE_MAP[connectionDirection.direction]
+                        else CONNECTOR_SHAPE_MAP[connectionDirection.direction]
+                    )
                 }
             }
             SHAPES[normalizedState] = workingShape
         }
     }
 
-    fun alignPipeNetwork(state: BlockState, triggerState: BlockState, pos: BlockPos, triggerPos: BlockPos, triggerDirection: Direction, world: World) {
+    fun alignPipeNetwork(
+        state: BlockState,
+        triggerState: BlockState,
+        pos: BlockPos,
+        triggerPos: BlockPos,
+        triggerDirection: Direction,
+        world: World
+    ) {
         if (!state.isOf(ModBlocks.VAC_PIPE)) return
         if (pos.offset(triggerDirection.opposite) != triggerPos) return
         if (!triggerState.isOf(ModBlocks.VAC_PIPE_STATION)) {
@@ -116,6 +128,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
     private fun normalizeStateForShape(state: BlockState): BlockState {
         var workingState = defaultState
         connections.forEach { workingState = workingState.with(it, state.get(it)) }
+        workingState = workingState.with(SHOULD_HAVE_WINDOW, state.get(SHOULD_HAVE_WINDOW))
         return workingState
     }
 
@@ -299,6 +312,11 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
         val CONNECTOR_SHAPE_MAP: Map<Direction, VoxelShape> = VoxelShapes.createFacingShapeMap(
             VoxelShapes.cuboid(4.0 / 16, 4.0 / 16, 0.0, 12.0 / 16, 12.0 / 16, 4.0 / 16)
         )
+        val GLASS_CONNECTOR_SHAPE_MAP: Map<Direction, VoxelShape> = VoxelShapes.createFacingShapeMap(
+            VoxelShapes.cuboid(5.0 / 16, 5.0 / 16, 0.0, 11.0 / 16, 11.0 / 16, 5.0 / 16)
+        )
         val CORE_SHAPE: VoxelShape = VoxelShapes.cuboid(4.0 / 16, 4.0 / 16, 4.0 / 16, 12.0 / 16, 12.0 / 16, 12.0 / 16)
+        val GLASS_CORE_SHAPE: VoxelShape =
+            VoxelShapes.cuboid(5.0 / 16, 5.0 / 16, 5.0 / 16, 11.0 / 16, 11.0 / 16, 11.0 / 16)
     }
 }
