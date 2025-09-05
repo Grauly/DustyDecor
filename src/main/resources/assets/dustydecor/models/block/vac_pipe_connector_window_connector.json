@@ -1,0 +1,68 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "dustydecor:block/vac_pipe/window_cap_pieces",
+		"particle": "dustydecor:block/vac_pipe/window_cap_pieces"
+	},
+	"elements": [
+		{
+			"from": [5, 11, -1],
+			"to": [11, 11, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 11, 2]},
+			"faces": {
+				"up": {"uv": [10, 0.5, 13, 2.5], "texture": "#0"},
+				"down": {"uv": [3, 13.5, 6, 15.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [5, 5, -1],
+			"to": [11, 5, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5, 2]},
+			"faces": {
+				"up": {"uv": [10, 0.5, 13, 2.5], "texture": "#0"},
+				"down": {"uv": [3, 13.5, 6, 15.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [11, 5, -1],
+			"to": [11, 11, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [11, 8, 2]},
+			"faces": {
+				"east": {"uv": [13.5, 10, 15.5, 13], "texture": "#0"},
+				"west": {"uv": [0.5, 3, 2.5, 6], "texture": "#0"}
+			}
+		},
+		{
+			"from": [5, 5, -1],
+			"to": [5, 11, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 8, 2]},
+			"faces": {
+				"east": {"uv": [13.5, 10, 15.5, 13], "texture": "#0"},
+				"west": {"uv": [0.5, 3, 2.5, 6], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "central transparent block",
+			"origin": [2, 2, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "north transparent connector",
+					"origin": [2, 2, 8],
+					"color": 0,
+					"children": [
+						{
+							"name": "windows north",
+							"origin": [8, 11, 8],
+							"color": 0,
+							"children": [0, 1, 2, 3]
+						}
+					]
+				}
+			]
+		}
+	]
+}
