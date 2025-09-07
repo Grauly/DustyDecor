@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "x": 270
       },
       "when": {
@@ -13,18 +13,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true,
-        "x": 270
-      },
-      "when": {
-        "a": "up",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true,
         "x": 270
       },
@@ -36,8 +25,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true,
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "x": 270
       },
       "when": {
@@ -48,53 +36,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
-        "x": 270
-      },
-      "when": {
-        "a": "up",
-        "a_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "x": 270
       },
       "when": {
         "a": "up",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
-        "x": 270
-      },
-      "when": {
-        "a": "up",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "x": 270
       },
       "when": {
         "a": "up",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "x": 270
       },
       "when": {
@@ -105,18 +71,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true,
-        "x": 270
-      },
-      "when": {
-        "b": "up",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true,
         "x": 270
       },
@@ -128,8 +83,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true,
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "x": 270
       },
       "when": {
@@ -140,53 +94,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
-        "x": 270
-      },
-      "when": {
-        "b": "up",
-        "b_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "x": 270
       },
       "when": {
         "b": "up",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
-        "x": 270
-      },
-      "when": {
-        "b": "up",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "x": 270
       },
       "when": {
         "b": "up",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "x": 270
       },
@@ -198,7 +130,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -209,7 +142,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_up_down_transparent"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_up_down_transparent"
       },
       "when": {
         "a": "up",
@@ -219,8 +152,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_opaque",
-        "x": 90
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_up_down_opaque"
       },
       "when": {
         "a": "up",
@@ -230,7 +162,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_north_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_north_transparent",
         "uvlock": true
       },
       "when": {
@@ -241,7 +173,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_opaque"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_north_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "up",
@@ -251,7 +184,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_up_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_up_transparent",
         "uvlock": true
       },
       "when": {
@@ -262,8 +195,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
-        "x": 270
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_up_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "up",
@@ -273,7 +206,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_east_top_core_west_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_west_transparent",
         "uvlock": true
       },
       "when": {
@@ -284,9 +217,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
-        "x": 270,
-        "y": 180
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_west_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "up",
@@ -296,7 +228,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_east_top_core_up_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_up_transparent",
         "uvlock": true
       },
       "when": {
@@ -307,8 +239,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
-        "x": 270
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_up_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "up",
@@ -318,7 +250,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "x": 270
       },
@@ -330,7 +262,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -341,7 +274,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "x": 90
       },
       "when": {
@@ -352,18 +285,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true,
-        "x": 90
-      },
-      "when": {
-        "a": "down",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true,
         "x": 90
       },
@@ -375,8 +297,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true,
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "x": 90
       },
       "when": {
@@ -387,53 +308,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
-        "x": 90
-      },
-      "when": {
-        "a": "down",
-        "a_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "x": 90
       },
       "when": {
         "a": "down",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
-        "x": 90
-      },
-      "when": {
-        "a": "down",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "x": 90
       },
       "when": {
         "a": "down",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "x": 90
       },
       "when": {
@@ -444,18 +343,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true,
-        "x": 90
-      },
-      "when": {
-        "b": "down",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true,
         "x": 90
       },
@@ -467,8 +355,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true,
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "x": 90
       },
       "when": {
@@ -479,53 +366,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
-        "x": 90
-      },
-      "when": {
-        "b": "down",
-        "b_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "x": 90
       },
       "when": {
         "b": "down",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
-        "x": 90
-      },
-      "when": {
-        "b": "down",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "x": 90
       },
       "when": {
         "b": "down",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_up_down_transparent"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_up_down_transparent"
       },
       "when": {
         "a": "down",
@@ -535,8 +400,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_opaque",
-        "x": 90
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_up_down_opaque"
       },
       "when": {
         "a": "down",
@@ -546,7 +410,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "x": 90
       },
@@ -558,7 +422,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -569,7 +434,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_down_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_down_transparent",
         "uvlock": true
       },
       "when": {
@@ -580,8 +445,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
-        "x": 90
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_down_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "down",
@@ -591,7 +456,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_south_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_south_transparent",
         "uvlock": true
       },
       "when": {
@@ -602,8 +467,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
-        "x": 180
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_south_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "down",
@@ -613,7 +478,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_east_top_core_down_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_down_transparent",
         "uvlock": true
       },
       "when": {
@@ -624,9 +489,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
-        "x": 90,
-        "y": 180
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_down_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "down",
@@ -636,7 +500,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_east_top_core_east_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_east_transparent",
         "uvlock": true
       },
       "when": {
@@ -647,8 +511,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
-        "x": 90
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_east_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "down",
@@ -658,7 +522,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "x": 90
       },
@@ -670,7 +534,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -681,7 +546,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment"
       },
       "when": {
         "a": "north",
@@ -691,17 +556,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true
-      },
-      "when": {
-        "a": "north",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true
       },
       "when": {
@@ -712,8 +567,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment"
       },
       "when": {
         "a": "north",
@@ -723,49 +577,29 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment"
-      },
-      "when": {
-        "a": "north",
-        "a_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true
       },
       "when": {
         "a": "north",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true
-      },
-      "when": {
-        "a": "north",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true
       },
       "when": {
         "a": "north",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment"
       },
       "when": {
         "b": "north",
@@ -775,17 +609,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true
-      },
-      "when": {
-        "b": "north",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true
       },
       "when": {
@@ -796,8 +620,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment"
       },
       "when": {
         "b": "north",
@@ -807,49 +630,29 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment"
-      },
-      "when": {
-        "b": "north",
-        "b_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true
       },
       "when": {
         "b": "north",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true
-      },
-      "when": {
-        "b": "north",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true
       },
       "when": {
         "b": "north",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_north_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_north_transparent",
         "uvlock": true
       },
       "when": {
@@ -860,7 +663,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_opaque"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_north_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "north",
@@ -870,7 +674,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_down_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_down_transparent",
         "uvlock": true
       },
       "when": {
@@ -881,8 +685,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
-        "x": 90
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_down_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "north",
@@ -892,7 +696,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true
       },
       "when": {
@@ -903,7 +707,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "north",
@@ -913,7 +718,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_north_south_transparent"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_north_south_transparent"
       },
       "when": {
         "a": "north",
@@ -923,7 +728,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_opaque"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_north_south_opaque"
       },
       "when": {
         "a": "north",
@@ -933,7 +738,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_transparent",
         "uvlock": true,
         "y": 270
       },
@@ -945,7 +750,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_opaque",
+        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -956,7 +762,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_transparent",
         "uvlock": true
       },
       "when": {
@@ -967,7 +773,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "north",
@@ -977,7 +784,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true
       },
       "when": {
@@ -988,7 +795,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "north",
@@ -998,7 +806,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 180
       },
       "when": {
@@ -1009,18 +817,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true,
-        "y": 180
-      },
-      "when": {
-        "a": "south",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true,
         "y": 180
       },
@@ -1032,8 +829,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true,
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 180
       },
       "when": {
@@ -1044,53 +840,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
-        "y": 180
-      },
-      "when": {
-        "a": "south",
-        "a_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 180
       },
       "when": {
         "a": "south",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
-        "y": 180
-      },
-      "when": {
-        "a": "south",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 180
       },
       "when": {
         "a": "south",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 180
       },
       "when": {
@@ -1101,18 +875,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true,
-        "y": 180
-      },
-      "when": {
-        "b": "south",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true,
         "y": 180
       },
@@ -1124,8 +887,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true,
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 180
       },
       "when": {
@@ -1136,53 +898,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
-        "y": 180
-      },
-      "when": {
-        "b": "south",
-        "b_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 180
       },
       "when": {
         "b": "south",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
-        "y": 180
-      },
-      "when": {
-        "b": "south",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 180
       },
       "when": {
         "b": "south",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_up_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_up_transparent",
         "uvlock": true
       },
       "when": {
@@ -1193,8 +933,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
-        "x": 270
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_up_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "south",
@@ -1204,7 +944,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_south_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_south_transparent",
         "uvlock": true
       },
       "when": {
@@ -1215,8 +955,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_top_core_opaque",
-        "x": 180
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_top_core_south_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "south",
@@ -1226,7 +966,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_north_south_transparent"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_north_south_transparent"
       },
       "when": {
         "a": "south",
@@ -1236,7 +976,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_opaque"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_north_south_opaque"
       },
       "when": {
         "a": "south",
@@ -1246,7 +986,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "y": 180
       },
@@ -1258,7 +998,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -1269,7 +1010,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_transparent",
         "uvlock": true,
         "y": 180
       },
@@ -1281,7 +1022,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_opaque",
+        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -1292,7 +1034,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_transparent",
         "uvlock": true,
         "y": 90
       },
@@ -1304,7 +1046,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_opaque",
+        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -1315,7 +1058,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "y": 180
       },
@@ -1327,7 +1070,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -1338,7 +1082,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 270
       },
       "when": {
@@ -1349,18 +1093,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true,
-        "y": 270
-      },
-      "when": {
-        "a": "west",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true,
         "y": 270
       },
@@ -1372,8 +1105,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true,
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 270
       },
       "when": {
@@ -1384,53 +1116,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
-        "y": 270
-      },
-      "when": {
-        "a": "west",
-        "a_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 270
       },
       "when": {
         "a": "west",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
-        "y": 270
-      },
-      "when": {
-        "a": "west",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 270
       },
       "when": {
         "a": "west",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 270
       },
       "when": {
@@ -1441,18 +1151,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true,
-        "y": 270
-      },
-      "when": {
-        "b": "west",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true,
         "y": 270
       },
@@ -1464,8 +1163,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true,
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 270
       },
       "when": {
@@ -1476,53 +1174,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
-        "y": 270
-      },
-      "when": {
-        "b": "west",
-        "b_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 270
       },
       "when": {
         "b": "west",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
-        "y": 270
-      },
-      "when": {
-        "b": "west",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 270
       },
       "when": {
         "b": "west",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_east_top_core_west_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_west_transparent",
         "uvlock": true
       },
       "when": {
@@ -1533,9 +1209,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
-        "x": 270,
-        "y": 180
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_west_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "west",
@@ -1545,7 +1220,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_east_top_core_down_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_down_transparent",
         "uvlock": true
       },
       "when": {
@@ -1556,9 +1231,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
-        "x": 90,
-        "y": 180
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_down_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "west",
@@ -1568,7 +1242,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_transparent",
         "uvlock": true,
         "y": 270
       },
@@ -1580,7 +1254,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_opaque",
+        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -1591,7 +1266,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_transparent",
         "uvlock": true,
         "y": 180
       },
@@ -1603,7 +1278,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_opaque",
+        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -1614,7 +1290,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "y": 270
       },
@@ -1626,7 +1302,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -1637,7 +1314,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_west_east_transparent"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_west_east_transparent"
       },
       "when": {
         "a": "west",
@@ -1647,8 +1324,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_opaque",
-        "y": 270
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_west_east_opaque"
       },
       "when": {
         "a": "west",
@@ -1658,30 +1334,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "a": "west",
+        "b": "none",
+        "should_have_window": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
         "uvlock": true,
         "y": 270
       },
       "when": {
         "a": "west",
         "b": "none",
-        "should_have_window": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
-        "y": 270
-      },
-      "when": {
-        "a": "west",
-        "b": "none",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 90
       },
       "when": {
@@ -1692,18 +1369,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true,
-        "y": 90
-      },
-      "when": {
-        "a": "east",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true,
         "y": 90
       },
@@ -1715,8 +1381,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true,
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 90
       },
       "when": {
@@ -1727,53 +1392,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
-        "y": 90
-      },
-      "when": {
-        "a": "east",
-        "a_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 90
       },
       "when": {
         "a": "east",
-        "a_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
-        "y": 90
-      },
-      "when": {
-        "a": "east",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 90
       },
       "when": {
         "a": "east",
-        "a_window": "true",
+        "a_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 90
       },
       "when": {
@@ -1784,18 +1427,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
-        "uvlock": true,
-        "y": 90
-      },
-      "when": {
-        "b": "east",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_transparent",
         "uvlock": true,
         "y": 90
       },
@@ -1807,8 +1439,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
-        "uvlock": true,
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_window_attachment",
         "y": 90
       },
       "when": {
@@ -1819,53 +1450,31 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_attachment",
-        "y": 90
-      },
-      "when": {
-        "b": "east",
-        "b_window": "true",
-        "should_have_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 90
       },
       "when": {
         "b": "east",
-        "b_window": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_transparent",
-        "uvlock": true,
-        "y": 90
-      },
-      "when": {
-        "b": "east",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "true"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_connector_window_connector",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_connector_opaque",
         "uvlock": true,
         "y": 90
       },
       "when": {
         "b": "east",
-        "b_window": "true",
+        "b_window": "false",
         "should_have_window": "false"
       }
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_east_top_core_up_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_up_transparent",
         "uvlock": true
       },
       "when": {
@@ -1876,8 +1485,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
-        "x": 270
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_up_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "east",
@@ -1887,7 +1496,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_east_top_core_east_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_east_transparent",
         "uvlock": true
       },
       "when": {
@@ -1898,8 +1507,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
-        "x": 90
+        "model": "dustydecor:block/vac_pipe/vac_pipe_east_top_core_east_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "east",
@@ -1909,7 +1518,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_transparent",
         "uvlock": true
       },
       "when": {
@@ -1920,7 +1529,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "east",
@@ -1930,7 +1540,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_transparent",
         "uvlock": true,
         "y": 90
       },
@@ -1942,7 +1552,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_east_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_east_core_opaque",
+        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -1953,7 +1564,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_west_east_transparent"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_west_east_transparent"
       },
       "when": {
         "a": "east",
@@ -1963,8 +1574,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_straight_core_opaque",
-        "y": 270
+        "model": "dustydecor:block/vac_pipe/vac_pipe_straight_core_west_east_opaque"
       },
       "when": {
         "a": "east",
@@ -1974,7 +1584,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "y": 90
       },
@@ -1986,7 +1596,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -1997,7 +1608,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "y": 90
       },
@@ -2009,7 +1620,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -2020,7 +1632,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "x": 270
       },
@@ -2032,7 +1644,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "x": 270
       },
       "when": {
@@ -2043,7 +1656,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "x": 90
       },
@@ -2055,7 +1668,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "x": 90
       },
       "when": {
@@ -2066,7 +1680,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true
       },
       "when": {
@@ -2077,7 +1691,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true
       },
       "when": {
         "a": "none",
@@ -2087,7 +1702,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "y": 180
       },
@@ -2099,7 +1714,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -2110,7 +1726,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "y": 270
       },
@@ -2122,7 +1738,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -2133,7 +1750,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_transparent",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_transparent",
         "uvlock": true,
         "y": 90
       },
@@ -2145,7 +1762,8 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_north_core_opaque",
+        "model": "dustydecor:block/vac_pipe/vac_pipe_north_core_opaque",
+        "uvlock": true,
         "y": 90
       },
       "when": {
@@ -2156,7 +1774,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_none_core_transparent"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_none_core_transparent"
       },
       "when": {
         "AND": [
@@ -2178,7 +1796,7 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_none_core_opaque"
+        "model": "dustydecor:block/vac_pipe/vac_pipe_none_core_opaque"
       },
       "when": {
         "AND": [

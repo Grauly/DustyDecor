@@ -22,7 +22,7 @@ object VacPipeBlockModel {
         blockStateModelGenerator.blockStateCollector?.accept(vacPipeModel)
         blockStateModelGenerator.registerItemModel(
             ModItems.VAC_PIPE,
-            Identifier.of(DustyDecorMod.MODID, "block/vac_pipe_inventory")
+            Identifier.of(DustyDecorMod.MODID, "block/vac_pipe/vac_pipe_inventory")
         )
     }
 
@@ -32,9 +32,8 @@ object VacPipeBlockModel {
             AbConnectableBlock.connections.forEach connections@{ connection ->
                 listOf(true, false).forEach { hasWindow ->
                     windowConnector(aDirection, connection, creator)
-                    opaqueConnector(aDirection, connection, creator)
                     listOf(true, false).forEach { shouldHaveWindow ->
-                        transparentConnector(aDirection, connection, shouldHaveWindow, creator)
+                        connector(aDirection, connection, hasWindow, shouldHaveWindow, creator)
                     }
                 }
             }
@@ -59,19 +58,21 @@ object VacPipeBlockModel {
         }
     }
 
-    private fun transparentConnector(
+    private fun connector(
         aDirection: ConnectionState,
         connection: EnumProperty<ConnectionState>,
+        hasWindow: Boolean,
         shouldHaveWindow: Boolean,
         creator: MultipartBlockModelDefinitionCreator
     ) {
         if (aDirection == ConnectionState.NONE) return
+        if (!shouldHaveWindow && hasWindow) return
         creator.with(
             MultipartModelConditionBuilder()
                 .put(connection, aDirection)
-                .put(VacPipeBlock.windowMap[connection], true)
+                .put(VacPipeBlock.windowMap[connection], hasWindow)
                 .put(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow),
-            (if (shouldHaveWindow) getConnector(true) else VAC_CONNECTOR_WINDOW_CONNECTOR)
+            getConnector(hasWindow)
                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction])
                 .apply(uvLock(true))
         )
@@ -90,23 +91,6 @@ object VacPipeBlockModel {
                 .put(VacPipeBlock.SHOULD_HAVE_WINDOW, false),
             VAC_CONNECTOR_WINDOW_ATTACHMENT
                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction])
-        )
-    }
-
-    private fun opaqueConnector(
-        direction: ConnectionState,
-        connection: EnumProperty<ConnectionState>,
-        creator: MultipartBlockModelDefinitionCreator
-    ) {
-        if (direction == ConnectionState.NONE) return
-        creator.with(
-            MultipartModelConditionBuilder()
-                .put(connection, direction)
-                .put(VacPipeBlock.windowMap[connection], false)
-                .build(),
-            getConnector(false)
-                .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction.direction])
-                .apply(uvLock(true))
         )
     }
 
@@ -138,7 +122,7 @@ object VacPipeBlockModel {
                 .put(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow),
             getVacCoreNorth(shouldHaveWindow)
                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction])
-                .apply(uvLock(shouldHaveWindow))
+                .apply(uvLock(true))
         )
     }
 
@@ -153,11 +137,7 @@ object VacPipeBlockModel {
                 .put(AbConnectableBlock.connections[0], aDirection)
                 .put(AbConnectableBlock.connections[1], bDirection)
                 .put(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow),
-            if (!shouldHaveWindow)
-                VAC_CORE_STRAIGHT_OPAQUE
-                    .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.fallDown])
-            else
-                VAC_CORE_STRAIGHT_TRANSPARENT_MAP[aDirection.fallDown]!!
+            getVacCoreStraightMap(shouldHaveWindow)[aDirection.fallDown]
         )
     }
 
@@ -185,38 +165,30 @@ object VacPipeBlockModel {
 
         creator.with(
             condition,
-            core.apply(uvLock(shouldHaveWindow))
+            core.apply(uvLock(true))
         )
 
     }
 
     private fun getVacCoreEastTop(shouldHaveWindow: Boolean, aDirection: Direction, bDirection: Direction): WeightedVariant {
-        if (!shouldHaveWindow) {
-            //opaque can still have the old handling, it worked well enough
-            return getVacCoreNorthEast(false).apply(rotatePlanarZ(aDirection, bDirection))
-        }
         if (zRotationDirections.indexOf(bDirection) < zRotationDirections.indexOf(aDirection))
-            return getVacCoreEastTop(true, bDirection, aDirection)
+            return getVacCoreEastTop(shouldHaveWindow, bDirection, aDirection)
 
         if (aDirection == Direction.UP && bDirection == Direction.WEST) {
-            return getVacCoreEastTop(true, Direction.WEST)
+            return getVacCoreEastTop(shouldHaveWindow, Direction.WEST)
         }
-        return getVacCoreEastTop(true, aDirection)
+        return getVacCoreEastTop(shouldHaveWindow, aDirection)
     }
 
     private fun getVacCoreNorthTop(shouldHaveWindow: Boolean, aDirection: Direction, bDirection: Direction): WeightedVariant {
-        if (!shouldHaveWindow) {
-            //opaque can still have the old handling, it worked well enough
-            return getVacCoreNorthTop(false).apply(rotatePlanarX(aDirection, bDirection))
-        }
         if (xRotationDirections.indexOf(bDirection) < xRotationDirections.indexOf(aDirection)) {
-            return getVacCoreNorthTop(true, bDirection, aDirection)
+            return getVacCoreNorthTop(shouldHaveWindow, bDirection, aDirection)
         }
 
         if (aDirection == Direction.NORTH && bDirection == Direction.UP) {
-            return getVacCoreNorthTop(true, Direction.NORTH)
+            return getVacCoreNorthTop(shouldHaveWindow, Direction.NORTH)
         }
-        return getVacCoreNorthTop(true, bDirection)
+        return getVacCoreNorthTop(shouldHaveWindow, bDirection)
     }
 
     private fun rotatePlanarZ(aDirection: Direction, bDirection: Direction): ModelVariantOperator {
@@ -276,27 +248,26 @@ object VacPipeBlockModel {
         return BlockModelDatagen.singleVariant(id + if (transparent) "_transparent" else "_opaque")
     }
 
-    private fun getVacCoreNorthTop(window: Boolean) = getVariant("block/vac_pipe_north_top_core", window)
-    private fun getVacCoreNorthEast(window: Boolean) = getVariant("block/vac_pipe_north_east_core", window)
-    private fun getVacCoreNorth(window: Boolean) = getVariant("block/vac_pipe_north_core", window)
-    private fun getVacCoreNone(window: Boolean) = getVariant("block/vac_pipe_none_core", window)
-    private fun getConnector(window: Boolean): WeightedVariant = getVariant("block/vac_pipe_connector", window)
+    private fun getVacCoreNorthTop(window: Boolean) = getVariant("block/vac_pipe/vac_pipe_north_top_core", window)
+    private fun getVacCoreNorthEast(window: Boolean) = getVariant("block/vac_pipe/vac_pipe_north_east_core", window)
+    private fun getVacCoreNorth(window: Boolean) = getVariant("block/vac_pipe/vac_pipe_north_core", window)
+    private fun getVacCoreNone(window: Boolean) = getVariant("block/vac_pipe/vac_pipe_none_core", window)
+    private fun getConnector(window: Boolean): WeightedVariant = getVariant("block/vac_pipe/vac_pipe_connector", window)
 
     private val VAC_CONNECTOR_WINDOW_ATTACHMENT =
-        BlockModelDatagen.singleVariant("block/vac_pipe_connector_window_attachment")
+        BlockModelDatagen.singleVariant("block/vac_pipe/vac_pipe_connector_window_attachment")
 
     private val VAC_CONNECTOR_WINDOW_CONNECTOR =
-        BlockModelDatagen.singleVariant("block/vac_pipe_connector_window_connector")
+        BlockModelDatagen.singleVariant("block/vac_pipe/vac_pipe_connector_window_connector")
 
     private fun getVacCoreEastTop(shouldHaveWindow: Boolean, primaryDirection: Direction) =
-        getVariant("block/vac_pipe_east_top_core_${primaryDirection.id}", shouldHaveWindow)
+        getVariant("block/vac_pipe/vac_pipe_east_top_core_${primaryDirection.id}", shouldHaveWindow)
     private fun getVacCoreNorthTop(shouldHaveWindow: Boolean, primaryDirection: Direction) =
-        getVariant("block/vac_pipe_north_top_core_${primaryDirection.id}", shouldHaveWindow)
+        getVariant("block/vac_pipe/vac_pipe_north_top_core_${primaryDirection.id}", shouldHaveWindow)
 
-    private val VAC_CORE_STRAIGHT_OPAQUE = BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_opaque")
-    private val VAC_CORE_STRAIGHT_TRANSPARENT_MAP = mapOf(
-        ConnectionState.NORTH.fallDown to BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_north_south_transparent"),
-        ConnectionState.WEST.fallDown to BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_west_east_transparent"),
-        ConnectionState.UP.fallDown to BlockModelDatagen.singleVariant("block/vac_pipe_straight_core_up_down_transparent"),
+    private fun getVacCoreStraightMap(window: Boolean) = mapOf(
+        ConnectionState.NORTH.fallDown to getVariant("block/vac_pipe/vac_pipe_straight_core_north_south", window),
+        ConnectionState.WEST.fallDown to getVariant("block/vac_pipe/vac_pipe_straight_core_west_east", window),
+        ConnectionState.UP.fallDown to getVariant("block/vac_pipe/vac_pipe_straight_core_up_down", window),
     )
 }
