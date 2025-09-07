@@ -84,13 +84,20 @@ object VacPipeBlockModel {
         creator: MultipartBlockModelDefinitionCreator
     ) {
         if (aDirection == ConnectionState.NONE) return
-        creator.with(
-            MultipartModelConditionBuilder()
+        val condition = MultipartModelConditionBuilder()
                 .put(connection, aDirection)
                 .put(VacPipeBlock.windowMap[connection], true)
-                .put(VacPipeBlock.SHOULD_HAVE_WINDOW, false),
+                .put(VacPipeBlock.SHOULD_HAVE_WINDOW, false)
+        creator.with(
+            condition,
             VAC_CONNECTOR_WINDOW_ATTACHMENT
                 .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction])
+        )
+        creator.with(
+            condition,
+            VAC_CONNECTOR_WINDOW_CONNECTOR
+                .apply(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction])
+                .apply(uvLock(true))
         )
     }
 
