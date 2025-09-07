@@ -11,7 +11,6 @@ import net.minecraft.client.data.BlockStateModelGenerator
 import net.minecraft.client.data.MultipartBlockModelDefinitionCreator
 import net.minecraft.client.render.model.json.*
 import net.minecraft.state.property.EnumProperty
-import net.minecraft.util.Identifier
 import net.minecraft.util.math.AxisRotation
 import net.minecraft.util.math.Direction
 
@@ -20,10 +19,7 @@ object VacPipeBlockModel {
         val vacPipeModel = MultipartBlockModelDefinitionCreator.create(ModBlocks.VAC_PIPE)
         generate(vacPipeModel)
         blockStateModelGenerator.blockStateCollector?.accept(vacPipeModel)
-        blockStateModelGenerator.registerItemModel(
-            ModItems.VAC_PIPE,
-            Identifier.of(DustyDecorMod.MODID, "block/vac_pipe/vac_pipe_inventory")
-        )
+        blockStateModelGenerator.registerItemModel(ModItems.VAC_PIPE)
     }
 
     private fun generate(creator: MultipartBlockModelDefinitionCreator) {
