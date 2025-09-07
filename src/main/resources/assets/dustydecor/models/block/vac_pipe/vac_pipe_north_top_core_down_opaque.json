@@ -3,7 +3,7 @@
 	"texture_size": [32, 32],
 	"textures": {
 		"1": "dustydecor:block/vac_pipe/copper_cap_pieces",
-		"2": "dustydecor:block/vac_pipe/coppr_hole",
+		"2": "dustydecor:block/vac_pipe/copper_hole",
 		"particle": "dustydecor:block/vac_pipe/copper_cap_pieces"
 	},
 	"elements": [

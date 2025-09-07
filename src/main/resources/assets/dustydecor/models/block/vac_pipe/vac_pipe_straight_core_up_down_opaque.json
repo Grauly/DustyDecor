@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"3": "dustydecor:block/vac_pipe/coppr_hole",
+		"3": "dustydecor:block/vac_pipe/copper_hole",
 		"5": "dustydecor:block/vac_pipe/copper_1",
 		"particle": "dustydecor:block/vac_pipe/copper_1"
 	},

@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "dustydecor:block/vac_pipe/coppr_hole",
+		"0": "dustydecor:block/vac_pipe/copper_hole",
 		"1": "dustydecor:block/vac_pipe/copper_cap_pieces",
 		"particle": "dustydecor:block/vac_pipe/copper_cap_pieces"
 	},
