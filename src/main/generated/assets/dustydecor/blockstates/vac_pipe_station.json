@@ -10,49 +10,11 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station_sign_send"
-      },
-      "when": {
-        "facing": "north",
-        "sending": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station_sign_receive"
-      },
-      "when": {
-        "facing": "north",
-        "sending": "false"
-      }
-    },
-    {
-      "apply": {
         "model": "dustydecor:block/vac_pipe_station/vac_pipe_station",
         "y": 180
       },
       "when": {
         "facing": "south"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station_sign_send",
-        "y": 180
-      },
-      "when": {
-        "facing": "south",
-        "sending": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station_sign_receive",
-        "y": 180
-      },
-      "when": {
-        "facing": "south",
-        "sending": "false"
       }
     },
     {
@@ -66,51 +28,11 @@
     },
     {
       "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station_sign_send",
-        "y": 270
-      },
-      "when": {
-        "facing": "west",
-        "sending": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station_sign_receive",
-        "y": 270
-      },
-      "when": {
-        "facing": "west",
-        "sending": "false"
-      }
-    },
-    {
-      "apply": {
         "model": "dustydecor:block/vac_pipe_station/vac_pipe_station",
         "y": 90
       },
       "when": {
         "facing": "east"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station_sign_send",
-        "y": 90
-      },
-      "when": {
-        "facing": "east",
-        "sending": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station_sign_receive",
-        "y": 90
-      },
-      "when": {
-        "facing": "east",
-        "sending": "false"
       }
     }
   ]
