@@ -29,7 +29,7 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
         VacPipeBlockModel.get(blockStateModelGenerator)
         FacingLampModel(ModBlocks.TALL_CAGE_LAMPS,"cage_lamp_tall/cage_lamp_tall").get(blockStateModelGenerator)
         FacingRotationLampModel(ModBlocks.WIDE_CAGE_LAMPS,"cage_lamp_wide/cage_lamp_wide").get(blockStateModelGenerator)
-        blockStateModelGenerator.registerGeneric(ModBlocks.VAC_PIPE_STATION)
+        VacPipeStationBlockModel.get(blockStateModelGenerator)
     }
 
 
