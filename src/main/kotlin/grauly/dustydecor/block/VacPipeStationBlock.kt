@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
 import grauly.dustydecor.util.ToolUtils
-import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup
+import grauly.dustydecor.util.VoxelShapesUtil
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
 import net.minecraft.block.*
@@ -25,6 +25,9 @@ import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.random.Random
+import net.minecraft.util.shape.VoxelShape
+import net.minecraft.util.shape.VoxelShapes
+import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import net.minecraft.world.block.WireOrientation
@@ -37,6 +40,24 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             .with(FACING, Direction.NORTH)
             .with(Properties.WATERLOGGED, false)
             .with(SENDING, false)
+    }
+
+    override fun getOutlineShape(
+        state: BlockState?,
+        world: BlockView?,
+        pos: BlockPos?,
+        context: ShapeContext?
+    ): VoxelShape {
+        return SHAPE
+    }
+
+    override fun getCollisionShape(
+        state: BlockState?,
+        world: BlockView?,
+        pos: BlockPos?,
+        context: ShapeContext?
+    ): VoxelShape {
+        return SHAPE
     }
 
     private fun alignConnectedPipeNetwork(state: BlockState, pos: BlockPos, world: World) {
@@ -166,5 +187,16 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
 
     companion object {
         val SENDING: BooleanProperty = BooleanProperty.of("sending")
+        val SHAPE: VoxelShape = VoxelShapes.union(
+            VoxelShapesUtil.intCube(3, 0, 3, 13, 2, 13), //base plate
+            VoxelShapesUtil.intCube(5, 2, 5, 11, 3, 11),
+            VoxelShapesUtil.intCube(3, 11, 3, 13, 13, 13), //top plate
+            VoxelShapesUtil.intCube(4, 13, 4, 12, 16, 12), //pipe
+
+            VoxelShapesUtil.intCube(4, 2, 4, 5, 11, 5),
+            VoxelShapesUtil.intCube(11, 2, 11, 12, 11, 12),
+            VoxelShapesUtil.intCube(4, 2, 11, 5, 11, 12),
+            VoxelShapesUtil.intCube(11, 2, 4, 12, 11, 5),
+        )
     }
 }
