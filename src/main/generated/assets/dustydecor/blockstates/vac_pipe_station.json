@@ -1,39 +1,7 @@
 {
-  "multipart": [
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station"
-      },
-      "when": {
-        "facing": "north"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station",
-        "y": 180
-      },
-      "when": {
-        "facing": "south"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station",
-        "y": 270
-      },
-      "when": {
-        "facing": "west"
-      }
-    },
-    {
-      "apply": {
-        "model": "dustydecor:block/vac_pipe_station/vac_pipe_station",
-        "y": 90
-      },
-      "when": {
-        "facing": "east"
-      }
+  "variants": {
+    "": {
+      "model": "dustydecor:block/vac_pipe_station"
     }
-  ]
+  }
 }
