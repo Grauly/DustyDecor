@@ -1,6 +1,7 @@
 package grauly.dustydecor.generators
 
 import grauly.dustydecor.ItemDatagenWrapper
+import grauly.dustydecor.ModItems
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.minecraft.client.data.BlockStateModelGenerator
@@ -12,6 +13,7 @@ class ItemModelDatagen(output: FabricDataOutput) : FabricModelProvider(output) {
         ItemDatagenWrapper.entries.filter { it.generateBaseModel }.forEach {
             itemModelGenerator.register(it.item, Models.HANDHELD)
         }
+        itemModelGenerator.registerWithInHandModel(ModItems.VAC_CAPSULE)
     }
 
     override fun generateBlockStateModels(p0: BlockStateModelGenerator?) {

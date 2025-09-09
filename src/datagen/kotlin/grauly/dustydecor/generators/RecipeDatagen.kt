@@ -67,6 +67,14 @@ class RecipeDatagen(
                     .input(Items.HOPPER)
                     .criterion("has_vac_pipe", conditionsFromItem(ModItems.VAC_PIPE))
                     .offerTo(exporter)
+                createShaped(RecipeCategory.MISC, ModItems.VAC_CAPSULE)
+                    .input('n', ConventionalItemTags.IRON_NUGGETS)
+                    .input('c', ConventionalItemTags.COPPER_INGOTS)
+                    .pattern("nnn")
+                    .pattern(" c ")
+                    .pattern("nnn")
+                    .criterion("has_copper", conditionsFromTag(ConventionalItemTags.COPPER_INGOTS))
+                    .offerTo(exporter)
 
 
                 ModItems.TALL_CAGE_LAMPS.forEach {

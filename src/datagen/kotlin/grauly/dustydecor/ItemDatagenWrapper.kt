@@ -19,6 +19,10 @@ object ItemDatagenWrapper {
             listOf(ConventionalItemTags.WRENCH_TOOLS),
             generateBaseModel = true
         )
+        item (
+            ModItems.VAC_CAPSULE,
+            "Vacuum Tube Capsule"
+        )
     }
 
     private fun item(

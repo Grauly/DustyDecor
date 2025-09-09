@@ -13,6 +13,7 @@ object ModItemGroups {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)
             .register {
                 it.addAfter(Items.BRUSH, ModItems.SCREWDRIVER, ModItems.WRENCH)
+                it.addAfter(Items.PINK_BUNDLE, ModItems.VAC_CAPSULE)
             }
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL)
             .register {

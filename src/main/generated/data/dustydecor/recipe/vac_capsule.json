@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": "#c:ingots/copper",
+    "n": "#c:nuggets/iron"
+  },
+  "pattern": [
+    "nnn",
+    " c ",
+    "nnn"
+  ],
+  "result": {
+    "count": 1,
+    "id": "dustydecor:vac_capsule"
+  }
+}

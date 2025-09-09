@@ -2,6 +2,7 @@ package grauly.dustydecor
 
 import grauly.dustydecor.component.ScrewdriverComponent
 import grauly.dustydecor.component.WrenchComponent
+import grauly.dustydecor.item.VacCapsuleItem
 import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.Block
 import net.minecraft.component.DataComponentTypes
@@ -29,6 +30,7 @@ object ModItems {
     val VENT_COVER: Item = registerBlockItem(ModBlocks.VENT_COVER, "vent_cover")
     val VAC_PIPE: Item = registerBlockItem(ModBlocks.VAC_PIPE, "vac_pipe")
     val VAC_PIPE_STATION: Item = registerBlockItem(ModBlocks.VAC_PIPE_STATION, "vac_pipe_station")
+    val VAC_CAPSULE: Item = registerItem(::VacCapsuleItem, "vac_capsule")
     val SCREWDRIVER: Item = registerItem(
         ::Item,
         "screwdriver",
