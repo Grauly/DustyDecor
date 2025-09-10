@@ -2,3 +2,7 @@ tiny	2	0	official	intermediary	named
 c	cen	class_11566	net/minecraft/util/HeldItemContext
 	m	()Lnet/minecraft/util/math/Vec3d;	dB	method_73189	getHolderPos
 c	cen$a	class_11726	net/minecraft/util/HeldItemContext$LivingEntityHolderContext
+c	hdj$b	class_11941	net/minecraft/client/particle/BillboardParticle$RenderType
+	f	Lnet/minecraft/client/particle/BillboardParticle$RenderType;	a	field_62639	TERRAIN
+	f	Lnet/minecraft/client/particle/BillboardParticle$RenderType;	b	field_62640	OPAQUE
+	f	Lnet/minecraft/client/particle/BillboardParticle$RenderType;	c	field_62641	TRANSLUCENT
