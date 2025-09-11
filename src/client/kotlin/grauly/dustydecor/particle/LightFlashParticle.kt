@@ -25,7 +25,7 @@ class LightFlashParticle(
         scale = 15/16f/2f
     }
 
-    override fun getRenderType(): RenderType = RenderType.OPAQUE
+    override fun getRenderType(): RenderType = RenderType.field_62640
 
     class Factory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
         override fun createParticle(

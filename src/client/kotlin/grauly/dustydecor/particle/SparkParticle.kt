@@ -107,7 +107,7 @@ class SparkParticle(
         }
     }
 
-    override fun getRenderType(): RenderType = RenderType.OPAQUE
+    override fun getRenderType(): RenderType = RenderType.field_62640
 
     private fun split() {
         world.addParticleClient(ModParticleTypes.SPARK_FLASH, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z)
