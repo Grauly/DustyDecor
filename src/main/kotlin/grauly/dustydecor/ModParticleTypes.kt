@@ -1,13 +1,13 @@
 package grauly.dustydecor
 
-import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
 import io.netty.buffer.ByteBuf
-import net.minecraft.network.RegistryByteBuf
+import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes
 import net.minecraft.network.codec.PacketCodec
 import net.minecraft.particle.ParticleEffect
 import net.minecraft.particle.ParticleType
+import net.minecraft.particle.SimpleParticleType
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.util.Identifier
@@ -28,22 +28,24 @@ object ModParticleTypes {
         return Registry.register(Registries.PARTICLE_TYPE, id, type)
     }
 
-    //TODO: replace with proper FAPI versions once the exist
-    private fun <T: ParticleEffect> registerComplex(id: String, mapCodec: MapCodec<T>, packetCodec: PacketCodec<ByteBuf, T>, alwaysShow: Boolean = false): ParticleType<T> {
-        val type = object : ParticleType<T>(alwaysShow) {
-            override fun getCodec(): MapCodec<T> = mapCodec
-            override fun getPacketCodec(): PacketCodec<in RegistryByteBuf, T> = packetCodec
-        }
-        return registerParticle(id, type)
+    private fun <T: ParticleEffect> registerComplex(
+        id: String,
+        mapCodec: MapCodec<T>,
+        packetCodec: PacketCodec<ByteBuf, T>,
+        alwaysShow: Boolean = false
+    ): ParticleType<T> {
+        return registerParticle(id, FabricParticleTypes.complex(alwaysShow, mapCodec, packetCodec))
     }
 
     private fun registerSimple(id: String, showAlways: Boolean = false): SimpleParticleType {
-        return Registry.register(Registries.PARTICLE_TYPE, Identifier.of(DustyDecorMod.MODID, id), SimpleParticleType(showAlways))
+        return Registry.register(
+            Registries.PARTICLE_TYPE,
+            Identifier.of(DustyDecorMod.MODID, id),
+            FabricParticleTypes.simple(showAlways)
+        )
     }
 
     fun init() {
         //[This space intentionally left blank]
     }
-
-    class SimpleParticleType(showAlways: Boolean): net.minecraft.particle.SimpleParticleType(showAlways)
 }
