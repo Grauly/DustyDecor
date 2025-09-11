@@ -4,6 +4,7 @@ import grauly.dustydecor.particle.LightFlashParticle
 import grauly.dustydecor.particle.SparkEmitterFactory
 import grauly.dustydecor.particle.SparkFlashParticle
 import grauly.dustydecor.particle.SparkParticle
+import grauly.dustydecor.particle.test.TestCustomParticle
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry
 
 object ModParticles {
@@ -14,5 +15,6 @@ object ModParticles {
         ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK_EMITTER_PARTICLE, ::SparkEmitterFactory)
         ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK_FLASH, SparkFlashParticle::Factory)
         ParticleFactoryRegistry.getInstance().register(ModParticleTypes.LIGHT_FLASH, LightFlashParticle::Factory)
+        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.TEST_PARTICLE, TestCustomParticle::Factory)
     }
 }

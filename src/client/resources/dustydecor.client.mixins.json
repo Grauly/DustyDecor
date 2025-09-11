@@ -3,6 +3,7 @@
   "package": "grauly.dustydecor.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "ParticleManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
