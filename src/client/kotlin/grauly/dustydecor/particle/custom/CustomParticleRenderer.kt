@@ -1,6 +1,5 @@
-package grauly.dustydecor.particle.test
+package grauly.dustydecor.particle.custom
 
-import grauly.dustydecor.DustyDecorMod
 import net.minecraft.client.particle.ParticleManager
 import net.minecraft.client.particle.ParticleRenderer
 import net.minecraft.client.render.Camera
@@ -21,12 +20,8 @@ class CustomParticleRenderer(
         private val camera: Camera,
         private val tickProgress: Float,
     ): Submittable {
-        init {
-            DustyDecorMod.logger.info("creating submitter")
-        }
         private val matrixStack: MatrixStack = MatrixStack()
         override fun submit(queue: OrderedRenderCommandQueue) {
-            DustyDecorMod.logger.info("submitting")
             particles.forEach {
                 it.render(queue, matrixStack, camera, tickProgress)
             }

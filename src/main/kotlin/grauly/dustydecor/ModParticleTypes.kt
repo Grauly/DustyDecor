@@ -19,7 +19,6 @@ object ModParticleTypes {
     val SPARK_FLASH: SimpleParticleType = registerSimple("spark_flash")
     val SPARK_EMITTER_PARTICLE: ParticleType<SparkEmitterParticleEffect> = registerComplex("spark_emitter", SparkEmitterParticleEffect.CODEC, SparkEmitterParticleEffect.PACKET_CODEC)
     val LIGHT_FLASH: SimpleParticleType = registerSimple("light_flash")
-    val TEST_PARTICLE: SimpleParticleType = registerSimple("test")
 
     private fun <T: ParticleEffect> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {
         return registerParticle(Identifier.of(DustyDecorMod.MODID, id), type)

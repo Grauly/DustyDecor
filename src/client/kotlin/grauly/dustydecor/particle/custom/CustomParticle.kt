@@ -1,4 +1,4 @@
-package grauly.dustydecor.particle.test
+package grauly.dustydecor.particle.custom
 
 import net.minecraft.client.particle.Particle
 import net.minecraft.client.particle.ParticleTextureSheet
@@ -16,7 +16,7 @@ abstract class CustomParticle(
     velocityY: Double,
     velocityZ: Double
 ) : Particle(world, x, y, z, velocityX, velocityY, velocityZ) {
-    open override fun textureSheet(): ParticleTextureSheet = CUSTOM_TEXTURE_SHEET
+    override fun textureSheet(): ParticleTextureSheet = CUSTOM_TEXTURE_SHEET
 
     abstract fun render(queue: OrderedRenderCommandQueue, matrixStack: MatrixStack, camera: Camera, tickProgress: Float)
 

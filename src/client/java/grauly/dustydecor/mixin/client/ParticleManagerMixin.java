@@ -1,8 +1,8 @@
 package grauly.dustydecor.mixin.client;
 
 import grauly.dustydecor.DustyDecorMod;
-import grauly.dustydecor.particle.test.CustomParticle;
-import grauly.dustydecor.particle.test.CustomParticleRenderer;
+import grauly.dustydecor.particle.custom.CustomParticle;
+import grauly.dustydecor.particle.custom.CustomParticleRenderer;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.ParticleRenderer;
 import net.minecraft.client.particle.ParticleTextureSheet;

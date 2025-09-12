@@ -1,17 +1,26 @@
 package grauly.dustydecor.particle
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModParticleTypes
+import grauly.dustydecor.geometry.PlaneShape
+import grauly.dustydecor.particle.custom.CustomParticle
 import net.minecraft.block.ShapeContext
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.LightmapTextureManager
+import net.minecraft.client.render.OverlayTexture
+import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
+import net.minecraft.client.render.command.OrderedRenderCommandQueue
+import net.minecraft.client.texture.Sprite
+import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.particle.SimpleParticleType
 import net.minecraft.util.Colors
 import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.random.Random
 import net.minecraft.world.LightType
@@ -40,8 +49,7 @@ class SparkParticle(
     private val lengthFactor: Float = 4f,
     sparkWidthPixels: Double = 1.0,
     private val spriteProvider: SpriteProvider
-) :
-    AnimatedParticle(clientWorld, x, y, z, spriteProvider, gravity.toFloat()) {
+) : CustomParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ) {
     private var pos: Vec3d = Vec3d(x,y,z)
     private var lastPos: Vec3d = pos
     private var lastLastPos: Vec3d = lastPos
@@ -51,6 +59,8 @@ class SparkParticle(
     private val sparkWidth: Double = sparkWidthPixels / 16
     private var hasSplit = false
     private var lastBouncedBlockPos = BlockPos.ZERO
+    private var scale = 1f
+    private var sprite: Sprite = spriteProvider.getSprite(0, maxAge)
 
     init {
         this.gravityStrength = gravity.toFloat()
@@ -65,6 +75,7 @@ class SparkParticle(
             this.markDead()
             return
         }
+        sprite = spriteProvider.getSprite(age, maxAge)
         lastLastPos = lastPos
         lastPos = pos
         velocity = velocity.multiply(velocityMultiplier.toDouble()).add(0.0, -0.04 * gravityStrength, 0.0)
@@ -107,8 +118,6 @@ class SparkParticle(
         }
     }
 
-    override fun getRenderType(): RenderType = RenderType.field_62640
-
     private fun split() {
         world.addParticleClient(ModParticleTypes.SPARK_FLASH, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z)
         if (!hasSplit) {
@@ -126,21 +135,14 @@ class SparkParticle(
         }
     }
 
-    override fun render(arg: BillboardParticleSubmittable, camera: Camera, tickProgress: Float) {
-        val renderLocalPos =
-            lastPos.lerp(pos, tickProgress.toDouble()).subtract(camera.pos)
-        val renderLocalLastPos =
-            lastLastPos.lerp(lastPos, tickProgress.toDouble())
-                .subtract(camera.pos)
-        renderParticle(renderLocalPos, renderLocalLastPos, arg, tickProgress)
-    }
-
-    private fun renderParticle(
-        renderLocalPos: Vec3d,
-        renderLocalLastPos: Vec3d,
-        arg: BillboardParticleSubmittable,
+    override fun render(
+        queue: OrderedRenderCommandQueue,
+        matrixStack: MatrixStack,
+        camera: Camera,
         tickProgress: Float
     ) {
+        val renderLocalPos = lastPos.lerp(pos, tickProgress.toDouble())
+        val renderLocalLastPos = lastLastPos.lerp(lastPos, tickProgress.toDouble())
         val centerPos = renderLocalLastPos.lerp(renderLocalPos, 0.5)
         val spanVector = renderLocalPos.subtract(renderLocalLastPos)
         val speedSquared = spanVector.lengthSquared()
@@ -149,57 +151,46 @@ class SparkParticle(
             getSize(tickProgress),
             getSize(tickProgress)
         )
-        val rotation = if (spanVector.lengthSquared() != 0.0) {
+        val rotation = if (speedSquared != 0.0) {
             Quaternionf().rotationTo(Vector3f(1f, 0f, 0f), spanVector.normalize().toVector3f())
         } else {
             Quaternionf()
         }
-
-        renderPlaneParticle(
-            centerPos,
-            scaleVector,
-            rotation,
-            arg,
-            tickProgress
-        )
-    }
-
-    private fun renderPlaneParticle(
-        centerPos: Vec3d,
-        scaleVector: Vector3f,
-        rotation: Quaternionf,
-        arg: BillboardParticleSubmittable,
-        tickProgress: Float
-    ) {
-        val baseVector = Vector3f(scaleVector.x, 0f, 0f).rotate(rotation).mul(0.5f)
-        renderParticle(
-            centerPos.toVector3f().add(baseVector),
-            centerPos.toVector3f().add(baseVector.negate()),
-            arg,
-            tickProgress
-        )
-    }
-
-
-    private fun renderParticle(
-        from: Vector3f,
-        to: Vector3f,
-        arg: BillboardParticleSubmittable,
-        tickProgress: Float
-    ) {
-        val side = Vector3f(to).sub(from).normalize()
-        val camForward = Vector3f(to).lerp(from, 0.5f)
-        val sparkUp = Vector3f(side).cross(camForward).normalize().mul((getSize(tickProgress) / 2))
         val light = getBrightness(0f)
 
-/*
-        vertexConsumer.vertex(Vector3f(to).add(Vector3f(sparkUp).negate())).light(light).color(Colors.WHITE)
-            .texture(minU, maxV)
-        vertexConsumer.vertex(Vector3f(to).add(sparkUp)).light(light).color(Colors.WHITE).texture(minU, minV)
-        vertexConsumer.vertex(Vector3f(from).add(sparkUp)).light(light).color(Colors.WHITE).texture(maxU, minV)
-        vertexConsumer.vertex(Vector3f(from).add(Vector3f(sparkUp).negate())).light(light).color(Colors.WHITE)
-            .texture(maxU, maxV)
-*/
+        val camForward = centerPos.subtract(camera.pos)
+        val localUp = Vector3f(1f, 0f, 0f).cross(camForward.toVector3f()).normalize()
+        val forward = Vector3f(1f, 0f, 0f)
+
+        matrixStack.push()
+        matrixStack.translate(camForward)
+        matrixStack.multiply(rotation)
+        matrixStack.scale(scaleVector.x, pixel(1/2f), pixel(1/2f))
+
+        queue.submitCustom(
+            matrixStack,
+            RenderLayer.getEntityCutout(sprite.atlasId),
+            { matrixEntry, vertexConsumer ->
+                vertexConsumer.vertex(matrixEntry, Vector3f(forward).add(Vector3f(localUp).negate()))
+                    .color(-1).light(light).overlay(OverlayTexture.DEFAULT_UV)
+                    .normal(matrixEntry, 0f, 0f, 1f)
+                    .texture(sprite.minU, sprite.maxV)
+                vertexConsumer.vertex(matrixEntry, Vector3f(forward).add(Vector3f(localUp)))
+                    .color(-1).light(light).overlay(OverlayTexture.DEFAULT_UV)
+                    .normal(matrixEntry, 0f, 0f, 1f)
+                    .texture(sprite.minU, sprite.minV)
+                vertexConsumer.vertex(matrixEntry, (Vector3f(localUp)))
+                    .color(-1).light(light).overlay(OverlayTexture.DEFAULT_UV)
+                    .normal(matrixEntry, 0f, 0f, 1f)
+                    .texture(sprite.minU, sprite.maxV)
+                vertexConsumer.vertex(matrixEntry, (Vector3f(localUp).negate()))
+                    .color(-1).light(light).overlay(OverlayTexture.DEFAULT_UV)
+                    .normal(matrixEntry, 0f, 0f, 1f)
+                    .texture(sprite.minU, sprite.minV)
+            }
+        )
+
+        matrixStack.pop()
     }
 
     override fun getBrightness(tint: Float): Int {
@@ -210,9 +201,13 @@ class SparkParticle(
         return LightmapTextureManager.pack(max(sparkBrightness, blockLight), skyLight)
     }
 
-    override fun getSize(tickProgress: Float): Float {
+    private fun getSize(tickProgress: Float): Float {
         return sparkWidth.toFloat() * scale * (1f - (age + tickProgress) / maxAge)
     }
+
+    private fun pixel(i: Int): Double = i / 16.0
+    private fun pixel(i: Double): Double = i / 16.0
+    private fun pixel(i: Float): Float = i / 16.0f
 
     class LargeSparkFactory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
         override fun createParticle(
