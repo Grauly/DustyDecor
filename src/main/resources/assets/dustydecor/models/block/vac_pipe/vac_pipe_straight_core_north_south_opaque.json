@@ -3,7 +3,8 @@
 	"textures": {
 		"3": "dustydecor:block/vac_pipe/copper_hole",
 		"4": "dustydecor:block/vac_pipe/copper_2",
-		"5": "dustydecor:block/vac_pipe/copper_1"
+		"5": "dustydecor:block/vac_pipe/copper_1",
+		"particle": "dustydecor:block/vac_pipe/copper_2"
 	},
 	"elements": [
 		{

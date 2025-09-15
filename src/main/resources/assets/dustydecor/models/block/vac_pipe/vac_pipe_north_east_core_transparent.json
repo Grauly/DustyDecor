@@ -2,7 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"3": "dustydecor:block/vac_pipe/window_cap_pieces"
+		"3": "dustydecor:block/vac_pipe/window_cap_pieces",
+		"particle": "dustydecor:block/vac_pipe/window_cap_pieces"
 	},
 	"elements": [
 		{
