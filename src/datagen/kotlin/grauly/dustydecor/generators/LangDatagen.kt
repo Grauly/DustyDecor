@@ -2,12 +2,15 @@ package grauly.dustydecor.generators
 
 import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.ItemDatagenWrapper
+import grauly.dustydecor.ModConventionalItemTags
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.component.ScrewdriverComponent
 import grauly.dustydecor.component.WrenchComponent
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
+import net.minecraft.item.Item
 import net.minecraft.registry.RegistryWrapper
+import net.minecraft.registry.tag.TagKey
 import net.minecraft.sound.SoundEvent
 import java.util.concurrent.CompletableFuture
 
@@ -53,6 +56,8 @@ class LangDatagen(
         builder.add(ScrewdriverComponent.VENT_COVER_TRANSLATION_KEY, "Can lock/unlock %s's")
         builder.add(ScrewdriverComponent.LAMPS_TRANSLATION_KEY, "Can invert some lamps")
 
+        builder.add(tagTranslationKey(ModConventionalItemTags.SCREWDRIVER_TOOLS), "Screwdrivers")
+
         subtitles.forEach { (e, t) ->
             builder.add(SoundEventDatagen.getSubtitle(e), t)
         }
@@ -60,5 +65,9 @@ class LangDatagen(
 
     private fun sub(event: SoundEvent, translation: String) {
         subtitles[event] = translation
+    }
+
+    private fun tagTranslationKey(itemTagKey: TagKey<Item>): String {
+        return "tag.item.${itemTagKey.id.toTranslationKey().replace("/",".")}"
     }
 }
