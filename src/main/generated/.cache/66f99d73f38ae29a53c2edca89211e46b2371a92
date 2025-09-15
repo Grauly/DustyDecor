@@ -1,4 +1,4 @@
-// 25w36b	-999999999-01-01T00:00:00	Dusty Decor/Block Model Definitions
+// 25w37a	-999999999-01-01T00:00:00	Dusty Decor/Block Model Definitions
 57a5dbcbda02a322b538e6905341db171409f80e assets/dustydecor/blockstates/black_tall_cage_lamp.json
 e4f82f6f0ebb5216068ce0b01bc3c8d21df6b126 assets/dustydecor/blockstates/black_wide_cage_lamp.json
 57a5dbcbda02a322b538e6905341db171409f80e assets/dustydecor/blockstates/brown_tall_cage_lamp.json
@@ -29,6 +29,7 @@ e4f82f6f0ebb5216068ce0b01bc3c8d21df6b126 assets/dustydecor/blockstates/red_wide_
 57e14e358d54a905d8909da43e0d706455a845c2 assets/dustydecor/blockstates/vac_pipe_station.json
 5ac88b5f3e78cca263ad49c2ef35c2a212f168d1 assets/dustydecor/blockstates/vent.json
 9d26cc023c183106fb35e9e8a25f29a6cee91b63 assets/dustydecor/blockstates/vent_cover.json
+a783222994a9ea86c71f75863cbeb2490e351da5 assets/dustydecor/blockstates/void_goop.json
 57a5dbcbda02a322b538e6905341db171409f80e assets/dustydecor/blockstates/white_tall_cage_lamp.json
 e4f82f6f0ebb5216068ce0b01bc3c8d21df6b126 assets/dustydecor/blockstates/white_wide_cage_lamp.json
 57a5dbcbda02a322b538e6905341db171409f80e assets/dustydecor/blockstates/yellow_tall_cage_lamp.json
@@ -63,6 +64,7 @@ c9505740348c45fc5b80f35cceb03ae95575287b assets/dustydecor/items/vac_pipe.json
 393b951aed089ebcd42040f05d3a6376b735aabe assets/dustydecor/items/vac_pipe_station.json
 a1ea896b931178174a00d88266e8dbb801e157cd assets/dustydecor/items/vent.json
 8416a7f85e99c62af6930f3dcadea48c65b2bf60 assets/dustydecor/items/vent_cover.json
+0d2bdefb7c704b42c10e8d9d9029260441988cf8 assets/dustydecor/items/void_goop.json
 bb4d4d86cf9721f972625d6e4d980477d45dde15 assets/dustydecor/items/white_tall_cage_lamp.json
 1ddcaa44d4a92bdf7b66d9193cbaf8a0823f247b assets/dustydecor/items/white_wide_cage_lamp.json
 406643847a48524dbd8e0a410e711e6b9ae6a3c0 assets/dustydecor/items/yellow_tall_cage_lamp.json

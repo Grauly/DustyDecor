@@ -31,6 +31,7 @@ object ModItems {
     val VAC_PIPE: Item = registerBlockItem(ModBlocks.VAC_PIPE, "vac_pipe")
     val VAC_PIPE_STATION: Item = registerBlockItem(ModBlocks.VAC_PIPE_STATION, "vac_pipe_station")
     val VAC_CAPSULE: Item = registerItem(::VacCapsuleItem, "vac_capsule")
+    val VOID_GOOP: Item = registerBlockItem(ModBlocks.VOID_GOOP, "void_goop")
     val SCREWDRIVER: Item = registerItem(
         ::Item,
         "screwdriver",

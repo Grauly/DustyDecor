@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "layers=1": {
+      "model": "dustydecor:block/void_goop/void_goop_1"
+    },
+    "layers=2": {
+      "model": "dustydecor:block/void_goop/void_goop_2"
+    },
+    "layers=3": {
+      "model": "dustydecor:block/void_goop/void_goop_3"
+    },
+    "layers=4": {
+      "model": "dustydecor:block/void_goop/void_goop_4"
+    },
+    "layers=5": {
+      "model": "dustydecor:block/void_goop/void_goop_5"
+    },
+    "layers=6": {
+      "model": "dustydecor:block/void_goop/void_goop_6"
+    },
+    "layers=7": {
+      "model": "dustydecor:block/void_goop/void_goop_7"
+    },
+    "layers=8": {
+      "model": "dustydecor:block/void_goop/void_goop_8"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-// 25w36b	-999999999-01-01T00:00:00	Dusty Decor/Block Loot Tables
+// 25w37a	-999999999-01-01T00:00:00	Dusty Decor/Block Loot Tables
 d93d702967d04934690a4a24e3671f5d6a4b4403 data/dustydecor/loot_table/blocks/black_tall_cage_lamp.json
 6ea29f5e45b389526a559cb05fc70a2887855260 data/dustydecor/loot_table/blocks/black_wide_cage_lamp.json
 f6d7bdfe97c4c666386ad6f6befa855e634d4dbd data/dustydecor/loot_table/blocks/brown_tall_cage_lamp.json
@@ -29,6 +29,7 @@ ed6ff5d982fd262744e74489c4587b4f78a751d0 data/dustydecor/loot_table/blocks/pink_
 f835abbdf43c0239831c366c0f3584a64cf46fa4 data/dustydecor/loot_table/blocks/vac_pipe_station.json
 66c2e6043363e38f26fda3d78d2a266c844cab0d data/dustydecor/loot_table/blocks/vent.json
 2a0dcba3e6ae5d167be4ca1d4175a9140733b765 data/dustydecor/loot_table/blocks/vent_cover.json
+c012420677cc898db3b3a683193fe8c44a39c255 data/dustydecor/loot_table/blocks/void_goop.json
 e462145f30bedd22287baaebeb3699da7f203cbc data/dustydecor/loot_table/blocks/white_tall_cage_lamp.json
 5f69e68a5ad57edc6274c43859da9037477f8e7a data/dustydecor/loot_table/blocks/white_wide_cage_lamp.json
 93000cb0715f722b3ba18e96a7bdc33c8efae600 data/dustydecor/loot_table/blocks/yellow_tall_cage_lamp.json
