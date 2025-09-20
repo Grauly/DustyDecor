@@ -2,6 +2,7 @@ package grauly.dustydecor.block
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
+import net.minecraft.block.FallingBlock
 import net.minecraft.block.ShapeContext
 import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.item.AutomaticItemPlacementContext
@@ -18,7 +19,7 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import kotlin.math.min
 
-class LayerThresholdSpreadingBlock(private val threshold: Int, settings: Settings?) : Block(settings) {
+abstract class LayerThresholdSpreadingBlock(private val threshold: Int, settings: Settings?) : FallingBlock(settings) {
 
     override fun onBlockAdded(
         state: BlockState,
