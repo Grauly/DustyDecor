@@ -1,27 +1,24 @@
 package grauly.dustydecor.block
 
-import com.ibm.icu.text.MessagePattern.Part
-import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.extensions.spawnParticle
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
-import net.minecraft.block.SnowBlock
+import net.minecraft.block.ShapeContext
+import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.item.AutomaticItemPlacementContext
 import net.minecraft.item.ItemPlacementContext
-import net.minecraft.particle.ParticleEffect
-import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.world.ServerWorld
+import net.minecraft.state.StateManager
+import net.minecraft.state.property.IntProperty
+import net.minecraft.state.property.Properties
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
-import net.minecraft.util.math.random.Random
+import net.minecraft.util.shape.VoxelShape
+import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.WorldView
+import kotlin.math.min
 
-class LayerThresholdSpreadingBlock(private val threshold: Int, settings: Settings?) : SnowBlock(settings) {
-
-    override fun randomTick(state: BlockState?, world: ServerWorld?, pos: BlockPos?, random: Random?) {
-        //dont do anything.
-    }
+class LayerThresholdSpreadingBlock(private val threshold: Int, settings: Settings?) : Block(settings) {
 
     override fun onBlockAdded(
         state: BlockState,
@@ -36,9 +33,19 @@ class LayerThresholdSpreadingBlock(private val threshold: Int, settings: Setting
         trySpread(pos, world, state)
     }
 
+    override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
+        val placementBlockState = ctx.world.getBlockState(ctx.blockPos)
+        if (placementBlockState.isOf(this)) {
+            val existingLayers = placementBlockState.get(LAYERS)
+            return placementBlockState.with(LAYERS, min(MAX_LAYERS, existingLayers + 1))
+        } else {
+            return super.getPlacementState(ctx)
+        }
+    }
+
     override fun canPlaceAt(state: BlockState, world: WorldView, pos: BlockPos): Boolean {
         val placedOnState = world.getBlockState(pos.down())
-        return Block.isFaceFullSquare(placedOnState.getCollisionShape(world, pos.down()), Direction.UP) ||
+        return isFaceFullSquare(placedOnState.getCollisionShape(world, pos.down()), Direction.UP) ||
                 placedOnState.isOf(this) && placedOnState.get(LAYERS) == MAX_LAYERS
     }
 
@@ -55,7 +62,15 @@ class LayerThresholdSpreadingBlock(private val threshold: Int, settings: Setting
             val offset = pos.offset(it)
             val offsetState = world.getBlockState(offset)
             val canPlace = offsetState.canPlaceAt(world, offset)
-            val canReplace = offsetState.canReplace(AutomaticItemPlacementContext(world, offset, it, this.asItem().defaultStack, it.opposite))
+            val canReplace = offsetState.canReplace(
+                AutomaticItemPlacementContext(
+                    world,
+                    offset,
+                    it,
+                    this.asItem().defaultStack,
+                    it.opposite
+                )
+            )
             if (canPlace && canReplace) {
                 if (offsetState.isOf(this)) {
                     return@map it to offsetState.get(LAYERS)
@@ -68,7 +83,8 @@ class LayerThresholdSpreadingBlock(private val threshold: Int, settings: Setting
         var updatedLayerCount = layers
         val spreadActions: MutableMap<Direction, Int> = mutableMapOf()
         for (i in 1..layers) {
-            val updatedSpreadTargets: Map<Direction, Int> = spreadTargets.map { entry -> entry.key to entry.value + (spreadActions[entry.key] ?: 0) }.toMap()
+            val updatedSpreadTargets: Map<Direction, Int> =
+                spreadTargets.map { entry -> entry.key to entry.value + (spreadActions[entry.key] ?: 0) }.toMap()
             val lowest = updatedSpreadTargets.values.min()
             val lowestSpreadTargets = spreadTargets.filterValues { it <= lowest }
             if (lowest < updatedLayerCount - threshold) {
@@ -90,5 +106,56 @@ class LayerThresholdSpreadingBlock(private val threshold: Int, settings: Setting
             }
         }
         world.setBlockState(pos, state.with(LAYERS, updatedLayerCount))
+    }
+
+    override fun canPathfindThrough(state: BlockState, type: NavigationType): Boolean {
+        if (type != NavigationType.LAND) return false
+        return state.get(LAYERS) < 5
+    }
+
+    override fun getOutlineShape(
+        state: BlockState,
+        world: BlockView,
+        pos: BlockPos,
+        context: ShapeContext
+    ): VoxelShape = SHAPES[state.get(LAYERS)]
+
+    override fun getSidesShape(
+        state: BlockState,
+        world: BlockView,
+        pos: BlockPos
+    ): VoxelShape = SHAPES[state.get(LAYERS)]
+
+    override fun getCollisionShape(
+        state: BlockState,
+        world: BlockView,
+        pos: BlockPos,
+        context: ShapeContext
+    ): VoxelShape = SHAPES[state.get(LAYERS)]
+
+    override fun getCameraCollisionShape(
+        state: BlockState,
+        world: BlockView,
+        pos: BlockPos,
+        context: ShapeContext
+    ): VoxelShape = SHAPES[state.get(LAYERS)]
+
+    override fun getAmbientOcclusionLightLevel(state: BlockState, world: BlockView, pos: BlockPos): Float {
+        return state.get(LAYERS) / 8f
+    }
+
+    override fun hasSidedTransparency(state: BlockState): Boolean = true
+
+    override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
+        super.appendProperties(builder)
+        builder.add(LAYERS)
+    }
+
+    companion object {
+        val LAYERS: IntProperty = Properties.LAYERS
+        const val MAX_LAYERS: Int = 8
+        val SHAPES: Array<VoxelShape> = createShapeArray(MAX_LAYERS) { layers ->
+            createColumnShape(16.0, 0.0, (layers * 2).toDouble())
+        }
     }
 }
