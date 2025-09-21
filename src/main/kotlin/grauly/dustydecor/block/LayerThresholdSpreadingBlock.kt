@@ -1,9 +1,11 @@
 package grauly.dustydecor.block
 
+import grauly.dustydecor.DustyDecorMod
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.FallingBlock
 import net.minecraft.block.ShapeContext
+import net.minecraft.entity.FallingBlockEntity
 import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.item.AutomaticItemPlacementContext
 import net.minecraft.item.ItemPlacementContext
@@ -19,7 +21,7 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import kotlin.math.min
 
-abstract class LayerThresholdSpreadingBlock(private val threshold: Int, settings: Settings?) : FallingBlock(settings) {
+abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settings?) : FallingBlock(settings) {
 
     override fun onBlockAdded(
         state: BlockState,
@@ -51,10 +53,47 @@ abstract class LayerThresholdSpreadingBlock(private val threshold: Int, settings
     }
 
     override fun canReplace(state: BlockState, context: ItemPlacementContext): Boolean {
-        if (context.stack.isOf(this.asItem())) {
+        if (context.stack.isOf(this.asItem()) || context.stack.isEmpty) {
             return (state.get(LAYERS) < MAX_LAYERS)
         }
         return false
+    }
+
+    override fun configureFallingBlockEntity(entity: FallingBlockEntity) {
+        super.configureFallingBlockEntity(entity)
+        entity.dropItem = false
+    }
+
+    override fun onLanding(
+        world: World,
+        pos: BlockPos,
+        fallingBlockState: BlockState,
+        currentStateInPos: BlockState,
+        fallingBlockEntity: FallingBlockEntity
+    ) {
+        //TODO: this does not work, it does not get called, we need a extra check in FallingBlockEntity
+        DustyDecorMod.logger.info("onLanding")
+        if (currentStateInPos.isOf(this)) {
+            val layersToIntegrate = fallingBlockState.get(LAYERS)
+            val integrateBlockLayers = currentStateInPos.get(LAYERS)
+            val totalLayers = layersToIntegrate + integrateBlockLayers
+            if (totalLayers > MAX_LAYERS) {
+
+                val overflowLayers = totalLayers - MAX_LAYERS
+                val overflowPos = pos.up()
+                val overflowState = world.getBlockState(overflowPos)
+                val canPlace = overflowState.canPlaceAt(world, overflowPos)
+                val canReplace = overflowState.canReplace(
+                    AutomaticItemPlacementContext(
+                        world, overflowPos, Direction.DOWN, this.asItem().defaultStack, Direction.UP
+                    )
+                )
+                if (canPlace && canReplace) {
+                    world.setBlockState(overflowPos, defaultState.with(LAYERS, overflowLayers))
+                }
+            }
+            world.setBlockState(pos, currentStateInPos.with(LAYERS, min(MAX_LAYERS, totalLayers)))
+        }
     }
 
     private fun trySpread(pos: BlockPos, world: ServerWorld, state: BlockState) {
@@ -142,7 +181,7 @@ abstract class LayerThresholdSpreadingBlock(private val threshold: Int, settings
     ): VoxelShape = SHAPES[state.get(LAYERS)]
 
     override fun getAmbientOcclusionLightLevel(state: BlockState, world: BlockView, pos: BlockPos): Float {
-        return state.get(LAYERS) / 8f
+        return if (state.get(LAYERS) == MAX_LAYERS) 1f else 0.2f
     }
 
     override fun hasSidedTransparency(state: BlockState): Boolean = true

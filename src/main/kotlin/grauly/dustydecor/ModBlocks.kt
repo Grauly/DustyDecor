@@ -28,7 +28,7 @@ object ModBlocks {
         registerBlock(::VentCoverBlock, "vent_cover", Settings.copy(Blocks.IRON_TRAPDOOR).ticksRandomly().nonOpaque())
     val VAC_PIPE: Block = registerBlock(::VacPipeBlock, "vac_pipe", Settings.copy(Blocks.HOPPER))
     val VAC_PIPE_STATION: Block = registerBlock(::VacPipeStationBlock, "vac_pipe_station", Settings.copy(Blocks.HOPPER))
-    val VOID_GOOP: Block = registerBlock({settings -> LayerThresholdSpreadingBlock(1,settings)}, "void_goop")
+    val VOID_GOOP: Block = registerBlock({settings -> VoidGoopBlock(1, settings)}, "void_goop")
 
     val TALL_CAGE_LAMPS: List<TallCageLampBlock> = DyeUtils.COLOR_ORDER.map {
         val id = "${it.id}_tall_cage_lamp"
