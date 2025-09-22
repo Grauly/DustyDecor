@@ -77,7 +77,15 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         pos: BlockPos,
         random: Random
     ) {
-        super.scheduledTick(state.with(FALLING, true), world, pos, random)
+        val downState = world.getBlockState(pos.down())
+        val canFallThrough = canFallThrough(downState)
+        val canMerge = if (downState.isOf(this)) {
+            downState.get(LAYERS) < MAX_LAYERS
+        } else false
+        if ((canFallThrough || canMerge) && pos.y >= world.bottomY) {
+            val fallingBlock = FallingBlockEntity.spawnFromBlock(world, pos, state.with(FALLING, true))
+            this.configureFallingBlockEntity(fallingBlock)
+        }
         val updatedState = world.getBlockState(pos)
         if (updatedState.isAir) return
         world.setBlockState(pos, trySpread(pos, world, updatedState))
