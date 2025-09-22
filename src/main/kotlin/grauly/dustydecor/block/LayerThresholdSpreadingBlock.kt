@@ -88,27 +88,34 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         currentStateInPos: BlockState,
         fallingBlockEntity: FallingBlockEntity
     ) {
-        if (currentStateInPos.isOf(this)) {
-            val layersToIntegrate = fallingBlockState.get(LAYERS)
-            val integrateBlockLayers = currentStateInPos.get(LAYERS)
-            val totalLayers = layersToIntegrate + integrateBlockLayers
-            if (totalLayers > MAX_LAYERS) {
-
-                val overflowLayers = totalLayers - MAX_LAYERS
-                val overflowPos = pos.up()
-                val overflowState = world.getBlockState(overflowPos)
-                val canPlace = overflowState.canPlaceAt(world, overflowPos)
-                val canReplace = overflowState.canReplace(
-                    AutomaticItemPlacementContext(
-                        world, overflowPos, Direction.DOWN, this.asItem().defaultStack, Direction.UP
-                    )
-                )
-                if (canPlace && canReplace) {
-                    world.setBlockState(overflowPos, defaultState.with(LAYERS, overflowLayers))
-                }
-            }
-            world.setBlockState(pos, currentStateInPos.with(LAYERS, min(MAX_LAYERS, totalLayers)).with(FALLING, false))
+        if (!currentStateInPos.isOf(this)) {
+            world.setBlockState(pos, fallingBlockState.with(FALLING, false))
+            return
         }
+        val layersToIntegrate = fallingBlockState.get(LAYERS)
+        val integrateBlockLayers = currentStateInPos.get(LAYERS)
+        val totalLayers = layersToIntegrate + integrateBlockLayers
+        if (totalLayers > MAX_LAYERS) {
+
+            val overflowLayers = totalLayers - MAX_LAYERS
+            val overflowPos = pos.up()
+            val overflowState = world.getBlockState(overflowPos)
+            val canPlace = overflowState.canPlaceAt(world, overflowPos)
+            val canReplace = overflowState.canReplace(
+                AutomaticItemPlacementContext(
+                    world, overflowPos, Direction.DOWN, this.asItem().defaultStack, Direction.UP
+                )
+            )
+            if (canPlace && canReplace) {
+                world.setBlockState(overflowPos, defaultState.with(LAYERS, overflowLayers))
+            }
+        }
+        world.setBlockState(
+            pos,
+            currentStateInPos
+                .with(LAYERS, min(MAX_LAYERS, totalLayers))
+                .with(FALLING, false)
+        )
     }
 
     private fun trySpread(pos: BlockPos, world: ServerWorld, state: BlockState) {
