@@ -1,14 +1,15 @@
 package grauly.dustydecor.block
 
-import grauly.dustydecor.DustyDecorMod
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.FallingBlock
 import net.minecraft.block.ShapeContext
 import net.minecraft.entity.FallingBlockEntity
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.item.AutomaticItemPlacementContext
 import net.minecraft.item.ItemPlacementContext
+import net.minecraft.item.ItemStack
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
@@ -21,6 +22,7 @@ import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.WorldView
+import net.minecraft.world.tick.ScheduledTickView
 import kotlin.math.min
 
 abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settings?) : FallingBlock(settings) {
@@ -31,17 +33,56 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
             .with(FALLING, false)
     }
 
-    override fun onBlockAdded(
+    fun getUpdateDelay(): Int = 2
+
+    override fun getStateForNeighborUpdate(
         state: BlockState,
+        world: WorldView,
+        tickView: ScheduledTickView,
+        pos: BlockPos,
+        direction: Direction,
+        neighborPos: BlockPos,
+        neighborState: BlockState,
+        random: Random
+    ): BlockState? {
+        val postFallingShape = super.getStateForNeighborUpdate(
+            state,
+            world,
+            tickView,
+            pos,
+            direction,
+            neighborPos,
+            neighborState,
+            random
+        )
+        if (!world.isClient) {
+            world as ServerWorld
+            world.scheduleBlockTick(pos, this, getUpdateDelay())
+        }
+        return postFallingShape
+    }
+
+    override fun onPlaced(
         world: World,
         pos: BlockPos,
-        oldState: BlockState,
-        notify: Boolean
+        state: BlockState,
+        placer: LivingEntity?,
+        itemStack: ItemStack?
     ) {
-        super.onBlockAdded(state, world, pos, oldState, notify)
-        if (world.isClient) return
-        world as ServerWorld
-        trySpread(pos, world, state)
+        super.onPlaced(world, pos, state, placer, itemStack)
+        world.scheduleBlockTick(pos, this, getUpdateDelay())
+    }
+
+    override fun scheduledTick(
+        state: BlockState,
+        world: ServerWorld,
+        pos: BlockPos,
+        random: Random
+    ) {
+        super.scheduledTick(state.with(FALLING, true), world, pos, random)
+        val updatedState = world.getBlockState(pos)
+        if (updatedState.isAir) return
+        world.setBlockState(pos, trySpread(pos, world, updatedState))
     }
 
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
@@ -65,15 +106,6 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
             return (state.get(LAYERS) < MAX_LAYERS)
         }
         return false
-    }
-
-    override fun scheduledTick(
-        state: BlockState,
-        world: ServerWorld,
-        pos: BlockPos,
-        random: Random
-    ) {
-        super.scheduledTick(state.with(FALLING, true), world, pos, random)
     }
 
     override fun configureFallingBlockEntity(entity: FallingBlockEntity) {
@@ -118,7 +150,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         )
     }
 
-    private fun trySpread(pos: BlockPos, world: ServerWorld, state: BlockState) {
+    private fun trySpread(pos: BlockPos, world: ServerWorld, state: BlockState): BlockState {
         val layers = state.get(LAYERS)
         val spreadTargets: Map<Direction, Int> = Direction.entries.filter { it.axis.isHorizontal }.map {
             val offset = pos.offset(it)
@@ -141,7 +173,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
             }
             return@map null
         }.filterNotNull().toMap()
-        if (spreadTargets.isEmpty()) return
+        if (spreadTargets.isEmpty()) return state
         var updatedLayerCount = layers
         val spreadActions: MutableMap<Direction, Int> = mutableMapOf()
         for (i in 1..layers) {
@@ -167,7 +199,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
                 world.setBlockState(offsetPos, defaultState.with(LAYERS, entry.value))
             }
         }
-        world.setBlockState(pos, state.with(LAYERS, updatedLayerCount))
+        return state.with(LAYERS, updatedLayerCount)
     }
 
     override fun canPathfindThrough(state: BlockState, type: NavigationType): Boolean {
