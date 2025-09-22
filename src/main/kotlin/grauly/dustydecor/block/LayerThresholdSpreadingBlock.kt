@@ -107,7 +107,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
                     world.setBlockState(overflowPos, defaultState.with(LAYERS, overflowLayers))
                 }
             }
-            world.setBlockState(pos, currentStateInPos.with(LAYERS, min(MAX_LAYERS, totalLayers)))
+            world.setBlockState(pos, currentStateInPos.with(LAYERS, min(MAX_LAYERS, totalLayers)).with(FALLING, false))
         }
     }
 
