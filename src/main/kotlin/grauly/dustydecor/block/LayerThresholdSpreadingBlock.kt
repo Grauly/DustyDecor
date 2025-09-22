@@ -11,10 +11,12 @@ import net.minecraft.item.AutomaticItemPlacementContext
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.state.StateManager
+import net.minecraft.state.property.BooleanProperty
 import net.minecraft.state.property.IntProperty
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.random.Random
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
@@ -22,6 +24,12 @@ import net.minecraft.world.WorldView
 import kotlin.math.min
 
 abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settings?) : FallingBlock(settings) {
+
+    init {
+        defaultState = defaultState
+            .with(LAYERS, 1)
+            .with(FALLING, false)
+    }
 
     override fun onBlockAdded(
         state: BlockState,
@@ -59,6 +67,15 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         return false
     }
 
+    override fun scheduledTick(
+        state: BlockState,
+        world: ServerWorld,
+        pos: BlockPos,
+        random: Random
+    ) {
+        super.scheduledTick(state.with(FALLING, true), world, pos, random)
+    }
+
     override fun configureFallingBlockEntity(entity: FallingBlockEntity) {
         super.configureFallingBlockEntity(entity)
         entity.dropItem = false
@@ -71,8 +88,6 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         currentStateInPos: BlockState,
         fallingBlockEntity: FallingBlockEntity
     ) {
-        //TODO: this does not work, it does not get called, we need a extra check in FallingBlockEntity
-        DustyDecorMod.logger.info("onLanding")
         if (currentStateInPos.isOf(this)) {
             val layersToIntegrate = fallingBlockState.get(LAYERS)
             val integrateBlockLayers = currentStateInPos.get(LAYERS)
@@ -188,11 +203,12 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         super.appendProperties(builder)
-        builder.add(LAYERS)
+        builder.add(LAYERS, FALLING)
     }
 
     companion object {
         val LAYERS: IntProperty = Properties.LAYERS
+        val FALLING: BooleanProperty = BooleanProperty.of("falling")
         const val MAX_LAYERS: Int = 8
         val SHAPES: Array<VoxelShape> = createShapeArray(MAX_LAYERS) { layers ->
             createColumnShape(16.0, 0.0, (layers * 2).toDouble())
