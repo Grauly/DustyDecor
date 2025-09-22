@@ -33,8 +33,6 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
             .with(FALLING, false)
     }
 
-    fun getUpdateDelay(): Int = 2
-
     override fun getStateForNeighborUpdate(
         state: BlockState,
         world: WorldView,
@@ -57,7 +55,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         )
         if (!world.isClient) {
             world as ServerWorld
-            world.scheduleBlockTick(pos, this, getUpdateDelay())
+            world.scheduleBlockTick(pos, this, fallDelay)
         }
         return postFallingShape
     }
@@ -70,7 +68,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         itemStack: ItemStack?
     ) {
         super.onPlaced(world, pos, state, placer, itemStack)
-        world.scheduleBlockTick(pos, this, getUpdateDelay())
+        world.scheduleBlockTick(pos, this, fallDelay)
     }
 
     override fun scheduledTick(
