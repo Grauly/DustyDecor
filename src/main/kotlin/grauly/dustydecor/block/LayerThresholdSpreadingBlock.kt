@@ -233,7 +233,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
     ): VoxelShape = SHAPES[state.get(LAYERS)]
 
     override fun getAmbientOcclusionLightLevel(state: BlockState, world: BlockView, pos: BlockPos): Float {
-        return if (state.get(LAYERS) == MAX_LAYERS) 1f else 0.2f
+        return if (state.get(LAYERS) == MAX_LAYERS) 0.2f else 1f
     }
 
     override fun hasSidedTransparency(state: BlockState): Boolean = true
