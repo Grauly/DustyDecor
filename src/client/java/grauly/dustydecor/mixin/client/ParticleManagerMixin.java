@@ -36,7 +36,6 @@ public class ParticleManagerMixin {
     @Inject(method = "createParticleRenderer", at = @At("HEAD"), cancellable = true)
     public void addCustomRenderer(ParticleTextureSheet textureSheet, CallbackInfoReturnable<ParticleRenderer<?>> cir) {
         if (textureSheet == CustomParticle.Companion.getCUSTOM_TEXTURE_SHEET()) {
-            DustyDecorMod.INSTANCE.getLogger().info("added renderer");
             cir.setReturnValue(new CustomParticleRenderer((ParticleManager) ((Object) this)));
         }
     }
