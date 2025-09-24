@@ -9,5 +9,6 @@ object DustyDecorClient : ClientModInitializer {
         ModParticles.init()
         ModBlockEntityRenderers.init()
         ModHandledScreens.init()
+        ModParticleRenderers.init()
     }
 }

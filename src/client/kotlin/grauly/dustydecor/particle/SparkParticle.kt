@@ -1,26 +1,21 @@
 package grauly.dustydecor.particle
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModParticleTypes
-import grauly.dustydecor.geometry.PlaneShape
 import grauly.dustydecor.particle.custom.CustomParticle
 import net.minecraft.block.ShapeContext
 import net.minecraft.client.particle.*
-import net.minecraft.client.render.Camera
 import net.minecraft.client.render.LightmapTextureManager
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.RenderLayer
-import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.command.OrderedRenderCommandQueue
+import net.minecraft.client.render.state.CameraRenderState
 import net.minecraft.client.texture.Sprite
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.particle.SimpleParticleType
-import net.minecraft.util.Colors
 import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.random.Random
 import net.minecraft.world.LightType
@@ -138,7 +133,7 @@ class SparkParticle(
     override fun render(
         queue: OrderedRenderCommandQueue,
         matrixStack: MatrixStack,
-        camera: Camera,
+        camera: CameraRenderState,
         tickProgress: Float
     ) {
         val renderLocalPos = lastPos.lerp(pos, tickProgress.toDouble())
