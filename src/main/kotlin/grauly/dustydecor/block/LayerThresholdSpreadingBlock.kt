@@ -160,11 +160,9 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         val layers = state.get(LAYERS)
         val spreadTargets: Map<Direction, Int> = Direction.entries.filter { it.axis.isHorizontal }
             .associateWith { getSpreadDifferential(pos.offset(it), it, world) }
-        DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)}: $spreadTargets")
-        if (spreadTargets.all { it.value == MAX_LAYERS }) return state //surrounded by full blocks
-        DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)}: get past max check")
-        if (spreadTargets.all { it.value == layers }) return state //surrounded by same height
-        DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)}: get past same check")
+        DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)}: $layers, $spreadTargets")
+        if (spreadTargets.all { it.value >= layers }) return state //surrounded by higher/equal blocks
+        DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)}: get past higher check")
         if (spreadTargets.all { layers - it.value <= threshold }) return state //none have enough differential
         DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)}: get past differential check")
         var updatedLayerCount = layers
@@ -184,6 +182,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
             val offsetPos = pos.offset(entry.key)
             val offsetState = world.getBlockState(offsetPos)
             val workingState = if (offsetState.isOf(this)) {
+                DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} - ${entry.key} -> ${DebugUtils.nameBlockPos(offsetPos)}: $offsetState, ${entry.value}")
                 offsetState.with(LAYERS, offsetState.get(LAYERS) + entry.value)
             } else {
                 defaultState.with(LAYERS, entry.value)
@@ -191,6 +190,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
             world.setBlockState(offsetPos, workingState)
         }
         if (updatedLayerCount == 0) return Blocks.AIR.defaultState
+
         return state.with(LAYERS, updatedLayerCount)
     }
 
@@ -212,14 +212,16 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
             )
         )
         if (!canReplace) return -searchDepth * MAX_LAYERS + MAX_LAYERS
+        if (localState.isOf(this)) {
+            DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} (seek $searchDirection): $searchDepth, ${localState.get(LAYERS)}")
+            return -searchDepth * MAX_LAYERS + localState.get(LAYERS)
+        }
         if (!canPlace) {
             if (searchDepth >= maxSearchDepth) {
                 return -searchDepth * MAX_LAYERS
             }
+            DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} (seek $searchDirection): $searchDepth, $localState, going down")
             return getSpreadDifferential(pos.down(), searchDirection, world, searchDepth + 1, maxSearchDepth)
-        }
-        if (localState.isOf(this)) {
-            return -searchDepth * MAX_LAYERS + localState.get(LAYERS)
         }
         return -searchDepth * MAX_LAYERS
     }
