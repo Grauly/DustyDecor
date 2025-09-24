@@ -1,14 +1,16 @@
 package grauly.dustydecor.blockentity
 
 import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.ModParticleTypes
 import grauly.dustydecor.geometry.AlertBeamsShape
+import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.block.entity.BlockEntityRenderer
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory
+import net.minecraft.client.render.block.entity.state.BlockEntityRenderState
 import net.minecraft.client.render.command.ModelCommandRenderer
 import net.minecraft.client.render.command.OrderedRenderCommandQueue
+import net.minecraft.client.render.state.CameraRenderState
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec2f
@@ -16,100 +18,70 @@ import net.minecraft.util.math.Vec3d
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.PI
-import kotlin.math.pow
 
 class TallCageLampBlockEntityRenderer(
     private val blockRenderContext: BlockEntityRendererFactory.Context
-) : BlockEntityRenderer<TallCageLampBlockEntity, TallCageLampBlockEntityRenderingContext> {
+) : BlockEntityRenderer<TallCageLampBlockEntity, BlockEntityRenderState> {
 
 
-    //TODO: update with FAPI ASAP
-    override fun createRenderState(): TallCageLampBlockEntityRenderingContext {
-        return TallCageLampBlockEntityRenderingContext(false, 0f, Vec3d.ZERO, Vec3d.ZERO, -1)
+    override fun createRenderState(): BlockEntityRenderState {
+        return BlockEntityRenderState()
     }
 
     override fun updateRenderState(
         blockEntity: TallCageLampBlockEntity,
-        state: TallCageLampBlockEntityRenderingContext,
+        state: BlockEntityRenderState,
         tickProgress: Float,
         cameraPos: Vec3d,
         crumblingOverlay: ModelCommandRenderer.CrumblingOverlayCommand?
     ) {
         super.updateRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay)
-        state.time = blockEntity.age + tickProgress
-        state.shouldShowBeams = blockEntity.shouldShowBeams()
-        state.rotationAxis = blockEntity.getRotationDirection()
-        state.color = blockEntity.color
-        state.cameraPos = cameraPos
+        state.setData(TIME, blockEntity.age + tickProgress)
+        state.setData(SHOULD_SHOW_BEAMS, blockEntity.shouldShowBeams())
+        state.setData(ROTATION_AXIS, blockEntity.getRotationDirection())
+        state.setData(COLOR, blockEntity.color)
     }
 
-
-    override fun rendersOutsideBoundingBox(): Boolean = true
-
     override fun render(
-        state: TallCageLampBlockEntityRenderingContext,
+        state: BlockEntityRenderState,
         matrices: MatrixStack,
-        orderedRenderCommandQueue: OrderedRenderCommandQueue
+        queue: OrderedRenderCommandQueue,
+        cameraState: CameraRenderState
     ) {
-        if (!state.shouldShowBeams) return
-        val offsetWorldPos = state.pos.toCenterPos().add(state.rotationAxis.multiply(-3 / 16.0))
-        val camRelativeOffset = offsetWorldPos.subtract(state.cameraPos)
+        if (state.getData(SHOULD_SHOW_BEAMS) == false) return
+        val rotationAxis: Vec3d = state.getData(ROTATION_AXIS)!!
         val rotation = Quaternionf()
-            .rotateTo(Vector3f(0f, 1f, 0f), state.rotationAxis.toVector3f())
-            .mul(Quaternionf().rotateY((state.time * ROTATION_PER_TICK).toFloat()))
-
-        //TODO: find a better way to do this
-        doLightBlinding(rotation, camRelativeOffset, offsetWorldPos)
+            .rotateTo(Vector3f(0f, 1f, 0f), rotationAxis.toVector3f())
+            .mul(Quaternionf().rotateY((state.getData(TIME)!! * ROTATION_PER_TICK).toFloat()))
 
         matrices.push()
         matrices.translate(0.5, 0.5, 0.5)
-        matrices.translate(state.rotationAxis.multiply(-3/16.0))
+        matrices.translate(rotationAxis.multiply(-3 / 16.0))
         matrices.multiply(rotation)
-        orderedRenderCommandQueue.submitCustom(
+        queue.submitCustom(
             matrices,
             renderLayer
         ) { matrixStack, vertexConsumer ->
             AlertBeamsShape
                 .applyMatrix(matrixStack, vertexConsumer, Vec2f(0f, 0f), Vec2f(1f, 1f)) {
-                    it.color(state.color).light(state.lightmapCoordinates).normal(0f, 1f, 0f).overlay(OverlayTexture.DEFAULT_UV)
+                    it.color(state.getData(COLOR)!!).light(state.lightmapCoordinates).normal(0f, 1f, 0f)
+                        .overlay(OverlayTexture.DEFAULT_UV)
                 }
         }
         matrices.pop()
-
     }
 
-    private fun doLightBlinding(
-        rotation: Quaternionf?,
-        camRelativeOffset: Vec3d,
-        offsetWorldPos: Vec3d?
-    ) {
-        val blindingTestVector = Vector3f(1f, 0f, 0f).rotate(rotation)
-        if (camRelativeOffset.lengthSquared() < MAX_BLINDING_DISTANCE.pow(2)) {
-            if (
-                camRelativeOffset.normalize()
-                    .squaredDistanceTo(Vec3d(blindingTestVector)) < BLINDING_THRESHOLD.pow(2) ||
-                camRelativeOffset.normalize()
-                    .squaredDistanceTo(Vec3d(blindingTestVector.negate())) < BLINDING_THRESHOLD.pow(2)
-            ) {
-                val spawnPoint = camRelativeOffset.negate().normalize().multiply(5 / 16.0).add(offsetWorldPos)
-                blockRenderContext.renderDispatcher.world.addParticleClient(
-                    ModParticleTypes.LIGHT_FLASH,
-                    spawnPoint.x,
-                    spawnPoint.y,
-                    spawnPoint.z,
-                    0.0,
-                    0.0,
-                    0.0
-                )
-            }
-        }
-    }
+    override fun rendersOutsideBoundingBox(): Boolean = true
 
     companion object {
         private const val ROTATION_PER_TICK: Double = PI / 20
-        private const val BLINDING_THRESHOLD: Double = 0.02
-        private const val MAX_BLINDING_DISTANCE: Double = 6.0
-        private val renderLayer = RenderLayer.getBeaconBeam(Identifier.of(DustyDecorMod.MODID, "textures/block/cage_lamp_beam.png"), true)
+
+        private val TIME: RenderStateDataKey<Float> = RenderStateDataKey.create<Float>()
+        private val SHOULD_SHOW_BEAMS: RenderStateDataKey<Boolean> = RenderStateDataKey.create<Boolean>()
+        private val ROTATION_AXIS: RenderStateDataKey<Vec3d> = RenderStateDataKey.create<Vec3d>()
+        private val COLOR: RenderStateDataKey<Int> = RenderStateDataKey.create<Int>()
+        private val renderLayer =
+            RenderLayer.getBeaconBeam(Identifier.of(DustyDecorMod.MODID, "textures/block/cage_lamp_beam.png"), true)
     }
 
 }
