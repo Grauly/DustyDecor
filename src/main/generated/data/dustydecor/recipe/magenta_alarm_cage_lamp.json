@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "c": "minecraft:iron_nugget",
+    "d": "#c:dyes/magenta",
+    "i": "#c:ingots/iron",
+    "l": "minecraft:redstone_lamp"
+  },
+  "pattern": [
+    "ccc",
+    " l ",
+    "idi"
+  ],
+  "result": {
+    "count": 3,
+    "id": "dustydecor:magenta_alarm_cage_lamp"
+  }
+}
