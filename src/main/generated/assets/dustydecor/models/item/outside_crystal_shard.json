@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "dustydecor:item/void_sponge"
+    "layer0": "dustydecor:item/outside_crystal_shard"
   }
 }

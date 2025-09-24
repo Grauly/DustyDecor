@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.WorldAccess
 
-class VoidSpongeItem(settings: Settings) : Item(settings) {
+class OutsideCrystalShardItem(settings: Settings) : Item(settings) {
     override fun useOnBlock(context: ItemUsageContext): ActionResult? {
         val interactedState = context.world.getBlockState(context.blockPos)
         if (!interactedState.isOf(ModBlocks.VOID_GOOP)) return super.useOnBlock(context)

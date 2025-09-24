@@ -6,7 +6,7 @@ import grauly.dustydecor.ModConventionalItemTags
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.component.ScrewdriverComponent
 import grauly.dustydecor.component.WrenchComponent
-import grauly.dustydecor.item.VoidSpongeItem
+import grauly.dustydecor.item.OutsideCrystalShardItem
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
 import net.minecraft.item.Item
@@ -59,8 +59,8 @@ class LangDatagen(
 
         builder.add(tagTranslationKey(ModConventionalItemTags.SCREWDRIVER_TOOLS), "Screwdrivers")
 
-        builder.add(VoidSpongeItem.VOID_GOOP_REMOVAL, "Removed %s Void Goop")
-        builder.add(VoidSpongeItem.VOID_GOOP_FIND, "Found %s Void Goop")
+        builder.add(OutsideCrystalShardItem.VOID_GOOP_REMOVAL, "Removed %s Void Goop")
+        builder.add(OutsideCrystalShardItem.VOID_GOOP_FIND, "Found %s Void Goop")
 
         subtitles.forEach { (e, t) ->
             builder.add(SoundEventDatagen.getSubtitle(e), t)

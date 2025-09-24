@@ -24,8 +24,8 @@ object ItemDatagenWrapper {
             "Vacuum Tube Capsule"
         )
         item(
-            ModItems.VOID_SPONGE,
-            "Void Sponge",
+            ModItems.OUTSIDE_CRYSTAL_SHARD,
+            "Outside Crystal Shard",
             generateBaseModel = true
         )
     }

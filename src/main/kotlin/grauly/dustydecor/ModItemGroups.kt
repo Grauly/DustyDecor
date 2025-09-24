@@ -23,5 +23,9 @@ object ModItemGroups {
             .register {
                 it.addAfter(Items.PINK_CANDLE, *ModItems.TALL_CAGE_LAMPS.toTypedArray(), *ModItems.WIDE_CAGE_LAMPS.toTypedArray(), *ModItems.ALARM_CAGE_LAMPS.toTypedArray())
             }
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)
+            .register {
+                it.addAfter(Items.POPPED_CHORUS_FRUIT, ModItems.OUTSIDE_CRYSTAL_SHARD)
+            }
     }
 }
