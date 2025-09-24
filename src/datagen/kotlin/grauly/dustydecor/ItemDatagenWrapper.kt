@@ -23,6 +23,11 @@ object ItemDatagenWrapper {
             ModItems.VAC_CAPSULE,
             "Vacuum Tube Capsule"
         )
+        item(
+            ModItems.VOID_SPONGE,
+            "Void Sponge",
+            generateBaseModel = true
+        )
     }
 
     private fun item(
