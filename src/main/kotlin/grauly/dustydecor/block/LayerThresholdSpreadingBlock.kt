@@ -43,21 +43,11 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         neighborState: BlockState,
         random: Random
     ): BlockState? {
-        val postFallingShape = super.getStateForNeighborUpdate(
-            state,
-            world,
-            tickView,
-            pos,
-            direction,
-            neighborPos,
-            neighborState,
-            random
-        )
         if (!world.isClient) {
             world as ServerWorld
             world.scheduleBlockTick(pos, this, fallDelay)
         }
-        return postFallingShape
+        return state
     }
 
     override fun onPlaced(
@@ -82,7 +72,15 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         val canMerge = if (downState.isOf(this)) {
             downState.get(LAYERS) < MAX_LAYERS
         } else false
-        if ((canFallThrough || canMerge) && pos.y >= world.bottomY) {
+        if (canMerge) {
+            val ownLayers = state.get(LAYERS)
+            val mergeLayers = min(MAX_LAYERS - downState.get(LAYERS), ownLayers)
+            world.setBlockState(pos.down(), downState.with(LAYERS, downState.get(LAYERS) + mergeLayers))
+            val placeState = if (mergeLayers == ownLayers) Blocks.AIR.defaultState else state.with(LAYERS, ownLayers - mergeLayers)
+            world.setBlockState(pos, placeState)
+            return
+        }
+        if (canFallThrough && pos.y >= world.bottomY) {
             val fallingBlock = FallingBlockEntity.spawnFromBlock(world, pos, state.with(FALLING, true))
             this.configureFallingBlockEntity(fallingBlock)
         }
