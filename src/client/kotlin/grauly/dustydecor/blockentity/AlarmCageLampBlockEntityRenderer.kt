@@ -19,9 +19,9 @@ import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.PI
 
-class TallCageLampBlockEntityRenderer(
+class AlarmCageLampBlockEntityRenderer(
     private val blockRenderContext: BlockEntityRendererFactory.Context
-) : BlockEntityRenderer<TallCageLampBlockEntity, BlockEntityRenderState> {
+) : BlockEntityRenderer<AlarmCageLampBlockEntity, BlockEntityRenderState> {
 
 
     override fun createRenderState(): BlockEntityRenderState {
@@ -29,7 +29,7 @@ class TallCageLampBlockEntityRenderer(
     }
 
     override fun updateRenderState(
-        blockEntity: TallCageLampBlockEntity,
+        blockEntity: AlarmCageLampBlockEntity,
         state: BlockEntityRenderState,
         tickProgress: Float,
         cameraPos: Vec3d,

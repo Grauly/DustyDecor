@@ -56,6 +56,11 @@ object ModItems {
         registerBlockItem(it, id)
     }
 
+    val ALARM_CAGE_LAMPS: List<Item> = ModBlocks.ALARM_CAGE_LAMPS.map {
+        val id = "${DyeUtils.COLOR_ORDER[ModBlocks.ALARM_CAGE_LAMPS.indexOf(it)]}_alarm_cage_lamp"
+        registerBlockItem(it, id)
+    }
+
     val WIDE_CAGE_LAMPS: List<Item> = ModBlocks.WIDE_CAGE_LAMPS.map {
         val id = "${DyeUtils.COLOR_ORDER[ModBlocks.WIDE_CAGE_LAMPS.indexOf(it)]}_wide_cage_lamp"
         registerBlockItem(it, id)

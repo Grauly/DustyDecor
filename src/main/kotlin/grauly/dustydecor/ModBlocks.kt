@@ -41,6 +41,17 @@ object ModBlocks {
         ) as TallCageLampBlock)
     }
 
+    val ALARM_CAGE_LAMPS: List<AlarmCageLampBlock> = DyeUtils.COLOR_ORDER.map {
+        val id = "${it.id}_alarm_cage_lamp"
+        (registerBlock(
+            ::AlarmCageLampBlock,
+            id,
+            Settings.copy(Blocks.LANTERN)
+                .luminance(LightingFixtureBlock.getLightingFunction(3, 15))
+                .ticksRandomly()
+        ) as AlarmCageLampBlock)
+    }
+
     val WIDE_CAGE_LAMPS: List<WideCageLampBlock> = DyeUtils.COLOR_ORDER.map {
         val id = "${it.id}_wide_cage_lamp"
         (registerBlock(

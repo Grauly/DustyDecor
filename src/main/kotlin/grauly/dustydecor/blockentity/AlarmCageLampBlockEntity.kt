@@ -16,11 +16,11 @@ import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.random.Random
 
-class TallCageLampBlockEntity(
+class AlarmCageLampBlockEntity(
     pos: BlockPos,
     state: BlockState
 ) : BlockEntity(
-    ModBlockEntityTypes.TALL_CAGE_LAMP_ENTITY,
+    ModBlockEntityTypes.ALARM_CAGE_LAMP_ENTITY,
     pos,
     state
 ) {
@@ -40,7 +40,7 @@ class TallCageLampBlockEntity(
         return cachedState.get(Properties.FACING).doubleVector
     }
 
-    fun tick(world: World, pos: BlockPos, state: BlockState, blockEntity: TallCageLampBlockEntity) {
+    fun tick(world: World, pos: BlockPos, state: BlockState, blockEntity: AlarmCageLampBlockEntity) {
         //I hate how tickDelta (or now tickProgress) works. I would not have to tick this if it just worked normally
         age++
         if (color == 0) {
