@@ -1,6 +1,7 @@
 package grauly.dustydecor.item
 
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.ModItems
 import grauly.dustydecor.block.LayerThresholdSpreadingBlock
 import net.minecraft.block.Blocks
 import net.minecraft.item.Item
@@ -21,12 +22,12 @@ class OutsideCrystalShardItem(settings: Settings) : Item(settings) {
         val foundVoidGoop: MutableSet<BlockPos> = mutableSetOf()
         val foundLayers = getConnectedGoop(context.blockPos, world, foundVoidGoop)
         if (context.player?.isSneaking == false) {
-            context.player?.sendMessage(Text.translatable(VOID_GOOP_FIND, foundLayers), true)
+            context.player?.sendMessage(Text.translatable(VOID_GOOP_FIND, foundLayers, ModItems.VOID_GOOP.name), true)
             return ActionResult.SUCCESS
         }
         removeFoundGoop(foundVoidGoop, world)
         context.stack.decrementUnlessCreative(1, context.player)
-        context.player?.sendMessage(Text.translatable(VOID_GOOP_REMOVAL, foundLayers), true)
+        context.player?.sendMessage(Text.translatable(VOID_GOOP_REMOVAL, foundLayers, ModItems.VOID_GOOP.name), true)
         return ActionResult.SUCCESS
     }
 
