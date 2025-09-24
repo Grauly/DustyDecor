@@ -2,8 +2,11 @@
   "required": true,
   "package": "grauly.dustydecor.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixinextras": {"minVersion": "0.5.0"},
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  },
   "mixins": [
+    "FallingBlockEntityPlacementItemStackMixin",
     "PlayerEntityVentCrawlingMixin"
   ],
   "injectors": {

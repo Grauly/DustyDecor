@@ -108,7 +108,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
     }
 
     override fun canReplace(state: BlockState, context: ItemPlacementContext): Boolean {
-        if (context.stack.isOf(this.asItem()) || context.stack.isEmpty) {
+        if (context.stack.isOf(this.asItem())) {
             return (state.get(LAYERS) < MAX_LAYERS)
         }
         return false
