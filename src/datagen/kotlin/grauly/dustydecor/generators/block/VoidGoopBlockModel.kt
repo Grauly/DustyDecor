@@ -17,7 +17,7 @@ object VoidGoopBlockModel {
             BlockModelDatagen.singleVariant("${LAYER_BASE_PATH}_$layers")
         }
         blockStateModelGenerator.blockStateCollector.accept(creator.with(layersMap))
-        blockStateModelGenerator.registerItemModel(ModItems.VOID_GOOP, Identifier.of(DustyDecorMod.MODID, "${LAYER_BASE_PATH}_1"))
+        blockStateModelGenerator.registerItemModel(ModItems.VOID_GOOP)
     }
 
     private const val LAYER_BASE_PATH = "block/void_goop/void_goop"
