@@ -3,7 +3,7 @@ package grauly.dustydecor
 import grauly.dustydecor.particle.LightFlashParticle
 import grauly.dustydecor.particle.SparkEmitterFactory
 import grauly.dustydecor.particle.SparkFlashParticle
-import grauly.dustydecor.particle.SparkParticle
+import grauly.dustydecor.particle.spark.SparkParticle
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry
 
 object ModParticles {
