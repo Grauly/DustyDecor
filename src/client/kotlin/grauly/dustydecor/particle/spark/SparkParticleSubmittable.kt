@@ -1,6 +1,5 @@
 package grauly.dustydecor.particle.spark
 
-import grauly.dustydecor.DustyDecorMod
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.RenderLayer
@@ -8,9 +7,8 @@ import net.minecraft.client.render.Submittable
 import net.minecraft.client.render.command.OrderedRenderCommandQueue
 import net.minecraft.client.render.state.CameraRenderState
 import net.minecraft.client.texture.Sprite
+import net.minecraft.client.texture.SpriteAtlasTexture
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.util.Atlases
-import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 import org.joml.Quaternionf
@@ -35,7 +33,7 @@ class SparkParticleSubmittable(
 
             queue.submitCustom(
                 matrixStack,
-                RenderLayer.getEntityCutout(Atlases.PARTICLES)
+                RenderLayer.getEntityCutout(SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE)
             )
             { matrixEntry, vertexConsumer ->
                 val normal = buffer.readPosition(particle, 1)
@@ -78,7 +76,7 @@ class SparkParticleSubmittable(
 
         val camForward = centerPos.subtract(camera.pos)
         val localUp = Vector3f(1f, 0f, 0f).cross(camForward.toVector3f()).normalize().mul(0.5f / 16f)
-        val forward = Vector3f(1f, 0f, 0f).rotate(rotation).mul(sparkLength * 1 / 16.0f)
+        val forward = Vector3f(1f, 0f, 0f).rotate(rotation).mul(sparkLength)
 
         buffer.beginWrite()
         buffer.addPosition(camForward.toVector3f()) //cam offset
@@ -200,7 +198,8 @@ class SparkParticleSubmittable(
             if (!building) throw IllegalStateException("Data buffer not building")
             if (builtColorLights >= COLOR_LIGHT_ENTRIES_PER_PARTICLE) throw IllegalStateException("Attempting to add color/light pair to already filled buffer")
 
-            val actualIndex = particleIndex * COLOR_LIGHT_ENTRIES_PER_COLOR_LIGHT_ENTRY * COLOR_LIGHT_ENTRIES_PER_PARTICLE
+            val actualIndex =
+                particleIndex * COLOR_LIGHT_ENTRIES_PER_COLOR_LIGHT_ENTRY * COLOR_LIGHT_ENTRIES_PER_PARTICLE
             colorLightBuffer[actualIndex + 0] = color
             colorLightBuffer[actualIndex + 1] = light
             builtColorLights++
@@ -208,13 +207,15 @@ class SparkParticleSubmittable(
 
         fun readColor(particle: Int): Int {
             if (particle > particleIndex) throw IndexOutOfBoundsException("Attempting to access particle $particle, but only $particleIndex are available")
-            val actualIndex = particleIndex * COLOR_LIGHT_ENTRIES_PER_COLOR_LIGHT_ENTRY * COLOR_LIGHT_ENTRIES_PER_PARTICLE
+            val actualIndex =
+                particleIndex * COLOR_LIGHT_ENTRIES_PER_COLOR_LIGHT_ENTRY * COLOR_LIGHT_ENTRIES_PER_PARTICLE
             return colorLightBuffer[actualIndex + 0]
         }
 
         fun readLight(particle: Int): Int {
             if (particle > particleIndex) throw IndexOutOfBoundsException("Attempting to access particle $particle, but only $particleIndex are available")
-            val actualIndex = particleIndex * COLOR_LIGHT_ENTRIES_PER_COLOR_LIGHT_ENTRY * COLOR_LIGHT_ENTRIES_PER_PARTICLE
+            val actualIndex =
+                particleIndex * COLOR_LIGHT_ENTRIES_PER_COLOR_LIGHT_ENTRY * COLOR_LIGHT_ENTRIES_PER_PARTICLE
             return colorLightBuffer[actualIndex + 1]
         }
 
