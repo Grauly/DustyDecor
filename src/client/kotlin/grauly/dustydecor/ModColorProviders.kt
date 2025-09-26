@@ -19,6 +19,7 @@ object ModColorProviders {
             val lookupIndex = DyeUtils.COLOR_ORDER.indexOf(it)
             generateColoredCageLamp(lookupIndex, ModBlocks.TALL_CAGE_LAMPS)
             generateColoredCageLamp(lookupIndex, ModBlocks.WIDE_CAGE_LAMPS)
+            generateColoredCageLamp(lookupIndex, ModBlocks.ALARM_CAGE_LAMPS)
         }
     }
 
