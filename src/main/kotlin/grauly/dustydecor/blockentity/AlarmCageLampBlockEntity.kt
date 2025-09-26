@@ -44,7 +44,7 @@ class AlarmCageLampBlockEntity(
         //I hate how tickDelta (or now tickProgress) works. I would not have to tick this if it just worked normally
         age++
         if (color == 0) {
-            color = DyeUtils.COLOR_ORDER[ModBlocks.TALL_CAGE_LAMPS.indexOf(world.getBlockState(pos).block)].signColor
+            color = DyeUtils.COLOR_ORDER[ModBlocks.ALARM_CAGE_LAMPS.indexOf(world.getBlockState(pos).block)].signColor
         }
         if (world.isClient) return
         world as ServerWorld
