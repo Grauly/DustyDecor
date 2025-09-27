@@ -158,11 +158,8 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
         val layers = state.get(LAYERS)
         val spreadTargets: Map<Direction, Int> = Direction.entries.filter { it.axis.isHorizontal }
             .associateWith { getSpreadDifferential(pos.offset(it), it, world) }
-        DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)}: $layers, $spreadTargets")
         if (spreadTargets.all { it.value >= layers }) return state //surrounded by higher/equal blocks
-        DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)}: get past higher check")
         if (spreadTargets.all { layers - it.value <= threshold }) return state //none have enough differential
-        DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)}: get past differential check")
         var updatedLayerCount = layers
         val spreadActions: MutableMap<Direction, Int> = mutableMapOf()
         while (updatedLayerCount > 0) {
