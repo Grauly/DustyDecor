@@ -31,13 +31,19 @@ object ItemDatagenWrapper {
         item(
             ModItems.BULK_VOID_GOOP,
             "Bulk Void Goop",
+            listOf(ModItemTags.VOID_GOOP),
             generateBaseModel = true
+        )
+        item(
+            ModItems.VOID_GOOP,
+            null,
+            listOf(ModItemTags.VOID_GOOP)
         )
     }
 
     private fun item(
         item: Item,
-        lang: String,
+        lang: String?,
         tags: List<TagKey<Item>> = listOf(),
         toolSpec: ToolSpec = ToolSpec(),
         generateBaseModel: Boolean = false
@@ -49,7 +55,7 @@ object ItemDatagenWrapper {
 
     class DatagenSpec(
         val item: Item,
-        val lang: String,
+        val lang: String?,
         val tags: List<TagKey<Item>> = listOf(),
         val toolSpec: ToolSpec = ToolSpec(),
         val generateBaseModel: Boolean = false

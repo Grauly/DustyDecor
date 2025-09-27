@@ -3,6 +3,8 @@ package grauly.dustydecor.generators
 import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.ItemDatagenWrapper
 import grauly.dustydecor.ModConventionalItemTags
+import grauly.dustydecor.ModItemTags
+import grauly.dustydecor.ModItems
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ScrewdriverComponent
@@ -28,6 +30,7 @@ class LangDatagen(
             builder.add(it.block.asItem(), it.name)
         }
         ItemDatagenWrapper.entries.forEach {
+            if (it.lang == null) return@forEach
             builder.add(it.item, it.lang)
         }
 
@@ -60,6 +63,7 @@ class LangDatagen(
         builder.add(ScrewdriverComponent.LAMPS_TRANSLATION_KEY, "Can invert some lamps")
 
         builder.add(tagTranslationKey(ModConventionalItemTags.SCREWDRIVER_TOOLS), "Screwdrivers")
+        builder.add(tagTranslationKey(ModItemTags.VOID_GOOP), "Void Goop")
 
         builder.add(OutsideCrystalShardItem.VOID_GOOP_REMOVAL, "Removed %s %s")
         builder.add(OutsideCrystalShardItem.VOID_GOOP_FIND, "Found %s %s")
