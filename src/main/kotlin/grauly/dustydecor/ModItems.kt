@@ -39,7 +39,7 @@ object ModItems {
         ::BulkVoidGoopItem,
         "bulk_void_goop",
         Settings()
-            .component(ModComponentTypes.VOID_GOOP_SIZE, BulkGoopSizeComponent(1))
+            .component(ModComponentTypes.VOID_GOOP_SIZE, BulkGoopSizeComponent.DEFAULT)
     )
     val OUTSIDE_CRYSTAL_SHARD: Item = registerItem(::OutsideCrystalShardItem, "outside_crystal_shard")
     val SCREWDRIVER: Item = registerItem(

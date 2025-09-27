@@ -27,14 +27,26 @@ data class BulkGoopSizeComponent(var size: Int) : TooltipAppender {
             Text.translatable(SIZE_INDICATOR, comp.size, ModBlocks.VOID_GOOP.name)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
         )
+        textConsumer.accept(
+            Text.translatable(EXPLANATION)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+        )
+        textConsumer.accept(
+            Text.translatable(EXPLANATION_L2)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+        )
     }
 
     companion object {
+        const val EXPLANATION = "component.bulk_goop_size.${DustyDecorMod.MODID}.explanation0"
+        const val EXPLANATION_L2 = "component.bulk_goop_size.${DustyDecorMod.MODID}.explanation1"
         const val SIZE_INDICATOR = "component.bulk_goop_size.${DustyDecorMod.MODID}.description"
         val CODEC: Codec<BulkGoopSizeComponent> = RecordCodecBuilder.create {
             it.group(
                 Codec.INT.fieldOf("size").forGetter { goop -> goop.size },
             ).apply(it, ::BulkGoopSizeComponent)
         }
+        val DEFAULT = BulkGoopSizeComponent(1)
+        const val MAX_SIZE = 1024
     }
 }

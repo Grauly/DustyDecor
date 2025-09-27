@@ -50,6 +50,8 @@
   "block.dustydecor.yellow_tall_cage_lamp": "Tall Yellow Cage Lamp",
   "block.dustydecor.yellow_wide_cage_lamp": "Wide Yellow Cage Lamp",
   "component.bulk_goop_size.dustydecor.description": "Places %s %s at once",
+  "component.bulk_goop_size.dustydecor.explanation0": "Scroll while hovering to change amount",
+  "component.bulk_goop_size.dustydecor.explanation1": "Press shift to increase by 10",
   "component.screwdriver.dustydecor.tooltip.": "Can invert some lamps",
   "component.screwdriver.dustydecor.tooltip.vac_tube": "Can toggle windows on %s's",
   "component.screwdriver.dustydecor.tooltip.vent_cover": "Can lock/unlock %s's",

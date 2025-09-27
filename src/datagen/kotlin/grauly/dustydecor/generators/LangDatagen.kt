@@ -8,6 +8,7 @@ import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ScrewdriverComponent
 import grauly.dustydecor.component.WrenchComponent
 import grauly.dustydecor.item.OutsideCrystalShardItem
+import kotlinx.coroutines.flow.combine
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
 import net.minecraft.item.Item
@@ -62,7 +63,10 @@ class LangDatagen(
 
         builder.add(OutsideCrystalShardItem.VOID_GOOP_REMOVAL, "Removed %s %s")
         builder.add(OutsideCrystalShardItem.VOID_GOOP_FIND, "Found %s %s")
+
         builder.add(BulkGoopSizeComponent.SIZE_INDICATOR, "Places %s %s at once")
+        builder.add(BulkGoopSizeComponent.EXPLANATION, "Scroll while hovering to change amount")
+        builder.add(BulkGoopSizeComponent.EXPLANATION_L2, "Press shift to increase by 10")
 
         subtitles.forEach { (e, t) ->
             builder.add(SoundEventDatagen.getSubtitle(e), t)
