@@ -28,6 +28,11 @@ object ItemDatagenWrapper {
             "Outside Crystal Shard",
             generateBaseModel = true
         )
+        item(
+            ModItems.BULK_VOID_GOOP,
+            "Bulk Void Goop",
+            generateBaseModel = true
+        )
     }
 
     private fun item(

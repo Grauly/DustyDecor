@@ -3,8 +3,8 @@ package grauly.dustydecor.generators
 import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.ItemDatagenWrapper
 import grauly.dustydecor.ModConventionalItemTags
-import grauly.dustydecor.ModItemStacks
 import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ScrewdriverComponent
 import grauly.dustydecor.component.WrenchComponent
 import grauly.dustydecor.item.OutsideCrystalShardItem
@@ -62,7 +62,7 @@ class LangDatagen(
 
         builder.add(OutsideCrystalShardItem.VOID_GOOP_REMOVAL, "Removed %s %s")
         builder.add(OutsideCrystalShardItem.VOID_GOOP_FIND, "Found %s %s")
-        builder.add(ModItemStacks.VOID_GOOP_8_LAYER_DESCRIPTION, "Places 8 %s at once")
+        builder.add(BulkGoopSizeComponent.SIZE_INDICATOR, "Places %s %s at once")
 
         subtitles.forEach { (e, t) ->
             builder.add(SoundEventDatagen.getSubtitle(e), t)

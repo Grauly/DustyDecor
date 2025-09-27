@@ -42,8 +42,7 @@ object ModItemGroups {
             }
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL)
             .register {
-                it.addAfter(Items.SCULK_SENSOR, ModItems.VOID_GOOP)
-                it.addAfter(ModItems.VOID_GOOP, ModItemStacks.VOID_GOOP_8_LAYER)
+                it.addAfter(Items.SCULK_SENSOR, ModItems.VOID_GOOP, ModItems.BULK_VOID_GOOP)
             }
     }
 }

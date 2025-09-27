@@ -1,9 +1,11 @@
 package grauly.dustydecor
 
+import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ScrewdriverComponent
 import grauly.dustydecor.component.WrenchComponent
-import grauly.dustydecor.item.VacCapsuleItem
+import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
+import grauly.dustydecor.item.VacCapsuleItem
 import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.Block
 import net.minecraft.component.DataComponentTypes
@@ -33,6 +35,12 @@ object ModItems {
     val VAC_PIPE_STATION: Item = registerBlockItem(ModBlocks.VAC_PIPE_STATION, "vac_pipe_station")
     val VAC_CAPSULE: Item = registerItem(::VacCapsuleItem, "vac_capsule")
     val VOID_GOOP: Item = registerBlockItem(ModBlocks.VOID_GOOP, "void_goop")
+    val BULK_VOID_GOOP: Item = registerItem(
+        ::BulkVoidGoopItem,
+        "bulk_void_goop",
+        Settings()
+            .component(ModComponentTypes.VOID_GOOP_SIZE, BulkGoopSizeComponent(1))
+    )
     val OUTSIDE_CRYSTAL_SHARD: Item = registerItem(::OutsideCrystalShardItem, "outside_crystal_shard")
     val SCREWDRIVER: Item = registerItem(
         ::Item,

@@ -1,8 +1,10 @@
-// 1.21.9-pre4	-999999999-01-01T00:00:00	Dusty Decor/Item Model Definitions
+// 1.21.9-rc1	-999999999-01-01T00:00:00	Dusty Decor/Item Model Definitions
+84b187ab99ee23dbb29e371c1b08d10922f8a3f1 assets/dustydecor/items/bulk_void_goop.json
 09fcc4a2af65ee9fa8adbc4c61dc3c6572a1927a assets/dustydecor/items/outside_crystal_shard.json
 d0660f5926a352aaf14419f40c370ef07e89e105 assets/dustydecor/items/screwdriver.json
 c1ab6a8f8e197f1f9eb45269106353beda506294 assets/dustydecor/items/vac_capsule.json
 6321aeffa9e80db5d009fec4b1320daebed6bd27 assets/dustydecor/items/wrench.json
+399e215cdcfa6239b3259bdb9209cc083dc2dc5a assets/dustydecor/models/item/bulk_void_goop.json
 861da1954a84091ed30041e821d74ab4abff96a7 assets/dustydecor/models/item/outside_crystal_shard.json
 45bec0219bd8d5019895c6e36b8de867b10406af assets/dustydecor/models/item/screwdriver.json
 39c484247e36e30af73a06022d4079800abd06e2 assets/dustydecor/models/item/vac_capsule.json
