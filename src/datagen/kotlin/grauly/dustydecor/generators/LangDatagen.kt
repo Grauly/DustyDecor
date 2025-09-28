@@ -9,6 +9,7 @@ import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ScrewdriverComponent
 import grauly.dustydecor.component.WrenchComponent
+import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import kotlinx.coroutines.flow.combine
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
@@ -71,6 +72,7 @@ class LangDatagen(
         builder.add(BulkGoopSizeComponent.SIZE_INDICATOR, "Places %s %s at once")
         builder.add(BulkGoopSizeComponent.EXPLANATION, "Scroll while hovering to change amount")
         builder.add(BulkGoopSizeComponent.EXPLANATION_L2, "Press shift to increase by 10")
+        builder.add(BulkVoidGoopItem.VOID_GOOP_PLACED, "Placed %s %s")
 
         subtitles.forEach { (e, t) ->
             builder.add(SoundEventDatagen.getSubtitle(e), t)

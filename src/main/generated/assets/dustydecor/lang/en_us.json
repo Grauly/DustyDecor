@@ -59,6 +59,7 @@
   "component.wrench.dustydecor.tooltip.vac_pipe.edit": "Can edit %s connections",
   "component.wrench.dustydecor.vac_pipe.connection": "Use on a exiting connection to attempt a different connection for it",
   "component.wrench.dustydecor.vac_station.toggle": "Can toggle whether %s's send or receive",
+  "item.bulk_void_goop.placed": "Placed %s %s",
   "item.dustydecor.black_alarm_cage_lamp": "Black Alarm Cage Lamp",
   "item.dustydecor.black_tall_cage_lamp": "Tall Black Cage Lamp",
   "item.dustydecor.black_wide_cage_lamp": "Wide Black Cage Lamp",
@@ -128,5 +129,6 @@
   "subtitles.dustydecor.block.vent.unlock": "Vent unlocks",
   "subtitles.dustydecor.item.screwdriver.use": "Screwdriver ratchets",
   "subtitles.dustydecor.item.wrench.use": "Wrench wrenches",
-  "tag.item.c.tools.screwdriver": "Screwdrivers"
+  "tag.item.c.tools.screwdriver": "Screwdrivers",
+  "tag.item.dustydecor.void_goop": "Void Goop"
 }
