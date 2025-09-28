@@ -9,6 +9,10 @@ import grauly.dustydecor.item.VacCapsuleItem
 import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.Block
 import net.minecraft.component.DataComponentTypes
+import net.minecraft.component.type.AttributeModifierSlot
+import net.minecraft.component.type.AttributeModifiersComponent
+import net.minecraft.entity.attribute.EntityAttributeModifier
+import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.Item.Settings
@@ -40,6 +44,16 @@ object ModItems {
         "bulk_void_goop",
         Settings()
             .component(ModComponentTypes.VOID_GOOP_SIZE, BulkGoopSizeComponent.DEFAULT)
+            .attributeModifiers(AttributeModifiersComponent.builder()
+                .add(
+                    EntityAttributes.BLOCK_INTERACTION_RANGE,
+                    EntityAttributeModifier(
+                        Identifier.of(DustyDecorMod.MODID, "bulk_goop_place_range"),
+                        2.0,
+                        EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                    ),
+                    AttributeModifierSlot.MAINHAND
+                ).build())
     )
     val OUTSIDE_CRYSTAL_SHARD: Item = registerItem(::OutsideCrystalShardItem, "outside_crystal_shard")
     val SCREWDRIVER: Item = registerItem(
