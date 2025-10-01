@@ -25,7 +25,7 @@ class SparkFlashParticle(
         this.velocityZ = velocityZ
     }
 
-    override fun getRenderType(): RenderType = RenderType.field_62640
+    override fun getRenderType(): RenderType = RenderType.PARTICLE_ATLAS_OPAQUE
 
     class Factory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
         override fun createParticle(
