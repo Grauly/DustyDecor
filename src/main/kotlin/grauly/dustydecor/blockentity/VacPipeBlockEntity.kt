@@ -13,15 +13,17 @@ import net.minecraft.block.entity.BlockEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.storage.ReadView
 import net.minecraft.storage.WriteView
+import net.minecraft.util.HeldItemContext
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 class VacPipeBlockEntity(
     pos: BlockPos?,
     state: BlockState?,
-) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_ENTITY, pos, state) {
+) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_ENTITY, pos, state), HeldItemContext {
     val storage: SingleVariantStorage<ItemVariant> = object : SingleVariantStorage<ItemVariant>() {
         override fun getCapacity(itemVariant: ItemVariant): Long = itemVariant.toStack().maxCount.toLong()
         override fun getBlankVariant(): ItemVariant = ItemVariant.blank()
@@ -75,5 +77,11 @@ class VacPipeBlockEntity(
         view.put("amount", Codec.LONG, storage.amount)
         super.writeData(view)
     }
+
+    override fun getEntityWorld(): World? = world
+
+    override fun getEntityPos(): Vec3d? = pos.toCenterPos()
+
+    override fun getBodyYaw(): Float = 0f
 
 }
