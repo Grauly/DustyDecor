@@ -61,14 +61,10 @@ class VacPipeBlockEntity(
             ItemStorage.SIDED.find(world, pos.offset(followDirection.direction), followDirection.direction?.opposite)
                 ?: return
         val movedAmount = StorageUtil.move(storage, targetStorage, { true }, 1, null)
-        if (movedAmount > 0) {
-            markDirty()
-            if (targetBe is VacPipeBlockEntity) targetBe.notifyInsert(world)
-        }
+        if (movedAmount > 0 && targetBe is VacPipeBlockEntity) targetBe.notifyInsert(world)
     }
 
     override fun toUpdatePacket(): Packet<ClientPlayPacketListener?>? {
-        DustyDecorMod.logger.info("hello")
         return BlockEntityUpdateS2CPacket.create(this)
     }
 
@@ -82,7 +78,6 @@ class VacPipeBlockEntity(
 
     fun notifyInsert(world: World) {
         lastInsertTime = world.time
-        markDirty()
     }
 
     fun getItemsForScattering(): DefaultedList<ItemStack> {
@@ -91,15 +86,10 @@ class VacPipeBlockEntity(
         return list
     }
 
-    fun markDirty(gameEvent: RegistryEntry.Reference<GameEvent>) {
+    override fun markDirty() {
         super.markDirty()
         if (world == null) return
-        world!!.emitGameEvent(gameEvent, pos, GameEvent.Emitter.of(cachedState))
         world!!.updateListeners(pos, cachedState, cachedState, Block.NOTIFY_ALL)
-    }
-
-    override fun markDirty() {
-        markDirty(GameEvent.BLOCK_ACTIVATE)
     }
 
     fun getInsertDirection(): Direction? = cachedState.get(AbConnectableBlock.connections[0]).direction
