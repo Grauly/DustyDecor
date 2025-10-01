@@ -1,6 +1,7 @@
 package grauly.dustydecor.blockentity
 
 import com.mojang.serialization.Codec
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.block.AbConnectableBlock
 import grauly.dustydecor.block.ConnectionState
@@ -8,17 +9,27 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage
+import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.network.listener.ClientPlayPacketListener
+import net.minecraft.network.packet.Packet
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket
+import net.minecraft.registry.RegistryWrapper
+import net.minecraft.registry.entry.RegistryEntry
+import net.minecraft.storage.NbtWriteView
 import net.minecraft.storage.ReadView
 import net.minecraft.storage.WriteView
+import net.minecraft.util.ErrorReporter
 import net.minecraft.util.HeldItemContext
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
+import net.minecraft.world.event.GameEvent
 
 class VacPipeBlockEntity(
     pos: BlockPos?,
@@ -33,16 +44,6 @@ class VacPipeBlockEntity(
         }
     }
     private var lastInsertTime = 0L
-
-    fun getItemsForScattering(): DefaultedList<ItemStack> {
-        val list = DefaultedList.ofSize<ItemStack>(1)
-        list.add(storage.variant.toStack(storage.amount.toInt()))
-        return list
-    }
-
-    fun notifyInsert(world: World) {
-        lastInsertTime = world.time
-    }
 
     fun tick(world: World, pos: BlockPos, state: BlockState) {
         if (world.isClient) return
@@ -60,7 +61,45 @@ class VacPipeBlockEntity(
             ItemStorage.SIDED.find(world, pos.offset(followDirection.direction), followDirection.direction?.opposite)
                 ?: return
         val movedAmount = StorageUtil.move(storage, targetStorage, { true }, 1, null)
-        if (movedAmount > 0 && targetBe is VacPipeBlockEntity) targetBe.notifyInsert(world)
+        if (movedAmount > 0) {
+            markDirty()
+            if (targetBe is VacPipeBlockEntity) targetBe.notifyInsert(world)
+        }
+    }
+
+    override fun toUpdatePacket(): Packet<ClientPlayPacketListener?>? {
+        DustyDecorMod.logger.info("hello")
+        return BlockEntityUpdateS2CPacket.create(this)
+    }
+
+    override fun toInitialChunkDataNbt(registries: RegistryWrapper.WrapperLookup?): NbtCompound? {
+        ErrorReporter.Logging(this.getReporterContext(), DustyDecorMod.logger).use {
+            val view = NbtWriteView.create(it, registries)
+            writeData(view)
+            return view.nbt
+        }
+    }
+
+    fun notifyInsert(world: World) {
+        lastInsertTime = world.time
+        markDirty()
+    }
+
+    fun getItemsForScattering(): DefaultedList<ItemStack> {
+        val list = DefaultedList.ofSize<ItemStack>(1)
+        list.add(storage.variant.toStack(storage.amount.toInt()))
+        return list
+    }
+
+    fun markDirty(gameEvent: RegistryEntry.Reference<GameEvent>) {
+        super.markDirty()
+        if (world == null) return
+        world!!.emitGameEvent(gameEvent, pos, GameEvent.Emitter.of(cachedState))
+        world!!.updateListeners(pos, cachedState, cachedState, Block.NOTIFY_ALL)
+    }
+
+    override fun markDirty() {
+        markDirty(GameEvent.BLOCK_ACTIVATE)
     }
 
     fun getInsertDirection(): Direction? = cachedState.get(AbConnectableBlock.connections[0]).direction

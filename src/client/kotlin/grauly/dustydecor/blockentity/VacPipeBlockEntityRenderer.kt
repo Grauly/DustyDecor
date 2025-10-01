@@ -1,5 +1,6 @@
 package grauly.dustydecor.blockentity
 
+import grauly.dustydecor.ModItems
 import it.unimi.dsi.fastutil.HashCommon
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey
 import net.minecraft.client.render.OverlayTexture
@@ -31,7 +32,7 @@ class VacPipeBlockEntityRenderer(
         super.updateRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay)
         val itemRenderState = ItemRenderState()
         val stack = blockEntity.storage.variant.toStack()
-        itemModelManager.update(
+        itemModelManager.clearAndUpdate(
             itemRenderState,
             stack,
             ItemDisplayContext.HEAD,
