@@ -69,7 +69,7 @@ class VacPipeBlockEntity(
     }
 
     override fun toInitialChunkDataNbt(registries: RegistryWrapper.WrapperLookup?): NbtCompound? {
-        ErrorReporter.Logging(this.getReporterContext(), DustyDecorMod.logger).use {
+        ErrorReporter.Logging(this.reporterContext, DustyDecorMod.logger).use {
             val view = NbtWriteView.create(it, registries)
             writeData(view)
             return view.nbt
