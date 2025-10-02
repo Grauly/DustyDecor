@@ -5,6 +5,8 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.block.AbConnectableBlock
 import grauly.dustydecor.block.ConnectionState
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
@@ -18,7 +20,6 @@ import net.minecraft.network.listener.ClientPlayPacketListener
 import net.minecraft.network.packet.Packet
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket
 import net.minecraft.registry.RegistryWrapper
-import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.storage.NbtWriteView
 import net.minecraft.storage.ReadView
 import net.minecraft.storage.WriteView
@@ -29,7 +30,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
-import net.minecraft.world.event.GameEvent
 
 class VacPipeBlockEntity(
     pos: BlockPos?,
@@ -44,6 +44,8 @@ class VacPipeBlockEntity(
         }
     }
     private var lastInsertTime = 0L
+    @Environment(EnvType.CLIENT)
+    var lastStackHash: Int = 0
 
     fun tick(world: World, pos: BlockPos, state: BlockState) {
         if (world.isClient) return
