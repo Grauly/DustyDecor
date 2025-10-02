@@ -98,12 +98,14 @@ class VacPipeBlockEntity(
     override fun readData(view: ReadView) {
         storage.variant = view.read("itemVariant", ItemVariant.CODEC).orElse(ItemVariant.blank())
         storage.amount = view.read("amount", Codec.LONG).orElse(0L)
+        lastInsertTime = view.read("lastInsertTime", Codec.LONG).orElse(0L)
         super.readData(view)
     }
 
     override fun writeData(view: WriteView) {
         view.put("itemVariant", ItemVariant.CODEC, storage.variant)
         view.put("amount", Codec.LONG, storage.amount)
+        view.put("lastInsertTime", Codec.LONG, lastInsertTime)
         super.writeData(view)
     }
 
