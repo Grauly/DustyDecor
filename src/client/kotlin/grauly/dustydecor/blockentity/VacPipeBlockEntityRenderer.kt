@@ -1,7 +1,6 @@
 package grauly.dustydecor.blockentity
 
 import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.util.DebugUtils
 import it.unimi.dsi.fastutil.HashCommon
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey
 import net.minecraft.client.render.OverlayTexture
@@ -18,6 +17,7 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import org.joml.Quaternionf
 import org.joml.Vector3f
+import kotlin.math.min
 
 class VacPipeBlockEntityRenderer(
     private val blockRenderContext: BlockEntityRendererFactory.Context
@@ -37,10 +37,6 @@ class VacPipeBlockEntityRenderer(
         val stack = blockEntity.storage.variant.toStack()
         if (stack.isEmpty) return
 
-        state.setData(
-            NEEDS_ITEM_MOVEMENT, blockEntity.isWaitingToMoveItems(blockEntity.world!!)
-        )
-
         val itemRenderState = ItemRenderState()
         itemModelManager.clearAndUpdate(
             itemRenderState,
@@ -56,7 +52,12 @@ class VacPipeBlockEntityRenderer(
         state.setData(MIDDLE_POS, directionToPos(null)) //TODO
         state.setData(END_POS, directionToPos(blockEntity.getExtractDirection()))
 
-        state.setData(DELTA, tickProgress)
+        if (blockEntity.insertHash != blockEntity.lastInsertHash) {
+            blockEntity.ticksSinceLastChange = 0
+            blockEntity.lastInsertHash = blockEntity.insertHash
+        }
+
+        state.setData(DELTA, blockEntity.ticksSinceLastChange + tickProgress)
     }
 
     override fun render(
@@ -67,7 +68,6 @@ class VacPipeBlockEntityRenderer(
     ) {
         val itemRenderState: ItemRenderState = state.getData(ITEM) ?: return
         val delta: Float = state.getData(DELTA)!!
-        val needsMovement: Boolean = state.getData(NEEDS_ITEM_MOVEMENT)!!
 
         var positionOffset: Vec3d = Vec3d.ZERO
         val rotation: Quaternionf = Quaternionf()
@@ -75,16 +75,16 @@ class VacPipeBlockEntityRenderer(
         val middle = state.getData(MIDDLE_POS)!!
         val end = state.getData(END_POS)!!
         val up = Vector3f(0f, -1f, 0f)
-        if(false) {
+        if (false) {
             positionOffset = end
             rotation.rotateTo(up, start.toVector3f())
         } else {
-            if (delta < 0.5) {
+            if (delta <= 0.5) {
                 positionOffset = start.lerp(middle, (delta * 2).toDouble())
                 rotation.rotateTo(up, start.toVector3f())
-            } else {
-                positionOffset = state.getData(MIDDLE_POS)!!.lerp(state.getData(END_POS), ((delta - 0.5) * 2))
-                rotation.rotateTo(up, end.negate().toVector3f())
+            } else if (delta >= 0.5) {
+                positionOffset = middle.lerp(end, min((delta - 0.5) * 2, 2.0))
+                rotation.rotateTo(up, (if (middle == end) start else end).negate().toVector3f())
             }
         }
 

@@ -5,7 +5,6 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.block.AbConnectableBlock
 import grauly.dustydecor.block.ConnectionState
-import grauly.dustydecor.util.DebugUtils
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
@@ -45,11 +44,17 @@ class VacPipeBlockEntity(
         }
     }
     private var lastInsertTime = 0L
+    var insertHash = 0
     @Environment(EnvType.CLIENT)
-    var lastStackHash: Int = 0
+    var lastInsertHash: Int = 0
+    @Environment(EnvType.CLIENT)
+    var ticksSinceLastChange: Int = 0
 
     fun tick(world: World, pos: BlockPos, state: BlockState) {
-        if (world.isClient) return
+        if (world.isClient) {
+            ticksSinceLastChange++
+            return //need to return at end
+        }
         handleItemMoving(world, pos, state)
     }
 
@@ -81,6 +86,7 @@ class VacPipeBlockEntity(
 
     fun notifyInsert(world: World) {
         lastInsertTime = world.time
+        insertHash = world.random.nextInt()
     }
 
     fun isWaitingToMoveItems(world: World): Boolean {
@@ -106,6 +112,7 @@ class VacPipeBlockEntity(
         storage.variant = view.read("itemVariant", ItemVariant.CODEC).orElse(ItemVariant.blank())
         storage.amount = view.read("amount", Codec.LONG).orElse(0L)
         lastInsertTime = view.read("lastInsertTime", Codec.LONG).orElse(0L)
+        insertHash = view.read("insertHash", Codec.INT).orElse(0)
         super.readData(view)
     }
 
@@ -113,6 +120,7 @@ class VacPipeBlockEntity(
         view.put("itemVariant", ItemVariant.CODEC, storage.variant)
         view.put("amount", Codec.LONG, storage.amount)
         view.put("lastInsertTime", Codec.LONG, lastInsertTime)
+        view.put("insertHash", Codec.INT, insertHash)
         super.writeData(view)
     }
 
