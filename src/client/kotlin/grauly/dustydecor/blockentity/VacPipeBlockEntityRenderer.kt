@@ -37,15 +37,8 @@ class VacPipeBlockEntityRenderer(
         val stack = blockEntity.storage.variant.toStack()
         if (stack.isEmpty) return
 
-        val stackHash = blockEntity.storage.hashCode()
-        DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(blockEntity.pos)}, $stackHash")
         state.setData(
-            NEEDS_ITEM_MOVEMENT, if (stackHash == blockEntity.lastStackHash) {
-                false
-            } else {
-                blockEntity.lastStackHash = stackHash
-                true
-            }
+            NEEDS_ITEM_MOVEMENT, blockEntity.isWaitingToMoveItems(blockEntity.world!!)
         )
 
         val itemRenderState = ItemRenderState()
@@ -82,7 +75,7 @@ class VacPipeBlockEntityRenderer(
         val middle = state.getData(MIDDLE_POS)!!
         val end = state.getData(END_POS)!!
         val up = Vector3f(0f, -1f, 0f)
-        if(!needsMovement) {
+        if(false) {
             positionOffset = end
             rotation.rotateTo(up, start.toVector3f())
         } else {
@@ -91,7 +84,7 @@ class VacPipeBlockEntityRenderer(
                 rotation.rotateTo(up, start.toVector3f())
             } else {
                 positionOffset = state.getData(MIDDLE_POS)!!.lerp(state.getData(END_POS), ((delta - 0.5) * 2))
-                rotation.rotateTo(up, end.toVector3f())
+                rotation.rotateTo(up, end.negate().toVector3f())
             }
         }
 

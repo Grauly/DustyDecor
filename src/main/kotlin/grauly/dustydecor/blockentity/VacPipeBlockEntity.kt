@@ -5,6 +5,7 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.block.AbConnectableBlock
 import grauly.dustydecor.block.ConnectionState
+import grauly.dustydecor.util.DebugUtils
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
@@ -54,7 +55,7 @@ class VacPipeBlockEntity(
 
     private fun handleItemMoving(world: World, pos: BlockPos, state: BlockState) {
         if (storage.isResourceBlank) return
-        if (lastInsertTime == world.time) return
+        if (isWaitingToMoveItems(world)) return
         val followDirection = state.get(AbConnectableBlock.connections[1])
         if (followDirection == ConnectionState.NONE) return
         val targetBe = world.getBlockEntity(pos.offset(followDirection.direction))
@@ -80,6 +81,10 @@ class VacPipeBlockEntity(
 
     fun notifyInsert(world: World) {
         lastInsertTime = world.time
+    }
+
+    fun isWaitingToMoveItems(world: World): Boolean {
+        return lastInsertTime == world.time
     }
 
     fun getItemsForScattering(): DefaultedList<ItemStack> {
