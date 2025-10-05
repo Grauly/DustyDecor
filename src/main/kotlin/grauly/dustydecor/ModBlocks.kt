@@ -63,6 +63,17 @@ object ModBlocks {
         ) as WideCageLampBlock)
     }
 
+    val TUBE_LAMPS: List<TubeLampBlock> = DyeUtils.COLOR_ORDER.map {
+        val id = "${it.id}_tube_lamp"
+        (registerBlock(
+            ::TubeLampBlock,
+            id,
+            Settings.copy(Blocks.LANTERN)
+                .luminance(LightingFixtureBlock.getLightingFunction(3, 15))
+                .ticksRandomly()
+        ) as TubeLampBlock)
+    }
+
     private fun registerBlock(
         blockFactory: (Settings) -> Block,
         id: String,

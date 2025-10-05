@@ -88,6 +88,11 @@ object ModItems {
         registerBlockItem(it, id)
     }
 
+    val TUBE_LAMPS: List<Item> = ModBlocks.TUBE_LAMPS.map {
+        val id = "${DyeUtils.COLOR_ORDER[ModBlocks.TUBE_LAMPS.indexOf(it)]}_tube_lamp"
+        registerBlockItem(it, id)
+    }
+
     private fun registerItem(
         itemFactory: (Settings) -> Item,
         id: String,

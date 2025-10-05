@@ -33,7 +33,8 @@ object ModItemGroups {
                     Items.PINK_CANDLE,
                     *ModItems.TALL_CAGE_LAMPS.toTypedArray(),
                     *ModItems.WIDE_CAGE_LAMPS.toTypedArray(),
-                    *ModItems.ALARM_CAGE_LAMPS.toTypedArray()
+                    *ModItems.ALARM_CAGE_LAMPS.toTypedArray(),
+                    *ModItems.TUBE_LAMPS.toTypedArray()
                 )
             }
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)

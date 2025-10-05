@@ -16,5 +16,8 @@ object ModBlockLayerRenderMapEntries {
         ModBlocks.ALARM_CAGE_LAMPS.forEach {
             BlockRenderLayerMap.putBlock(it, BlockRenderLayer.CUTOUT)
         }
+        ModBlocks.TUBE_LAMPS.forEach {
+            BlockRenderLayerMap.putBlock(it, BlockRenderLayer.CUTOUT)
+        }
     }
 }

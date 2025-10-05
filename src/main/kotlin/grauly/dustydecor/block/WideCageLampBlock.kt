@@ -9,8 +9,6 @@ import net.minecraft.util.shape.VoxelShapes
 
 class WideCageLampBlock(settings: Settings?) : FacingRotationLampBlock(settings) {
 
-    //TODO: add fluorescent tube lamp
-
     override fun getShape(state: BlockState): VoxelShape {
         return (SHAPES[state.get(ROTATED)]!!)[state.get(Properties.FACING).opposite]!!
     }

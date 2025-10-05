@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dustydecor:block/tube_lamp/tube_lamp_inventory",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -7650029
+      }
+    ]
+  }
+}

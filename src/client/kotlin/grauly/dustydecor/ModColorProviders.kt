@@ -20,6 +20,7 @@ object ModColorProviders {
             generateColoredCageLamp(lookupIndex, ModBlocks.TALL_CAGE_LAMPS)
             generateColoredCageLamp(lookupIndex, ModBlocks.WIDE_CAGE_LAMPS)
             generateColoredCageLamp(lookupIndex, ModBlocks.ALARM_CAGE_LAMPS)
+            generateColoredCageLamp(lookupIndex, ModBlocks.TUBE_LAMPS)
         }
     }
 
