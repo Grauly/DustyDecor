@@ -1,5 +1,6 @@
 package grauly.dustydecor.block
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
@@ -211,16 +212,6 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
         }
         world.setBlockState(pos, updateWindows(state.with(connection, foundConnection), world, pos), NOTIFY_LISTENERS)
         return true
-    }
-
-    override fun onStateReplaced(state: BlockState, world: ServerWorld, pos: BlockPos, moved: Boolean) {
-        if (state.block != ModBlocks.VAC_PIPE) {
-            val be = world.getBlockEntity(pos)
-            if (be is VacPipeBlockEntity) {
-                ItemScatterer.spawn(world, pos, be.getItemsForScattering())
-            }
-        }
-        super.onStateReplaced(state, world, pos, moved)
     }
 
     override fun getStateForNeighborUpdate(

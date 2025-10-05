@@ -15,6 +15,7 @@ import net.minecraft.screen.ScreenHandler
 import net.minecraft.storage.ReadView
 import net.minecraft.storage.WriteView
 import net.minecraft.text.Text
+import net.minecraft.util.ItemScatterer
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -26,8 +27,12 @@ class VacPipeStationBlockEntity(
     private val inventory = object : SimpleInventory(3) {}
     val storage: InventoryStorage = InventoryStorage.of(inventory, Direction.UP)
 
-    fun getItemForScattering(): DefaultedList<ItemStack> {
+    fun getItemsForScattering(): DefaultedList<ItemStack> {
         return inventory.heldStacks
+    }
+
+    override fun onBlockReplaced(pos: BlockPos?, oldState: BlockState?) {
+        ItemScatterer.spawn(world, pos, getItemsForScattering())
     }
 
     override fun createMenu(syncId: Int, playerInventory: PlayerInventory, player: PlayerEntity?): ScreenHandler {

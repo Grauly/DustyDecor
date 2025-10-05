@@ -25,6 +25,7 @@ import net.minecraft.storage.ReadView
 import net.minecraft.storage.WriteView
 import net.minecraft.util.ErrorReporter
 import net.minecraft.util.HeldItemContext
+import net.minecraft.util.ItemScatterer
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -97,6 +98,10 @@ class VacPipeBlockEntity(
         val list = DefaultedList.ofSize<ItemStack>(1)
         list.add(storage.variant.toStack(storage.amount.toInt()))
         return list
+    }
+
+    override fun onBlockReplaced(pos: BlockPos?, oldState: BlockState?) {
+        ItemScatterer.spawn(world, pos, getItemsForScattering())
     }
 
     override fun markDirty() {

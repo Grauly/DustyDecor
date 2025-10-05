@@ -1,6 +1,7 @@
 package grauly.dustydecor.block
 
 import com.mojang.serialization.MapCodec
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
 import grauly.dustydecor.util.ToolUtils
@@ -160,16 +161,6 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         val otherStorage = ItemStorage.SIDED.find(world, pos.offset(Direction.UP), Direction.DOWN) ?: return
         val ownStorage = be.storage
         StorageUtil.move(ownStorage, otherStorage, { true }, 1, null)
-    }
-
-    override fun onStateReplaced(state: BlockState, world: ServerWorld, pos: BlockPos, moved: Boolean) {
-        if (state.block != ModBlocks.VAC_PIPE) {
-            val be = world.getBlockEntity(pos)
-            if (be is VacPipeStationBlockEntity) {
-                ItemScatterer.spawn(world, pos, be.getItemForScattering())
-            }
-        }
-        super.onStateReplaced(state, world, pos, moved)
     }
 
     override fun getCodec(): MapCodec<out HorizontalFacingBlock> {
