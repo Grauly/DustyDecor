@@ -37,6 +37,9 @@ import net.minecraft.world.tick.ScheduledTickView
 
 class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEntityProvider {
 
+    //TODO: fix the model issue with stations
+    //TODO: add splitter and merger blocks, THESE DO NOT SORT
+
     init {
         windowStates.forEach {
             defaultState = defaultState.with(it, false)

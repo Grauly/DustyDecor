@@ -27,6 +27,9 @@ import kotlin.math.min
 
 abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settings?) : FallingBlock(settings) {
 
+    //TODO: add leaf piles
+    //TODO: add sand/gravel piles
+
     init {
         defaultState = defaultState
             .with(LAYERS, 1)

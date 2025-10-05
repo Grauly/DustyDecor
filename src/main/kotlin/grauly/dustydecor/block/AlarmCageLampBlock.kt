@@ -11,6 +11,8 @@ import net.minecraft.world.World
 
 class AlarmCageLampBlock(settings: Settings?) : TallCageLampBlock(settings), BlockEntityProvider {
 
+    //TODO: add proper activation sound
+
     override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
         return AlarmCageLampBlockEntity(pos, state)
     }

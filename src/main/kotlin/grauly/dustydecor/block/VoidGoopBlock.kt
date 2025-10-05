@@ -12,6 +12,14 @@ import net.minecraft.world.BlockView
 import java.awt.Color
 
 class VoidGoopBlock(threshold: Int, settings: Settings?) : LayerThresholdSpreadingBlock(threshold, settings) {
+
+    //TODO: add gazing interaction (haha, player go splat)
+    //TODO: add eye shaped rain splashes
+    //TODO: add outsider spawning in large enough pools
+    //TODO: add anti destruction mechanics: tp away
+    //TODO: find a way to massively discourage just tp-ing it into random caves
+    //TODO: fix the two-layer stable states from being permanent
+
     override fun canReplace(
         state: BlockState,
         context: ItemPlacementContext

@@ -16,6 +16,9 @@ import net.minecraft.world.WorldView
 
 class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBounds().solid()) {
 
+    //TODO: add potion spreading logic
+    //TODO: add smaller vents
+
     init {
         for (state in stateManager.states) {
             SHAPES[state] = run {

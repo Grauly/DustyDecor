@@ -36,6 +36,11 @@ import net.minecraft.world.tick.ScheduledTickView
 
 class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings), Waterloggable, BlockEntityProvider {
 
+    //TODO: add BE renderer for capsule
+    //TODO: add vac particles for direction indication
+    //TODO: do the pipe alignment automatically (find a compromise to stay performant)
+    //TODO: add copper golem behaviors
+
     init {
         defaultState = defaultState
             .with(FACING, Direction.NORTH)
