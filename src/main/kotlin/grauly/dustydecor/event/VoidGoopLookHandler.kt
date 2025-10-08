@@ -2,6 +2,7 @@ package grauly.dustydecor.event
 
 import grauly.dustydecor.ModAttachmentTypes
 import grauly.dustydecor.ModBlocks
+import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.text.Text
@@ -32,6 +33,7 @@ object VoidGoopLookHandler {
 
     private fun isLookingAtGoop(player: ServerPlayerEntity, world: ServerWorld): Boolean {
         if (!player.gameMode.isSurvivalLike) return false
+        if (player.hasStatusEffect(StatusEffects.BLINDNESS)) return false
         val pos = player.getCameraPosVec(0f)
         val rotation = player.getRotationVec(0f).normalize().multiply(MAX_DISTANCE)
         val hitResult = world.raycast(
