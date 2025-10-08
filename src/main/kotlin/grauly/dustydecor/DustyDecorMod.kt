@@ -19,5 +19,7 @@ object DustyDecorMod : ModInitializer {
         ModStorages.init()
         ModServerPackets.init()
         ModServerPacketReceivers.init()
+        ModAttachmentTypes.init()
+        ModEvents.init()
     }
 }
