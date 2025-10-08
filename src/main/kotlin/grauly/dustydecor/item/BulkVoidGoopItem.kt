@@ -19,8 +19,8 @@ class BulkVoidGoopItem(settings: Settings?) : Item(settings) {
         val pos = context.blockPos.offset(context.side)
         val goopToPlace = context.stack.get(ModComponentTypes.VOID_GOOP_SIZE)?.size ?: 0
         val results = findPlacementLocations(pos, context.world, goopToPlace).filterValues { it > 0 }
-        val actuallyPlaced = results.values.reduce { acc, i -> acc + i }
-        context.player?.sendMessage(Text.translatable(VOID_GOOP_PLACED, actuallyPlaced, ModBlocks.VOID_GOOP.name), true)
+        val actuallyPlaced = results.values.reduceOrNull { acc, i -> acc + i }
+        context.player?.sendMessage(Text.translatable(VOID_GOOP_PLACED, actuallyPlaced ?: 0, ModBlocks.VOID_GOOP.name), true)
         placeVoidGoop(context.world, results)
         return ActionResult.SUCCESS
     }
