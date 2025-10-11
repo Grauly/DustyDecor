@@ -13,7 +13,7 @@ import kotlin.math.min
 
 object VoidGoopLookHandler {
     private const val MAX_DISTANCE = 50.0
-    private const val CONSUMPTION_TIME_TICKS: Int = 30 * 20
+    private const val CONSUMPTION_TIME_TICKS: Int = 5 * 20
     private const val CONSUMPTION_TICK_INCREMENT: Float = 1f / CONSUMPTION_TIME_TICKS
     private const val ATTENUATE_MULTIPLIER: Float = 1f / 2
 
@@ -28,6 +28,7 @@ object VoidGoopLookHandler {
                     max(0f, value - CONSUMPTION_TICK_INCREMENT * ATTENUATE_MULTIPLIER)
                 }
             }
+            //TODO: add damaging
         }
     }
 
