@@ -13,12 +13,13 @@ import net.minecraft.util.hit.HitResult
 import net.minecraft.world.RaycastContext
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 
 object VoidGoopLookHandler {
     private const val MAX_DISTANCE = 50.0
-    private const val CONSUMPTION_TIME_TICKS: Int = 5 * 20
+    private const val CONSUMPTION_TIME_TICKS: Int = 7 * 20
     private const val CONSUMPTION_TICK_INCREMENT: Float = 1f / CONSUMPTION_TIME_TICKS
-    private const val ATTENUATE_MULTIPLIER: Float = 1f / 2
+    private const val ATTENUATE_MULTIPLIER: Float = 1f / 8
 
     fun onEndTick(serverWorld: ServerWorld) {
         serverWorld.players.forEach { player ->
@@ -28,7 +29,10 @@ object VoidGoopLookHandler {
                 if (isLooking) {
                     min(1f, value + CONSUMPTION_TICK_INCREMENT)
                 } else {
-                    max(0f, value - CONSUMPTION_TICK_INCREMENT * ATTENUATE_MULTIPLIER)
+                    max(
+                        0f,
+                        value - CONSUMPTION_TICK_INCREMENT * if(player.gameMode.isSurvivalLike) ATTENUATE_MULTIPLIER else 1f
+                    )
                 }
             }
             if ((previous ?: 0f) < 1f) return@forEach
