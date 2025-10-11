@@ -2,6 +2,9 @@ package grauly.dustydecor.event
 
 import grauly.dustydecor.ModAttachmentTypes
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.ModDamageTypes
+import net.minecraft.entity.damage.DamageSource
+import net.minecraft.entity.damage.DamageSources
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.server.world.ServerWorld
@@ -20,7 +23,7 @@ object VoidGoopLookHandler {
     fun onEndTick(serverWorld: ServerWorld) {
         serverWorld.players.forEach { player ->
             val isLooking = isLookingAtGoop(player, serverWorld)
-            player.modifyAttached(ModAttachmentTypes.VOID_CONSUMPTION) {
+            val previous = player.modifyAttached(ModAttachmentTypes.VOID_CONSUMPTION) {
                 val value = it ?: 0f
                 if (isLooking) {
                     min(1f, value + CONSUMPTION_TICK_INCREMENT)
@@ -28,12 +31,16 @@ object VoidGoopLookHandler {
                     max(0f, value - CONSUMPTION_TICK_INCREMENT * ATTENUATE_MULTIPLIER)
                 }
             }
-            //TODO: add damaging
+            if ((previous ?: 0f) < 1f) return@forEach
+            player.damage(
+                serverWorld,
+                serverWorld.damageSources.create(ModDamageTypes.VOID_CONSUMPTION),
+                5f
+            )
         }
     }
 
     private fun isLookingAtGoop(player: ServerPlayerEntity, world: ServerWorld): Boolean {
-        if (!player.gameMode.isSurvivalLike) return false
         if (player.hasStatusEffect(StatusEffects.BLINDNESS)) return false
         val pos = player.getCameraPosVec(0f)
         val rotation = player.getRotationVec(0f).normalize().multiply(MAX_DISTANCE)

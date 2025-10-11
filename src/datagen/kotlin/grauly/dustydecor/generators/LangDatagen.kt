@@ -74,6 +74,10 @@ class LangDatagen(
         builder.add(BulkGoopSizeComponent.EXPLANATION_L2, "Press shift to increase by 10")
         builder.add(BulkVoidGoopItem.VOID_GOOP_PLACED, "Placed %s %s")
 
+        builder.add("death.attack.void_consumption", "%s won a staring contest with the void")
+        builder.add("death.attack.void_consumption.player", "%s lost themselves to the void while fleeing from %s")
+        builder.add("death.attack.void_consumption.item", "%s was shunted into the void by %s using %s")
+
         subtitles.forEach { (e, t) ->
             builder.add(SoundEventDatagen.getSubtitle(e), t)
         }

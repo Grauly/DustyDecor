@@ -1,0 +1,5 @@
+{
+  "exhaustion": 10,
+  "scaling": "never",
+  "message_id": "void_consumption"
+}
