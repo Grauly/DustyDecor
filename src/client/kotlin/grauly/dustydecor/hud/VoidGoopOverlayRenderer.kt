@@ -126,7 +126,7 @@ object VoidGoopOverlayRenderer {
         val offsetFactor = .5 * (1 + offset) * context.scaledWindowHeight
         val res = baseSine.pow(power) * blinkFactor + offsetFactor
         try {
-            return res.roundToInt()
+            return floor(res).roundToInt()
         } catch (e: Exception) {
             DustyDecorMod.logger.info("Caught Exception while calculating eye function: $e")
             DustyDecorMod.logger.info("$res @ x=$x safeX=$safeX, eyeProgress=$eyeProgress offset=$offset scaledWidth=${context.scaledWindowWidth} scaledHeight=${context.scaledWindowHeight}")
