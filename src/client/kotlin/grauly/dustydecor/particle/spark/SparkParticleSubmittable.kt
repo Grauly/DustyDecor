@@ -1,57 +1,121 @@
 package grauly.dustydecor.particle.spark
 
+import com.mojang.blaze3d.systems.RenderPass
+import com.mojang.blaze3d.systems.RenderSystem
+import com.mojang.blaze3d.vertex.VertexFormat.DrawMode
+import net.minecraft.client.particle.BillboardParticle
+import net.minecraft.client.particle.BillboardParticleSubmittable
+import net.minecraft.client.render.BufferBuilder
 import net.minecraft.client.render.Camera
-import net.minecraft.client.render.OverlayTexture
-import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.Submittable
+import net.minecraft.client.render.VertexFormats
+import net.minecraft.client.render.command.LayeredCustomCommandRenderer
 import net.minecraft.client.render.command.OrderedRenderCommandQueue
 import net.minecraft.client.render.state.CameraRenderState
 import net.minecraft.client.texture.Sprite
-import net.minecraft.client.texture.SpriteAtlasTexture
-import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.client.texture.TextureManager
+import net.minecraft.client.util.BufferAllocator
 import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 import org.joml.Quaternionf
 import org.joml.Vector3f
+import org.joml.Vector4f
 import kotlin.math.max
 
 class SparkParticleSubmittable(
     initialBufferSize: Int = 128
-) : Submittable {
+) : Submittable, OrderedRenderCommandQueue.LayeredCustom {
 
-    private var buffer = SparkDataBuffer(initialBufferSize)
+    private var dataCache = SparkDataCache(initialBufferSize)
 
+    //OrderedRenderCommandQueue
+    override fun submit(cache: LayeredCustomCommandRenderer.VerticesCache): BillboardParticleSubmittable.Buffers? {
+        BufferAllocator.fixedSized(dataCache.getSize() * 4 * VertexFormats.POSITION_COLOR_TEXTURE_LIGHT.vertexSize)
+            .use { allocator ->
+                val bufferBuilder =
+                    BufferBuilder(allocator, DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT)
+                val returnMap = mutableMapOf<BillboardParticle.RenderType, BillboardParticleSubmittable.Layer>()
+                val targetLayer = BillboardParticle.RenderType.PARTICLE_ATLAS_OPAQUE
+                for (particle in 0..<dataCache.getSize()) {
+                    val color = dataCache.readColor(particle)
+                    val light = dataCache.readLight(particle)
+                    for (n in 0..3) {
+                        val uv = dataCache.readUv(particle, n)
+                        bufferBuilder.vertex(dataCache.readPosition(particle, n))
+                            .color(color)
+                            .light(light)
+                            .texture(uv.x, uv.y)
+                    }
+                }
+                returnMap[targetLayer] = BillboardParticleSubmittable.Layer(0, dataCache.getSize() * 4)
+                val builtBuffer = bufferBuilder.endNullable()
+                if (builtBuffer == null) return null
+                cache.write(builtBuffer.buffer)
+                RenderSystem.getSequentialBuffer(DrawMode.QUADS)
+                    .getIndexBuffer(builtBuffer.drawParameters.indexCount())
+                val gpuBufferSlice = RenderSystem.getDynamicUniforms().write(
+                    RenderSystem.getModelViewMatrix(),
+                    Vector4f(1.0f, 1.0f, 1.0f, 1.0f),
+                    Vector3f(),
+                    RenderSystem.getTextureMatrix(),
+                    RenderSystem.getShaderLineWidth()
+                )
+                return BillboardParticleSubmittable.Buffers(
+                    builtBuffer.drawParameters.indexCount,
+                    gpuBufferSlice,
+                    returnMap
+                )
+            }
+    }
+
+    //Submittable
     override fun submit(
         queue: OrderedRenderCommandQueue,
         cameraRenderState: CameraRenderState
     ) {
-        val matrixStack = MatrixStack()
-        for (particle in 0..<buffer.getSize()) {
-            matrixStack.push()
-
-            matrixStack.translate(Vec3d(buffer.readPosition(particle, 0)))
-
-            queue.submitCustom(
-                matrixStack,
-                RenderLayer.getEntityCutout(SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE)
-            )
-            { matrixEntry, vertexConsumer ->
-                val normal = buffer.readPosition(particle, 1)
-                for (n in 0..3) {
-                    vertexConsumer.vertex(matrixEntry, buffer.readPosition(particle, n + 2))
-                        .color(buffer.readColor(particle)).light(buffer.readLight(particle))
-                        .overlay(OverlayTexture.DEFAULT_UV)
-                        .texture(buffer.readUv(particle, n).x, buffer.readUv(particle, n).y)
-                        .normal(matrixEntry, normal)
-                }
-            }
-
-            matrixStack.pop()
+        if (dataCache.getSize() > 0) {
+            queue.submitCustom(this)
         }
     }
 
+    //OrderedRenderCommandQueue
+    override fun render(
+        buffers: BillboardParticleSubmittable.Buffers,
+        cache: LayeredCustomCommandRenderer.VerticesCache,
+        renderPass: RenderPass,
+        manager: TextureManager,
+        translucent: Boolean
+    ) {
+        val shapeIndexBuffer = RenderSystem.getSequentialBuffer(DrawMode.QUADS)
+        renderPass.setVertexBuffer(0, cache.get())
+        renderPass.setIndexBuffer(
+            shapeIndexBuffer.getIndexBuffer(buffers.indexCount),
+            shapeIndexBuffer.indexType
+        )
+        renderPass.setUniform("DynamicTransforms", buffers.dynamicTransforms)
+
+        for (entry in buffers.layers.entries) {
+            if (translucent == (entry.key as BillboardParticle.RenderType).translucent()) {
+                renderPass.setPipeline((entry.key as BillboardParticle.RenderType).pipeline())
+                renderPass.bindSampler(
+                    "Sampler0",
+                    manager
+                        .getTexture((entry.key as BillboardParticle.RenderType).textureAtlasLocation())
+                        .getGlTextureView()
+                )
+                renderPass.drawIndexed(
+                    (entry.value as BillboardParticleSubmittable.Layer).vertexOffset,
+                    0,
+                    (entry.value as BillboardParticleSubmittable.Layer).indexCount,
+                    1
+                )
+            }
+        }
+
+    }
+
     override fun onFrameEnd() {
-        buffer.clear()
+        dataCache.clear()
     }
 
     fun addSpark(
@@ -75,30 +139,33 @@ class SparkParticleSubmittable(
         }
 
         val camForward = centerPos.subtract(camera.pos)
+        val camRelativePos = centerPos.subtract(camera.pos)
         val localUp = Vector3f(1f, 0f, 0f).cross(camForward.toVector3f()).normalize().mul(0.5f / 16f)
         val forward = Vector3f(1f, 0f, 0f).rotate(rotation).mul(sparkLength)
 
-        buffer.beginWrite()
-        buffer.addPosition(camForward.toVector3f()) //cam offset
-        buffer.addPosition(camForward.negate().normalize().toVector3f()) //the normal
+        dataCache.beginWrite()
 
-        buffer.addPosition(Vector3f(forward).add(localUp.negate())) //first vertex
-        buffer.addUv(sprite.maxU, sprite.maxV)
+        //first vertex
+        dataCache.addPosition(camRelativePos.toVector3f().add(forward).add(localUp.negate()))
+        dataCache.addUv(sprite.maxU, sprite.maxV)
 
-        buffer.addPosition(Vector3f(forward).add(localUp.negate())) //second vertex, localUp now points up again
-        buffer.addUv(sprite.maxU, sprite.minV)
+        //second vertex, localUp now points up again
+        dataCache.addPosition(camRelativePos.toVector3f().add(forward).add(localUp.negate()))
+        dataCache.addUv(sprite.maxU, sprite.minV)
 
-        buffer.addPosition(localUp) //third vertex
-        buffer.addUv(sprite.minU, sprite.minV)
+        //third vertex
+        dataCache.addPosition(camRelativePos.toVector3f().add(localUp))
+        dataCache.addUv(sprite.minU, sprite.minV)
 
-        buffer.addPosition(localUp.negate()) //fourth vertex
-        buffer.addUv(sprite.maxU, sprite.minV)
+        //fourth vertex
+        dataCache.addPosition(camRelativePos.toVector3f().add(localUp.negate()))
+        dataCache.addUv(sprite.maxU, sprite.minV)
 
-        buffer.addColorLight(color, light)
-        buffer.finishWrite()
+        dataCache.addColorLight(color, light)
+        dataCache.finishWrite()
     }
 
-    private class SparkDataBuffer(
+    private class SparkDataCache(
         initialBufferSize: Int = 128
     ) {
         private var building = false
@@ -220,7 +287,7 @@ class SparkParticleSubmittable(
         }
 
         companion object {
-            private const val POSITIONS_PER_PARTICLE = 6
+            private const val POSITIONS_PER_PARTICLE = 4
             private const val POSITION_ENTRIES_PER_ENTRY = 3
 
             private const val UVS_PER_PARTICLE = 4
