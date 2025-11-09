@@ -3,7 +3,6 @@ package grauly.dustydecor.particle.spark
 import com.mojang.blaze3d.systems.RenderPass
 import com.mojang.blaze3d.systems.RenderSystem
 import com.mojang.blaze3d.vertex.VertexFormat.DrawMode
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.particle.QuadDataCache
 import net.minecraft.client.particle.BillboardParticle
 import net.minecraft.client.particle.BillboardParticleSubmittable
@@ -18,7 +17,7 @@ import net.minecraft.client.util.BufferAllocator
 import org.joml.Vector3f
 import org.joml.Vector4f
 
-class SparkParticleSubmittable(
+class QuadBasedParticleSubmittable(
     initialBufferSize: Int = 128
 ) : Submittable, OrderedRenderCommandQueue.LayeredCustom {
 

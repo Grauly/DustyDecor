@@ -153,7 +153,7 @@ class SparkParticle(
     }
 
     fun render(
-        submittable: SparkParticleSubmittable,
+        submittable: QuadBasedParticleSubmittable,
         camera: Camera,
         tickProgress: Float
     ) {
@@ -185,7 +185,7 @@ class SparkParticle(
     private fun renderParticle(
         from: Vector3f,
         to: Vector3f,
-        submittable: SparkParticleSubmittable,
+        submittable: QuadBasedParticleSubmittable,
         tickProgress: Float
     ) {
         val side = Vector3f(to).sub(from).normalize()

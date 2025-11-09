@@ -10,7 +10,7 @@ import net.minecraft.client.render.Submittable
 import net.minecraft.util.Identifier
 
 class SparkParticleRenderer(particleManager: ParticleManager) : ParticleRenderer<SparkParticle>(particleManager) {
-    private val submittable = SparkParticleSubmittable()
+    private val submittable = QuadBasedParticleSubmittable()
 
     override fun render(
         frustum: Frustum,
