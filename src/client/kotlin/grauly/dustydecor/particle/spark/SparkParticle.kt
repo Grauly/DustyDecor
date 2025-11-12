@@ -225,67 +225,6 @@ class SparkParticle(
         submittable.endQuad()
     }
 
-
-    /*
-        override fun render(
-            queue: OrderedRenderCommandQueue,
-            matrixStack: MatrixStack,
-            camera: CameraRenderState,
-            tickProgress: Float
-        ) {
-            val renderLocalPos = lastPos.lerp(pos, tickProgress.toDouble())
-            val renderLocalLastPos = lastLastPos.lerp(lastPos, tickProgress.toDouble())
-            val centerPos = renderLocalLastPos.lerp(renderLocalPos, 0.5)
-            val spanVector = renderLocalPos.subtract(renderLocalLastPos)
-            val speedSquared = spanVector.lengthSquared()
-            val scaleVector = Vector3f(
-                max(lengthFactor * speedSquared.toFloat(), getSize(tickProgress)),
-                getSize(tickProgress),
-                getSize(tickProgress)
-            )
-            val rotation = if (speedSquared != 0.0) {
-                Quaternionf().rotationTo(Vector3f(1f, 0f, 0f), spanVector.normalize().toVector3f())
-            } else {
-                Quaternionf()
-            }
-            val light = getBrightness(0f)
-
-            val camForward = centerPos.subtract(camera.pos)
-            val localUp = Vector3f(1f, 0f, 0f).cross(camForward.toVector3f()).normalize()
-            val forward = Vector3f(1f, 0f, 0f)
-
-            matrixStack.push()
-            matrixStack.translate(camForward)
-            matrixStack.multiply(rotation)
-            matrixStack.scale(scaleVector.x, pixel(1/2f), pixel(1/2f))
-
-            queue.submitCustom(
-                matrixStack,
-                RenderLayer.getEntityCutout(sprite.atlasId),
-                { matrixEntry, vertexConsumer ->
-                    vertexConsumer.vertex(matrixEntry, Vector3f(forward).add(Vector3f(localUp).negate()))
-                        .color(-1).light(light).overlay(OverlayTexture.DEFAULT_UV)
-                        .normal(matrixEntry, 0f, 0f, 1f)
-                        .texture(sprite.minU, sprite.maxV)
-                    vertexConsumer.vertex(matrixEntry, Vector3f(forward).add(Vector3f(localUp)))
-                        .color(-1).light(light).overlay(OverlayTexture.DEFAULT_UV)
-                        .normal(matrixEntry, 0f, 0f, 1f)
-                        .texture(sprite.minU, sprite.minV)
-                    vertexConsumer.vertex(matrixEntry, (Vector3f(localUp)))
-                        .color(-1).light(light).overlay(OverlayTexture.DEFAULT_UV)
-                        .normal(matrixEntry, 0f, 0f, 1f)
-                        .texture(sprite.minU, sprite.maxV)
-                    vertexConsumer.vertex(matrixEntry, (Vector3f(localUp).negate()))
-                        .color(-1).light(light).overlay(OverlayTexture.DEFAULT_UV)
-                        .normal(matrixEntry, 0f, 0f, 1f)
-                        .texture(sprite.minU, sprite.minV)
-                }
-            )
-
-            matrixStack.pop()
-        }
-    */
-
     override fun getBrightness(tint: Float): Int {
         val sparkBrightness: Int = ((age.toFloat() / maxAge) * 15).roundToInt()
         val pos: BlockPos = BlockPos.ofFloored(pos)
