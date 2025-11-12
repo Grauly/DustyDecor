@@ -36,7 +36,6 @@ import kotlin.collections.get
 
 class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEntityProvider {
 
-    //TODO: fix the model issue with stations
     //TODO: add splitter and merger blocks, THESE DO NOT SORT
 
     init {
@@ -157,8 +156,10 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
         hand: Hand,
         hit: BlockHitResult
     ): ActionResult {
+        var workingState = state
         if (ToolUtils.isScrewdriver(stack)) {
             val newWindowState: Boolean = togglePipeWindow(state, pos, world)
+            workingState = updateWindows(world.getBlockState(pos), world, pos)
             ToolUtils.playScrewdriverSound(world, pos, player)
             world.playSound(
                 player,
@@ -171,7 +172,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
             val boxExpansion = 0.01
             val relativePos = hit.pos.subtract(Vec3d.of(pos))
             val clickedConnection: EnumProperty<ConnectionState>? = connections.firstOrNull {
-                val connectionDirection = state.get(it, ConnectionState.NONE)
+                val connectionDirection = workingState.get(it, ConnectionState.NONE)
                 if (connectionDirection == ConnectionState.NONE) {
                     return@firstOrNull false
                 }
@@ -179,7 +180,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
                 return@firstOrNull boundingBox.contains(relativePos)
             }
             if (clickedConnection != null) {
-                val success = tryDisableConnection(pos, state, clickedConnection, world)
+                val success = tryDisableConnection(pos, workingState, clickedConnection, world)
                 if (success) {
                     return ActionResult.SUCCESS
                     //TODO: success sound
@@ -187,7 +188,10 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
                 //TODO: some fail sound
             }
         }
-        return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
+        if (workingState != state) {
+            world.setBlockState(pos, workingState, NOTIFY_LISTENERS)
+        }
+        return super.onUseWithItem(stack, workingState, world, pos, player, hand, hit)
     }
 
     private fun tryDisableConnection(
