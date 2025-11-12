@@ -1,9 +1,8 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.voidgoop
 
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.ModItemTags
-import grauly.dustydecor.ModItems
 import net.minecraft.block.BlockState
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.util.dynamic.Codecs

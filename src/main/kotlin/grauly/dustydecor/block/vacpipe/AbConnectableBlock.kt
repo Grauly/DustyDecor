@@ -1,5 +1,6 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.vacpipe
 
+import grauly.dustydecor.block.vacpipe.ConnectionState
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Waterloggable
@@ -119,14 +120,14 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
             val offsetPos = pos.offset(direction)
             if (canConnectTo(world.getBlockState(offsetPos), pos, world, direction)) {
                 if (needsConnecting(world.getBlockState(offsetPos), pos, world, direction)) {
-                    return ConnectionState.fromDirection(direction)
+                    return ConnectionState.Companion.fromDirection(direction)
                 }
                 if (foundDirection == null) {
                     foundDirection = direction
                 }
             }
         }
-        return ConnectionState.fromDirection(foundDirection)
+        return ConnectionState.Companion.fromDirection(foundDirection)
     }
 
     override fun mirror(state: BlockState, mirror: BlockMirror): BlockState {
@@ -137,7 +138,7 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
                 returnState =
                     returnState.with(
                         connection,
-                        ConnectionState.fromDirection(mirror.apply(state.get(connection).direction))
+                        ConnectionState.Companion.fromDirection(mirror.apply(state.get(connection).direction))
                     )
             }
         }
@@ -150,7 +151,7 @@ abstract class AbConnectableBlock(settings: Settings) : Block(settings), Waterlo
             if (state.get(connection, ConnectionState.NONE) != ConnectionState.NONE) {
                 returnState = returnState.with(
                     connection,
-                    ConnectionState.fromDirection(rotation.rotate(state.get(connection).direction))
+                    ConnectionState.Companion.fromDirection(rotation.rotate(state.get(connection).direction))
                 )
             }
         }

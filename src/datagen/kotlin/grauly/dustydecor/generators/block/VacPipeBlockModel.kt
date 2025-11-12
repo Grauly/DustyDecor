@@ -1,11 +1,10 @@
 package grauly.dustydecor.generators.block
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
-import grauly.dustydecor.block.AbConnectableBlock
-import grauly.dustydecor.block.ConnectionState
-import grauly.dustydecor.block.VacPipeBlock
+import grauly.dustydecor.block.vacpipe.AbConnectableBlock
+import grauly.dustydecor.block.vacpipe.ConnectionState
+import grauly.dustydecor.block.vacpipe.VacPipeBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.BlockStateModelGenerator
 import net.minecraft.client.data.MultipartBlockModelDefinitionCreator

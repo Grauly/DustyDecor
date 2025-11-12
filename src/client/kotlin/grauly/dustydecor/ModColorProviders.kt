@@ -1,6 +1,6 @@
 package grauly.dustydecor
 
-import grauly.dustydecor.block.LightingFixtureBlock
+import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.util.DyeUtils
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry
 import net.minecraft.block.Block

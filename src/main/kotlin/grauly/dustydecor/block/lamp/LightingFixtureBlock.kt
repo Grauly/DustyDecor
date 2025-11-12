@@ -1,4 +1,4 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.lamp
 
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.extensions.spawnParticle

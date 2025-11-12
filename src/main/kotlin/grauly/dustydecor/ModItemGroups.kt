@@ -1,16 +1,8 @@
 package grauly.dustydecor
 
-import grauly.dustydecor.block.LayerThresholdSpreadingBlock
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents
-import net.minecraft.component.ComponentChanges
-import net.minecraft.component.DataComponentTypes
-import net.minecraft.component.type.BlockStateComponent
-import net.minecraft.component.type.LoreComponent
 import net.minecraft.item.ItemGroups
-import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
-import net.minecraft.registry.Registries
-import net.minecraft.text.Text
 
 object ModItemGroups {
     fun init() {

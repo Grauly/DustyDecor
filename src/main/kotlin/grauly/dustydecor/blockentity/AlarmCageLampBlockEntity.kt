@@ -3,7 +3,7 @@ package grauly.dustydecor.blockentity
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModParticleTypes
-import grauly.dustydecor.block.LightingFixtureBlock
+import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity

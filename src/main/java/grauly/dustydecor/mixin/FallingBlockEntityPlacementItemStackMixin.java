@@ -1,6 +1,6 @@
 package grauly.dustydecor.mixin;
 
-import grauly.dustydecor.block.LayerThresholdSpreadingBlock;
+import grauly.dustydecor.block.voidgoop.LayerThresholdSpreadingBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.item.ItemStack;

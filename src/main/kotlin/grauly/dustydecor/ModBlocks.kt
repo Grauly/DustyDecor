@@ -1,9 +1,15 @@
 package grauly.dustydecor
 
-import grauly.dustydecor.block.*
-import grauly.dustydecor.block.LightingFixtureBlock.Companion.BROKEN
-import grauly.dustydecor.block.LightingFixtureBlock.Companion.INVERTED
-import grauly.dustydecor.block.LightingFixtureBlock.Companion.LIT
+import grauly.dustydecor.block.lamp.AlarmCageLampBlock
+import grauly.dustydecor.block.lamp.LightingFixtureBlock
+import grauly.dustydecor.block.lamp.TallCageLampBlock
+import grauly.dustydecor.block.lamp.TubeLampBlock
+import grauly.dustydecor.block.lamp.WideCageLampBlock
+import grauly.dustydecor.block.vacpipe.VacPipeBlock
+import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
+import grauly.dustydecor.block.vent.VentBlock
+import grauly.dustydecor.block.vent.VentCoverBlock
+import grauly.dustydecor.block.voidgoop.VoidGoopBlock
 import grauly.dustydecor.util.DyeUtils
 import net.minecraft.block.AbstractBlock.Settings
 import net.minecraft.block.Block
@@ -28,7 +34,7 @@ object ModBlocks {
         registerBlock(::VentCoverBlock, "vent_cover", Settings.copy(Blocks.IRON_TRAPDOOR).ticksRandomly().nonOpaque())
     val VAC_PIPE: Block = registerBlock(::VacPipeBlock, "vac_pipe", Settings.copy(Blocks.HOPPER))
     val VAC_PIPE_STATION: Block = registerBlock(::VacPipeStationBlock, "vac_pipe_station", Settings.copy(Blocks.HOPPER))
-    val VOID_GOOP: Block = registerBlock({settings -> VoidGoopBlock(1, settings)}, "void_goop")
+    val VOID_GOOP: Block = registerBlock({settings -> VoidGoopBlock(1, settings) }, "void_goop")
 
     val TALL_CAGE_LAMPS: List<TallCageLampBlock> = DyeUtils.COLOR_ORDER.map {
         val id = "${it.id}_tall_cage_lamp"

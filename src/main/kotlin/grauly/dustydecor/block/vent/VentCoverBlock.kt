@@ -1,4 +1,4 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.vent
 
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.util.ToolUtils
@@ -44,7 +44,7 @@ class VentCoverBlock(settings: Settings) : TrapdoorBlock(BlockSetType.COPPER, se
             world.setBlockState(
                 pos,
                 state.with(Properties.LOCKED, !state.get(Properties.LOCKED)),
-                Block.NOTIFY_LISTENERS
+                NOTIFY_LISTENERS
             )
             if (state.get(Properties.LOCKED)) {
                 playUnlockSound(world, player, pos)
@@ -88,7 +88,7 @@ class VentCoverBlock(settings: Settings) : TrapdoorBlock(BlockSetType.COPPER, se
         //target state is open = true for horizontal covers, and open = false for vertical covers
         val isHorizontal = state.get(COVERS_FACE).axis.isHorizontal
         if (!state.get(OPEN) && isHorizontal || state.get(OPEN) && !isHorizontal) {
-            world.setBlockState(pos, state.with(OPEN, !state.get(OPEN)), Block.NOTIFY_LISTENERS)
+            world.setBlockState(pos, state.with(OPEN, !state.get(OPEN)), NOTIFY_LISTENERS)
             this.playToggleSound(null, world, pos, true)
         }
     }

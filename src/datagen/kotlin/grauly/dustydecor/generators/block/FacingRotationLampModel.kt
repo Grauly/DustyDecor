@@ -1,13 +1,12 @@
 package grauly.dustydecor.generators.block
 
-import grauly.dustydecor.block.FacingLampBlock
-import grauly.dustydecor.block.FacingRotationLampBlock
-import grauly.dustydecor.block.LightingFixtureBlock
+import grauly.dustydecor.block.lamp.FacingLampBlock
+import grauly.dustydecor.block.lamp.FacingRotationLampBlock
+import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.BlockStateModelGenerator
 import net.minecraft.client.data.MultipartBlockModelDefinitionCreator
 import net.minecraft.client.render.model.json.MultipartModelConditionBuilder
-import net.minecraft.datafixer.fix.ChunkPalettedStorageFix.Facing
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
 

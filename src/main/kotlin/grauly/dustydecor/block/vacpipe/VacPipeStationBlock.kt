@@ -1,7 +1,6 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.vacpipe
 
 import com.mojang.serialization.MapCodec
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
 import grauly.dustydecor.util.ToolUtils
@@ -21,7 +20,6 @@ import net.minecraft.state.property.Properties
 import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
-import net.minecraft.util.ItemScatterer
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction

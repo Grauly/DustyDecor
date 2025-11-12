@@ -3,7 +3,6 @@ package grauly.dustydecor.generators
 import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.block.FacingRotationLampBlock
 import grauly.dustydecor.generators.block.*
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput

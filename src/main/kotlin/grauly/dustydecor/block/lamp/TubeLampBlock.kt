@@ -1,4 +1,4 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.lamp
 
 import net.minecraft.block.BlockState
 import net.minecraft.entity.ai.pathing.NavigationType

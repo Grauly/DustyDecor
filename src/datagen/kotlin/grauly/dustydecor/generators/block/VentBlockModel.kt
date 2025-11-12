@@ -3,7 +3,7 @@ package grauly.dustydecor.generators.block
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
-import grauly.dustydecor.block.SideConnectableBlock
+import grauly.dustydecor.block.vent.SideConnectableBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.BlockStateModelGenerator
 import net.minecraft.client.data.MultipartBlockModelDefinitionCreator

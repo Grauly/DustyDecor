@@ -1,4 +1,4 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.vent
 
 import grauly.dustydecor.ModBlockTags
 import grauly.dustydecor.ModBlocks

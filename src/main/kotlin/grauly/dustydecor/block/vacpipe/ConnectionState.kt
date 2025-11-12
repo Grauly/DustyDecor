@@ -1,4 +1,4 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.vacpipe
 
 import net.minecraft.util.StringIdentifiable
 import net.minecraft.util.math.Direction

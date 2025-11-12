@@ -1,9 +1,8 @@
 package grauly.dustydecor.generators.block
 
 import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.block.LightingFixtureBlock
-import grauly.dustydecor.block.FacingLampBlock
+import grauly.dustydecor.block.lamp.LightingFixtureBlock
+import grauly.dustydecor.block.lamp.FacingLampBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import grauly.dustydecor.util.DyeUtils
 import net.minecraft.client.data.BlockStateModelGenerator

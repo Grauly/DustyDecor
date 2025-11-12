@@ -2,7 +2,7 @@ package grauly.dustydecor.item
 
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
-import grauly.dustydecor.block.LayerThresholdSpreadingBlock
+import grauly.dustydecor.block.voidgoop.LayerThresholdSpreadingBlock
 import net.minecraft.block.Blocks
 import net.minecraft.item.Item
 import net.minecraft.item.ItemUsageContext

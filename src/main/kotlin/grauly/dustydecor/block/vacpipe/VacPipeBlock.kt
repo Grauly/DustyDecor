@@ -1,8 +1,8 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.vacpipe
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.block.vacpipe.ConnectionState
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.block.Block
@@ -15,14 +15,12 @@ import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
-import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
 import net.minecraft.state.property.EnumProperty
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
-import net.minecraft.util.ItemScatterer
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -34,6 +32,7 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import net.minecraft.world.tick.ScheduledTickView
+import kotlin.collections.get
 
 class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEntityProvider {
 

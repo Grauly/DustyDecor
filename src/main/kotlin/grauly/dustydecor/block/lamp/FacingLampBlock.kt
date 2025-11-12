@@ -1,4 +1,4 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.lamp
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState

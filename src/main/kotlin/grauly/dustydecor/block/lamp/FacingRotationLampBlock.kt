@@ -1,4 +1,4 @@
-package grauly.dustydecor.block
+package grauly.dustydecor.block.lamp
 
 import grauly.dustydecor.extensions.makeMaskVector
 import net.minecraft.block.Block
