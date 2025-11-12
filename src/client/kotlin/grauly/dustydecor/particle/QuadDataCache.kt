@@ -1,5 +1,6 @@
 package grauly.dustydecor.particle
 
+import grauly.dustydecor.DustyDecorMod
 import org.joml.Vector3f
 
 class QuadDataCache(
@@ -21,6 +22,7 @@ class QuadDataCache(
     private fun sizeBuffers(size: Int) {
         floatBuffer = floatBuffer.copyOf(size * VERTS_PER_QUAD * FLOAT_ENTRIES_PER_VERT)
         intBuffer = intBuffer.copyOf(size * VERTS_PER_QUAD * INT_ENTRIES_PER_VERT)
+        DustyDecorMod.logger.info("Resizing QuadDataCache from $capacity to $size")
         capacity = size
     }
 
@@ -76,7 +78,7 @@ class QuadDataCache(
         if (buildingQuad) throw IllegalStateException("Cannot Iterate Vertices, Quad guarantee not given, cache is still building")
         var floatReadIndex = 0
         var intReadIndex = 0
-        for (i in 0..<writtenQuads) {
+        for (i in 0..<(writtenQuads * VERTS_PER_QUAD)) {
             vertexAction.consume(
                 Vector3f(
                     floatBuffer[floatReadIndex++],
