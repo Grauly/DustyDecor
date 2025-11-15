@@ -45,6 +45,7 @@ object VoidGoopLookHandler {
     }
 
     private fun isLookingAtGoop(player: ServerPlayerEntity, world: ServerWorld): Boolean {
+        if (!player.gameMode.isSurvivalLike) return false
         if (player.hasStatusEffect(StatusEffects.BLINDNESS)) return false
         val pos = player.getCameraPosVec(0f)
         val rotation = player.getRotationVec(0f).normalize().multiply(MAX_DISTANCE)
