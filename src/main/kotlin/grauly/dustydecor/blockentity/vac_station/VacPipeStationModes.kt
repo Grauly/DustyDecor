@@ -6,6 +6,7 @@ interface EnumButtonIdHolder {
     fun getId(): Int
 }
 
+
 enum class CopperGolemMode(val string: String, val buttonId: Int) : StringIdentifiable, EnumButtonIdHolder {
     IGNORE("ignore", 1),
     INTERACT("interact", 2);

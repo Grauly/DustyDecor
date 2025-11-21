@@ -47,7 +47,6 @@ class VacPipeStationBlockEntity(
             VacPipeSendStationScreenHandler(syncId, playerInventory, inventory, pos)
         } else {
             VacPipeReceiveStationScreenHandler(syncId, playerInventory, inventory, pos)
-            // TODO: figure out how tf I am gonna get the data BACK into the block/BE
         }
     }
 
@@ -63,5 +62,20 @@ class VacPipeStationBlockEntity(
     override fun writeData(view: WriteView) {
         super.writeData(view)
         Inventories.writeData(view, inventory.heldStacks)
+    }
+
+    fun setRedstoneMode(selectedOption: RedstoneEmissionMode) {
+        redstoneMode = selectedOption
+        // TODO: send update to client side
+    }
+
+    fun setGolemMode(selectedOption: CopperGolemMode) {
+        golemMode = selectedOption
+        // TODO: send update to client side
+    }
+
+    fun setSendMode(selectedOption: SendMode) {
+        sendMode = selectedOption
+        // TODO: send update to client side
     }
 }

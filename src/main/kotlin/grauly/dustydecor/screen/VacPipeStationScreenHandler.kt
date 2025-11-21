@@ -1,5 +1,10 @@
 package grauly.dustydecor.screen
 
+import grauly.dustydecor.blockentity.vac_station.CopperGolemMode
+import grauly.dustydecor.blockentity.vac_station.EnumButtonIdHolder
+import grauly.dustydecor.blockentity.vac_station.RedstoneEmissionMode
+import grauly.dustydecor.blockentity.vac_station.SendMode
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventory
@@ -7,6 +12,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.slot.Slot
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.math.BlockPos
 
 abstract class VacPipeStationScreenHandler<T: ScreenHandler>(
@@ -14,7 +20,7 @@ abstract class VacPipeStationScreenHandler<T: ScreenHandler>(
     syncId: Int,
     playerInventory: PlayerInventory,
     private val inventory: Inventory,
-    private val pos: BlockPos?
+    val pos: BlockPos?
 ): ScreenHandler(type, syncId) {
 
     init {
@@ -24,13 +30,31 @@ abstract class VacPipeStationScreenHandler<T: ScreenHandler>(
         populateInventorySlots(playerInventory, this::addSlot)
     }
 
-    open fun addVariantSlots(inventory: Inventory) {}
+    abstract fun addVariantSlots(inventory: Inventory)
 
     override fun onButtonClick(player: PlayerEntity, id: Int): Boolean {
         pos ?: return super.onButtonClick(player, id)
-        //copper golem mode
+        if(player.entityWorld.isClient) return super.onButtonClick(player, id)
+        val station = (player.entityWorld as ServerWorld).getBlockEntity(pos)
+        if (station !is VacPipeStationBlockEntity) return super.onButtonClick(player, id)
+        val selectedOption = optionsList.find { o -> o.getId() == id } ?: return onNotDefaultOptionButtonClick(player, id, pos)
+        when (selectedOption) {
+            is RedstoneEmissionMode -> {
+                station.setRedstoneMode(selectedOption)
+            }
+
+            is CopperGolemMode -> {
+                station.setGolemMode(selectedOption)
+            }
+
+            is SendMode -> {
+                station.setSendMode(selectedOption)
+            }
+        }
         return super.onButtonClick(player, id)
     }
+
+    abstract fun onNotDefaultOptionButtonClick(player: PlayerEntity, id: Int, pos: BlockPos): Boolean
 
     protected fun populateInventorySlots(playerInventory: Inventory, slotAdder: (Slot) -> Slot) {
         for (y in 0..2) {
@@ -67,5 +91,13 @@ abstract class VacPipeStationScreenHandler<T: ScreenHandler>(
     override fun canUse(player: PlayerEntity?): Boolean =
         inventory.canPlayerUse(player)
 
-
+    companion object {
+        private val optionsList: List<EnumButtonIdHolder> = run {
+            val mutableList = mutableListOf<EnumButtonIdHolder>()
+            mutableList.addAll(CopperGolemMode.entries)
+            mutableList.addAll(RedstoneEmissionMode.entries)
+            mutableList.addAll(SendMode.entries)
+            mutableList
+        }
+    }
 }
