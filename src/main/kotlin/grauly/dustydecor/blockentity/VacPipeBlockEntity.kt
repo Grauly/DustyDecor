@@ -5,6 +5,7 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.block.vacpipe.AbConnectableBlock
 import grauly.dustydecor.block.vacpipe.ConnectionState
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage

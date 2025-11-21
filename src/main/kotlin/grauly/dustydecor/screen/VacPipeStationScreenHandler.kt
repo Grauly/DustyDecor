@@ -1,37 +1,53 @@
 package grauly.dustydecor.screen
 
-import grauly.dustydecor.ModScreenHandlerTypes
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventory
-import net.minecraft.inventory.SimpleInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
+import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.slot.Slot
+import net.minecraft.util.math.BlockPos
 
-class VacPipeStationScreenHandler(syncId: Int, playerInventory: PlayerInventory, private val inventory: Inventory) :
-    ScreenHandler(ModScreenHandlerTypes.VAC_PIPE_STATION_SCREEN_HANDLER, syncId) {
-    constructor(syncId: Int, playerInventory: PlayerInventory) : this(syncId, playerInventory, SimpleInventory(3))
+abstract class VacPipeStationScreenHandler<T: ScreenHandler>(
+    type: ScreenHandlerType<T>,
+    syncId: Int,
+    playerInventory: PlayerInventory,
+    private val inventory: Inventory,
+    private val pos: BlockPos?
+): ScreenHandler(type, syncId) {
 
     init {
         checkSize(inventory, 3)
         inventory.onOpen(playerInventory.player)
-        for (i in 0..2) {
-            addSlot(Slot(inventory, i, 8, 18 + i * 18))
-        }
+        addVariantSlots(inventory)
+        populateInventorySlots(playerInventory, this::addSlot)
+    }
 
+    open fun addVariantSlots(inventory: Inventory) {}
+
+    override fun onButtonClick(player: PlayerEntity, id: Int): Boolean {
+        pos ?: return super.onButtonClick(player, id)
+        //copper golem mode
+        return super.onButtonClick(player, id)
+    }
+
+    protected fun populateInventorySlots(playerInventory: Inventory, slotAdder: (Slot) -> Slot) {
         for (y in 0..2) {
             for (x in 0..8) {
-                addSlot(Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18))
+                slotAdder.invoke(Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 107 + y * 18))
             }
         }
 
         for (i in 0..8) {
-            addSlot(Slot(playerInventory, i, 8 + i * 18, 142))
+            slotAdder.invoke(Slot(playerInventory, i, 8 + i * 18, 165))
         }
     }
 
-    override fun quickMove(player: PlayerEntity, slotIndex: Int): ItemStack {
+    override fun quickMove(
+        player: PlayerEntity?,
+        slotIndex: Int
+    ): ItemStack? {
         val fromSlot: Slot = slots[slotIndex]
         if (!fromSlot.hasStack()) return ItemStack.EMPTY
         val movingStack = fromSlot.stack
@@ -48,7 +64,8 @@ class VacPipeStationScreenHandler(syncId: Int, playerInventory: PlayerInventory,
         return originalStack
     }
 
-    override fun canUse(player: PlayerEntity): Boolean {
-        return inventory.canPlayerUse(player)
-    }
+    override fun canUse(player: PlayerEntity?): Boolean =
+        inventory.canPlayerUse(player)
+
+
 }

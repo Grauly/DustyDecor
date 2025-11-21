@@ -1,7 +1,7 @@
 package grauly.dustydecor
 
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
-import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.minecraft.util.math.Direction
 

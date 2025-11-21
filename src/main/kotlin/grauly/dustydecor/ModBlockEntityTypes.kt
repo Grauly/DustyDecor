@@ -2,7 +2,7 @@ package grauly.dustydecor
 
 import grauly.dustydecor.blockentity.AlarmCageLampBlockEntity
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
-import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.block.entity.FabricBlockEntityTypeBuilder
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntity

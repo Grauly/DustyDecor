@@ -1,7 +1,9 @@
-package grauly.dustydecor.blockentity
+package grauly.dustydecor.blockentity.vac_station
 
 import grauly.dustydecor.ModBlockEntityTypes
-import grauly.dustydecor.screen.VacPipeStationScreenHandler
+import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
+import grauly.dustydecor.screen.VacPipeReceiveStationScreenHandler
+import grauly.dustydecor.screen.VacPipeSendStationScreenHandler
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
@@ -16,6 +18,7 @@ import net.minecraft.storage.ReadView
 import net.minecraft.storage.WriteView
 import net.minecraft.text.Text
 import net.minecraft.util.ItemScatterer
+import net.minecraft.util.StringIdentifiable
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -27,6 +30,10 @@ class VacPipeStationBlockEntity(
     private val inventory = object : SimpleInventory(3) {}
     val storage: InventoryStorage = InventoryStorage.of(inventory, Direction.UP)
 
+    private var golemMode: CopperGolemMode = CopperGolemMode.INTERACT
+    private var redstoneMode: RedstoneEmissionMode = RedstoneEmissionMode.ON_ARRIVAL
+    private var sendMode: SendMode = SendMode.MANUAL
+
     fun getItemsForScattering(): DefaultedList<ItemStack> {
         return inventory.heldStacks
     }
@@ -36,7 +43,12 @@ class VacPipeStationBlockEntity(
     }
 
     override fun createMenu(syncId: Int, playerInventory: PlayerInventory, player: PlayerEntity?): ScreenHandler {
-        return VacPipeStationScreenHandler(syncId, playerInventory, inventory)
+        return if (cachedState.get(VacPipeStationBlock.Companion.SENDING)) {
+            VacPipeSendStationScreenHandler(syncId, playerInventory, inventory, pos)
+        } else {
+            VacPipeReceiveStationScreenHandler(syncId, playerInventory, inventory, pos)
+            // TODO: figure out how tf I am gonna get the data BACK into the block/BE
+        }
     }
 
     override fun getDisplayName(): Text {

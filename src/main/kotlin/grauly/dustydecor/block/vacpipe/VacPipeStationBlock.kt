@@ -2,7 +2,7 @@ package grauly.dustydecor.block.vacpipe
 
 import com.mojang.serialization.MapCodec
 import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.blockentity.VacPipeStationBlockEntity
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
 import grauly.dustydecor.util.ToolUtils
 import grauly.dustydecor.util.VoxelShapesUtil
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
