@@ -10,16 +10,17 @@ import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventories
+import net.minecraft.inventory.Inventory
 import net.minecraft.inventory.SimpleInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.screen.PropertyDelegate
 import net.minecraft.screen.ScreenHandler
+import net.minecraft.screen.ScreenHandlerContext
 import net.minecraft.storage.ReadView
 import net.minecraft.storage.WriteView
 import net.minecraft.text.Text
 import net.minecraft.util.ItemScatterer
-import net.minecraft.util.StringIdentifiable
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -58,7 +59,7 @@ class VacPipeStationBlockEntity(
             }
         }
 
-        override fun size(): Int = 3
+        override fun size(): Int = 4
     }
 
     fun getItemsForScattering(): DefaultedList<ItemStack> {
@@ -70,11 +71,13 @@ class VacPipeStationBlockEntity(
     }
 
     override fun createMenu(syncId: Int, playerInventory: PlayerInventory, player: PlayerEntity?): ScreenHandler {
-        return if (cachedState.get(VacPipeStationBlock.Companion.SENDING)) {
-            VacPipeSendStationScreenHandler(syncId, playerInventory, inventory, pos)
-        } else {
-            VacPipeReceiveStationScreenHandler(syncId, playerInventory, inventory, pos)
-        }
+        val handlerConstructor: (Int, PlayerInventory, Inventory, ScreenHandlerContext, PropertyDelegate) -> ScreenHandler =
+            if (cachedState.get(VacPipeStationBlock.Companion.SENDING)) {
+                ::VacPipeSendStationScreenHandler
+            } else {
+                ::VacPipeReceiveStationScreenHandler
+            }
+        return handlerConstructor.invoke(syncId, playerInventory, inventory, ScreenHandlerContext.create(world, pos), propertyDelegate)
     }
 
     override fun getDisplayName(): Text {

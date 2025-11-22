@@ -4,17 +4,19 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventory
 import net.minecraft.item.ItemStack
+import net.minecraft.screen.PropertyDelegate
 import net.minecraft.screen.ScreenHandler
+import net.minecraft.screen.ScreenHandlerContext
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.slot.Slot
-import net.minecraft.util.math.BlockPos
 
 abstract class VacPipeStationScreenHandler<T : ScreenHandler>(
     type: ScreenHandlerType<T>,
     syncId: Int,
     playerInventory: PlayerInventory,
     private val inventory: Inventory,
-    val pos: BlockPos?
+    private val context: ScreenHandlerContext,
+    private val propertyDelegate: PropertyDelegate,
 ) : ScreenHandler(type, syncId) {
 
     init {
@@ -22,6 +24,7 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler>(
         inventory.onOpen(playerInventory.player)
         addVariantSlots(inventory)
         populateInventorySlots(playerInventory)
+        addProperties(propertyDelegate)
     }
 
     abstract fun addVariantSlots(inventory: Inventory)

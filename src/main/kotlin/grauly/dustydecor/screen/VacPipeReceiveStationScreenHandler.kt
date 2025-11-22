@@ -6,6 +6,9 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventory
 import net.minecraft.inventory.SimpleInventory
+import net.minecraft.screen.ArrayPropertyDelegate
+import net.minecraft.screen.PropertyDelegate
+import net.minecraft.screen.ScreenHandlerContext
 import net.minecraft.screen.slot.Slot
 import net.minecraft.util.math.BlockPos
 
@@ -13,15 +16,23 @@ class VacPipeReceiveStationScreenHandler(
     syncId: Int,
     playerInventory: PlayerInventory,
     inventory: Inventory,
-    pos: BlockPos?
+    context: ScreenHandlerContext,
+    propertyDelegate: PropertyDelegate
 ) : VacPipeStationScreenHandler<VacPipeReceiveStationScreenHandler>(
     ModScreenHandlerTypes.VAC_PIPE_STATION_RECEIVE_SCREEN_HANDLER,
     syncId,
     playerInventory,
     inventory,
-    pos
+    context,
+    propertyDelegate
 ) {
-    constructor(syncId: Int, playerInventory: PlayerInventory) : this(syncId, playerInventory, SimpleInventory(3), null)
+    constructor(syncId: Int, playerInventory: PlayerInventory) : this(
+        syncId,
+        playerInventory,
+        SimpleInventory(3),
+        ScreenHandlerContext.EMPTY,
+        ArrayPropertyDelegate(4)
+    )
 
     override fun addVariantSlots(inventory: Inventory) {
         addSlot(Slot(inventory, 0, 15, 73))
