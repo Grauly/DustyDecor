@@ -1,15 +1,11 @@
 package grauly.dustydecor.screens
 
 import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.screen.VacPipeSendStationScreenHandler
 import grauly.dustydecor.screen.VacPipeStationScreenHandler
 import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.item.ItemStack
-import net.minecraft.screen.ScreenHandler
-import net.minecraft.screen.ScreenHandlerListener
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
@@ -19,6 +15,12 @@ abstract class  VacPipeStationScreen <T: VacPipeStationScreenHandler<*>>(
     title: Text?,
     private val texture: Identifier,
 ) : HandledScreen<T>(handler, inventory, title) {
+    init {
+        backgroundWidth = 176
+        backgroundHeight = 189
+        playerInventoryTitleY = this.backgroundHeight - 94
+    }
+
     override fun drawBackground(context: DrawContext, deltaTicks: Float, mouseX: Int, mouseY: Int) {
         context.drawTexture(
             RenderPipelines.GUI_TEXTURED,
@@ -27,8 +29,8 @@ abstract class  VacPipeStationScreen <T: VacPipeStationScreenHandler<*>>(
             y,
             0f,
             0f,
-            176,
-            189,
+            backgroundWidth,
+            backgroundHeight,
             256,
             256
         )
