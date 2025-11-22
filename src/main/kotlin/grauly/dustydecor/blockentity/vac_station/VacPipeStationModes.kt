@@ -2,17 +2,12 @@ package grauly.dustydecor.blockentity.vac_station
 
 import net.minecraft.util.StringIdentifiable
 
-interface EnumButtonIdHolder {
-    fun getId(): Int
-}
 
-
-enum class CopperGolemMode(val string: String, val buttonId: Int) : StringIdentifiable, EnumButtonIdHolder {
-    IGNORE("ignore", 1),
-    INTERACT("interact", 2);
+enum class CopperGolemMode(val string: String) : StringIdentifiable {
+    IGNORE("ignore"),
+    INTERACT("interact");
 
     override fun asString(): String = string
-    override fun getId(): Int = buttonId
 
     companion object {
         val CODEC: StringIdentifiable.EnumCodec<CopperGolemMode> =
@@ -20,14 +15,13 @@ enum class CopperGolemMode(val string: String, val buttonId: Int) : StringIdenti
     }
 }
 
-enum class RedstoneEmissionMode(val string: String, val buttonId: Int) : StringIdentifiable, EnumButtonIdHolder {
-    NONE("none", 3),
-    ON_ARRIVAL("on_arrival", 4),
-    WHILE_EMPTY("while_empty", 5),
-    ON_SEND("on_send", 6);
+enum class RedstoneEmissionMode(val string: String) : StringIdentifiable {
+    NONE("none"),
+    ON_ARRIVAL("on_arrival"),
+    WHILE_EMPTY("while_empty"),
+    ON_SEND("on_send");
 
     override fun asString(): String = string
-    override fun getId(): Int = buttonId
 
     companion object {
         val CODEC: StringIdentifiable.EnumCodec<RedstoneEmissionMode> =
@@ -35,13 +29,12 @@ enum class RedstoneEmissionMode(val string: String, val buttonId: Int) : StringI
     }
 }
 
-enum class SendMode(val string: String, val buttonId: Int) : StringIdentifiable, EnumButtonIdHolder {
-    MANUAL("manual", 7),
-    AUTOMATIC("automatic", 8),
-    ON_REDSTONE("on_redstone", 9);
+enum class SendMode(val string: String) : StringIdentifiable{
+    MANUAL("manual"),
+    AUTOMATIC("automatic"),
+    ON_REDSTONE("on_redstone");
 
     override fun asString(): String = string
-    override fun getId(): Int = buttonId
 
     companion object {
         val CODEC: StringIdentifiable.EnumCodec<SendMode> =

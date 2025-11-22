@@ -13,6 +13,7 @@ import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.SimpleInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.screen.NamedScreenHandlerFactory
+import net.minecraft.screen.PropertyDelegate
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.storage.ReadView
 import net.minecraft.storage.WriteView
@@ -33,6 +34,32 @@ class VacPipeStationBlockEntity(
     private var golemMode: CopperGolemMode = CopperGolemMode.INTERACT
     private var redstoneMode: RedstoneEmissionMode = RedstoneEmissionMode.ON_ARRIVAL
     private var sendMode: SendMode = SendMode.MANUAL
+
+    val propertyDelegate = object : PropertyDelegate {
+        override fun get(index: Int): Int {
+            return when (index) {
+                0 -> golemMode.ordinal
+                1 -> redstoneMode.ordinal
+                2 -> sendMode.ordinal
+                3 -> if (cachedState.get(VacPipeStationBlock.SENDING)) 1 else 0
+                else -> -1
+            }
+        }
+
+        override fun set(index: Int, value: Int) {
+            when (index) {
+                0 -> golemMode = CopperGolemMode.entries[index]
+                1 -> redstoneMode = RedstoneEmissionMode.entries[index]
+                2 -> sendMode = SendMode.entries[index]
+                3 -> {
+                    if (world?.isClient ?: true) return
+                    world?.setBlockState(pos, cachedState.with(VacPipeStationBlock.SENDING, value == 1))
+                }
+            }
+        }
+
+        override fun size(): Int = 3
+    }
 
     fun getItemsForScattering(): DefaultedList<ItemStack> {
         return inventory.heldStacks
@@ -62,20 +89,5 @@ class VacPipeStationBlockEntity(
     override fun writeData(view: WriteView) {
         super.writeData(view)
         Inventories.writeData(view, inventory.heldStacks)
-    }
-
-    fun setRedstoneMode(selectedOption: RedstoneEmissionMode) {
-        redstoneMode = selectedOption
-        // TODO: send update to client side
-    }
-
-    fun setGolemMode(selectedOption: CopperGolemMode) {
-        golemMode = selectedOption
-        // TODO: send update to client side
-    }
-
-    fun setSendMode(selectedOption: SendMode) {
-        sendMode = selectedOption
-        // TODO: send update to client side
     }
 }
