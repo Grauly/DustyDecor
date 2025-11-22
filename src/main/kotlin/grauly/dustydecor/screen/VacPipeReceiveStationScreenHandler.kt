@@ -24,9 +24,9 @@ class VacPipeReceiveStationScreenHandler(
     constructor(syncId: Int, playerInventory: PlayerInventory) : this(syncId, playerInventory, SimpleInventory(3), null)
 
     override fun addVariantSlots(inventory: Inventory) {
-        for (i in 0..2) {
-            addSlot(Slot(inventory, i, 8, 18 + i * 18))
-        }
+        addSlot(Slot(inventory, 0, 15, 73))
+        addSlot(Slot(inventory, 1, 15, 43))
+        addSlot(Slot(inventory, 2, 15, 18))
     }
 
     override fun onButtonClick(player: PlayerEntity, id: Int): Boolean {
