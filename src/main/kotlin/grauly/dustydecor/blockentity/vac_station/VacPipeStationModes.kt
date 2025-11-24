@@ -17,7 +17,7 @@ enum class CopperGolemMode(val string: String) : StringIdentifiable {
 
 enum class RedstoneEmissionMode(val string: String) : StringIdentifiable {
     NONE("none"),
-    ON_ARRIVAL("on_arrival"),
+    ON_RECEIVE("on_receive"),
     WHILE_EMPTY("while_empty"),
     ON_SEND("on_send");
 

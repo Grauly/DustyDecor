@@ -33,7 +33,7 @@ class VacPipeStationBlockEntity(
     val storage: InventoryStorage = InventoryStorage.of(inventory, Direction.UP)
 
     private var golemMode: CopperGolemMode = CopperGolemMode.INTERACT
-    private var redstoneMode: RedstoneEmissionMode = RedstoneEmissionMode.ON_ARRIVAL
+    private var redstoneMode: RedstoneEmissionMode = RedstoneEmissionMode.ON_RECEIVE
     private var sendMode: SendMode = SendMode.MANUAL
 
     val propertyDelegate = object : PropertyDelegate {
