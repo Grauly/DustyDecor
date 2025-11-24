@@ -135,7 +135,7 @@ class ImageCyclingButtonWidget<T>(
                 width - 4, height - 4,
             )
         }
-        
+
     }
 
     class ItemCycleEntry<A>(
@@ -154,7 +154,7 @@ class ImageCyclingButtonWidget<T>(
             width: Int,
             height: Int
         ) {
-            context.drawItem(item, x, y)
+            context.drawItem(item, x + 2, y + 2)
         }
 
     }
