@@ -7,6 +7,7 @@ import net.minecraft.client.gui.screen.narration.NarrationPart
 import net.minecraft.client.gui.tooltip.Tooltip
 import net.minecraft.client.gui.widget.PressableWidget
 import net.minecraft.client.input.AbstractInput
+import net.minecraft.item.ItemStack
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
@@ -59,15 +60,7 @@ class ImageCyclingButtonWidget<T>(
         deltaTicks: Float
     ) {
         super.renderWidget(context, mouseX, mouseY, deltaTicks)
-        val active = getActiveElement()
-        context.drawTexture(
-            RenderPipelines.GUI_TEXTURED,
-            active.texture,
-            x + 2, y + 2,
-            0f, 0f,
-            width - 4, height - 4,
-            width - 4, height - 4,
-            )
+        getActiveElement().render(context, mouseX, mouseY, deltaTicks, x, y, width, height)
     }
 
     fun getValue(): T = getActiveElement().value
@@ -100,10 +93,69 @@ class ImageCyclingButtonWidget<T>(
         )
     }
 
-    data class CycleEntry<A>(
+    abstract class CycleEntry<A>(
         val value: A,
-        val texture: Identifier,
         val name: Text,
         val activeNarrationMessage: Text,
-    )
+    ) {
+        abstract fun render(
+            context: DrawContext,
+            mouseX: Int,
+            mouseY: Int,
+            deltaTicks: Float,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int
+        )
+    }
+
+    class IdentifierCycleEntry<A>(
+        value: A,
+        private val texture: Identifier,
+        name: Text,
+        activeNarrationMessage: Text
+    ) : CycleEntry<A>(value, name, activeNarrationMessage) {
+        override fun render(
+            context: DrawContext,
+            mouseX: Int,
+            mouseY: Int,
+            deltaTicks: Float,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int
+        ) {
+            context.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x + 2, y + 2,
+                0f, 0f,
+                width - 4, height - 4,
+                width - 4, height - 4,
+            )
+        }
+        
+    }
+
+    class ItemCycleEntry<A>(
+        value: A,
+        private val item: ItemStack,
+        name: Text,
+        activeNarrationMessage: Text
+    ) : CycleEntry<A>(value, name, activeNarrationMessage) {
+        override fun render(
+            context: DrawContext,
+            mouseX: Int,
+            mouseY: Int,
+            deltaTicks: Float,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int
+        ) {
+            context.drawItem(item, x, y)
+        }
+
+    }
 }
