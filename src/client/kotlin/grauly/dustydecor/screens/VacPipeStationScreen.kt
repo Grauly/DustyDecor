@@ -157,7 +157,7 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
         const val REDSTONE_MODE_WHILE_EMPTY: String = "$REDSTONE_MODE.while_empty"
         const val REDSTONE_MODE_WHILE_EMPTY_NARRATION: String = "$REDSTONE_MODE_WHILE_EMPTY.narration"
         const val REDSTONE_MODE_NONE: String = "$REDSTONE_MODE.none"
-        const val REDSTONE_MODE_NONE_NARRATION: String = "$REDSTONE_MODE_ON_SEND.narration"
+        const val REDSTONE_MODE_NONE_NARRATION: String = "$REDSTONE_MODE_NONE.narration"
 
         const val SENDING_MODE: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.sending"
         const val SENDING_MODE_MANUAL: String = "$SENDING_MODE.manual"
