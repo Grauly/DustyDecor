@@ -34,6 +34,7 @@ class ImageCyclingButtonWidget<T>(
         } else {
             this.cycle(1)
         }
+        action.invoke(this, getActiveElement().value)
     }
 
     override fun appendClickableNarrations(builder: NarrationMessageBuilder) {
@@ -85,7 +86,6 @@ class ImageCyclingButtonWidget<T>(
     private fun updateIndexRaw(index: Int) {
         selectedIndex = index
         setTooltip(generateTooltip(getActiveElement()))
-        action.invoke(this, getActiveElement().value)
     }
 
     private fun generateTooltip(entry: CycleEntry<T>): Tooltip {
