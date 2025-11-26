@@ -4,7 +4,9 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.blockentity.vac_station.CopperGolemMode
 import grauly.dustydecor.blockentity.vac_station.RedstoneEmissionMode
 import grauly.dustydecor.blockentity.vac_station.SendMode
+import grauly.dustydecor.packet.UpdateVacPipeStationScreenHandlerPropertiesC2SPacket
 import grauly.dustydecor.screen.VacPipeStationScreenHandler
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ingame.HandledScreen
@@ -50,7 +52,7 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                         Text.translatable(COPPER_GOLEM_MODE_IGNORE_NARRATION)
                     )
                 )
-            )
+            ) { button, mode -> sendPropertyUpdate(0, mode.ordinal) }
         )
 
         redstoneModeButton = addDrawableChild(
@@ -84,7 +86,7 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                         Text.translatable(REDSTONE_MODE_NONE_NARRATION)
                     )
                 )
-            )
+            ) { button, mode -> sendPropertyUpdate(1, mode.ordinal) }
         )
 
         sendingModeButton = addDrawableChild(
@@ -112,10 +114,15 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                         Text.translatable(SENDING_MODE_AUTOMATIC_NARRATION)
                     ),
                 )
-            )
+            ) { button, mode -> sendPropertyUpdate(2, mode.ordinal) }
         )
     }
 
+    private fun sendPropertyUpdate(property: Int, value: Int) {
+        ClientPlayNetworking.send(
+            UpdateVacPipeStationScreenHandlerPropertiesC2SPacket(handler.syncId, property, value)
+        )
+    }
 
     override fun drawBackground(context: DrawContext, deltaTicks: Float, mouseX: Int, mouseY: Int) {
         context.drawTexture(

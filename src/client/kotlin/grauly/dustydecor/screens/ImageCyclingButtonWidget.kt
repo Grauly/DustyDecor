@@ -19,7 +19,8 @@ class ImageCyclingButtonWidget<T>(
     width: Int,
     height: Int,
     private val baseExplanation: Text,
-    private val options: List<CycleEntry<T>>
+    private val options: List<CycleEntry<T>>,
+    private val action: (ImageCyclingButtonWidget<T>, T) -> Unit
 ) : PressableWidget(x, y, width, height, Text.empty()) {
     private var selectedIndex = 0
 
@@ -84,6 +85,7 @@ class ImageCyclingButtonWidget<T>(
     private fun updateIndexRaw(index: Int) {
         selectedIndex = index
         setTooltip(generateTooltip(getActiveElement()))
+        action.invoke(this, getActiveElement().value)
     }
 
     private fun generateTooltip(entry: CycleEntry<T>): Tooltip {
