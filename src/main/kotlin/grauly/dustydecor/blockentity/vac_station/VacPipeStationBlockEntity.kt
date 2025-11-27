@@ -41,16 +41,16 @@ class VacPipeStationBlockEntity(
     private val inventory = object : SimpleInventory(3) {}
     val storage: InventoryStorage = InventoryStorage.of(inventory, Direction.UP)
 
-    private var golemMode: CopperGolemMode = CopperGolemMode.INTERACT
-    private var redstoneMode: RedstoneEmissionMode = RedstoneEmissionMode.ON_RECEIVE
-    private var sendMode: SendMode = SendMode.MANUAL
-
     val propertyDelegate = object : PropertyDelegate {
+        private var golemMode: CopperGolemMode = CopperGolemMode.INTERACT
+        private var redstoneMode: RedstoneEmissionMode = RedstoneEmissionMode.ON_RECEIVE
+        private var sendMode: SendMode = SendMode.MANUAL
+
         override fun get(index: Int): Int {
             return when (index) {
-                0 -> golemMode.ordinal
-                1 -> redstoneMode.ordinal
-                2 -> sendMode.ordinal
+                GOLEM_MODE -> golemMode.ordinal
+                REDSTONE_MODE -> redstoneMode.ordinal
+                SEND_MODE -> sendMode.ordinal
                 3 -> if (cachedState.get(VacPipeStationBlock.SENDING)) 1 else 0
                 else -> -1
             }
@@ -58,9 +58,9 @@ class VacPipeStationBlockEntity(
 
         override fun set(index: Int, value: Int) {
             when (index) {
-                0 -> golemMode = CopperGolemMode.entries[index]
-                1 -> redstoneMode = RedstoneEmissionMode.entries[index]
-                2 -> sendMode = SendMode.entries[index]
+                GOLEM_MODE -> golemMode = CopperGolemMode.entries[index]
+                REDSTONE_MODE -> redstoneMode = RedstoneEmissionMode.entries[index]
+                SEND_MODE -> sendMode = SendMode.entries[index]
                 3 -> {
                     if (world?.isClient ?: true) return
                     world?.setBlockState(pos, cachedState.with(VacPipeStationBlock.SENDING, value == 1))
@@ -108,22 +108,26 @@ class VacPipeStationBlockEntity(
     override fun readData(view: ReadView) {
         super.readData(view)
         Inventories.readData(view, inventory.heldStacks)
-        golemMode = view.read(GOLEM_MODE_KEY, CopperGolemMode.CODEC).orElseGet { CopperGolemMode.INTERACT }
-        redstoneMode = view.read(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC).orElseGet { RedstoneEmissionMode.ON_RECEIVE }
-        sendMode = view.read(SEND_MODE_KEY, SendMode.CODEC).orElseGet { SendMode.MANUAL }
+        propertyDelegate.set(0, view.read(GOLEM_MODE_KEY, CopperGolemMode.CODEC).orElseGet { CopperGolemMode.INTERACT }.ordinal)
+        propertyDelegate.set(1, view.read(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC).orElseGet { RedstoneEmissionMode.ON_RECEIVE }.ordinal)
+        propertyDelegate.set(2, view.read(SEND_MODE_KEY, SendMode.CODEC).orElseGet { SendMode.MANUAL }.ordinal)
     }
 
     override fun writeData(view: WriteView) {
         super.writeData(view)
         Inventories.writeData(view, inventory.heldStacks)
-        view.put(GOLEM_MODE_KEY, CopperGolemMode.CODEC, golemMode)
-        view.put(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC, redstoneMode)
-        view.put(SEND_MODE_KEY, SendMode.CODEC, sendMode)
+        view.put(GOLEM_MODE_KEY, CopperGolemMode.CODEC, CopperGolemMode.entries[propertyDelegate.get(GOLEM_MODE)])
+        view.put(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC, RedstoneEmissionMode.entries[propertyDelegate.get(REDSTONE_MODE)])
+        view.put(SEND_MODE_KEY, SendMode.CODEC, SendMode.entries[propertyDelegate.get(SEND_MODE)])
     }
 
     companion object {
         private const val GOLEM_MODE_KEY = "golemMode"
         private const val REDSTONE_MODE_KEY = "redstoneMode"
         private const val SEND_MODE_KEY = "sendingMode"
+
+        private const val GOLEM_MODE = 0
+        private const val REDSTONE_MODE = 1
+        private const val SEND_MODE = 2
     }
 }
