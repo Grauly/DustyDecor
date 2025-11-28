@@ -37,19 +37,19 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             ImageCyclingButtonWidget(
                 x + 96, y + 74,
                 18, 18,
-                Text.translatable(COPPER_GOLEM_MODE),
+                Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY),
                 listOf(
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         CopperGolemMode.INTERACT,
                         Items.COPPER_GOLEM_STATUE.defaultStack,
-                        Text.translatable(COPPER_GOLEM_MODE_INTERACT),
-                        Text.translatable(COPPER_GOLEM_MODE_INTERACT_NARRATION)
+                        Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT),
+                        Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         CopperGolemMode.IGNORE,
                         Items.BARRIER.defaultStack,
-                        Text.translatable(COPPER_GOLEM_MODE_IGNORE),
-                        Text.translatable(COPPER_GOLEM_MODE_IGNORE_NARRATION)
+                        Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE),
+                        Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE_NARRATION)
                     )
                 )
             ) { button, mode -> sendPropertyUpdate(0, mode.ordinal) }
@@ -59,31 +59,31 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             ImageCyclingButtonWidget(
                 x + 122, y + 74,
                 18, 18,
-                Text.translatable(REDSTONE_MODE),
+                Text.translatable(REDSTONE_MODE_TRANSLATION_KEY),
                 listOf(
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         RedstoneEmissionMode.ON_SEND,
                         Items.OAK_BUTTON.defaultStack,
-                        Text.translatable(REDSTONE_MODE_ON_SEND),
-                        Text.translatable(REDSTONE_MODE_ON_SEND_NARRATION)
+                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_SEND),
+                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_SEND_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         RedstoneEmissionMode.ON_RECEIVE,
                         Items.TARGET.defaultStack,
-                        Text.translatable(REDSTONE_MODE_ON_RECEIVE),
-                        Text.translatable(REDSTONE_MODE_ON_RECEIVE_NARRATION)
+                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE),
+                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         RedstoneEmissionMode.WHILE_EMPTY,
                         Items.GLASS_BOTTLE.defaultStack,
-                        Text.translatable(REDSTONE_MODE_WHILE_EMPTY),
-                        Text.translatable(REDSTONE_MODE_WHILE_EMPTY_NARRATION)
+                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY),
+                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         RedstoneEmissionMode.NONE,
                         Items.BARRIER.defaultStack,
-                        Text.translatable(REDSTONE_MODE_NONE),
-                        Text.translatable(REDSTONE_MODE_NONE_NARRATION)
+                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_NONE),
+                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_NONE_NARRATION)
                     )
                 )
             ) { button, mode -> sendPropertyUpdate(1, mode.ordinal) }
@@ -93,25 +93,25 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             ImageCyclingButtonWidget(
                 x + 144, y + 74,
                 18, 18,
-                Text.translatable(SENDING_MODE),
+                Text.translatable(SENDING_MODE_TRANSLATION_KEY),
                 listOf(
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         SendMode.MANUAL,
                         Items.OAK_BUTTON.defaultStack,
-                        Text.translatable(SENDING_MODE_MANUAL),
-                        Text.translatable(SENDING_MODE_MANUAL_NARRATION)
+                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_MANUAL),
+                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_MANUAL_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         SendMode.ON_REDSTONE,
                         Items.REDSTONE.defaultStack,
-                        Text.translatable(SENDING_MODE_REDSTONE),
-                        Text.translatable(SENDING_MODE_REDSTONE_NARRATION)
+                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_REDSTONE),
+                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_REDSTONE_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         SendMode.AUTOMATIC,
                         Items.PISTON.defaultStack,
-                        Text.translatable(SENDING_MODE_AUTOMATIC),
-                        Text.translatable(SENDING_MODE_AUTOMATIC_NARRATION)
+                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_AUTOMATIC),
+                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION)
                     ),
                 )
             ) { button, mode -> sendPropertyUpdate(2, mode.ordinal) }
@@ -150,28 +150,28 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
         val RECEIVE_TEXTURE: Identifier =
             Identifier.of(DustyDecorMod.MODID, "textures/gui/container/vac_pipe_station_receive.png")
 
-        const val COPPER_GOLEM_MODE: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.copper_golem"
-        const val COPPER_GOLEM_MODE_INTERACT: String = "$COPPER_GOLEM_MODE.interact"
-        const val COPPER_GOLEM_MODE_INTERACT_NARRATION: String = "$COPPER_GOLEM_MODE_INTERACT.narration"
-        const val COPPER_GOLEM_MODE_IGNORE: String = "$COPPER_GOLEM_MODE.ignore"
-        const val COPPER_GOLEM_MODE_IGNORE_NARRATION: String = "$COPPER_GOLEM_MODE_IGNORE.narration"
+        const val COPPER_GOLEM_MODE_TRANSLATION_KEY: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.copper_golem"
+        const val COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT: String = "$COPPER_GOLEM_MODE_TRANSLATION_KEY.interact"
+        const val COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT_NARRATION: String = "$COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT.narration"
+        const val COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE: String = "$COPPER_GOLEM_MODE_TRANSLATION_KEY.ignore"
+        const val COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE_NARRATION: String = "$COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE.narration"
 
-        const val REDSTONE_MODE: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.redstone"
-        const val REDSTONE_MODE_ON_SEND: String = "$REDSTONE_MODE.on_send"
-        const val REDSTONE_MODE_ON_SEND_NARRATION: String = "$REDSTONE_MODE_ON_SEND.narration"
-        const val REDSTONE_MODE_ON_RECEIVE: String = "$REDSTONE_MODE.on_arrival"
-        const val REDSTONE_MODE_ON_RECEIVE_NARRATION: String = "$REDSTONE_MODE_ON_RECEIVE.narration"
-        const val REDSTONE_MODE_WHILE_EMPTY: String = "$REDSTONE_MODE.while_empty"
-        const val REDSTONE_MODE_WHILE_EMPTY_NARRATION: String = "$REDSTONE_MODE_WHILE_EMPTY.narration"
-        const val REDSTONE_MODE_NONE: String = "$REDSTONE_MODE.none"
-        const val REDSTONE_MODE_NONE_NARRATION: String = "$REDSTONE_MODE_NONE.narration"
+        const val REDSTONE_MODE_TRANSLATION_KEY: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.redstone"
+        const val REDSTONE_MODE_TRANSLATION_KEY_ON_SEND: String = "$REDSTONE_MODE_TRANSLATION_KEY.on_send"
+        const val REDSTONE_MODE_TRANSLATION_KEY_ON_SEND_NARRATION: String = "$REDSTONE_MODE_TRANSLATION_KEY_ON_SEND.narration"
+        const val REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE: String = "$REDSTONE_MODE_TRANSLATION_KEY.on_arrival"
+        const val REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE_NARRATION: String = "$REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE.narration"
+        const val REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY: String = "$REDSTONE_MODE_TRANSLATION_KEY.while_empty"
+        const val REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY_NARRATION: String = "$REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY.narration"
+        const val REDSTONE_MODE_TRANSLATION_KEY_NONE: String = "$REDSTONE_MODE_TRANSLATION_KEY.none"
+        const val REDSTONE_MODE_TRANSLATION_KEY_NONE_NARRATION: String = "$REDSTONE_MODE_TRANSLATION_KEY_NONE.narration"
 
-        const val SENDING_MODE: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.sending"
-        const val SENDING_MODE_MANUAL: String = "$SENDING_MODE.manual"
-        const val SENDING_MODE_MANUAL_NARRATION: String = "$SENDING_MODE_MANUAL.narration"
-        const val SENDING_MODE_REDSTONE: String = "$SENDING_MODE.redston"
-        const val SENDING_MODE_REDSTONE_NARRATION: String = "$SENDING_MODE_REDSTONE.narration"
-        const val SENDING_MODE_AUTOMATIC: String = "$SENDING_MODE.automatic"
-        const val SENDING_MODE_AUTOMATIC_NARRATION: String = "$SENDING_MODE_AUTOMATIC.narration"
+        const val SENDING_MODE_TRANSLATION_KEY: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.sending"
+        const val SENDING_MODE_TRANSLATION_KEY_MANUAL: String = "$SENDING_MODE_TRANSLATION_KEY.manual"
+        const val SENDING_MODE_TRANSLATION_KEY_MANUAL_NARRATION: String = "$SENDING_MODE_TRANSLATION_KEY_MANUAL.narration"
+        const val SENDING_MODE_TRANSLATION_KEY_REDSTONE: String = "$SENDING_MODE_TRANSLATION_KEY.redston"
+        const val SENDING_MODE_TRANSLATION_KEY_REDSTONE_NARRATION: String = "$SENDING_MODE_TRANSLATION_KEY_REDSTONE.narration"
+        const val SENDING_MODE_TRANSLATION_KEY_AUTOMATIC: String = "$SENDING_MODE_TRANSLATION_KEY.automatic"
+        const val SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION: String = "$SENDING_MODE_TRANSLATION_KEY_AUTOMATIC.narration"
     }
 }
