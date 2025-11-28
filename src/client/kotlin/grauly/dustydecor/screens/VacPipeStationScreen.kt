@@ -4,6 +4,9 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.blockentity.vac_station.CopperGolemMode
 import grauly.dustydecor.blockentity.vac_station.RedstoneEmissionMode
 import grauly.dustydecor.blockentity.vac_station.SendMode
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.GOLEM_MODE
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.REDSTONE_MODE
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.SEND_MODE
 import grauly.dustydecor.packet.UpdateVacPipeStationScreenHandlerPropertiesC2SPacket
 import grauly.dustydecor.screen.VacPipeStationScreenHandler
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
@@ -11,7 +14,10 @@ import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
+import net.minecraft.screen.ScreenHandler
+import net.minecraft.screen.ScreenHandlerListener
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
@@ -24,11 +30,34 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     private lateinit var golemModeButton: ImageCyclingButtonWidget<CopperGolemMode>
     private lateinit var redstoneModeButton: ImageCyclingButtonWidget<RedstoneEmissionMode>
     private lateinit var sendingModeButton: ImageCyclingButtonWidget<SendMode>
+    private val updateListener: ScreenHandlerListener = object : ScreenHandlerListener {
+        override fun onSlotUpdate(
+            handler: ScreenHandler?,
+            slotId: Int,
+            stack: ItemStack?
+        ) {
+            // [Space intentionally left blank]
+        }
+
+        override fun onPropertyUpdate(
+            handler: ScreenHandler?,
+            property: Int,
+            value: Int
+        ) {
+            when (property) {
+                GOLEM_MODE -> golemModeButton.setValue(CopperGolemMode.entries[value])
+                REDSTONE_MODE -> redstoneModeButton.setValue(RedstoneEmissionMode.entries[value])
+                SEND_MODE -> sendingModeButton.setValue(SendMode.entries[value])
+            }
+        }
+
+    }
 
     init {
         backgroundWidth = 176
         backgroundHeight = 189
         playerInventoryTitleY = this.backgroundHeight - 94
+        handler.addListener(updateListener)
     }
 
     override fun init() {
@@ -116,6 +145,10 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                 )
             ) { button, mode -> sendPropertyUpdate(2, mode.ordinal) }
         )
+
+        golemModeButton.setValue(handler.getGolemMode())
+        redstoneModeButton.setValue(handler.getRedstoneMode())
+        sendingModeButton.setValue(handler.getSendingMode())
     }
 
     private fun sendPropertyUpdate(property: Int, value: Int) {

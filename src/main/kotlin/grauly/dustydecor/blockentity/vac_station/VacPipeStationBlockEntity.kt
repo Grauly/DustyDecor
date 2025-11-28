@@ -122,12 +122,12 @@ class VacPipeStationBlockEntity(
     }
 
     companion object {
-        private const val GOLEM_MODE_KEY = "golemMode"
-        private const val REDSTONE_MODE_KEY = "redstoneMode"
-        private const val SEND_MODE_KEY = "sendingMode"
+         const val GOLEM_MODE_KEY = "golemMode"
+         const val REDSTONE_MODE_KEY = "redstoneMode"
+         const val SEND_MODE_KEY = "sendingMode"
 
-        private const val GOLEM_MODE = 0
-        private const val REDSTONE_MODE = 1
-        private const val SEND_MODE = 2
+         const val GOLEM_MODE = 0
+         const val REDSTONE_MODE = 1
+         const val SEND_MODE = 2
     }
 }

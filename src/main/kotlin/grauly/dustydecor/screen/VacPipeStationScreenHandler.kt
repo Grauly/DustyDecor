@@ -1,5 +1,11 @@
 package grauly.dustydecor.screen
 
+import grauly.dustydecor.blockentity.vac_station.CopperGolemMode
+import grauly.dustydecor.blockentity.vac_station.RedstoneEmissionMode
+import grauly.dustydecor.blockentity.vac_station.SendMode
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.GOLEM_MODE
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.REDSTONE_MODE
+import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.SEND_MODE
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventory
@@ -63,4 +69,15 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler>(
 
     override fun canUse(player: PlayerEntity?): Boolean =
         inventory.canPlayerUse(player)
+
+    fun getGolemMode(): CopperGolemMode {
+        return CopperGolemMode.entries[propertyDelegate.get(GOLEM_MODE)]
+    }
+    fun getSendingMode(): SendMode {
+        return SendMode.entries[propertyDelegate.get(SEND_MODE)]
+    }
+
+    fun getRedstoneMode(): RedstoneEmissionMode {
+        return RedstoneEmissionMode.entries[propertyDelegate.get(REDSTONE_MODE)]
+    }
 }
