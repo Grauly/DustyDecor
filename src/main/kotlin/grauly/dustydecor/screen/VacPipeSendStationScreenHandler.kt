@@ -10,26 +10,26 @@ import net.minecraft.screen.PropertyDelegate
 import net.minecraft.screen.ScreenHandlerContext
 import net.minecraft.screen.slot.Slot
 
-class VacPipeSendStationScreenHandler(
-    syncId: Int,
-    playerInventory: PlayerInventory,
-    inventory: Inventory,
-    context: ScreenHandlerContext,
-    propertyDelegate: PropertyDelegate
-) : VacPipeStationScreenHandler<VacPipeSendStationScreenHandler>(
-    ModScreenHandlerTypes.VAC_PIPE_STATION_SEND_SCREEN_HANDLER,
-    syncId,
-    playerInventory,
-    inventory,
-    context,
-    propertyDelegate
-) {
-    constructor(syncId: Int, playerInventory: PlayerInventory) : this(
+class VacPipeSendStationScreenHandler : VacPipeStationScreenHandler<VacPipeSendStationScreenHandler> {
+    constructor(
+        syncId: Int,
+        playerInventory: PlayerInventory,
+        inventory: Inventory,
+        context: ScreenHandlerContext,
+        propertyDelegate: PropertyDelegate
+    ) : super(
+        ModScreenHandlerTypes.VAC_PIPE_STATION_SEND_SCREEN_HANDLER,
         syncId,
         playerInventory,
-        SimpleInventory(3),
-        ScreenHandlerContext.EMPTY,
-        ArrayPropertyDelegate(4)
+        inventory,
+        context,
+        propertyDelegate
+    )
+
+    constructor(syncId: Int, playerInventory: PlayerInventory) : super(
+        ModScreenHandlerTypes.VAC_PIPE_STATION_SEND_SCREEN_HANDLER,
+        syncId,
+        playerInventory,
     )
 
     override fun addVariantSlots(inventory: Inventory) {

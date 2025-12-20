@@ -37,6 +37,7 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             stack: ItemStack?
         ) {
             // [Space intentionally left blank]
+            DustyDecorMod.logger.info("Received slot update for: $slotId")
         }
 
         override fun onPropertyUpdate(

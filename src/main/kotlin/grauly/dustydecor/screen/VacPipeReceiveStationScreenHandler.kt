@@ -12,26 +12,26 @@ import net.minecraft.screen.ScreenHandlerContext
 import net.minecraft.screen.slot.Slot
 import net.minecraft.util.math.BlockPos
 
-class VacPipeReceiveStationScreenHandler(
-    syncId: Int,
-    playerInventory: PlayerInventory,
-    inventory: Inventory,
-    context: ScreenHandlerContext,
-    propertyDelegate: PropertyDelegate
-) : VacPipeStationScreenHandler<VacPipeReceiveStationScreenHandler>(
-    ModScreenHandlerTypes.VAC_PIPE_STATION_RECEIVE_SCREEN_HANDLER,
-    syncId,
-    playerInventory,
-    inventory,
-    context,
-    propertyDelegate
-) {
-    constructor(syncId: Int, playerInventory: PlayerInventory) : this(
+class VacPipeReceiveStationScreenHandler : VacPipeStationScreenHandler<VacPipeReceiveStationScreenHandler> {
+    constructor(
+        syncId: Int,
+        playerInventory: PlayerInventory,
+        inventory: Inventory,
+        context: ScreenHandlerContext,
+        propertyDelegate: PropertyDelegate
+    ) : super(
+        ModScreenHandlerTypes.VAC_PIPE_STATION_RECEIVE_SCREEN_HANDLER,
         syncId,
         playerInventory,
-        SimpleInventory(3),
-        ScreenHandlerContext.EMPTY,
-        ArrayPropertyDelegate(4)
+        inventory,
+        context,
+        propertyDelegate
+    )
+
+    constructor(syncId: Int, playerInventory: PlayerInventory) : super(
+        ModScreenHandlerTypes.VAC_PIPE_STATION_RECEIVE_SCREEN_HANDLER,
+        syncId,
+        playerInventory,
     )
 
     override fun addVariantSlots(inventory: Inventory) {

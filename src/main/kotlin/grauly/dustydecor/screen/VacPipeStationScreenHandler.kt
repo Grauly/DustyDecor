@@ -10,27 +10,52 @@ import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Compa
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventory
+import net.minecraft.inventory.SimpleInventory
 import net.minecraft.item.ItemStack
+import net.minecraft.screen.ArrayPropertyDelegate
 import net.minecraft.screen.PropertyDelegate
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerContext
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.slot.Slot
 
-abstract class VacPipeStationScreenHandler<T : ScreenHandler>(
+abstract class VacPipeStationScreenHandler<T : ScreenHandler> private constructor(
     type: ScreenHandlerType<T>,
-    syncId: Int,
-    playerInventory: PlayerInventory,
-    private val inventory: Inventory,
-    private val context: ScreenHandlerContext,
-    private val propertyDelegate: PropertyDelegate,
+    syncId: Int
 ) : ScreenHandler(type, syncId) {
+    private lateinit var playerInventory: PlayerInventory
+    private lateinit var inventory: Inventory
+    private lateinit var context: ScreenHandlerContext
+    private lateinit var propertyDelegate: PropertyDelegate
 
-    init {
-        checkSize(inventory, 3)
-        inventory.onOpen(playerInventory.player)
-        addVariantSlots(inventory)
-        addPlayerSlots(playerInventory, 8, 107)
+    constructor(
+        type: ScreenHandlerType<T>,
+        syncId: Int,
+        playerInventory: PlayerInventory,
+        inventory: Inventory,
+        context: ScreenHandlerContext,
+        propertyDelegate: PropertyDelegate
+    ) : this(type, syncId) {
+        this.playerInventory = playerInventory
+        this.inventory = inventory
+        this.context = context
+        this.propertyDelegate = propertyDelegate
+        checkSize(this.inventory, 3)
+        inventory.onOpen(this.playerInventory.player)
+        init()
+    }
+
+    constructor(type: ScreenHandlerType<T>, syncId: Int, playerInventory: PlayerInventory) : this(type, syncId) {
+        this.playerInventory = playerInventory
+        this.inventory = SimpleInventory(3)
+        this.context = ScreenHandlerContext.EMPTY
+        this.propertyDelegate = ArrayPropertyDelegate(4)
+        init()
+    }
+
+    open fun init() {
+        addVariantSlots(this.inventory)
+        addPlayerSlots(this.playerInventory, 8, 107)
         addProperties(propertyDelegate)
     }
 
