@@ -1,5 +1,6 @@
 package grauly.dustydecor.screen
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.blockentity.vac_station.CopperGolemMode
 import grauly.dustydecor.blockentity.vac_station.RedstoneEmissionMode
 import grauly.dustydecor.blockentity.vac_station.SendMode
@@ -73,11 +74,30 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler>(
     fun getGolemMode(): CopperGolemMode {
         return CopperGolemMode.entries[propertyDelegate.get(GOLEM_MODE)]
     }
+
     fun getSendingMode(): SendMode {
         return SendMode.entries[propertyDelegate.get(SEND_MODE)]
     }
 
     fun getRedstoneMode(): RedstoneEmissionMode {
         return RedstoneEmissionMode.entries[propertyDelegate.get(REDSTONE_MODE)]
+    }
+
+    fun setGolemMode(golemMode: CopperGolemMode) {
+        propertyDelegate.set(GOLEM_MODE, golemMode.ordinal)
+        DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Sending updated golem mode: $golemMode, ${golemMode.ordinal}")
+        sendContentUpdates()
+    }
+
+    fun setSendingMode(sendMode: SendMode) {
+        propertyDelegate.set(SEND_MODE, sendMode.ordinal)
+        DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Sending updated sending mode: $sendMode, ${sendMode.ordinal}")
+        sendContentUpdates()
+    }
+
+    fun setRedstoneMode(redstoneEmissionMode: RedstoneEmissionMode) {
+        propertyDelegate.set(REDSTONE_MODE, redstoneEmissionMode.ordinal)
+        DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Sending updated redstone mode: $redstoneEmissionMode, ${redstoneEmissionMode.ordinal}")
+        sendContentUpdates()
     }
 }

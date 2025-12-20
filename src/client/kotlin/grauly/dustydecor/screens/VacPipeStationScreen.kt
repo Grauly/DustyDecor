@@ -44,10 +44,20 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             property: Int,
             value: Int
         ) {
+            DustyDecorMod.logger.info("[VacPipeStationScreen] Received property $property with value $value")
             when (property) {
-                GOLEM_MODE -> golemModeButton.setValue(CopperGolemMode.entries[value])
-                REDSTONE_MODE -> redstoneModeButton.setValue(RedstoneEmissionMode.entries[value])
-                SEND_MODE -> sendingModeButton.setValue(SendMode.entries[value])
+                GOLEM_MODE -> {
+                    golemModeButton.setValue(CopperGolemMode.entries[value])
+                    DustyDecorMod.logger.info("[VacPipeStationScreen] Updated golem mode")
+                }
+                REDSTONE_MODE -> {
+                    redstoneModeButton.setValue(RedstoneEmissionMode.entries[value])
+                    DustyDecorMod.logger.info("[VacPipeStationScreen] Updated redstone mode")
+                }
+                SEND_MODE -> {
+                    sendingModeButton.setValue(SendMode.entries[value])
+                    DustyDecorMod.logger.info("[VacPipeStationScreen] Updated sending mode")
+                }
             }
         }
 
@@ -81,7 +91,10 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                         Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE_NARRATION)
                     )
                 )
-            ) { button, mode -> sendPropertyUpdate(0, mode.ordinal) }
+            ) { button, mode ->
+                handler.setGolemMode(mode)
+                sendPropertyUpdate(GOLEM_MODE, mode.ordinal)
+            }
         )
 
         redstoneModeButton = addDrawableChild(
@@ -115,7 +128,10 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                         Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_NONE_NARRATION)
                     )
                 )
-            ) { button, mode -> sendPropertyUpdate(1, mode.ordinal) }
+            ) { button, mode ->
+                handler.setRedstoneMode(mode)
+                sendPropertyUpdate(REDSTONE_MODE, mode.ordinal)
+            }
         )
 
         sendingModeButton = addDrawableChild(
@@ -143,7 +159,10 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                         Text.translatable(SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION)
                     ),
                 )
-            ) { button, mode -> sendPropertyUpdate(2, mode.ordinal) }
+            ) { button, mode ->
+                handler.setSendingMode(mode)
+                sendPropertyUpdate(SEND_MODE, mode.ordinal)
+            }
         )
 
         golemModeButton.setValue(handler.getGolemMode())

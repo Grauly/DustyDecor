@@ -57,6 +57,7 @@ class VacPipeStationBlockEntity(
         }
 
         override fun set(index: Int, value: Int) {
+            DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Got update for index: $index, value: $value")
             when (index) {
                 GOLEM_MODE -> golemMode = CopperGolemMode.entries[index]
                 REDSTONE_MODE -> redstoneMode = RedstoneEmissionMode.entries[index]
