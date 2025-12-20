@@ -30,23 +30,11 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler>(
         checkSize(inventory, 3)
         inventory.onOpen(playerInventory.player)
         addVariantSlots(inventory)
-        populateInventorySlots(playerInventory)
+        addPlayerSlots(playerInventory, 8, 107)
         addProperties(propertyDelegate)
     }
 
     abstract fun addVariantSlots(inventory: Inventory)
-
-    protected fun populateInventorySlots(playerInventory: Inventory) {
-        for (y in 0..2) {
-            for (x in 0..8) {
-                addSlot(Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 107 + y * 18))
-            }
-        }
-
-        for (i in 0..8) {
-            addSlot(Slot(playerInventory, i, 8 + i * 18, 165))
-        }
-    }
 
     override fun quickMove(
         player: PlayerEntity?,
