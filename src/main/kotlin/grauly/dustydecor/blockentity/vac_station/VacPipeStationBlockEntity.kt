@@ -29,16 +29,19 @@ import net.minecraft.storage.ReadView
 import net.minecraft.storage.WriteView
 import net.minecraft.text.Text
 import net.minecraft.util.ErrorReporter
+import net.minecraft.util.HeldItemContext
 import net.minecraft.util.ItemScatterer
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
+import net.minecraft.world.World
 import kotlin.use
 
 class VacPipeStationBlockEntity(
     pos: BlockPos?,
     state: BlockState?
-) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, pos, state), NamedScreenHandlerFactory {
+) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, pos, state), NamedScreenHandlerFactory, HeldItemContext {
     private val inventory = object : SimpleInventory(3) {}
     val storage: InventoryStorage = InventoryStorage.of(inventory, Direction.UP)
 
@@ -93,6 +96,12 @@ class VacPipeStationBlockEntity(
         view.put(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC, propertyDelegate.getRedstoneMode())
         view.put(SEND_MODE_KEY, SendMode.CODEC, propertyDelegate.getSendingMode())
     }
+
+    override fun getEntityWorld(): World? = world
+
+    override fun getEntityPos(): Vec3d? = pos.toCenterPos()
+
+    override fun getBodyYaw(): Float = 0f
 
     companion object {
          const val GOLEM_MODE_KEY = "golemMode"
