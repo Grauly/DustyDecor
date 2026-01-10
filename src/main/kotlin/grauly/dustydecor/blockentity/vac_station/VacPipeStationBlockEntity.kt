@@ -42,53 +42,7 @@ class VacPipeStationBlockEntity(
     private val inventory = object : SimpleInventory(3) {}
     val storage: InventoryStorage = InventoryStorage.of(inventory, Direction.UP)
 
-    val propertyDelegate = object : PropertyDelegate {
-        val data = IntArray(3)
-
-        override fun get(index: Int): Int {
-            return when (index) {
-                0,1,2 -> data[index]
-                3 -> if (cachedState.get(VacPipeStationBlock.SENDING)) 1 else 0
-                else -> -1
-            }
-        }
-
-        override fun set(index: Int, value: Int) {
-            when (index) {
-                0,1,2 -> data[index] = value
-                3 -> {
-                    if (world?.isClient ?: true) return
-                    world?.setBlockState(pos, cachedState.with(VacPipeStationBlock.SENDING, value == 1))
-                }
-            }
-        }
-
-        fun getGolemMode(): CopperGolemMode {
-            return CopperGolemMode.entries[get(GOLEM_MODE)]
-        }
-
-        fun getRedstoneMode(): RedstoneEmissionMode {
-            return RedstoneEmissionMode.entries[get(REDSTONE_MODE)]
-        }
-
-        fun getSendingMode(): SendMode {
-            return SendMode.entries[get(SEND_MODE)]
-        }
-
-        fun setGolemMode(golemMode: CopperGolemMode) {
-            set(GOLEM_MODE, golemMode.ordinal)
-        }
-
-        fun setRedstoneMode(redstoneMode: RedstoneEmissionMode) {
-            set(REDSTONE_MODE, redstoneMode.ordinal)
-        }
-
-        fun setSendingMode(sendingMode: SendMode) {
-            set(SEND_MODE, sendingMode.ordinal)
-        }
-
-        override fun size(): Int = 4
-    }
+    val propertyDelegate = ModeDelegate()
 
     fun getItemsForScattering(): DefaultedList<ItemStack> {
         return inventory.heldStacks
@@ -127,17 +81,17 @@ class VacPipeStationBlockEntity(
     override fun readData(view: ReadView) {
         super.readData(view)
         Inventories.readData(view, inventory.heldStacks)
-        propertyDelegate.set(0, view.read(GOLEM_MODE_KEY, CopperGolemMode.CODEC).orElseGet { CopperGolemMode.INTERACT }.ordinal)
-        propertyDelegate.set(1, view.read(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC).orElseGet { RedstoneEmissionMode.ON_RECEIVE }.ordinal)
-        propertyDelegate.set(2, view.read(SEND_MODE_KEY, SendMode.CODEC).orElseGet { SendMode.MANUAL }.ordinal)
+        propertyDelegate.setGolemMode(view.read(GOLEM_MODE_KEY, CopperGolemMode.CODEC).orElseGet { CopperGolemMode.INTERACT })
+        propertyDelegate.setRedstoneMode(view.read(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC).orElseGet { RedstoneEmissionMode.ON_RECEIVE })
+        propertyDelegate.setSendingMode(view.read(SEND_MODE_KEY, SendMode.CODEC).orElseGet { SendMode.MANUAL })
     }
 
     override fun writeData(view: WriteView) {
         super.writeData(view)
         Inventories.writeData(view, inventory.heldStacks)
-        view.put(GOLEM_MODE_KEY, CopperGolemMode.CODEC, CopperGolemMode.entries[propertyDelegate.get(GOLEM_MODE)])
-        view.put(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC, RedstoneEmissionMode.entries[propertyDelegate.get(REDSTONE_MODE)])
-        view.put(SEND_MODE_KEY, SendMode.CODEC, SendMode.entries[propertyDelegate.get(SEND_MODE)])
+        view.put(GOLEM_MODE_KEY, CopperGolemMode.CODEC, propertyDelegate.getGolemMode())
+        view.put(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC, propertyDelegate.getRedstoneMode())
+        view.put(SEND_MODE_KEY, SendMode.CODEC, propertyDelegate.getSendingMode())
     }
 
     companion object {
@@ -148,5 +102,48 @@ class VacPipeStationBlockEntity(
          const val GOLEM_MODE = 0
          const val REDSTONE_MODE = 1
          const val SEND_MODE = 2
+    }
+
+    class ModeDelegate() : PropertyDelegate {
+        val data = IntArray(3)
+
+        override fun get(index: Int): Int {
+            return when (index) {
+                0,1,2 -> data[index]
+                else -> -1
+            }
+        }
+
+        override fun set(index: Int, value: Int) {
+            when (index) {
+                0,1,2 -> data[index] = value
+            }
+        }
+
+        fun getGolemMode(): CopperGolemMode {
+            return CopperGolemMode.entries[get(GOLEM_MODE)]
+        }
+
+        fun getRedstoneMode(): RedstoneEmissionMode {
+            return RedstoneEmissionMode.entries[get(REDSTONE_MODE)]
+        }
+
+        fun getSendingMode(): SendMode {
+            return SendMode.entries[get(SEND_MODE)]
+        }
+
+        fun setGolemMode(golemMode: CopperGolemMode) {
+            set(GOLEM_MODE, golemMode.ordinal)
+        }
+
+        fun setRedstoneMode(redstoneMode: RedstoneEmissionMode) {
+            set(REDSTONE_MODE, redstoneMode.ordinal)
+        }
+
+        fun setSendingMode(sendingMode: SendMode) {
+            set(SEND_MODE, sendingMode.ordinal)
+        }
+
+        override fun size(): Int = 4
     }
 }
