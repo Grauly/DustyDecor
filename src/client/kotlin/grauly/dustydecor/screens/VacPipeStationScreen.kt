@@ -7,7 +7,6 @@ import grauly.dustydecor.blockentity.vac_station.SendMode
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.GOLEM_MODE
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.REDSTONE_MODE
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.SEND_MODE
-import grauly.dustydecor.packet.UpdateVacPipeStationScreenHandlerPropertiesC2SPacket
 import grauly.dustydecor.screen.VacPipeStationScreenHandler
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.minecraft.client.MinecraftClient
@@ -166,10 +165,6 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
 
     private fun sendPropertyUpdate(property: Int, value: Int) {
         MinecraftClient.getInstance().interactionManager?.clickButton(handler.syncId, property * 10 + value)
-        return
-        ClientPlayNetworking.send(
-            UpdateVacPipeStationScreenHandlerPropertiesC2SPacket(handler.syncId, property, value)
-        )
     }
 
     override fun handledScreenTick() {
