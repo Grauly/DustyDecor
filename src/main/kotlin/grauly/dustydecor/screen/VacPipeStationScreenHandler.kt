@@ -63,7 +63,6 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler> private constructo
     }
 
     override fun onButtonClick(player: PlayerEntity?, id: Int): Boolean {
-        DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Got button click at index: $id")
         val category = floor(id / 10.0).toInt()
         val value = id - category * 10
         propertyDelegate.set(category, value)
@@ -110,19 +109,16 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler> private constructo
 
     fun setGolemMode(golemMode: CopperGolemMode) {
         propertyDelegate.set(GOLEM_MODE, golemMode.ordinal)
-        DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Sending updated golem mode: $golemMode, ${golemMode.ordinal}")
         sendContentUpdates()
     }
 
     fun setSendingMode(sendMode: SendMode) {
         propertyDelegate.set(SEND_MODE, sendMode.ordinal)
-        DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Sending updated sending mode: $sendMode, ${sendMode.ordinal}")
         sendContentUpdates()
     }
 
     fun setRedstoneMode(redstoneEmissionMode: RedstoneEmissionMode) {
         propertyDelegate.set(REDSTONE_MODE, redstoneEmissionMode.ordinal)
-        DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Sending updated redstone mode: $redstoneEmissionMode, ${redstoneEmissionMode.ordinal}")
         sendContentUpdates()
     }
 
@@ -131,17 +127,6 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler> private constructo
         property: Int,
         value: Int
     ) {
-        when (property) {
-            GOLEM_MODE -> {
-                DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Handler with id: $syncId Got golem mode update to ${CopperGolemMode.entries[value]}")
-            }
-            SEND_MODE -> {
-                DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Handler with id: $syncId Got sending sending mode %${SendMode.entries[value]}")
-            }
-            REDSTONE_MODE -> {
-                DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Handler with id: $syncId Got redstone mode update to ${RedstoneEmissionMode.entries[value]}")
-            }
-        }
         updateToClient()
         sendContentUpdates()
     }

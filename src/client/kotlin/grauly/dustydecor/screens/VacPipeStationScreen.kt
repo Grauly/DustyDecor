@@ -38,7 +38,6 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             stack: ItemStack?
         ) {
             // [Space intentionally left blank]
-            DustyDecorMod.logger.info("[VacPipeStationScreen] HandledScreen with handler id: ${handler?.syncId} Received slot update for: $slotId")
         }
 
         override fun onPropertyUpdate(
@@ -46,19 +45,15 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             property: Int,
             value: Int
         ) {
-            DustyDecorMod.logger.info("[VacPipeStationScreen] Got property update")
             when (property) {
                 GOLEM_MODE -> {
                     golemModeButton.setValue(CopperGolemMode.entries[value])
-                    DustyDecorMod.logger.info("[VacPipeStationScreen] ${handler?.syncId} Updated golem mode to ${CopperGolemMode.entries[value]}")
                 }
                 REDSTONE_MODE -> {
                     redstoneModeButton.setValue(RedstoneEmissionMode.entries[value])
-                    DustyDecorMod.logger.info("[VacPipeStationScreen] ${handler?.syncId} Updated redstone mode to ${RedstoneEmissionMode.entries[value]}")
                 }
                 SEND_MODE -> {
                     sendingModeButton.setValue(SendMode.entries[value])
-                    DustyDecorMod.logger.info("[VacPipeStationScreen] ${handler?.syncId} Updated sending mode to ${SendMode.entries[value]}")
                 }
             }
         }
@@ -74,7 +69,6 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
 
     override fun init() {
         super.init()
-        DustyDecorMod.logger.info("[VacPipeStationScreen] init with id: ${handler.syncId}")
         golemModeButton = addDrawableChild(
             ImageCyclingButtonWidget(
                 x + 96, y + 74,

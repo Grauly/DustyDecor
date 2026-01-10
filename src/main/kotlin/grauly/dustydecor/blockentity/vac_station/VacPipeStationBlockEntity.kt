@@ -54,7 +54,6 @@ class VacPipeStationBlockEntity(
         }
 
         override fun set(index: Int, value: Int) {
-            DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Got update for index: $index, value: $value")
             when (index) {
                 0,1,2 -> data[index] = value
                 3 -> {
