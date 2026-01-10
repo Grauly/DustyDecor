@@ -3,6 +3,7 @@ package grauly.dustydecor.blockentity.vac_station
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
+import grauly.dustydecor.block.vacpipe.VacPipeStationBlock.Companion.SENDING
 import grauly.dustydecor.screen.VacPipeReceiveStationScreenHandler
 import grauly.dustydecor.screen.VacPipeSendStationScreenHandler
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage
@@ -42,15 +43,11 @@ class VacPipeStationBlockEntity(
     val storage: InventoryStorage = InventoryStorage.of(inventory, Direction.UP)
 
     val propertyDelegate = object : PropertyDelegate {
-        private var golemMode: CopperGolemMode = CopperGolemMode.INTERACT
-        private var redstoneMode: RedstoneEmissionMode = RedstoneEmissionMode.ON_RECEIVE
-        private var sendMode: SendMode = SendMode.MANUAL
+        val data = IntArray(3)
 
         override fun get(index: Int): Int {
             return when (index) {
-                GOLEM_MODE -> golemMode.ordinal
-                REDSTONE_MODE -> redstoneMode.ordinal
-                SEND_MODE -> sendMode.ordinal
+                0,1,2 -> data[index]
                 3 -> if (cachedState.get(VacPipeStationBlock.SENDING)) 1 else 0
                 else -> -1
             }
@@ -59,14 +56,36 @@ class VacPipeStationBlockEntity(
         override fun set(index: Int, value: Int) {
             DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Got update for index: $index, value: $value")
             when (index) {
-                GOLEM_MODE -> golemMode = CopperGolemMode.entries[index]
-                REDSTONE_MODE -> redstoneMode = RedstoneEmissionMode.entries[index]
-                SEND_MODE -> sendMode = SendMode.entries[index]
+                0,1,2 -> data[index] = value
                 3 -> {
                     if (world?.isClient ?: true) return
                     world?.setBlockState(pos, cachedState.with(VacPipeStationBlock.SENDING, value == 1))
                 }
             }
+        }
+
+        fun getGolemMode(): CopperGolemMode {
+            return CopperGolemMode.entries[get(GOLEM_MODE)]
+        }
+
+        fun getRedstoneMode(): RedstoneEmissionMode {
+            return RedstoneEmissionMode.entries[get(REDSTONE_MODE)]
+        }
+
+        fun getSendingMode(): SendMode {
+            return SendMode.entries[get(SEND_MODE)]
+        }
+
+        fun setGolemMode(golemMode: CopperGolemMode) {
+            set(GOLEM_MODE, golemMode.ordinal)
+        }
+
+        fun setRedstoneMode(redstoneMode: RedstoneEmissionMode) {
+            set(REDSTONE_MODE, redstoneMode.ordinal)
+        }
+
+        fun setSendingMode(sendingMode: SendMode) {
+            set(SEND_MODE, sendingMode.ordinal)
         }
 
         override fun size(): Int = 4
@@ -82,7 +101,7 @@ class VacPipeStationBlockEntity(
 
     override fun createMenu(syncId: Int, playerInventory: PlayerInventory, player: PlayerEntity?): ScreenHandler {
         val handlerConstructor: (Int, PlayerInventory, Inventory, ScreenHandlerContext, PropertyDelegate) -> ScreenHandler =
-            if (cachedState.get(VacPipeStationBlock.Companion.SENDING)) {
+            if (cachedState.get(SENDING)) {
                 ::VacPipeSendStationScreenHandler
             } else {
                 ::VacPipeReceiveStationScreenHandler

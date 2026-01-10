@@ -20,7 +20,7 @@ class UpdateVacPipeStationScreenHandlerPropertiesC2SPacket(val syncId: Int, val 
         try {
             currentHandler.setProperty(property, value)
             currentHandler.sendContentUpdates()
-            DustyDecorMod.logger.info("[VacPipeStationScreenHandler] updated property")
+            DustyDecorMod.logger.info("[UpdateVacPipeStationScreenHandlerPropertiesC2SPacket] updated property")
         } catch (e: IndexOutOfBoundsException) {
             DustyDecorMod.logger.warn("Player with UUID: ${context.player().uuidAsString} (${context.player().name}) sent a UpdateVacPipeStationScreenHandlerPropertiesC2SPacket with invalid property index: $property", e)
         } catch (e: kotlin.IndexOutOfBoundsException) {

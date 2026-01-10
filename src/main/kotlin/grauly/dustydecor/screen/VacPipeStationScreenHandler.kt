@@ -16,13 +16,15 @@ import net.minecraft.screen.ArrayPropertyDelegate
 import net.minecraft.screen.PropertyDelegate
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerContext
+import net.minecraft.screen.ScreenHandlerListener
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.slot.Slot
+import kotlin.math.floor
 
 abstract class VacPipeStationScreenHandler<T : ScreenHandler> private constructor(
     type: ScreenHandlerType<T>,
     syncId: Int
-) : ScreenHandler(type, syncId) {
+) : ScreenHandler(type, syncId), ScreenHandlerListener {
     private lateinit var playerInventory: PlayerInventory
     private lateinit var inventory: Inventory
     private lateinit var context: ScreenHandlerContext
@@ -43,6 +45,7 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler> private constructo
         checkSize(this.inventory, 3)
         inventory.onOpen(this.playerInventory.player)
         init()
+        addListener(this)
     }
 
     constructor(type: ScreenHandlerType<T>, syncId: Int, playerInventory: PlayerInventory) : this(type, syncId) {
@@ -57,6 +60,15 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler> private constructo
         addVariantSlots(this.inventory)
         addPlayerSlots(this.playerInventory, 8, 107)
         addProperties(propertyDelegate)
+    }
+
+    override fun onButtonClick(player: PlayerEntity?, id: Int): Boolean {
+        DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Got button click at index: $id")
+        val category = floor(id / 10.0).toInt()
+        val value = id - category * 10
+        propertyDelegate.set(category, value)
+        sendContentUpdates()
+        return true
     }
 
     abstract fun addVariantSlots(inventory: Inventory)
@@ -112,5 +124,33 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler> private constructo
         propertyDelegate.set(REDSTONE_MODE, redstoneEmissionMode.ordinal)
         DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Sending updated redstone mode: $redstoneEmissionMode, ${redstoneEmissionMode.ordinal}")
         sendContentUpdates()
+    }
+
+    override fun onPropertyUpdate(
+        handler: ScreenHandler?,
+        property: Int,
+        value: Int
+    ) {
+        when (property) {
+            GOLEM_MODE -> {
+                DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Handler with id: $syncId Got golem mode update to ${CopperGolemMode.entries[value]}")
+            }
+            SEND_MODE -> {
+                DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Handler with id: $syncId Got sending sending mode %${SendMode.entries[value]}")
+            }
+            REDSTONE_MODE -> {
+                DustyDecorMod.logger.info("[VacPipeStationScreenHandler] Handler with id: $syncId Got redstone mode update to ${RedstoneEmissionMode.entries[value]}")
+            }
+        }
+        updateToClient()
+        sendContentUpdates()
+    }
+
+    override fun onSlotUpdate(
+        handler: ScreenHandler?,
+        slotId: Int,
+        stack: ItemStack?
+    ) {
+        //[Space intentionally left blank]
     }
 }

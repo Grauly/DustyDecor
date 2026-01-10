@@ -10,6 +10,7 @@ import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Compa
 import grauly.dustydecor.packet.UpdateVacPipeStationScreenHandlerPropertiesC2SPacket
 import grauly.dustydecor.screen.VacPipeStationScreenHandler
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ingame.HandledScreen
@@ -37,7 +38,7 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             stack: ItemStack?
         ) {
             // [Space intentionally left blank]
-            DustyDecorMod.logger.info("Received slot update for: $slotId")
+            DustyDecorMod.logger.info("[VacPipeStationScreen] HandledScreen with handler id: ${handler?.syncId} Received slot update for: $slotId")
         }
 
         override fun onPropertyUpdate(
@@ -45,19 +46,19 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             property: Int,
             value: Int
         ) {
-            DustyDecorMod.logger.info("[VacPipeStationScreen] Received property $property with value $value")
+            DustyDecorMod.logger.info("[VacPipeStationScreen] Got property update")
             when (property) {
                 GOLEM_MODE -> {
                     golemModeButton.setValue(CopperGolemMode.entries[value])
-                    DustyDecorMod.logger.info("[VacPipeStationScreen] Updated golem mode")
+                    DustyDecorMod.logger.info("[VacPipeStationScreen] ${handler?.syncId} Updated golem mode to ${CopperGolemMode.entries[value]}")
                 }
                 REDSTONE_MODE -> {
                     redstoneModeButton.setValue(RedstoneEmissionMode.entries[value])
-                    DustyDecorMod.logger.info("[VacPipeStationScreen] Updated redstone mode")
+                    DustyDecorMod.logger.info("[VacPipeStationScreen] ${handler?.syncId} Updated redstone mode to ${RedstoneEmissionMode.entries[value]}")
                 }
                 SEND_MODE -> {
                     sendingModeButton.setValue(SendMode.entries[value])
-                    DustyDecorMod.logger.info("[VacPipeStationScreen] Updated sending mode")
+                    DustyDecorMod.logger.info("[VacPipeStationScreen] ${handler?.syncId} Updated sending mode to ${SendMode.entries[value]}")
                 }
             }
         }
@@ -73,6 +74,7 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
 
     override fun init() {
         super.init()
+        DustyDecorMod.logger.info("[VacPipeStationScreen] init with id: ${handler.syncId}")
         golemModeButton = addDrawableChild(
             ImageCyclingButtonWidget(
                 x + 96, y + 74,
@@ -93,7 +95,6 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                     )
                 )
             ) { button, mode ->
-                handler.setGolemMode(mode)
                 sendPropertyUpdate(GOLEM_MODE, mode.ordinal)
             }
         )
@@ -130,7 +131,6 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                     )
                 )
             ) { button, mode ->
-                handler.setRedstoneMode(mode)
                 sendPropertyUpdate(REDSTONE_MODE, mode.ordinal)
             }
         )
@@ -161,7 +161,6 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                     ),
                 )
             ) { button, mode ->
-                handler.setSendingMode(mode)
                 sendPropertyUpdate(SEND_MODE, mode.ordinal)
             }
         )
@@ -172,9 +171,18 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     }
 
     private fun sendPropertyUpdate(property: Int, value: Int) {
+        MinecraftClient.getInstance().interactionManager?.clickButton(handler.syncId, property * 10 + value)
+        return
         ClientPlayNetworking.send(
             UpdateVacPipeStationScreenHandlerPropertiesC2SPacket(handler.syncId, property, value)
         )
+    }
+
+    override fun handledScreenTick() {
+        super.handledScreenTick()
+        golemModeButton.setValue(handler.getGolemMode())
+        redstoneModeButton.setValue(handler.getRedstoneMode())
+        sendingModeButton.setValue(handler.getSendingMode())
     }
 
     override fun drawBackground(context: DrawContext, deltaTicks: Float, mouseX: Int, mouseY: Int) {

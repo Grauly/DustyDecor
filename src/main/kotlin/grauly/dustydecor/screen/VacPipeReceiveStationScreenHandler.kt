@@ -39,8 +39,4 @@ class VacPipeReceiveStationScreenHandler : VacPipeStationScreenHandler<VacPipeRe
         addSlot(Slot(inventory, 1, 15, 43))
         addSlot(Slot(inventory, 2, 15, 18))
     }
-
-    override fun onButtonClick(player: PlayerEntity, id: Int): Boolean {
-        return super.onButtonClick(player, id)
-    }
 }
