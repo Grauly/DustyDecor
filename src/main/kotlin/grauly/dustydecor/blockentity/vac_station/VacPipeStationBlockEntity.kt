@@ -43,7 +43,7 @@ class VacPipeStationBlockEntity(
     pos: BlockPos?,
     state: BlockState?
 ) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, pos, state), NamedScreenHandlerFactory, HeldItemContext {
-    private val inventory = object : SimpleInventory(3) {
+    private val inventory = object : SimpleInventory(INVENTORY_SIZE) {
         override fun markDirty() {
             markDirtyDelegate()
         }
@@ -98,6 +98,7 @@ class VacPipeStationBlockEntity(
 
     override fun readData(view: ReadView) {
         super.readData(view)
+        inventory.heldStacks.clear()
         Inventories.readData(view, inventory.heldStacks)
         propertyDelegate.setGolemMode(view.read(GOLEM_MODE_KEY, CopperGolemMode.CODEC).orElseGet { CopperGolemMode.INTERACT })
         propertyDelegate.setRedstoneMode(view.read(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC).orElseGet { RedstoneEmissionMode.ON_RECEIVE })
@@ -126,6 +127,8 @@ class VacPipeStationBlockEntity(
          const val GOLEM_MODE = 0
          const val REDSTONE_MODE = 1
          const val SEND_MODE = 2
+
+        const val INVENTORY_SIZE = 3
     }
 
     class ModeDelegate() : PropertyDelegate {
