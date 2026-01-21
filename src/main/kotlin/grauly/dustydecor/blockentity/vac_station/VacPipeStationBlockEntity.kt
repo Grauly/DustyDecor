@@ -7,6 +7,7 @@ import grauly.dustydecor.block.vacpipe.VacPipeStationBlock.Companion.SENDING
 import grauly.dustydecor.screen.VacPipeReceiveStationScreenHandler
 import grauly.dustydecor.screen.VacPipeSendStationScreenHandler
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage
+import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -42,10 +43,18 @@ class VacPipeStationBlockEntity(
     pos: BlockPos?,
     state: BlockState?
 ) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, pos, state), NamedScreenHandlerFactory, HeldItemContext {
-    private val inventory = object : SimpleInventory(3) {}
+    private val inventory = object : SimpleInventory(3) {
+        override fun markDirty() {
+            markDirtyDelegate()
+        }
+    }
     val storage: InventoryStorage = InventoryStorage.of(inventory, Direction.UP)
 
     val propertyDelegate = ModeDelegate()
+
+    fun markDirtyDelegate() {
+        markDirty()
+    }
 
     fun getItemsForScattering(): DefaultedList<ItemStack> {
         return inventory.heldStacks
@@ -67,6 +76,12 @@ class VacPipeStationBlockEntity(
 
     override fun getDisplayName(): Text {
         return Text.translatable(cachedState.block.translationKey)
+    }
+
+    override fun markDirty() {
+        super.markDirty()
+        if (world == null) return
+        world!!.updateListeners(pos, cachedState, cachedState, Block.NOTIFY_ALL)
     }
 
     override fun toUpdatePacket(): Packet<ClientPlayPacketListener?>? {
