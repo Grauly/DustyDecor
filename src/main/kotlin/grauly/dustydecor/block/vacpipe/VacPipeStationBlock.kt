@@ -1,11 +1,10 @@
 package grauly.dustydecor.block.vacpipe
 
 import com.mojang.serialization.MapCodec
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.ModParticleTypes
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
 import grauly.dustydecor.particle.AirInflowParticleEffect
+import grauly.dustydecor.particle.AirOutflowParticleEffect
 import grauly.dustydecor.util.ToolUtils
 import grauly.dustydecor.util.VoxelShapesUtil
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
@@ -176,15 +175,15 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         random: Random
     ) {
         if (!world.isClient) return
-        if (state.get(SENDING)) {
-            val origin = pos.toBottomCenterPos().add(0.0, 12.0/16.0, 0.0)
-            for (i in 0..1) {
-                world.addParticleClient(
-                    AirInflowParticleEffect(Direction.DOWN),
-                    origin.x, origin.y, origin.z,
-                    0.0, 0.0, 0.0
-                )
-            }
+        val effect =
+            if (state.get(SENDING)) AirInflowParticleEffect(Direction.UP) else AirOutflowParticleEffect(Direction.DOWN)
+        val origin = pos.toBottomCenterPos().add(0.0, 12.0 / 16.0, 0.0)
+        for (i in 0..1) {
+            world.addParticleClient(
+                effect,
+                origin.x, origin.y, origin.z,
+                0.0, 0.0, 0.0
+            )
         }
     }
 

@@ -2,6 +2,7 @@ package grauly.dustydecor
 
 import com.mojang.serialization.MapCodec
 import grauly.dustydecor.particle.AirInflowParticleEffect
+import grauly.dustydecor.particle.AirOutflowParticleEffect
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
 import io.netty.buffer.ByteBuf
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes
@@ -29,6 +30,11 @@ object ModParticleTypes {
         "air_inflow",
         AirInflowParticleEffect.CODEC,
         AirInflowParticleEffect.PACKET_CODEC
+    )
+    val AIR_OUTFLOW: ParticleType<AirOutflowParticleEffect> = registerComplex(
+        "air_outflow",
+        AirOutflowParticleEffect.CODEC,
+        AirOutflowParticleEffect.PACKET_CODEC
     )
 
     private fun <T: ParticleEffect> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {

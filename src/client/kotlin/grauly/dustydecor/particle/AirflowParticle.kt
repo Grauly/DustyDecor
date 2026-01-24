@@ -18,12 +18,12 @@ import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.PI
 
-class AirInflowParticle(
+class AirflowParticle(
     world: ClientWorld,
     x: Double,
     y: Double,
     z: Double,
-    private val outflowDirection: Direction,
+    private val flowDirection: Direction,
     spriteProvider: SpriteProvider,
     upwardsAcceleration: Float
 ) : AnimatedParticle(world, x, y, z, spriteProvider, upwardsAcceleration) {
@@ -41,8 +41,8 @@ class AirInflowParticle(
         tickProgress: Float
     ) {
         val quat = Quaternionf()
-            .rotateTo(Direction.UP.floatVector, outflowDirection.opposite.floatVector)
-            .rotateAxis(axisRotationRadians, outflowDirection.floatVector)
+            .rotateTo(Direction.UP.floatVector, flowDirection.opposite.floatVector)
+            .rotateAxis(axisRotationRadians, flowDirection.floatVector)
         render(submittable, camera, quat, tickProgress)
     }
 
@@ -60,7 +60,7 @@ class AirInflowParticle(
         this.renderVertex(submittable, rotation, x1, y1, z1, tickProgress)
     }
 
-    class Factory(private val spriteProvider: SpriteProvider) : ParticleFactory<AirInflowParticleEffect> {
+    class InflowFactory(private val spriteProvider: SpriteProvider) : ParticleFactory<AirInflowParticleEffect> {
         override fun createParticle(
             parameters: AirInflowParticleEffect,
             world: ClientWorld,
@@ -72,7 +72,29 @@ class AirInflowParticle(
             velocityZ: Double,
             random: Random
         ): Particle {
-            return AirInflowParticle(
+            return AirflowParticle(
+                world,
+                x, y, z,
+                parameters.inflowDirection.opposite,
+                spriteProvider,
+                0.0f
+            )
+        }
+    }
+
+    class OutflowFactory(private val spriteProvider: SpriteProvider) : ParticleFactory<AirOutflowParticleEffect> {
+        override fun createParticle(
+            parameters: AirOutflowParticleEffect,
+            world: ClientWorld,
+            x: Double,
+            y: Double,
+            z: Double,
+            velocityX: Double,
+            velocityY: Double,
+            velocityZ: Double,
+            random: Random?
+        ): Particle {
+            return AirflowParticle(
                 world,
                 x, y, z,
                 parameters.outflowDirection,

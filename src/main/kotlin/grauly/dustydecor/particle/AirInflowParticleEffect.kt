@@ -10,19 +10,19 @@ import net.minecraft.particle.ParticleType
 import net.minecraft.util.math.Direction
 
 class AirInflowParticleEffect(
-    val outflowDirection: Direction
+    val inflowDirection: Direction
 ): ParticleEffect {
     override fun getType(): ParticleType<*> = ModParticleTypes.AIR_INFLOW
 
     companion object {
         val CODEC: MapCodec<AirInflowParticleEffect> = RecordCodecBuilder.mapCodec {
             it.group(
-                Direction.CODEC.fieldOf("outflowDirection").forGetter { it.outflowDirection }
+                Direction.CODEC.fieldOf("inflowDirection").forGetter { it.inflowDirection }
             ).apply(it, ::AirInflowParticleEffect)
         }
         val PACKET_CODEC: PacketCodec<ByteBuf, AirInflowParticleEffect> = PacketCodec.tuple(
             Direction.PACKET_CODEC,
-            AirInflowParticleEffect::outflowDirection,
+            AirInflowParticleEffect::inflowDirection,
             ::AirInflowParticleEffect
         )
     }

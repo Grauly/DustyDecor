@@ -1,6 +1,6 @@
 package grauly.dustydecor
 
-import grauly.dustydecor.particle.AirInflowParticle
+import grauly.dustydecor.particle.AirflowParticle
 import grauly.dustydecor.particle.LightFlashParticle
 import grauly.dustydecor.particle.SparkEmitterFactory
 import grauly.dustydecor.particle.SparkFlashParticle
@@ -15,6 +15,7 @@ object ModParticles {
         ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK_EMITTER_PARTICLE, ::SparkEmitterFactory)
         ParticleFactoryRegistry.getInstance().register(ModParticleTypes.SPARK_FLASH, SparkFlashParticle::Factory)
         ParticleFactoryRegistry.getInstance().register(ModParticleTypes.LIGHT_FLASH, LightFlashParticle::Factory)
-        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.AIR_INFLOW, AirInflowParticle::Factory)
+        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.AIR_INFLOW, AirflowParticle::InflowFactory)
+        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.AIR_OUTFLOW, AirflowParticle::OutflowFactory)
     }
 }
