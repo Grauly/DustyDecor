@@ -1,8 +1,11 @@
 package grauly.dustydecor.block.vacpipe
 
 import com.mojang.serialization.MapCodec
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.ModParticleTypes
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
+import grauly.dustydecor.particle.AirInflowParticleEffect
 import grauly.dustydecor.util.ToolUtils
 import grauly.dustydecor.util.VoxelShapesUtil
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
@@ -164,6 +167,25 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         val otherStorage = ItemStorage.SIDED.find(world, pos.offset(Direction.UP), Direction.DOWN) ?: return
         val ownStorage = be.storage
         StorageUtil.move(ownStorage, otherStorage, { true }, 1, null)
+    }
+
+    override fun randomDisplayTick(
+        state: BlockState,
+        world: World,
+        pos: BlockPos,
+        random: Random
+    ) {
+        if (!world.isClient) return
+        if (state.get(SENDING)) {
+            val origin = pos.toBottomCenterPos().add(0.0, 12.0/16.0, 0.0)
+            for (i in 0..1) {
+                world.addParticleClient(
+                    AirInflowParticleEffect(Direction.DOWN),
+                    origin.x, origin.y, origin.z,
+                    0.0, 0.0, 0.0
+                )
+            }
+        }
     }
 
     override fun getCodec(): MapCodec<out HorizontalFacingBlock> {
