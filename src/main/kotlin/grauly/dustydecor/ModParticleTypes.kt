@@ -1,6 +1,7 @@
 package grauly.dustydecor
 
 import com.mojang.serialization.MapCodec
+import grauly.dustydecor.particle.AirInflowParticleEffect
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
 import io.netty.buffer.ByteBuf
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes
@@ -17,8 +18,18 @@ object ModParticleTypes {
     val SPARK_PARTICLE: SimpleParticleType = registerSimple("spark")
     val SMALL_SPARK_PARTICLE: SimpleParticleType = registerSimple("small_spark")
     val SPARK_FLASH: SimpleParticleType = registerSimple("spark_flash")
-    val SPARK_EMITTER_PARTICLE: ParticleType<SparkEmitterParticleEffect> = registerComplex("spark_emitter", SparkEmitterParticleEffect.CODEC, SparkEmitterParticleEffect.PACKET_CODEC)
     val LIGHT_FLASH: SimpleParticleType = registerSimple("light_flash")
+
+    val SPARK_EMITTER_PARTICLE: ParticleType<SparkEmitterParticleEffect> = registerComplex(
+        "spark_emitter",
+        SparkEmitterParticleEffect.CODEC,
+        SparkEmitterParticleEffect.PACKET_CODEC
+    )
+    val AIR_INFLOW: ParticleType<AirInflowParticleEffect> = registerComplex(
+        "air_inflow",
+        AirInflowParticleEffect.CODEC,
+        AirInflowParticleEffect.PACKET_CODEC
+    )
 
     private fun <T: ParticleEffect> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {
         return registerParticle(Identifier.of(DustyDecorMod.MODID, id), type)
