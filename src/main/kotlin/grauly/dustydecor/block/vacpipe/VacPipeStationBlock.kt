@@ -175,6 +175,11 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         random: Random
     ) {
         if (!world.isClient) return
+        indicateSending(state, world, pos)
+        indicateLeak(state, world, pos)
+    }
+
+    private fun indicateSending (state: BlockState, world: World, pos: BlockPos) {
         val effect =
             if (state.get(SENDING)) AirInflowParticleEffect(Direction.UP) else AirOutflowParticleEffect(Direction.DOWN)
         val origin = pos.toBottomCenterPos().add(0.0, 12.0 / 16.0, 0.0)
@@ -185,9 +190,21 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
                 0.0, 0.0, 0.0
             )
         }
+    }
+
+    private fun indicateLeak(
+        state: BlockState,
+        world: World,
+        pos: BlockPos
+    ) {
         val topState = world.getBlockState(pos.offset(Direction.UP))
         val notCanFlow = topState.isSideSolid(world, pos.offset(Direction.UP), Direction.DOWN, SideShapeType.CENTER)
-        if (notCanFlow) return
+        if (notCanFlow) {
+            if (!topState.isOf(ModBlocks.VAC_PIPE)) return
+            if (topState.get(AbConnectableBlock.connections[0]) == ConnectionState.DOWN) return
+            indicatePipeLeak(state, world, pos, Direction.UP)
+            return
+        }
         val topEffect =
             if (state.get(SENDING)) AirOutflowParticleEffect(Direction.UP) else AirInflowParticleEffect(Direction.DOWN)
         val topOrigin = pos.offset(Direction.UP).toBottomCenterPos()
@@ -195,6 +212,20 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             world.addParticleClient(
                 topEffect,
                 topOrigin.x, topOrigin.y, topOrigin.z,
+                0.0, 0.0, 0.0
+            )
+        }
+    }
+
+    private fun indicatePipeLeak(state: BlockState, world: World, pos: BlockPos, leakDirection: Direction) {
+        val origin = pos.toCenterPos().add(leakDirection.doubleVector.multiply(.5))
+        DIRECTIONS.filter { it == Direction.NORTH }.forEach { direction ->
+            val offset = origin.add(direction.doubleVector.multiply(4.0/16.0))
+            val effect =
+                if (state.get(SENDING)) AirOutflowParticleEffect(direction) else AirInflowParticleEffect(direction.opposite)
+            world.addParticleClient(
+                effect,
+                offset.x, offset.y, offset.z,
                 0.0, 0.0, 0.0
             )
         }
