@@ -185,6 +185,19 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
                 0.0, 0.0, 0.0
             )
         }
+        val topState = world.getBlockState(pos.offset(Direction.UP))
+        val notCanFlow = topState.isSideSolid(world, pos.offset(Direction.UP), Direction.DOWN, SideShapeType.CENTER)
+        if (notCanFlow) return
+        val topEffect =
+            if (state.get(SENDING)) AirOutflowParticleEffect(Direction.UP) else AirInflowParticleEffect(Direction.DOWN)
+        val topOrigin = pos.offset(Direction.UP).toBottomCenterPos()
+        for (i in 0..1) {
+            world.addParticleClient(
+                topEffect,
+                topOrigin.x, topOrigin.y, topOrigin.z,
+                0.0, 0.0, 0.0
+            )
+        }
     }
 
     override fun getCodec(): MapCodec<out HorizontalFacingBlock> {
