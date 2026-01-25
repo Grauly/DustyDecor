@@ -42,7 +42,7 @@ class AirflowParticle(
     ) {
         val quat = Quaternionf()
             .rotateTo(Direction.UP.floatVector, flowDirection.opposite.floatVector)
-            .rotateAxis(axisRotationRadians, flowDirection.floatVector)
+            .rotateY(axisRotationRadians)
         render(submittable, camera, quat, tickProgress)
     }
 
