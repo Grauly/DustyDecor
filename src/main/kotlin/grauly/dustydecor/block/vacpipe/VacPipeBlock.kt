@@ -1,5 +1,6 @@
 package grauly.dustydecor.block.vacpipe
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.block.vacpipe.ConnectionState
@@ -9,6 +10,7 @@ import net.minecraft.block.Block
 import net.minecraft.block.BlockEntityProvider
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
+import net.minecraft.block.SideShapeType
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.BlockEntityTicker
 import net.minecraft.block.entity.BlockEntityType
@@ -241,6 +243,40 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
             random
         )
         return updateWindows(superState, world, pos)
+    }
+
+    override fun randomDisplayTick(
+        state: BlockState,
+        world: World,
+        pos: BlockPos,
+        random: Random
+    ) {
+        super.randomDisplayTick(state, world, pos, random)
+        displayLeaks(connections[0], false, state, world, pos)
+        displayLeaks(connections[1], true, state, world, pos)
+    }
+
+    private fun displayLeaks(connection: EnumProperty<ConnectionState>, outflow: Boolean, state: BlockState, world: World, pos: BlockPos) {
+        if (!checkLeak(connection, state, world, pos)) return
+        VacPipeStationBlock.indicatePipeLeak(world, pos, state.get(connection).direction!!, outflow)
+    }
+
+    private fun checkLeak(connection: EnumProperty<ConnectionState>, state: BlockState, world: World, pos: BlockPos): Boolean {
+        val connectionState = state.get(connection)
+        if (connectionState == ConnectionState.NONE) return false
+        val checkConnection = connections.first { it != connection }
+        val connectionDirection = connectionState.direction!!
+        val otherPos = pos.offset(connectionDirection)
+        val connectedToState = world.getBlockState(otherPos)
+        if (isConnectable(connectedToState, otherPos, world, connectionDirection)) {
+            if (connectedToState.isOf(ModBlocks.VAC_PIPE_STATION)) {
+                if (connection == connections[0] && connectionDirection == Direction.DOWN) return false
+                return true
+            }
+            if (connectedToState.get(checkConnection).direction?.opposite == connectionDirection) return false //it aint a leak if I can connect properly
+        }
+        val notCanFlow = connectedToState.isSideSolid(world, otherPos, connectionDirection.opposite, SideShapeType.CENTER)
+        return !notCanFlow
     }
 
     private fun updateWindows(
