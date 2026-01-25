@@ -36,8 +36,6 @@ import net.minecraft.world.tick.ScheduledTickView
 
 class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings), Waterloggable, BlockEntityProvider {
 
-    //TODO: add BE renderer for capsule
-    //TODO: add vac particles for direction indication
     //TODO: do the pipe alignment automatically (find a compromise to stay performant)
     //TODO: add copper golem behaviors
 
@@ -202,7 +200,7 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         if (notCanFlow) {
             if (!topState.isOf(ModBlocks.VAC_PIPE)) return
             if (topState.get(AbConnectableBlock.connections[0]) == ConnectionState.DOWN) return
-            indicatePipeLeak(state, world, pos, Direction.UP)
+            indicatePipeLeak(world, pos, Direction.UP, state.get(SENDING))
             return
         }
         val topEffect =
@@ -217,19 +215,6 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         }
     }
 
-    private fun indicatePipeLeak(state: BlockState, world: World, pos: BlockPos, leakDirection: Direction) {
-        val origin = pos.toCenterPos().add(leakDirection.doubleVector.multiply(.5))
-        DIRECTIONS.filter { it == Direction.NORTH }.forEach { direction ->
-            val offset = origin.add(direction.doubleVector.multiply(4.0/16.0))
-            val effect =
-                if (state.get(SENDING)) AirOutflowParticleEffect(direction) else AirInflowParticleEffect(direction.opposite)
-            world.addParticleClient(
-                effect,
-                offset.x, offset.y, offset.z,
-                0.0, 0.0, 0.0
-            )
-        }
-    }
 
     override fun getCodec(): MapCodec<out HorizontalFacingBlock> {
         return createCodec(::VacPipeStationBlock)
@@ -257,5 +242,19 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             VoxelShapesUtil.intCube(4, 2, 11, 5, 11, 12),
             VoxelShapesUtil.intCube(11, 2, 4, 12, 11, 5),
         )
+
+        fun indicatePipeLeak(world: World, pos: BlockPos, leakDirection: Direction, outflow: Boolean) {
+            val origin = pos.toCenterPos().add(leakDirection.doubleVector.multiply(.5))
+            DIRECTIONS.filter { it != leakDirection && it != leakDirection.opposite }.forEach { direction ->
+                val offset = origin.add(direction.doubleVector.multiply(4.0/16.0))
+                val effect =
+                    if (outflow) AirOutflowParticleEffect(direction) else AirInflowParticleEffect(direction.opposite)
+                world.addParticleClient(
+                    effect,
+                    offset.x, offset.y, offset.z,
+                    0.0, 0.0, 0.0
+                )
+            }
+        }
     }
 }
