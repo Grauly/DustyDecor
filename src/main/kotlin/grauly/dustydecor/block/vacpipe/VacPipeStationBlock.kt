@@ -64,13 +64,6 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         return SHAPE
     }
 
-    private fun alignConnectedPipeNetwork(state: BlockState, pos: BlockPos, world: World) {
-        if (!world.getBlockState(pos.offset(Direction.UP)).isOf(ModBlocks.VAC_PIPE)) return
-        val nextPos = pos.offset(Direction.UP)
-        val nextState = world.getBlockState(nextPos)
-        (ModBlocks.VAC_PIPE as VacPipeBlock).alignPipeNetwork(nextState, state, nextPos, pos, Direction.UP, world)
-    }
-
     override fun onUse(
         state: BlockState,
         world: World,
@@ -98,11 +91,6 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             invertSending(state, pos, world)
             ToolUtils.playWrenchSound(world, pos, player)
             return ActionResult.SUCCESS
-        }
-        if (ToolUtils.isScrewdriver(stack)) {
-            //TODO: make this trigger automatically
-            player.sendMessage(Text.literal("aliginig"), true)
-            alignConnectedPipeNetwork(state, pos, world)
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
     }

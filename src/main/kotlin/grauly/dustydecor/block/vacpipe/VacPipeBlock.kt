@@ -65,43 +65,6 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
         }
     }
 
-    fun alignPipeNetwork(
-        state: BlockState,
-        triggerState: BlockState,
-        pos: BlockPos,
-        triggerPos: BlockPos,
-        triggerDirection: Direction,
-        world: World
-    ) {
-        if (!state.isOf(ModBlocks.VAC_PIPE)) return
-        if (pos.offset(triggerDirection.opposite) != triggerPos) return
-        if (!triggerState.isOf(ModBlocks.VAC_PIPE_STATION)) {
-            if (connections.map { triggerState.get(it).direction }.none { it == triggerDirection }) return
-        }
-        if (connections.map { state.get(it).direction }.none { it == triggerDirection.opposite }) return
-        val triggerConnection = if (!triggerState.isOf(ModBlocks.VAC_PIPE_STATION)) {
-            connections.first { triggerState.get(it).direction == triggerDirection }
-        } else {
-            if (triggerState.get(VacPipeStationBlock.SENDING)) connections[1] else connections[0]
-        }
-        val oppositeConnection = connections.first { it != triggerConnection }
-        var newState = state
-        if (state.get(oppositeConnection).direction != triggerDirection.opposite) {
-            newState = flipConnections(state, pos, world)
-        }
-        val nextCheckDirection = newState.get(triggerConnection).direction ?: return
-        val nextPos = pos.offset(nextCheckDirection)
-        val nextState = world.getBlockState(nextPos)
-        if (nextState.isOf(ModBlocks.VAC_PIPE_STATION)) {
-            val sending = nextState.get(VacPipeStationBlock.SENDING)
-            val seekDirectionIsA = triggerConnection == connections[0]
-            if (sending && seekDirectionIsA) return
-            if (!sending && !seekDirectionIsA) return
-            world.setBlockState(pos, newState.with(triggerConnection, ConnectionState.NONE), NOTIFY_LISTENERS)
-        }
-        alignPipeNetwork(nextState, newState, nextPos, pos, nextCheckDirection, world)
-    }
-
     private fun getConnectionsFlippedState(state: BlockState) : BlockState {
         return state
             .with(connections[0], state.get(connections[1]))
