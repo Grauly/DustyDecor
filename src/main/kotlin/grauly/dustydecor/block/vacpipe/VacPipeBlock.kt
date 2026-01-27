@@ -34,6 +34,7 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.WorldView
 import net.minecraft.world.tick.ScheduledTickView
+import java.sql.Connection
 import kotlin.collections.get
 
 class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEntityProvider {
@@ -185,6 +186,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
                 val boundingBox = CONNECTOR_SHAPE_MAP[connectionDirection.direction]!!.boundingBox.expand(boxExpansion)
                 return@firstOrNull boundingBox.contains(relativePos)
             }
+            DustyDecorMod.logger.info("clicked connection: $clickedConnection")
             if (clickedConnection != null) {
                 val success = tryDisableConnection(pos, workingState, clickedConnection, world)
                 if (success) {
@@ -218,7 +220,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
             val offsetPos = pos.offset(connectionDirection.direction)
             val offsetState = world.getBlockState(offsetPos)
             val otherConnection =
-                connections.firstOrNull { offsetState.get(it) != ConnectionState.NONE && offsetState.get(it).direction!!.opposite == connectionDirection.direction }
+                connections.firstOrNull { offsetState.get(it, ConnectionState.NONE) != ConnectionState.NONE && offsetState.get(it).direction!!.opposite == connectionDirection.direction }
             if (otherConnection == null) return false
             return tryDisableConnection(offsetPos, offsetState, otherConnection, world, false)
         }
