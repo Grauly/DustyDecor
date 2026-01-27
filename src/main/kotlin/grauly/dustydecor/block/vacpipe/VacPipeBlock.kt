@@ -101,12 +101,16 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
         alignPipeNetwork(nextState, newState, nextPos, pos, nextCheckDirection, world)
     }
 
-    private fun flipConnections(state: BlockState, pos: BlockPos, world: World): BlockState {
-        val newState = state
+    private fun getConnectionsFlippedState(state: BlockState) : BlockState {
+        return state
             .with(connections[0], state.get(connections[1]))
             .with(connections[1], state.get(connections[0]))
             .with(windowStates[0], state.get(windowStates[1]))
             .with(windowStates[1], state.get(windowStates[0]))
+    }
+
+    private fun flipConnections(state: BlockState, pos: BlockPos, world: World): BlockState {
+        val newState = getConnectionsFlippedState(state)
         world.setBlockState(pos, newState, NOTIFY_LISTENERS)
         return newState
     }
@@ -232,7 +236,7 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
         neighborState: BlockState,
         random: Random
     ): BlockState {
-        val superState = super.getStateForNeighborUpdate(
+        var superState = super.getStateForNeighborUpdate(
             state,
             world,
             tickView,
@@ -242,7 +246,34 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
             neighborState,
             random
         )
+        superState = tryFixConnection(world, pos, superState)
         return updateWindows(superState, world, pos)
+    }
+
+    private fun tryFixConnection(world: WorldView, pos: BlockPos, currentState: BlockState): BlockState {
+        var workingState = currentState
+        if (!isValidConnection(connections[0], world, pos, currentState)) {
+            workingState = getConnectionsFlippedState(workingState)
+        }
+        return workingState
+    }
+
+    private fun isValidConnection(connection: EnumProperty<ConnectionState>, world: WorldView, pos: BlockPos, state: BlockState): Boolean {
+        val connectionState = state.get(connection)
+        if (connectionState == ConnectionState.NONE) return true
+        val connectionDirection = connectionState.direction!!
+        val otherState = world.getBlockState(pos.offset(connectionDirection))
+        if (otherState.isOf(ModBlocks.VAC_PIPE_STATION)) {
+            val sending = otherState.get(VacPipeStationBlock.SENDING)
+            if (connection == connections[0] && connectionDirection == Direction.DOWN && sending) return true
+            if (connection == connections[1] && connectionDirection == Direction.DOWN && !sending) return true
+            return false
+        }
+        if (otherState.isOf(ModBlocks.VAC_PIPE)) {
+            val otherConnection = connections.first { it != connection}
+            return otherState.get(otherConnection).direction?.opposite == connectionDirection
+        }
+        return false
     }
 
     override fun randomDisplayTick(
@@ -264,17 +295,10 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
     private fun checkLeak(connection: EnumProperty<ConnectionState>, state: BlockState, world: World, pos: BlockPos): Boolean {
         val connectionState = state.get(connection)
         if (connectionState == ConnectionState.NONE) return false
-        val checkConnection = connections.first { it != connection }
         val connectionDirection = connectionState.direction!!
         val otherPos = pos.offset(connectionDirection)
         val connectedToState = world.getBlockState(otherPos)
-        if (isConnectable(connectedToState, otherPos, world, connectionDirection)) {
-            if (connectedToState.isOf(ModBlocks.VAC_PIPE_STATION)) {
-                if (connection == connections[0] && connectionDirection == Direction.DOWN) return false
-                return true
-            }
-            if (connectedToState.get(checkConnection).direction?.opposite == connectionDirection) return false //it aint a leak if I can connect properly
-        }
+        if (isValidConnection(connection, world, pos, state)) return false
         val notCanFlow = connectedToState.isSideSolid(world, otherPos, connectionDirection.opposite, SideShapeType.CENTER)
         return !notCanFlow
     }
