@@ -257,6 +257,8 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
         var workingState = currentState
         if (!isValidConnection(connections[0], world, pos, currentState)) {
             workingState = getConnectionsFlippedState(workingState)
+        } else if(!isValidConnection(connections[1], world, pos, currentState)) {
+            workingState = getConnectionsFlippedState(workingState)
         }
         return workingState
     }
