@@ -197,14 +197,16 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
     ) {
         val topState = world.getBlockState(pos.offset(Direction.UP))
         val notCanFlow = topState.isSideSolid(world, pos.offset(Direction.UP), Direction.DOWN, SideShapeType.CENTER)
+        val sending = state.get(SENDING)
         if (notCanFlow) {
             if (!topState.isOf(ModBlocks.VAC_PIPE)) return
-            if (topState.get(AbConnectableBlock.connections[0]) == ConnectionState.DOWN) return
+            if (sending && topState.get(AbConnectableBlock.connections[0]) == ConnectionState.DOWN) return
+            if (!sending && topState.get(AbConnectableBlock.connections[1]) == ConnectionState.DOWN) return
             indicatePipeLeak(world, pos, Direction.UP, state.get(SENDING))
             return
         }
         val topEffect =
-            if (state.get(SENDING)) AirOutflowParticleEffect(Direction.UP) else AirInflowParticleEffect(Direction.DOWN)
+            if (sending) AirOutflowParticleEffect(Direction.UP) else AirInflowParticleEffect(Direction.DOWN)
         val topOrigin = pos.offset(Direction.UP).toBottomCenterPos()
         for (i in 0..1) {
             world.addParticleClient(
