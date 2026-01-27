@@ -74,6 +74,7 @@
   "component.wrench.dustydecor.tooltip.vac_pipe.edit": "Can edit %s connections",
   "component.wrench.dustydecor.vac_pipe.connection": "Use on a exiting connection to attempt a different connection for it",
   "component.wrench.dustydecor.vac_station.toggle": "Can toggle whether %s's send or receive",
+  "component.wrench.dustydecor.vap_pipe.fix": "Use on the core of the pipe to attempt to fix a broken connection",
   "death.attack.void_consumption": "%s won a staring contest with the void",
   "death.attack.void_consumption.item": "%s was shunted into the void by %s using %s",
   "death.attack.void_consumption.player": "%s lost themselves to the void while fleeing from %s",

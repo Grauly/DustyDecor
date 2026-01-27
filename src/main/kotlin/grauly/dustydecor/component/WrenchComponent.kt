@@ -32,6 +32,10 @@ object WrenchComponent : TooltipAppender {
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
         )
         textConsumer.accept(
+            Text.translatable(VAP_PIPE_CONNECTION_FIX_TRANSLATION_KEY)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+        )
+        textConsumer.accept(
             Text.translatable(VAC_PIPE_STATION_TRANSLATION_KEY, ModBlocks.VAC_PIPE_STATION.name)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
         )
@@ -43,6 +47,7 @@ object WrenchComponent : TooltipAppender {
 
     const val VAC_PIPE_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.tooltip.vac_pipe.edit"
     const val VAC_PIPE_CONNECTION_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.vac_pipe.connection"
+    const val VAP_PIPE_CONNECTION_FIX_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.vap_pipe.fix"
     const val VAC_PIPE_STATION_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.vac_station.toggle"
     const val LAMPS_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.lamps"
 

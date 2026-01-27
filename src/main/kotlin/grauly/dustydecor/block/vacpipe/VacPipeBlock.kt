@@ -186,7 +186,6 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
                 val boundingBox = CONNECTOR_SHAPE_MAP[connectionDirection.direction]!!.boundingBox.expand(boxExpansion)
                 return@firstOrNull boundingBox.contains(relativePos)
             }
-            DustyDecorMod.logger.info("clicked connection: $clickedConnection")
             if (clickedConnection != null) {
                 val success = tryDisableConnection(pos, workingState, clickedConnection, world)
                 if (success) {
@@ -194,6 +193,8 @@ class VacPipeBlock(settings: Settings) : AbConnectableBlock(settings), BlockEnti
                     //TODO: success sound
                 }
                 //TODO: some fail sound
+            } else {
+                workingState = tryFixConnection(world, pos, workingState)
             }
         }
         if (workingState != state) {
