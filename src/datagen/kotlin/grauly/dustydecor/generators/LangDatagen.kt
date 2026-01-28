@@ -1,6 +1,7 @@
 package grauly.dustydecor.generators
 
 import grauly.dustydecor.BlockDatagenWrapper
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ItemDatagenWrapper
 import grauly.dustydecor.ModConventionalItemTags
 import grauly.dustydecor.ModItemTags
@@ -10,6 +11,7 @@ import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ScrewdriverComponent
 import grauly.dustydecor.component.WrenchComponent
+import grauly.dustydecor.entity.SeatEntity
 import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.screens.VacPipeStationScreen
@@ -105,6 +107,8 @@ class LangDatagen(
         builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_REDSTONE_NARRATION, "Redstone, send capsules whenever a redstone signal is present")
         builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_AUTOMATIC, "Automatic")
         builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION, "Automatic, send a capsule when one is present")
+
+        builder.add("entity.${DustyDecorMod.MODID}.seat", "Seat")
 
         subtitles.forEach { (e, t) ->
             builder.add(SoundEventDatagen.getSubtitle(e), t)

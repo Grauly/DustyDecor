@@ -78,6 +78,7 @@
   "death.attack.void_consumption": "%s won a staring contest with the void",
   "death.attack.void_consumption.item": "%s was shunted into the void by %s using %s",
   "death.attack.void_consumption.player": "%s lost themselves to the void while fleeing from %s",
+  "entity.dustydecor.seat": "Seat",
   "item.bulk_void_goop.placed": "Placed %s %s",
   "item.dustydecor.black_alarm_cage_lamp": "Black Alarm Cage Lamp",
   "item.dustydecor.black_tall_cage_lamp": "Tall Black Cage Lamp",
