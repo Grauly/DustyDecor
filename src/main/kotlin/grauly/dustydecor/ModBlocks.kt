@@ -86,7 +86,7 @@ object ModBlocks {
         (registerBlock(
             ::StoolBlock,
             id,
-            Settings.copy(Blocks.IRON_BLOCK)
+            Settings.copy(Blocks.IRON_BLOCK).nonOpaque()
         ) as StoolBlock)
     }
 
