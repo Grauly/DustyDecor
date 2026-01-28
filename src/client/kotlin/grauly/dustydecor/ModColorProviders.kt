@@ -1,5 +1,6 @@
 package grauly.dustydecor
 
+import grauly.dustydecor.block.furniture.StoolBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.util.DyeUtils
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry
@@ -12,6 +13,24 @@ import java.awt.Color
 object ModColorProviders {
     fun init() {
         registerCageLamps()
+        registerSingleColorBlocks()
+    }
+
+    private fun registerSingleColorBlocks() {
+        DyeUtils.COLOR_ORDER.forEach {
+            val lookupIndex = DyeUtils.COLOR_ORDER.indexOf(it)
+            generateColoredStool(lookupIndex, ModBlocks.STOOLS)
+        }
+    }
+
+    private fun generateColoredStool(lookupIndex: Int, blocks: List<StoolBlock>) {
+        val color = DyeUtils.COLOR_ORDER[lookupIndex].entityColor
+        ColorProviderRegistry.BLOCK.register(
+            { state: BlockState, blockRenderView: BlockRenderView?, blockPos: BlockPos?, tintIndex: Int ->
+                return@register color
+            },
+            blocks[lookupIndex]
+        )
     }
 
     private fun registerCageLamps() {
