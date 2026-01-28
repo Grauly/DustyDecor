@@ -7,6 +7,7 @@ import grauly.dustydecor.ModConventionalItemTags
 import grauly.dustydecor.ModItemTags
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.block.furniture.SittableFurnitureBlock
 import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ScrewdriverComponent
@@ -109,6 +110,8 @@ class LangDatagen(
         builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION, "Automatic, send a capsule when one is present")
 
         builder.add("entity.${DustyDecorMod.MODID}.seat", "Seat")
+
+        builder.add(SittableFurnitureBlock.SEAT_OCCUPIED_TRANSLATION_KEY, "Already occupied")
 
         subtitles.forEach { (e, t) ->
             builder.add(SoundEventDatagen.getSubtitle(e), t)
