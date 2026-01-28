@@ -22,17 +22,14 @@ class SeatEntity(type: EntityType<*>, world: World) : Entity(type, world) {
         super.tick()
         if (linkedLocation == null) return
         if (!BlockPos.ofFloored(entityPos).equals(linkedLocation)) {
-            DustyDecorMod.logger.info("Discarding due to location mismatch: $linkedLocation and ${BlockPos.ofFloored(entityPos)}")
             discard()
             return
         }
         if (entityWorld.getBlockState(linkedLocation).block !is SeatLinkable) {
-            DustyDecorMod.logger.info("Discarding due to seat linkable")
             discard()
             return
         }
         if (!hasPlayerRider()) {
-            DustyDecorMod.logger.info("Discarding due to missing rider")
             discard()
             return
         }
