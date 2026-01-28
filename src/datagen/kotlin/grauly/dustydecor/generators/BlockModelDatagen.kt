@@ -32,6 +32,7 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
         FacingRotationLampModel(ModBlocks.TUBE_LAMPS,"tube_lamp/tube_lamp").get(blockStateModelGenerator)
         VacPipeStationBlockModel.get(blockStateModelGenerator)
         VoidGoopBlockModel.get(blockStateModelGenerator)
+        SingleFurnitureBlockModel(ModBlocks.STOOLS, "stool/stool").get(blockStateModelGenerator)
     }
 
 

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": "minecraft:iron_nugget",
+    "d": "#c:dyes/cyan",
+    "i": "#c:ingots/iron",
+    "l": "#c:leathers"
+  },
+  "pattern": [
+    "cdc",
+    "cli"
+  ],
+  "result": {
+    "count": 1,
+    "id": "dustydecor:cyan_stool"
+  }
+}

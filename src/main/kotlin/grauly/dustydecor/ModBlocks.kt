@@ -1,5 +1,6 @@
 package grauly.dustydecor
 
+import grauly.dustydecor.block.furniture.StoolBlock
 import grauly.dustydecor.block.lamp.AlarmCageLampBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.block.lamp.TallCageLampBlock
@@ -78,6 +79,15 @@ object ModBlocks {
                 .luminance(LightingFixtureBlock.getLightingFunction(3, 15))
                 .ticksRandomly()
         ) as TubeLampBlock)
+    }
+
+    val STOOLS: List<StoolBlock> = DyeUtils.COLOR_ORDER.map {
+        val id = "${it.id}_stool"
+        (registerBlock(
+            ::StoolBlock,
+            id,
+            Settings.copy(Blocks.IRON_BLOCK)
+        ) as StoolBlock)
     }
 
     private fun registerBlock(

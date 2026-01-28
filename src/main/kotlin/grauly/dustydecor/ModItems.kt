@@ -93,6 +93,11 @@ object ModItems {
         registerBlockItem(it, id)
     }
 
+    val STOOLS: List<Item> = ModBlocks.STOOLS.map {
+        val id = "${DyeUtils.COLOR_ORDER[ModBlocks.STOOLS.indexOf(it)]}_stool"
+        registerBlockItem(it, id)
+    }
+
     private fun registerItem(
         itemFactory: (Settings) -> Item,
         id: String,
