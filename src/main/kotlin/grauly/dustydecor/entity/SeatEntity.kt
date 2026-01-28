@@ -1,5 +1,6 @@
 package grauly.dustydecor.entity
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModEntities
 import grauly.dustydecor.block.furniture.SeatLinkable
 import net.minecraft.entity.Entity
@@ -20,15 +21,18 @@ class SeatEntity(type: EntityType<*>, world: World) : Entity(type, world) {
     override fun tick() {
         super.tick()
         if (linkedLocation == null) return
-        if (!BlockPos.ofFloored(trackedPosition.pos).equals(linkedLocation)) {
+        if (!BlockPos.ofFloored(entityPos).equals(linkedLocation)) {
+            DustyDecorMod.logger.info("Discarding due to location mismatch: $linkedLocation and ${BlockPos.ofFloored(entityPos)}")
             discard()
             return
         }
         if (entityWorld.getBlockState(linkedLocation).block !is SeatLinkable) {
+            DustyDecorMod.logger.info("Discarding due to seat linkable")
             discard()
             return
         }
         if (!hasPlayerRider()) {
+            DustyDecorMod.logger.info("Discarding due to missing rider")
             discard()
             return
         }
@@ -63,6 +67,7 @@ class SeatEntity(type: EntityType<*>, world: World) : Entity(type, world) {
             if (world.getEntitiesByClass(SeatEntity::class.java, Box(pos), { _ -> true}).isNotEmpty()) return null
             val seat = SeatEntity(ModEntities.SEAT_ENTITY, world)
             seat.setPosition(Vec3d(pos).add(offset))
+            seat.linkedLocation = pos
             world.spawnEntity(seat)
             entity.isSprinting = false
             entity.startRiding(seat)
