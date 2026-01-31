@@ -1,10 +1,10 @@
 plugins {
-	id 'fabric-loom' version '1.11-SNAPSHOT'
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
 	id 'maven-publish'
-	id "org.jetbrains.kotlin.jvm" version "2.0.0"
+	id "org.jetbrains.kotlin.jvm" version "2.3.0"
 }
 
-version = project.mod_version + "-" + project.minecraft_version
+version = project.mod_version
 group = project.maven_group
 
 base {
@@ -44,16 +44,10 @@ dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.officialMojangMappings()
-/*
-	mappings loom.layered {
-		mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-		mappings file("override.tiny")
-	}
-*/
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 	modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 }
 
@@ -61,11 +55,11 @@ processResources {
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand 	"version": project.mod_version,
-				"mod_id": project.mod_id,
-				"loader_version": project.loader_version,
-				//TODO: reinsert MC version into fmj when back in stable MC versions
-				"minecraft_version": project.minecraft_version
+		expand "version": inputs.properties.version,
+			"mod_id": project.mod_id,
+			"loader_version": project.loader_version,
+			//TODO: reinsert MC version into fmj when back in stable MC versions
+			"minecraft_version": project.minecraft_version
 	}
 }
 
@@ -76,12 +70,6 @@ tasks.withType(JavaCompile).configureEach {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 	kotlinOptions {
 		jvmTarget = 21
-	}
-}
-
-tasks.register("printVersion") {
-	doLast {
-		println("MOD_VERSION=${project.mod_version}")
 	}
 }
 
@@ -96,8 +84,10 @@ java {
 }
 
 jar {
+	inputs.property "archivesName", project.base.archivesName
+
 	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
+		rename { "${it}_${inputs.properties.archivesName}"}
 	}
 }
 
