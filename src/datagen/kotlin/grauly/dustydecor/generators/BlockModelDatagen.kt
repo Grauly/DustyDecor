@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.block.model.VariantMutator
 import net.minecraft.client.data.models.MultiVariant
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.Property
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.util.random.WeightedList
 import com.mojang.math.Quadrant
 import net.minecraft.core.Direction
@@ -43,7 +43,7 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
     override fun getName(): String = "Block Model Definitions"
 
     companion object {
-        fun singleVariant(identifier: ResourceLocation): MultiVariant =
+        fun singleVariant(identifier: Identifier): MultiVariant =
             MultiVariant(
                 WeightedList.of(
                     Variant(
@@ -53,7 +53,7 @@ class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(gener
                 )
             )
 
-        fun singleVariant(id: String) = singleVariant(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, id))
+        fun singleVariant(id: String) = singleVariant(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id))
         val NORTH_FACING_ROTATION_MAP: Map<Direction, VariantMutator> = mapOf(
             Direction.UP to VariantMutator.X_ROT.withValue(Quadrant.R270),
             Direction.DOWN to VariantMutator.X_ROT.withValue(Quadrant.R90),

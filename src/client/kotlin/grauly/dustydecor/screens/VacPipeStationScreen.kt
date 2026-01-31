@@ -19,13 +19,13 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.ContainerListener
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     handler: T,
     inventory: Inventory?,
     title: Component?,
-    private val texture: ResourceLocation,
+    private val texture: Identifier,
 ) : AbstractContainerScreen<T>(handler, inventory, title) {
     private lateinit var golemModeButton: ImageCyclingButtonWidget<CopperGolemMode>
     private lateinit var redstoneModeButton: ImageCyclingButtonWidget<RedstoneEmissionMode>
@@ -195,10 +195,10 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     }
 
     companion object {
-        val SEND_TEXTURE: ResourceLocation =
-            ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/gui/container/vac_pipe_station_send.png")
-        val RECEIVE_TEXTURE: ResourceLocation =
-            ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/gui/container/vac_pipe_station_receive.png")
+        val SEND_TEXTURE: Identifier =
+            Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/gui/container/vac_pipe_station_send.png")
+        val RECEIVE_TEXTURE: Identifier =
+            Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/gui/container/vac_pipe_station_receive.png")
 
         const val COPPER_GOLEM_MODE_TRANSLATION_KEY: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.copper_golem"
         const val COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT: String = "$COPPER_GOLEM_MODE_TRANSLATION_KEY.interact"

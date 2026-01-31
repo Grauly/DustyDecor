@@ -7,7 +7,7 @@ import grauly.dustydecor.util.DyeUtils
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.model.ItemModelUtils
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 open class SingleFurnitureBlockModel(private val blocks: List<SingleFurnitureBlock>, private val modelPrefix: String) {
     fun get(blockStateModelGenerator: BlockModelGenerators) {
@@ -31,7 +31,7 @@ open class SingleFurnitureBlockModel(private val blocks: List<SingleFurnitureBlo
     protected fun createItem(block: SingleFurnitureBlock, blockStateModelGenerator: BlockModelGenerators) {
         val color = DyeUtils.COLOR_ORDER[blocks.indexOf(block)].textColor
         val tint = ItemModelUtils.constantTint(color)
-        val model = ItemModelUtils.tintedModel(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, MODEL_PATH), tint)
+        val model = ItemModelUtils.tintedModel(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, MODEL_PATH), tint)
         blockStateModelGenerator.itemModelOutput.accept(block.asItem(), model)
     }
 

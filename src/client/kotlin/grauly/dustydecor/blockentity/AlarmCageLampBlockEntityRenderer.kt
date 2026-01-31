@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer
 import net.minecraft.client.renderer.SubmitNodeCollector
 import net.minecraft.client.renderer.state.CameraRenderState
 import com.mojang.blaze3d.vertex.PoseStack
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.world.phys.Vec2
 import net.minecraft.world.phys.Vec3
 import org.joml.Quaternionf
@@ -81,7 +81,7 @@ class AlarmCageLampBlockEntityRenderer(
         private val ROTATION_AXIS: RenderStateDataKey<Vec3> = RenderStateDataKey.create<Vec3>()
         private val COLOR: RenderStateDataKey<Int> = RenderStateDataKey.create<Int>()
         private val renderLayer =
-            RenderType.beaconBeam(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/block/cage_lamp_beam.png"), true)
+            RenderType.beaconBeam(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/block/cage_lamp_beam.png"), true)
     }
 
 }

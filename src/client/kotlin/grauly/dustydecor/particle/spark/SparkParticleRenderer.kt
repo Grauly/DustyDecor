@@ -7,7 +7,7 @@ import net.minecraft.client.particle.ParticleRenderType
 import net.minecraft.client.Camera
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.state.ParticleGroupRenderState
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 class SparkParticleRenderer(particleManager: ParticleEngine) : ParticleGroup<SparkParticle>(particleManager) {
     private val submittable = QuadBasedParticleSubmittable()
@@ -26,7 +26,7 @@ class SparkParticleRenderer(particleManager: ParticleEngine) : ParticleGroup<Spa
     }
 
     companion object {
-        private val id = ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "spark_renderer").toString()
+        private val id = Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "spark_renderer").toString()
         val textureSheet = ParticleRenderType(id)
     }
 }

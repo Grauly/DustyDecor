@@ -19,7 +19,7 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
 import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 object ModBlocks {
 
@@ -96,7 +96,7 @@ object ModBlocks {
         settings: Properties = Properties.of(),
         namespace: String = DustyDecorMod.MODID
     ): Block {
-        val key: ResourceKey<Block> = ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(namespace, id))
+        val key: ResourceKey<Block> = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(namespace, id))
         settings.setId(key)
         return Registry.register(BuiltInRegistries.BLOCK, key, blockFactory.invoke(settings))
     }

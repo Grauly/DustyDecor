@@ -8,7 +8,7 @@ import grauly.dustydecor.item.BulkVoidGoopItem
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.Registry
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 object ModComponentTypes {
 
@@ -23,7 +23,7 @@ object ModComponentTypes {
     ): DataComponentType<T> {
         return Registry.register(
             BuiltInRegistries.DATA_COMPONENT_TYPE,
-            ResourceLocation.fromNamespaceAndPath(namespace, id),
+            Identifier.fromNamespaceAndPath(namespace, id),
             DataComponentType.builder<T>().persistent(codec).build()
         )
     }

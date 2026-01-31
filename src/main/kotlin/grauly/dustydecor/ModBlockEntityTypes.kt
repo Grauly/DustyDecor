@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.Registry
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 object ModBlockEntityTypes {
 
@@ -22,11 +22,11 @@ object ModBlockEntityTypes {
         blockEntityFactory: FabricBlockEntityTypeBuilder.Factory<out T>,
         vararg blocks: Block
     ): BlockEntityType<T> {
-        return register(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, id), blockEntityFactory, *blocks)
+        return register(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id), blockEntityFactory, *blocks)
     }
 
     private fun <T : BlockEntity> register(
-        id: ResourceLocation,
+        id: Identifier,
         blockEntityFactory: FabricBlockEntityTypeBuilder.Factory<out T>,
         vararg blocks: Block
     ): BlockEntityType<T> {

@@ -3,7 +3,7 @@ package grauly.dustydecor
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.Registry
 import net.minecraft.sounds.SoundEvent
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 object ModSoundEvents {
 
@@ -27,7 +27,7 @@ object ModSoundEvents {
     val ITEM_SCREWDRIVER_USE = registerSound("item.screwdriver.use")
 
     private fun registerSound(id: String): SoundEvent {
-        val identifier: ResourceLocation = ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, id)
+        val identifier: Identifier = Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id)
         return Registry.register(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier))
     }
 

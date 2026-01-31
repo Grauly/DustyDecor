@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.block.model.VariantMutator
 import net.minecraft.client.data.models.blockstates.ConditionBuilder
 import net.minecraft.client.data.models.MultiVariant
 import net.minecraft.world.level.block.state.properties.Property
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 object VentBlockModel {
     fun get(blockStateModelGenerator: BlockModelGenerators) {
@@ -25,7 +25,7 @@ object VentBlockModel {
         blockStateModelGenerator.blockStateOutput?.accept(ventModel)
         blockStateModelGenerator.registerSimpleItemModel(
             ModItems.VENT,
-            ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "block/vent/vent_inventory")
+            Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "block/vent/vent_inventory")
         )
     }
 

@@ -10,7 +10,7 @@ import net.minecraft.client.input.InputWithModifiers
 import net.minecraft.world.item.ItemStack
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.util.Mth
 
 class ImageCyclingButtonWidget<T>(
@@ -114,7 +114,7 @@ class ImageCyclingButtonWidget<T>(
 
     class IdentifierCycleEntry<A>(
         value: A,
-        private val texture: ResourceLocation,
+        private val texture: Identifier,
         name: Component,
         activeNarrationMessage: Component
     ) : CycleEntry<A>(value, name, activeNarrationMessage) {

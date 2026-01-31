@@ -10,7 +10,7 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.server.level.ServerPlayer
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 class UpdateBulkGoopSizeC2SPacket(val slotId: Int, val size: Int): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload?>? = ID
@@ -26,7 +26,7 @@ class UpdateBulkGoopSizeC2SPacket(val slotId: Int, val size: Int): CustomPacketP
     }
 
     companion object {
-        val IDENTIFIER: ResourceLocation = ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "update_bulk_goop_size")
+        val IDENTIFIER: Identifier = Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "update_bulk_goop_size")
         val ID = CustomPacketPayload.Type<UpdateBulkGoopSizeC2SPacket>(IDENTIFIER)
         val PACKET_CODEC: StreamCodec<ByteBuf, UpdateBulkGoopSizeC2SPacket> = StreamCodec.composite(
             ByteBufCodecs.INT, { packet: UpdateBulkGoopSizeC2SPacket -> packet.slotId},

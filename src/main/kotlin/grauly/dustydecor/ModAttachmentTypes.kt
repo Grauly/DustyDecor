@@ -4,13 +4,13 @@ import com.mojang.serialization.Codec
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType
 import net.minecraft.network.codec.ByteBufCodecs
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.util.ExtraCodecs
 
 object ModAttachmentTypes {
 
     val VOID_CONSUMPTION: AttachmentType<Float> = AttachmentRegistry
-        .create(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "void_consumption"))
+        .create(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "void_consumption"))
         { builder ->
             builder
                 .persistent(ExtraCodecs.NON_NEGATIVE_FLOAT)
@@ -22,11 +22,11 @@ object ModAttachmentTypes {
         //[Space intentionally left blank]
     }
 
-    private fun <A> registerPersistent(identifier: ResourceLocation, codec: Codec<A>): AttachmentType<A> {
+    private fun <A> registerPersistent(identifier: Identifier, codec: Codec<A>): AttachmentType<A> {
         return AttachmentRegistry.createPersistent(identifier, codec)
     }
 
     private fun <A> registerPersistent(id: String, codec: Codec<A>): AttachmentType<A> {
-        return registerPersistent(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, id), codec)
+        return registerPersistent(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id), codec)
     }
 }

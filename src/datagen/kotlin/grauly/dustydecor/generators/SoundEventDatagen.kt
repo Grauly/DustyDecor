@@ -9,7 +9,7 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.sounds.SoundSource
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import java.util.concurrent.CompletableFuture
 
 class SoundEventDatagen(
@@ -138,7 +138,7 @@ class SoundEventDatagen(
         event: SoundEvent,
         soundCategory: SoundSource,
         exporter: SoundExporter,
-        vararg files: ResourceLocation
+        vararg files: Identifier
     ) {
         val soundBuilder = SoundTypeBuilder.of()
         files.iterator().forEach { soundBuilder.sound(SoundTypeBuilder.EntryBuilder.ofFile(it)) }
@@ -156,7 +156,7 @@ class SoundEventDatagen(
         exporter: SoundExporter,
         vararg files: String
     ) {
-        fromFiles(event, soundCategory, exporter, *files.asList().map { ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, it) }.toTypedArray())
+        fromFiles(event, soundCategory, exporter, *files.asList().map { Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, it) }.toTypedArray())
     }
 
     companion object {

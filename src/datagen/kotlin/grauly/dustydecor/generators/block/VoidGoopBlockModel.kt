@@ -8,7 +8,7 @@ import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.blockstates.PropertyDispatch
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 object VoidGoopBlockModel {
     fun get(blockStateModelGenerator: BlockModelGenerators) {

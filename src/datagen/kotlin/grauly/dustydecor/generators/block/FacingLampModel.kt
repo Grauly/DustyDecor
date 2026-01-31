@@ -10,7 +10,7 @@ import net.minecraft.client.data.models.model.ItemModelUtils
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator
 import net.minecraft.client.data.models.blockstates.ConditionBuilder
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.core.Direction
 
 open class FacingLampModel(private val lamps: List<FacingLampBlock>, private val lampPrefix: String) {
@@ -61,7 +61,7 @@ open class FacingLampModel(private val lamps: List<FacingLampBlock>, private val
     protected open fun createItemModel(lamp: FacingLampBlock, blockStateModelGenerator: BlockModelGenerators) {
         val color = DyeUtils.COLOR_ORDER[lamps.indexOf(lamp)].textColor
         val tint = ItemModelUtils.constantTint(color)
-        val model = ItemModelUtils.tintedModel(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "block/${lampPrefix}_inventory"), tint)
+        val model = ItemModelUtils.tintedModel(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "block/${lampPrefix}_inventory"), tint)
         blockStateModelGenerator.itemModelOutput.accept(lamp.asItem(), model)
     }
 

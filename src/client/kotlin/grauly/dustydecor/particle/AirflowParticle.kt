@@ -11,7 +11,7 @@ import net.minecraft.client.particle.SpriteSet
 import net.minecraft.client.Camera
 import net.minecraft.client.renderer.texture.TextureAtlas
 import net.minecraft.client.multiplayer.ClientLevel
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.core.Direction
 import net.minecraft.util.RandomSource
 import org.joml.Quaternionf
@@ -110,7 +110,7 @@ class AirflowParticle(
             TextureAtlas.LOCATION_PARTICLES,
             RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)
                 .withCull(false)
-                .withLocation(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "opaque_no_cull"))
+                .withLocation(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "opaque_no_cull"))
                 .build()
         )
     }

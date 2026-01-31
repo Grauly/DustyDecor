@@ -6,14 +6,14 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.DeltaTracker
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.util.ARGB
 import kotlin.math.*
 
 object VoidGoopOverlayRenderer {
     private val client = Minecraft.getInstance()
-    private val END_TEXTURE = ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/misc/void_overlay/void_streak_end.png")
-    private val TEXTURE = ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/misc/void_overlay/void_streak.png")
+    private val END_TEXTURE = Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/misc/void_overlay/void_streak_end.png")
+    private val TEXTURE = Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/misc/void_overlay/void_streak.png")
 
     private val CREATIVE_COLOR = ARGB.white(0.5f)
     private val SURVIVAL_COLOR = ARGB.white(1f)

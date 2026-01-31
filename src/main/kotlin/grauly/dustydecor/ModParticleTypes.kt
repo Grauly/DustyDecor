@@ -12,7 +12,7 @@ import net.minecraft.core.particles.ParticleType
 import net.minecraft.core.particles.SimpleParticleType
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.Registry
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 object ModParticleTypes {
 
@@ -38,10 +38,10 @@ object ModParticleTypes {
     )
 
     private fun <T: ParticleOptions> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {
-        return registerParticle(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, id), type)
+        return registerParticle(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id), type)
     }
 
-    private fun <T: ParticleOptions> registerParticle(id: ResourceLocation, type: ParticleType<T>): ParticleType<T> {
+    private fun <T: ParticleOptions> registerParticle(id: Identifier, type: ParticleType<T>): ParticleType<T> {
         return Registry.register(BuiltInRegistries.PARTICLE_TYPE, id, type)
     }
 
@@ -57,7 +57,7 @@ object ModParticleTypes {
     private fun registerSimple(id: String, showAlways: Boolean = false): SimpleParticleType {
         return Registry.register(
             BuiltInRegistries.PARTICLE_TYPE,
-            ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, id),
+            Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id),
             FabricParticleTypes.simple(showAlways)
         )
     }

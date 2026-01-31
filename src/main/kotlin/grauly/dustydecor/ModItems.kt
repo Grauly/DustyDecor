@@ -20,7 +20,7 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
 import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.util.Unit
 
 object ModItems {
@@ -49,7 +49,7 @@ object ModItems {
                 .add(
                     Attributes.BLOCK_INTERACTION_RANGE,
                     AttributeModifier(
-                        ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "bulk_goop_place_range"),
+                        Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "bulk_goop_place_range"),
                         2.0,
                         AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
                     ),
@@ -105,7 +105,7 @@ object ModItems {
         settings: Properties = Properties(),
         namespace: String = DustyDecorMod.MODID
     ): Item {
-        val key: ResourceKey<Item> = ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(namespace, id))
+        val key: ResourceKey<Item> = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(namespace, id))
         settings.setId(key)
         return Registry.register(BuiltInRegistries.ITEM, key, itemFactory.invoke(settings))
     }

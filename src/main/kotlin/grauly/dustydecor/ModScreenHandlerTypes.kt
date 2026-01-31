@@ -8,7 +8,7 @@ import net.minecraft.core.Registry
 import net.minecraft.world.flag.FeatureFlagSet
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.MenuType
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 
 object ModScreenHandlerTypes {
 
@@ -16,7 +16,7 @@ object ModScreenHandlerTypes {
     val VAC_PIPE_STATION_RECEIVE_SCREEN_HANDLER: MenuType<VacPipeReceiveStationScreenHandler> = register("vac_pipe_station_receive", ::VacPipeReceiveStationScreenHandler)
 
     private fun <T: AbstractContainerMenu> register(id: String, constructor: (Int, Inventory) -> T, ): MenuType<T> {
-        return Registry.register(BuiltInRegistries.MENU, ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, id), MenuType<T>(constructor, FeatureFlagSet.of()))
+        return Registry.register(BuiltInRegistries.MENU, Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id), MenuType<T>(constructor, FeatureFlagSet.of()))
     }
 
     fun init() {
