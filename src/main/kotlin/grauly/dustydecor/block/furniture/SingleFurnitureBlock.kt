@@ -1,50 +1,52 @@
 package grauly.dustydecor.block.furniture
 
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.fluid.Fluids
-import net.minecraft.item.ItemPlacementContext
-import net.minecraft.state.StateManager
-import net.minecraft.state.property.BooleanProperty
-import net.minecraft.state.property.IntProperty
-import net.minecraft.state.property.Properties
-import net.minecraft.util.BlockMirror
-import net.minecraft.util.BlockRotation
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.RotationPropertyHelper
-import net.minecraft.util.math.random.Random
-import net.minecraft.world.WorldView
-import net.minecraft.world.tick.ScheduledTickView
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.material.Fluids
+import net.minecraft.world.item.context.BlockPlaceContext
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.block.state.properties.IntegerProperty
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.level.block.Mirror
+import net.minecraft.world.level.block.Rotation
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.world.level.block.state.properties.RotationSegment
+import net.minecraft.util.RandomSource
+import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.ScheduledTickAccess
 
-abstract class SingleFurnitureBlock(settings: Settings) : Block(settings) {
+abstract class SingleFurnitureBlock(settings: Properties) : Block(settings) {
     init {
-        defaultState = defaultState
-            .with(WATERLOGGED, false)
-            .with(ROTATION, 0)
+        registerDefaultState(
+            defaultBlockState()
+                .setValue(WATERLOGGED, false)
+                .setValue(ROTATION, 0)
+        )
     }
 
-    override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
-        val fluidState = ctx.world.getFluidState(ctx.blockPos)
-        return defaultState
-            .with(WATERLOGGED, fluidState.isOf(Fluids.WATER))
-            .with(ROTATION, RotationPropertyHelper.fromYaw(ctx.playerYaw + 180f))
+    override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState {
+        val fluidState = ctx.level.getFluidState(ctx.clickedPos)
+        return defaultBlockState()
+            .setValue(WATERLOGGED, fluidState.`is`(Fluids.WATER))
+            .setValue(ROTATION, RotationSegment.convertToSegment(ctx.rotation + 180f))
     }
 
-    override fun getStateForNeighborUpdate(
+    override fun updateShape(
         state: BlockState,
-        world: WorldView,
-        tickView: ScheduledTickView,
+        world: LevelReader,
+        tickView: ScheduledTickAccess,
         pos: BlockPos,
         direction: Direction,
         neighborPos: BlockPos,
         neighborState: BlockState,
-        random: Random
+        random: RandomSource
     ): BlockState? {
-        if (state.get(WATERLOGGED)) {
-            tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world))
+        if (state.getValue(WATERLOGGED)) {
+            tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world))
         }
-        return super.getStateForNeighborUpdate(
+        return super.updateShape(
             state,
             world,
             tickView,
@@ -58,25 +60,25 @@ abstract class SingleFurnitureBlock(settings: Settings) : Block(settings) {
 
     override fun mirror(
         state: BlockState,
-        mirror: BlockMirror
+        mirror: Mirror
     ): BlockState? {
-        return state.with(ROTATION, mirror.mirror(state.get(ROTATION), 16))
+        return state.setValue(ROTATION, mirror.mirror(state.getValue(ROTATION), 16))
     }
 
     override fun rotate(
         state: BlockState,
-        rotation: BlockRotation
+        rotation: Rotation
     ): BlockState? {
-        return state.with(ROTATION, rotation.rotate(state.get(ROTATION), 16))
+        return state.setValue(ROTATION, rotation.rotate(state.getValue(ROTATION), 16))
     }
 
-    override fun appendProperties(builder: StateManager.Builder<Block?, BlockState?>?) {
-        super.appendProperties(builder)
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block?, BlockState?>?) {
+        super.createBlockStateDefinition(builder)
         builder?.add(WATERLOGGED, ROTATION)
     }
 
     companion object {
-        val WATERLOGGED: BooleanProperty = Properties.WATERLOGGED
-        val ROTATION: IntProperty = Properties.ROTATION
+        val WATERLOGGED: BooleanProperty = BlockStateProperties.WATERLOGGED
+        val ROTATION: IntegerProperty = BlockStateProperties.ROTATION_16
     }
 }

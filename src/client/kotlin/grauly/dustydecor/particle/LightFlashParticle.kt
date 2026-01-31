@@ -1,45 +1,45 @@
 package grauly.dustydecor.particle
 
 import net.minecraft.client.particle.*
-import net.minecraft.client.texture.Sprite
-import net.minecraft.client.world.ClientWorld
-import net.minecraft.particle.SimpleParticleType
-import net.minecraft.util.math.random.Random
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
+import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.core.particles.SimpleParticleType
+import net.minecraft.util.RandomSource
 
 class LightFlashParticle(
-    clientWorld: ClientWorld?,
+    clientWorld: ClientLevel?,
     x: Double,
     y: Double,
     z: Double,
     velocityX: Double,
     velocityY: Double,
     velocityZ: Double,
-    sprite: Sprite
-) : BillboardParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ, sprite) {
+    sprite: TextureAtlasSprite
+) : SingleQuadParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ, sprite) {
     init {
-        this.velocityX = velocityX
-        this.velocityY = velocityY
-        this.velocityZ = velocityZ
-        this.gravityStrength = 0f
-        maxAge = 4
-        scale = 15/16f/2f
+        this.xd = velocityX
+        this.yd = velocityY
+        this.zd = velocityZ
+        this.gravity = 0f
+        lifetime = 4
+        quadSize = 15/16f/2f
     }
 
-    override fun getRenderType(): RenderType = RenderType.PARTICLE_ATLAS_OPAQUE
+    override fun getLayer(): Layer = Layer.OPAQUE
 
-    class Factory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
+    class Factory(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
             parameters: SimpleParticleType?,
-            world: ClientWorld?,
+            world: ClientLevel?,
             x: Double,
             y: Double,
             z: Double,
             velocityX: Double,
             velocityY: Double,
             velocityZ: Double,
-            random: Random
+            random: RandomSource
         ): Particle {
-            return LightFlashParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.getSprite(random))
+            return LightFlashParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.get(random))
         }
     }
 }

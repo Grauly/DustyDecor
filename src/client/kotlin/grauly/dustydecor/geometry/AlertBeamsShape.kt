@@ -1,14 +1,14 @@
 package grauly.dustydecor.geometry
 
-import net.minecraft.util.math.Vec2f
-import net.minecraft.util.math.Vec3d
+import net.minecraft.world.phys.Vec2
+import net.minecraft.world.phys.Vec3
 import org.joml.Quaternionf
 import kotlin.math.PI
 
 object AlertBeamsShape : ShapeDefinition {
-    override fun getPoints(): List<Vec3d> = POINTS
+    override fun getPoints(): List<Vec3> = POINTS
 
-    override fun getUvs(): List<Vec2f> = UVS
+    override fun getUvs(): List<Vec2> = UVS
 
     private val POINTS = run {
         val beam = BacksideBeamShape(
@@ -30,7 +30,7 @@ object AlertBeamsShape : ShapeDefinition {
             6.0/16,
             8.0/16,
             10.0/16
-        ).getTransformed(Vec3d(2.0/16, 0.0, 0.0))
+        ).getTransformed(Vec3(2.0/16, 0.0, 0.0))
         listOf(
             *beam.getUvs().toTypedArray(),
             *beam.getUvs().toTypedArray()

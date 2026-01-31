@@ -7,93 +7,93 @@ import grauly.dustydecor.blockentity.vac_station.SendMode
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.GOLEM_MODE
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.REDSTONE_MODE
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.SEND_MODE
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.Inventory
-import net.minecraft.inventory.SimpleInventory
-import net.minecraft.item.ItemStack
-import net.minecraft.screen.ArrayPropertyDelegate
-import net.minecraft.screen.PropertyDelegate
-import net.minecraft.screen.ScreenHandler
-import net.minecraft.screen.ScreenHandlerContext
-import net.minecraft.screen.ScreenHandlerListener
-import net.minecraft.screen.ScreenHandlerType
-import net.minecraft.screen.slot.Slot
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.Container
+import net.minecraft.world.SimpleContainer
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.inventory.SimpleContainerData
+import net.minecraft.world.inventory.ContainerData
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.ContainerLevelAccess
+import net.minecraft.world.inventory.ContainerListener
+import net.minecraft.world.inventory.MenuType
+import net.minecraft.world.inventory.Slot
 import kotlin.math.floor
 
-abstract class VacPipeStationScreenHandler<T : ScreenHandler> private constructor(
-    type: ScreenHandlerType<T>,
+abstract class VacPipeStationScreenHandler<T : AbstractContainerMenu> private constructor(
+    type: MenuType<T>,
     syncId: Int
-) : ScreenHandler(type, syncId), ScreenHandlerListener {
-    private lateinit var playerInventory: PlayerInventory
-    private lateinit var inventory: Inventory
-    private lateinit var context: ScreenHandlerContext
-    private lateinit var propertyDelegate: PropertyDelegate
+) : AbstractContainerMenu(type, syncId), ContainerListener {
+    private lateinit var playerInventory: Inventory
+    private lateinit var inventory: Container
+    private lateinit var context: ContainerLevelAccess
+    private lateinit var propertyDelegate: ContainerData
 
     constructor(
-        type: ScreenHandlerType<T>,
+        type: MenuType<T>,
         syncId: Int,
-        playerInventory: PlayerInventory,
-        inventory: Inventory,
-        context: ScreenHandlerContext,
-        propertyDelegate: PropertyDelegate
+        playerInventory: Inventory,
+        inventory: Container,
+        context: ContainerLevelAccess,
+        propertyDelegate: ContainerData
     ) : this(type, syncId) {
         this.playerInventory = playerInventory
         this.inventory = inventory
         this.context = context
         this.propertyDelegate = propertyDelegate
-        checkSize(this.inventory, 3)
-        inventory.onOpen(this.playerInventory.player)
+        checkContainerSize(this.inventory, 3)
+        inventory.startOpen(this.playerInventory.player)
         init()
-        addListener(this)
+        addSlotListener(this)
     }
 
-    constructor(type: ScreenHandlerType<T>, syncId: Int, playerInventory: PlayerInventory) : this(type, syncId) {
+    constructor(type: MenuType<T>, syncId: Int, playerInventory: Inventory) : this(type, syncId) {
         this.playerInventory = playerInventory
-        this.inventory = SimpleInventory(3)
-        this.context = ScreenHandlerContext.EMPTY
-        this.propertyDelegate = ArrayPropertyDelegate(4)
+        this.inventory = SimpleContainer(3)
+        this.context = ContainerLevelAccess.NULL
+        this.propertyDelegate = SimpleContainerData(4)
         init()
     }
 
     open fun init() {
         addVariantSlots(this.inventory)
-        addPlayerSlots(this.playerInventory, 8, 107)
-        addProperties(propertyDelegate)
+        addStandardInventorySlots(this.playerInventory, 8, 107)
+        addDataSlots(propertyDelegate)
     }
 
-    override fun onButtonClick(player: PlayerEntity?, id: Int): Boolean {
+    override fun clickMenuButton(player: Player?, id: Int): Boolean {
         val category = floor(id / 10.0).toInt()
         val value = id - category * 10
         propertyDelegate.set(category, value)
-        sendContentUpdates()
+        broadcastChanges()
         return true
     }
 
-    abstract fun addVariantSlots(inventory: Inventory)
+    abstract fun addVariantSlots(inventory: Container)
 
-    override fun quickMove(
-        player: PlayerEntity?,
+    override fun quickMoveStack(
+        player: Player?,
         slotIndex: Int
     ): ItemStack? {
         val fromSlot: Slot = slots[slotIndex]
-        if (!fromSlot.hasStack()) return ItemStack.EMPTY
-        val movingStack = fromSlot.stack
+        if (!fromSlot.hasItem()) return ItemStack.EMPTY
+        val movingStack = fromSlot.item
         val originalStack = movingStack.copy()
-        val fromInvToPlayer = slotIndex < inventory.size()
-        val managedFit = insertItem(
+        val fromInvToPlayer = slotIndex < inventory.containerSize
+        val managedFit = moveItemStackTo(
             movingStack,
-            if (fromInvToPlayer) inventory.size() else 0,
-            if (fromInvToPlayer) slots.size else inventory.size(),
+            if (fromInvToPlayer) inventory.containerSize else 0,
+            if (fromInvToPlayer) slots.size else inventory.containerSize,
             fromInvToPlayer
         )
         if (!managedFit) return ItemStack.EMPTY
-        if (movingStack.isEmpty) fromSlot.stack = ItemStack.EMPTY else fromSlot.markDirty()
+        if (movingStack.isEmpty) fromSlot.setByPlayer(ItemStack.EMPTY) else fromSlot.setChanged()
         return originalStack
     }
 
-    override fun canUse(player: PlayerEntity?): Boolean =
-        inventory.canPlayerUse(player)
+    override fun stillValid(player: Player?): Boolean =
+        inventory.stillValid(player)
 
     fun getGolemMode(): CopperGolemMode {
         return CopperGolemMode.entries[propertyDelegate.get(GOLEM_MODE)]
@@ -109,30 +109,30 @@ abstract class VacPipeStationScreenHandler<T : ScreenHandler> private constructo
 
     fun setGolemMode(golemMode: CopperGolemMode) {
         propertyDelegate.set(GOLEM_MODE, golemMode.ordinal)
-        sendContentUpdates()
+        broadcastChanges()
     }
 
     fun setSendingMode(sendMode: SendMode) {
         propertyDelegate.set(SEND_MODE, sendMode.ordinal)
-        sendContentUpdates()
+        broadcastChanges()
     }
 
     fun setRedstoneMode(redstoneEmissionMode: RedstoneEmissionMode) {
         propertyDelegate.set(REDSTONE_MODE, redstoneEmissionMode.ordinal)
-        sendContentUpdates()
+        broadcastChanges()
     }
 
-    override fun onPropertyUpdate(
-        handler: ScreenHandler?,
+    override fun dataChanged(
+        handler: AbstractContainerMenu?,
         property: Int,
         value: Int
     ) {
-        updateToClient()
-        sendContentUpdates()
+        broadcastFullState()
+        broadcastChanges()
     }
 
-    override fun onSlotUpdate(
-        handler: ScreenHandler?,
+    override fun slotChanged(
+        handler: AbstractContainerMenu?,
         slotId: Int,
         stack: ItemStack?
     ) {

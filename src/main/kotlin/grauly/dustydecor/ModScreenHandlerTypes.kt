@@ -2,21 +2,21 @@ package grauly.dustydecor
 
 import grauly.dustydecor.screen.VacPipeReceiveStationScreenHandler
 import grauly.dustydecor.screen.VacPipeSendStationScreenHandler
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
-import net.minecraft.resource.featuretoggle.FeatureSet
-import net.minecraft.screen.ScreenHandler
-import net.minecraft.screen.ScreenHandlerType
-import net.minecraft.util.Identifier
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.core.Registry
+import net.minecraft.world.flag.FeatureFlagSet
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.MenuType
+import net.minecraft.resources.ResourceLocation
 
 object ModScreenHandlerTypes {
 
-    val VAC_PIPE_STATION_SEND_SCREEN_HANDLER: ScreenHandlerType<VacPipeSendStationScreenHandler> = register("vac_pipe_station_send", ::VacPipeSendStationScreenHandler)
-    val VAC_PIPE_STATION_RECEIVE_SCREEN_HANDLER: ScreenHandlerType<VacPipeReceiveStationScreenHandler> = register("vac_pipe_station_receive", ::VacPipeReceiveStationScreenHandler)
+    val VAC_PIPE_STATION_SEND_SCREEN_HANDLER: MenuType<VacPipeSendStationScreenHandler> = register("vac_pipe_station_send", ::VacPipeSendStationScreenHandler)
+    val VAC_PIPE_STATION_RECEIVE_SCREEN_HANDLER: MenuType<VacPipeReceiveStationScreenHandler> = register("vac_pipe_station_receive", ::VacPipeReceiveStationScreenHandler)
 
-    private fun <T: ScreenHandler> register(id: String, constructor: (Int, PlayerInventory) -> T, ): ScreenHandlerType<T> {
-        return Registry.register(Registries.SCREEN_HANDLER, Identifier.of(DustyDecorMod.MODID, id), ScreenHandlerType<T>(constructor, FeatureSet.empty()))
+    private fun <T: AbstractContainerMenu> register(id: String, constructor: (Int, Inventory) -> T, ): MenuType<T> {
+        return Registry.register(BuiltInRegistries.MENU, ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, id), MenuType<T>(constructor, FeatureFlagSet.of()))
     }
 
     fun init() {

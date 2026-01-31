@@ -1,22 +1,22 @@
 package grauly.dustydecor.particle.spark
 
 import grauly.dustydecor.DustyDecorMod
-import net.minecraft.client.particle.ParticleManager
-import net.minecraft.client.particle.ParticleRenderer
-import net.minecraft.client.particle.ParticleTextureSheet
-import net.minecraft.client.render.Camera
-import net.minecraft.client.render.Frustum
-import net.minecraft.client.render.Submittable
-import net.minecraft.util.Identifier
+import net.minecraft.client.particle.ParticleEngine
+import net.minecraft.client.particle.ParticleGroup
+import net.minecraft.client.particle.ParticleRenderType
+import net.minecraft.client.Camera
+import net.minecraft.client.renderer.culling.Frustum
+import net.minecraft.client.renderer.state.ParticleGroupRenderState
+import net.minecraft.resources.ResourceLocation
 
-class SparkParticleRenderer(particleManager: ParticleManager) : ParticleRenderer<SparkParticle>(particleManager) {
+class SparkParticleRenderer(particleManager: ParticleEngine) : ParticleGroup<SparkParticle>(particleManager) {
     private val submittable = QuadBasedParticleSubmittable()
 
-    override fun render(
+    override fun extractRenderState(
         frustum: Frustum,
         camera: Camera,
         tickProgress: Float
-    ): Submittable {
+    ): ParticleGroupRenderState {
         particles
             .filter { it is SparkParticle }
             .map { it as SparkParticle }
@@ -26,7 +26,7 @@ class SparkParticleRenderer(particleManager: ParticleManager) : ParticleRenderer
     }
 
     companion object {
-        private val id = Identifier.of(DustyDecorMod.MODID, "spark_renderer").toString()
-        val textureSheet = ParticleTextureSheet(id)
+        private val id = ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "spark_renderer").toString()
+        val textureSheet = ParticleRenderType(id)
     }
 }

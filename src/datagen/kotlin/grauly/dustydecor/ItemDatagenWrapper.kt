@@ -1,8 +1,8 @@
 package grauly.dustydecor
 
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
-import net.minecraft.item.Item
-import net.minecraft.registry.tag.TagKey
+import net.minecraft.world.item.Item
+import net.minecraft.tags.TagKey
 
 object ItemDatagenWrapper {
     val entries: MutableList<DatagenSpec> = mutableListOf()

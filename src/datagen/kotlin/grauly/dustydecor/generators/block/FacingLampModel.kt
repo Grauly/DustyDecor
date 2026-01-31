@@ -5,63 +5,63 @@ import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.block.lamp.FacingLampBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import grauly.dustydecor.util.DyeUtils
-import net.minecraft.client.data.BlockStateModelGenerator
-import net.minecraft.client.data.ItemModels
-import net.minecraft.client.data.MultipartBlockModelDefinitionCreator
-import net.minecraft.client.render.model.json.MultipartModelConditionBuilder
-import net.minecraft.state.property.Properties
-import net.minecraft.util.Identifier
-import net.minecraft.util.math.Direction
+import net.minecraft.client.data.models.BlockModelGenerators
+import net.minecraft.client.data.models.model.ItemModelUtils
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator
+import net.minecraft.client.data.models.blockstates.ConditionBuilder
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.core.Direction
 
 open class FacingLampModel(private val lamps: List<FacingLampBlock>, private val lampPrefix: String) {
-    fun get(blockStateModelGenerator: BlockStateModelGenerator) {
+    fun get(blockStateModelGenerator: BlockModelGenerators) {
         lamps.forEach {
             createCageLamp(it, blockStateModelGenerator)
         }
     }
 
-    private fun createCageLamp(lamp: FacingLampBlock, blockStateModelGenerator: BlockStateModelGenerator) {
+    private fun createCageLamp(lamp: FacingLampBlock, blockStateModelGenerator: BlockModelGenerators) {
         createBlockModel(lamp, blockStateModelGenerator)
         createItemModel(lamp, blockStateModelGenerator)
     }
 
-    protected open fun createBlockModel(lamp: FacingLampBlock, blockStateModelGenerator: BlockStateModelGenerator) {
-        val creator = MultipartBlockModelDefinitionCreator.create(lamp)
+    protected open fun createBlockModel(lamp: FacingLampBlock, blockStateModelGenerator: BlockModelGenerators) {
+        val creator = MultiPartGenerator.multiPart(lamp)
         Direction.entries.forEach { direction: Direction ->
             creator.with(
-                MultipartModelConditionBuilder()
-                    .put(Properties.FACING, direction),
+                ConditionBuilder()
+                    .term(BlockStateProperties.FACING, direction),
                 CAGE
-                    .apply(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                    .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
             )
             creator.with(
-                MultipartModelConditionBuilder()
-                    .put(Properties.FACING, direction)
-                    .put(LightingFixtureBlock.BROKEN, true),
+                ConditionBuilder()
+                    .term(BlockStateProperties.FACING, direction)
+                    .term(LightingFixtureBlock.BROKEN, true),
                 BROKEN_LAMP
-                    .apply(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                    .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
             )
             listOf(true, false).forEach litLoop@{ on ->
                 listOf(true, false).forEach invertedLoop@{ inverted ->
                     creator.with(
-                        MultipartModelConditionBuilder()
-                            .put(Properties.FACING, direction)
-                            .put(LightingFixtureBlock.BROKEN, false)
-                            .put(LightingFixtureBlock.LIT, on)
-                            .put(LightingFixtureBlock.INVERTED, inverted),
+                        ConditionBuilder()
+                            .term(BlockStateProperties.FACING, direction)
+                            .term(LightingFixtureBlock.BROKEN, false)
+                            .term(LightingFixtureBlock.LIT, on)
+                            .term(LightingFixtureBlock.INVERTED, inverted),
                         (if (on != inverted) ACTIVE_LAMP else INACTIVE_LAMP)
-                            .apply(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                            .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
                     )
                 }
             }
         }
-        blockStateModelGenerator.blockStateCollector.accept(creator)
+        blockStateModelGenerator.blockStateOutput.accept(creator)
     }
 
-    protected open fun createItemModel(lamp: FacingLampBlock, blockStateModelGenerator: BlockStateModelGenerator) {
-        val color = DyeUtils.COLOR_ORDER[lamps.indexOf(lamp)].signColor
-        val tint = ItemModels.constantTintSource(color)
-        val model = ItemModels.tinted(Identifier.of(DustyDecorMod.MODID, "block/${lampPrefix}_inventory"), tint)
+    protected open fun createItemModel(lamp: FacingLampBlock, blockStateModelGenerator: BlockModelGenerators) {
+        val color = DyeUtils.COLOR_ORDER[lamps.indexOf(lamp)].textColor
+        val tint = ItemModelUtils.constantTint(color)
+        val model = ItemModelUtils.tintedModel(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "block/${lampPrefix}_inventory"), tint)
         blockStateModelGenerator.itemModelOutput.accept(lamp.asItem(), model)
     }
 

@@ -1,25 +1,25 @@
 package grauly.dustydecor.particle.spark
 
 import grauly.dustydecor.ModParticleTypes
-import net.minecraft.block.ShapeContext
+import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.client.particle.Particle
-import net.minecraft.client.particle.ParticleFactory
-import net.minecraft.client.particle.ParticleTextureSheet
-import net.minecraft.client.particle.SpriteProvider
-import net.minecraft.client.render.Camera
-import net.minecraft.client.render.Frustum
-import net.minecraft.client.render.LightmapTextureManager
-import net.minecraft.client.texture.Sprite
-import net.minecraft.client.world.ClientWorld
-import net.minecraft.particle.SimpleParticleType
-import net.minecraft.util.Colors
-import net.minecraft.util.hit.HitResult
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec3d
-import net.minecraft.util.math.random.Random
-import net.minecraft.world.LightType
-import net.minecraft.world.RaycastContext
+import net.minecraft.client.particle.ParticleProvider
+import net.minecraft.client.particle.ParticleRenderType
+import net.minecraft.client.particle.SpriteSet
+import net.minecraft.client.Camera
+import net.minecraft.client.renderer.culling.Frustum
+import net.minecraft.client.renderer.LightTexture
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
+import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.core.particles.SimpleParticleType
+import net.minecraft.util.CommonColors
+import net.minecraft.world.phys.HitResult
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.world.phys.Vec3
+import net.minecraft.util.RandomSource
+import net.minecraft.world.level.LightLayer
+import net.minecraft.world.level.ClipContext
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.max
@@ -31,7 +31,7 @@ import kotlin.math.roundToInt
  * Honestly, without the showcase on the fabricord, I would not have had this idea, so ty :)
  */
 class SparkParticle(
-    clientWorld: ClientWorld,
+    clientWorld: ClientLevel,
     x: Double,
     y: Double,
     z: Double,
@@ -43,65 +43,65 @@ class SparkParticle(
     drag: Double = 1.0,
     private val lengthFactor: Float = 4f,
     sparkWidthPixels: Double = 1.0,
-    private val spriteProvider: SpriteProvider
+    private val spriteProvider: SpriteSet
 ) : Particle(clientWorld, x, y, z, velocityX, velocityY, velocityZ) {
-    private var pos: Vec3d = Vec3d(x, y, z)
-    private var lastPos: Vec3d = pos
-    private var lastLastPos: Vec3d = lastPos
-    private var velocity: Vec3d = Vec3d(velocityX, velocityY, velocityZ)
+    private var pos: Vec3 = Vec3(x, y, z)
+    private var lastPos: Vec3 = pos
+    private var lastLastPos: Vec3 = lastPos
+    private var velocity: Vec3 = Vec3(velocityX, velocityY, velocityZ)
 
     private val bounceFactor = 0.6
     private val sparkWidth: Double = sparkWidthPixels / 16
     private var hasSplit = false
     private var lastBouncedBlockPos = BlockPos.ZERO
     private var scale = 1f
-    private var sprite: Sprite = spriteProvider.getSprite(0, maxAge)
+    private var sprite: TextureAtlasSprite = spriteProvider.get(0, lifetime)
 
     init {
-        this.gravityStrength = gravity.toFloat()
-        this.velocityMultiplier = drag.toFloat()
-        maxAge = lifetime
+        this.gravity = gravity.toFloat()
+        this.friction = drag.toFloat()
+        lifetime = lifetime
         scale = 0.9f + random.nextFloat() * 0.2f
     }
 
     override fun tick() {
-        if (this.dead) return
-        if (age++ > maxAge) {
-            this.markDead()
+        if (this.removed) return
+        if (age++ > lifetime) {
+            this.remove()
             return
         }
-        sprite = spriteProvider.getSprite(age, maxAge)
+        sprite = spriteProvider.get(age, lifetime)
         lastLastPos = lastPos
         lastPos = pos
-        velocity = velocity.multiply(velocityMultiplier.toDouble()).add(0.0, -0.04 * gravityStrength, 0.0)
+        velocity = velocity.scale(friction.toDouble()).add(0.0, -0.04 * gravity, 0.0)
         var prospectivePos = pos.add(velocity)
-        val hit = world.raycast(
-            RaycastContext(
+        val hit = level.clip(
+            ClipContext(
                 pos,
                 prospectivePos,
-                RaycastContext.ShapeType.COLLIDER,
-                RaycastContext.FluidHandling.NONE,
-                ShapeContext.absent()
+                ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
+                CollisionContext.empty()
             )
         )
         if (hit.type != HitResult.Type.MISS) {
             if (lastBouncedBlockPos == hit.blockPos) {
                 //bounced again too fast in same block, presumed in block
-                this.markDead()
+                this.remove()
                 return
             }
             lastBouncedBlockPos = hit.blockPos
-            val multVector = when (hit.side.axis) {
-                Direction.Axis.X -> Vec3d(-1.0, 1.0, 1.0)
-                Direction.Axis.Y -> Vec3d(1.0, -1.0, 1.0)
-                Direction.Axis.Z -> Vec3d(1.0, 1.0, -1.0)
-                null -> Vec3d(1.0, 1.0, 1.0)
+            val multVector = when (hit.direction.axis) {
+                Direction.Axis.X -> Vec3(-1.0, 1.0, 1.0)
+                Direction.Axis.Y -> Vec3(1.0, -1.0, 1.0)
+                Direction.Axis.Z -> Vec3(1.0, 1.0, -1.0)
+                null -> Vec3(1.0, 1.0, 1.0)
             }
-            val distanceToBounce = hit.pos.subtract(pos).length()
-            velocity = velocity.multiply(multVector).multiply(bounceFactor)
+            val distanceToBounce = hit.location.subtract(pos).length()
+            velocity = velocity.multiply(multVector).scale(bounceFactor)
             val speed = velocity.length()
             val afterBounceLength = speed - distanceToBounce
-            prospectivePos = hit.pos.add(velocity.normalize().multiply(afterBounceLength))
+            prospectivePos = hit.location.add(velocity.normalize().scale(afterBounceLength))
             onBounce()
         } else {
             lastBouncedBlockPos = BlockPos.ZERO
@@ -109,12 +109,12 @@ class SparkParticle(
         pos = prospectivePos
     }
 
-    override fun textureSheet(): ParticleTextureSheet = SparkParticleRenderer.textureSheet
+    override fun getGroup(): ParticleRenderType = SparkParticleRenderer.textureSheet
 
     private fun onBounce() {
         val randomNum = random.nextInt(10)
         if (randomNum < 2) {
-            world.addParticleClient(
+            level.addParticle(
                 ModParticleTypes.SPARK_FLASH,
                 pos.x,
                 pos.y,
@@ -130,11 +130,11 @@ class SparkParticle(
     }
 
     private fun split() {
-        world.addParticleClient(ModParticleTypes.SPARK_FLASH, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z)
+        level.addParticle(ModParticleTypes.SPARK_FLASH, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z)
         if (!hasSplit) {
             val velocitySpread = velocity.length() * 0.6
             hasSplit = true
-            world.addParticleClient(
+            level.addParticle(
                 ModParticleTypes.SMALL_SPARK_PARTICLE,
                 pos.x,
                 pos.y,
@@ -147,8 +147,8 @@ class SparkParticle(
     }
 
     fun intersectsFrustum(frustum: Frustum): Boolean {
-        val posIntersects = frustum.intersectPoint(pos.x, pos.y, pos.z)
-        val lastPosIntersects = frustum.intersectPoint(lastLastPos.x, lastLastPos.y, lastLastPos.z)
+        val posIntersects = frustum.pointInFrustum(pos.x, pos.y, pos.z)
+        val lastPosIntersects = frustum.pointInFrustum(lastLastPos.x, lastLastPos.y, lastLastPos.z)
         return posIntersects || lastPosIntersects
     }
 
@@ -157,18 +157,18 @@ class SparkParticle(
         camera: Camera,
         tickProgress: Float
     ) {
-        val renderLocalPos = lastPos.lerp(pos, tickProgress.toDouble()).subtract(camera.pos)
+        val renderLocalPos = lastPos.lerp(pos, tickProgress.toDouble()).subtract(camera.position)
         val renderLocalLastPos = lastLastPos.lerp(lastPos, tickProgress.toDouble())
-            .subtract(camera.pos)
+            .subtract(camera.position)
         val centerPos = renderLocalLastPos.lerp(renderLocalPos, 0.5)
         val spanVector = renderLocalPos.subtract(renderLocalLastPos)
-        val speedSquared = spanVector.lengthSquared()
+        val speedSquared = spanVector.lengthSqr()
         val scaleVector = Vector3f(
             max(lengthFactor * speedSquared.toFloat(), getSize(tickProgress)),
             getSize(tickProgress),
             getSize(tickProgress)
         )
-        val rotation = if (spanVector.lengthSquared() != 0.0) {
+        val rotation = if (spanVector.lengthSqr() != 0.0) {
             Quaternionf().rotationTo(Vector3f(1f, 0f, 0f), spanVector.normalize().toVector3f())
         } else {
             Quaternionf()
@@ -191,67 +191,67 @@ class SparkParticle(
         val side = Vector3f(to).sub(from).normalize()
         val camForward = Vector3f(to).lerp(from, 0.5f)
         val sparkUp = Vector3f(side).cross(camForward).normalize().mul((getSize(tickProgress) / 2))
-        val light = getBrightness(0f)
+        val light = getLightColor(0f)
 
         submittable.beginQuad()
         submittable.addVertex(
             Vector3f(to).add(Vector3f(sparkUp).negate()),
-            sprite.minU,
-            sprite.maxV,
+            sprite.u0,
+            sprite.v1,
             light,
-            Colors.WHITE
+            CommonColors.WHITE
         )
         submittable.addVertex(
             Vector3f(to).add(sparkUp),
-            sprite.minU,
-            sprite.minV,
+            sprite.u0,
+            sprite.v0,
             light,
-            Colors.WHITE
+            CommonColors.WHITE
         )
         submittable.addVertex(
             Vector3f(from).add(sparkUp),
-            sprite.maxU,
-            sprite.minV,
+            sprite.u1,
+            sprite.v0,
             light,
-            Colors.WHITE
+            CommonColors.WHITE
         )
         submittable.addVertex(
             Vector3f(from).add(Vector3f(sparkUp).negate()),
-            sprite.maxU,
-            sprite.maxV,
+            sprite.u1,
+            sprite.v1,
             light,
-            Colors.WHITE
+            CommonColors.WHITE
         )
         submittable.endQuad()
     }
 
-    override fun getBrightness(tint: Float): Int {
-        val sparkBrightness: Int = ((age.toFloat() / maxAge) * 15).roundToInt()
-        val pos: BlockPos = BlockPos.ofFloored(pos)
-        val blockLight: Int = world.getLightLevel(LightType.BLOCK, pos)
-        val skyLight: Int = world.getLightLevel(LightType.SKY, pos)
-        return LightmapTextureManager.pack(max(sparkBrightness, blockLight), skyLight)
+    override fun getLightColor(tint: Float): Int {
+        val sparkBrightness: Int = ((age.toFloat() / lifetime) * 15).roundToInt()
+        val pos: BlockPos = BlockPos.containing(pos)
+        val blockLight: Int = level.getBrightness(LightLayer.BLOCK, pos)
+        val skyLight: Int = level.getBrightness(LightLayer.SKY, pos)
+        return LightTexture.pack(max(sparkBrightness, blockLight), skyLight)
     }
 
     private fun getSize(tickProgress: Float): Float {
-        return sparkWidth.toFloat() * scale * (1f - (age + tickProgress) / maxAge)
+        return sparkWidth.toFloat() * scale * (1f - (age + tickProgress) / lifetime)
     }
 
     private fun pixel(i: Int): Double = i / 16.0
     private fun pixel(i: Double): Double = i / 16.0
     private fun pixel(i: Float): Float = i / 16.0f
 
-    class LargeSparkFactory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
+    class LargeSparkFactory(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
             parameters: SimpleParticleType?,
-            world: ClientWorld,
+            world: ClientLevel,
             x: Double,
             y: Double,
             z: Double,
             velocityX: Double,
             velocityY: Double,
             velocityZ: Double,
-            random: Random
+            random: RandomSource
         ): Particle {
             return SparkParticle(
                 world,
@@ -269,17 +269,17 @@ class SparkParticle(
         }
     }
 
-    class SmallSparkFactory(private val spriteProvider: SpriteProvider) : ParticleFactory<SimpleParticleType> {
+    class SmallSparkFactory(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
             parameters: SimpleParticleType?,
-            world: ClientWorld,
+            world: ClientLevel,
             x: Double,
             y: Double,
             z: Double,
             velocityX: Double,
             velocityY: Double,
             velocityZ: Double,
-            random: Random
+            random: RandomSource
         ): Particle {
             return SparkParticle(
                 world,
@@ -298,7 +298,7 @@ class SparkParticle(
     }
 
     companion object {
-        private fun randomDoubleBetween(random: Random, start: Double, end: Double): Double {
+        private fun randomDoubleBetween(random: RandomSource, start: Double, end: Double): Double {
             val base = random.nextDouble()
             val diff = end - start
             return start + (base * diff)

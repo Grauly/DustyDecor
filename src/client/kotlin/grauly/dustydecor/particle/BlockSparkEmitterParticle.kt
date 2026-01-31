@@ -2,14 +2,14 @@ package grauly.dustydecor.particle
 
 import grauly.dustydecor.ModParticleTypes
 import net.minecraft.client.particle.NoRenderParticle
-import net.minecraft.client.world.ClientWorld
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Vec3d
-import net.minecraft.util.math.random.Random
-import net.minecraft.util.shape.VoxelShape
+import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.core.BlockPos
+import net.minecraft.world.phys.Vec3
+import net.minecraft.util.RandomSource
+import net.minecraft.world.phys.shapes.VoxelShape
 
 class BlockSparkEmitterParticle(
-    clientWorld: ClientWorld,
+    clientWorld: ClientLevel,
     x: Double,
     y: Double,
     z: Double,
@@ -21,11 +21,11 @@ class BlockSparkEmitterParticle(
 ) : NoRenderParticle(clientWorld, x, y, z, xDir, yDir, zDir) {
 
     override fun tick() {
-        val pos: BlockPos = BlockPos.ofFloored(x, y, z)
-        val collisionShape: VoxelShape = world.getBlockState(pos).getCollisionShape(world, pos)
+        val pos: BlockPos = BlockPos.containing(x, y, z)
+        val collisionShape: VoxelShape = level.getBlockState(pos).getCollisionShape(level, pos)
         val faces = getFaceRepresentation(collisionShape)
         if (faces.isEmpty()) {
-            this.markDead()
+            this.remove()
             return
         }
         val faceAreaMap: MutableMap<Face, Double> = faces.associateWith { it.area() }.toMutableMap()
@@ -38,34 +38,34 @@ class BlockSparkEmitterParticle(
             val xOffset = (random.nextDouble() - 0.5) * spread
             val yOffset = (random.nextDouble() - 0.5) * spread
             val zOffset = (random.nextDouble() - 0.5) * spread
-            world.addParticleClient(
+            level.addParticle(
                 if (random.nextDouble() > 0.4) ModParticleTypes.SPARK_PARTICLE else ModParticleTypes.SMALL_SPARK_PARTICLE,
                 point.x, point.y, point.z, xDir + xOffset, yDir + yOffset, zDir + zOffset
             )
         }
-        markDead()
+        remove()
     }
 
     private fun getFaceRepresentation(shape: VoxelShape): List<Face> {
         val lookup = SHAPE_FACE_CACHE[shape]
         if (lookup != null) return lookup
         val faces = mutableListOf<Face>()
-        shape.forEachBox { minX, minY, minZ, maxX, maxY, maxZ ->
-            faces.add(Face(Vec3d(minX, minY, minZ), Vec3d(minX, maxY, maxZ)))
-            faces.add(Face(Vec3d(minX, minY, minZ), Vec3d(maxX, minY, maxZ)))
-            faces.add(Face(Vec3d(minX, minY, minZ), Vec3d(maxX, maxY, minZ)))
-            faces.add(Face(Vec3d(maxX, minY, minZ), Vec3d(maxX, maxY, maxZ)))
-            faces.add(Face(Vec3d(minX, maxY, minZ), Vec3d(maxX, maxY, maxZ)))
-            faces.add(Face(Vec3d(minX, minY, maxZ), Vec3d(maxX, maxY, maxZ)))
+        shape.forAllBoxes { minX, minY, minZ, maxX, maxY, maxZ ->
+            faces.add(Face(Vec3(minX, minY, minZ), Vec3(minX, maxY, maxZ)))
+            faces.add(Face(Vec3(minX, minY, minZ), Vec3(maxX, minY, maxZ)))
+            faces.add(Face(Vec3(minX, minY, minZ), Vec3(maxX, maxY, minZ)))
+            faces.add(Face(Vec3(maxX, minY, minZ), Vec3(maxX, maxY, maxZ)))
+            faces.add(Face(Vec3(minX, maxY, minZ), Vec3(maxX, maxY, maxZ)))
+            faces.add(Face(Vec3(minX, minY, maxZ), Vec3(maxX, maxY, maxZ)))
         }
         SHAPE_FACE_CACHE[shape] = faces
         return faces
     }
 
     private class Face(
-        val minPos: Vec3d,
-        val maxPos: Vec3d,
-        val adjusted: Vec3d = maxPos.subtract(minPos)
+        val minPos: Vec3,
+        val maxPos: Vec3,
+        val adjusted: Vec3 = maxPos.subtract(minPos)
     ) {
         fun area(): Double {
             val x = if (adjusted.x == 0.0) 1.0 else adjusted.x
@@ -74,7 +74,7 @@ class BlockSparkEmitterParticle(
             return x * y * z
         }
 
-        fun randomPointOn(random: Random): Vec3d {
+        fun randomPointOn(random: RandomSource): Vec3 {
             val x = if (adjusted.x == 0.0) 0.0 else adjusted.x * random.nextDouble()
             val y = if (adjusted.y == 0.0) 0.0 else adjusted.y * random.nextDouble()
             val z = if (adjusted.z == 0.0) 0.0 else adjusted.z * random.nextDouble()

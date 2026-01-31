@@ -1,40 +1,42 @@
 package grauly.dustydecor.block.lamp
 
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.block.Blocks
-import net.minecraft.block.ShapeContext
-import net.minecraft.item.ItemPlacementContext
-import net.minecraft.state.StateManager
-import net.minecraft.state.property.Properties
-import net.minecraft.util.BlockMirror
-import net.minecraft.util.BlockRotation
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.random.Random
-import net.minecraft.util.shape.VoxelShape
-import net.minecraft.world.BlockView
-import net.minecraft.world.WorldView
-import net.minecraft.world.tick.ScheduledTickView
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.phys.shapes.CollisionContext
+import net.minecraft.world.item.context.BlockPlaceContext
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.level.block.Mirror
+import net.minecraft.world.level.block.Rotation
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.util.RandomSource
+import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.level.BlockGetter
+import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.ScheduledTickAccess
 
-abstract class FacingLampBlock(settings: Settings?) : LightingFixtureBlock(settings) {
+abstract class FacingLampBlock(settings: Properties?) : LightingFixtureBlock(settings) {
     init {
-        defaultState = defaultState
-            .with(Properties.FACING, Direction.UP)
+        registerDefaultState(
+            defaultBlockState()
+                .setValue(BlockStateProperties.FACING, Direction.UP)
+        )
     }
 
-    override fun getStateForNeighborUpdate(
+    override fun updateShape(
         state: BlockState,
-        world: WorldView,
-        tickView: ScheduledTickView,
+        world: LevelReader,
+        tickView: ScheduledTickAccess,
         pos: BlockPos,
         direction: Direction,
         neighborPos: BlockPos,
         neighborState: BlockState,
-        random: Random
+        random: RandomSource
     ): BlockState {
-        if (!canPlaceAt(state, world, pos)) return Blocks.AIR.defaultState
-        return super.getStateForNeighborUpdate(
+        if (!canSurvive(state, world, pos)) return Blocks.AIR.defaultBlockState()
+        return super.updateShape(
             state,
             world,
             tickView,
@@ -46,47 +48,47 @@ abstract class FacingLampBlock(settings: Settings?) : LightingFixtureBlock(setti
         )
     }
 
-    override fun canPlaceAt(state: BlockState, world: WorldView, pos: BlockPos): Boolean {
-        val direction = state.get(Properties.FACING)
-        val checkState = world.getBlockState(pos.offset(direction.opposite))
-        return checkState.isSideSolidFullSquare(world, pos, direction)
+    override fun canSurvive(state: BlockState, world: LevelReader, pos: BlockPos): Boolean {
+        val direction = state.getValue(BlockStateProperties.FACING)
+        val checkState = world.getBlockState(pos.relative(direction.opposite))
+        return checkState.isFaceSturdy(world, pos, direction)
     }
 
-    override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
-        val superState = super.getPlacementState(ctx)!!
-        return superState.with(Properties.FACING, ctx.side)
+    override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState {
+        val superState = super.getStateForPlacement(ctx)!!
+        return superState.setValue(BlockStateProperties.FACING, ctx.clickedFace)
     }
 
     abstract fun getShape(state: BlockState): VoxelShape
 
-    override fun getOutlineShape(
+    override fun getShape(
         state: BlockState,
-        world: BlockView,
+        world: BlockGetter,
         pos: BlockPos,
-        context: ShapeContext
+        context: CollisionContext
     ): VoxelShape {
         return getShape(state)
     }
 
     override fun getCollisionShape(
         state: BlockState,
-        world: BlockView,
+        world: BlockGetter,
         pos: BlockPos,
-        context: ShapeContext
+        context: CollisionContext
     ): VoxelShape {
         return getShape(state)
     }
 
-    override fun mirror(state: BlockState, mirror: BlockMirror): BlockState {
-        return state.with(Properties.FACING, mirror.apply(state.get(Properties.FACING)))
+    override fun mirror(state: BlockState, mirror: Mirror): BlockState {
+        return state.setValue(BlockStateProperties.FACING, mirror.mirror(state.getValue(BlockStateProperties.FACING)))
     }
 
-    override fun rotate(state: BlockState, rotation: BlockRotation): BlockState {
-        return state.with(Properties.FACING, rotation.rotate(state.get(Properties.FACING)))
+    override fun rotate(state: BlockState, rotation: Rotation): BlockState {
+        return state.setValue(BlockStateProperties.FACING, rotation.rotate(state.getValue(BlockStateProperties.FACING)))
     }
 
-    override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
-        super.appendProperties(builder)
-        builder.add(Properties.FACING)
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
+        super.createBlockStateDefinition(builder)
+        builder.add(BlockStateProperties.FACING)
     }
 }

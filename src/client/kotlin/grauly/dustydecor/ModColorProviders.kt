@@ -4,10 +4,10 @@ import grauly.dustydecor.block.furniture.StoolBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.util.DyeUtils
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.BlockRenderView
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.BlockAndTintGetter
 import java.awt.Color
 
 object ModColorProviders {
@@ -24,9 +24,9 @@ object ModColorProviders {
     }
 
     private fun generateColoredStool(lookupIndex: Int, blocks: List<StoolBlock>) {
-        val color = DyeUtils.COLOR_ORDER[lookupIndex].entityColor
+        val color = DyeUtils.COLOR_ORDER[lookupIndex].textureDiffuseColor
         ColorProviderRegistry.BLOCK.register(
-            { state: BlockState, blockRenderView: BlockRenderView?, blockPos: BlockPos?, tintIndex: Int ->
+            { state: BlockState, blockRenderView: BlockAndTintGetter?, blockPos: BlockPos?, tintIndex: Int ->
                 return@register color
             },
             blocks[lookupIndex]
@@ -44,12 +44,12 @@ object ModColorProviders {
     }
 
     private fun generateColoredCageLamp(index: Int, lamps: List<Block>) {
-        val color = DyeUtils.COLOR_ORDER[index].signColor
-        val lowerColor = Color(DyeUtils.COLOR_ORDER[index].entityColor).darker().darker().darker().rgb
+        val color = DyeUtils.COLOR_ORDER[index].textColor
+        val lowerColor = Color(DyeUtils.COLOR_ORDER[index].textureDiffuseColor).darker().darker().darker().rgb
         ColorProviderRegistry.BLOCK.register(
-            { state: BlockState, blockRenderView: BlockRenderView?, blockPos: BlockPos?, tintIndex: Int ->
-                if (state.get(LightingFixtureBlock.LIT) != state.get(LightingFixtureBlock.INVERTED) &&
-                    !state.get(LightingFixtureBlock.BROKEN)
+            { state: BlockState, blockRenderView: BlockAndTintGetter?, blockPos: BlockPos?, tintIndex: Int ->
+                if (state.getValue(LightingFixtureBlock.LIT) != state.getValue(LightingFixtureBlock.INVERTED) &&
+                    !state.getValue(LightingFixtureBlock.BROKEN)
                 ) return@register color
                 return@register lowerColor
             },

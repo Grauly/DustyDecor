@@ -4,54 +4,54 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModSoundEvents
 import net.fabricmc.fabric.api.client.datagen.v1.builder.SoundTypeBuilder
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricSoundsProvider
-import net.minecraft.data.DataOutput
-import net.minecraft.registry.RegistryWrapper
-import net.minecraft.sound.SoundCategory
-import net.minecraft.sound.SoundEvent
-import net.minecraft.sound.SoundEvents
-import net.minecraft.util.Identifier
+import net.minecraft.data.PackOutput
+import net.minecraft.core.HolderLookup
+import net.minecraft.sounds.SoundSource
+import net.minecraft.sounds.SoundEvent
+import net.minecraft.sounds.SoundEvents
+import net.minecraft.resources.ResourceLocation
 import java.util.concurrent.CompletableFuture
 
 class SoundEventDatagen(
-    output: DataOutput?,
-    registriesFuture: CompletableFuture<RegistryWrapper.WrapperLookup>?
+    output: PackOutput?,
+    registriesFuture: CompletableFuture<HolderLookup.Provider>?
 ) : FabricSoundsProvider(output, registriesFuture) {
     override fun getName(): String = "Sound Event generator"
 
-    override fun configure(wrapper: RegistryWrapper.WrapperLookup, exporter: SoundExporter) {
+    override fun configure(wrapper: HolderLookup.Provider, exporter: SoundExporter) {
         simpleRedirect(
             ModSoundEvents.BLOCK_VENT_LOCK,
-            SoundEvents.BLOCK_VAULT_DEACTIVATE,
-            SoundCategory.BLOCKS,
+            SoundEvents.VAULT_DEACTIVATE,
+            SoundSource.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_VENT_UNLOCK,
-            SoundEvents.BLOCK_VAULT_ACTIVATE,
-            SoundCategory.BLOCKS,
+            SoundEvents.VAULT_ACTIVATE,
+            SoundSource.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_VENT_RATTLE,
-            SoundEvents.BLOCK_VAULT_CLOSE_SHUTTER,
-            SoundCategory.BLOCKS,
+            SoundEvents.VAULT_CLOSE_SHUTTER,
+            SoundSource.BLOCKS,
             exporter
         )
         multiRedirect(
             ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW,
-            SoundCategory.BLOCKS,
+            SoundSource.BLOCKS,
             exporter,
-            SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM
+            SoundEvents.ITEM_FRAME_ADD_ITEM
         )
         multiRedirect(
             ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
-            SoundCategory.BLOCKS,
+            SoundSource.BLOCKS,
             exporter,
-            SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM
+            SoundEvents.ITEM_FRAME_REMOVE_ITEM
         )
         fromFiles(
             ModSoundEvents.ITEM_WRENCH_USE,
-            SoundCategory.PLAYERS,
+            SoundSource.PLAYERS,
             exporter,
             "wrench1",
             "wrench2",
@@ -61,7 +61,7 @@ class SoundEventDatagen(
         )
         fromFiles(
             ModSoundEvents.ITEM_SCREWDRIVER_USE,
-            SoundCategory.PLAYERS,
+            SoundSource.PLAYERS,
             exporter,
             "screwdriver1",
             "screwdriver2",
@@ -72,41 +72,41 @@ class SoundEventDatagen(
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_ON,
-            SoundEvents.BLOCK_COPPER_BULB_TURN_ON,
-            SoundCategory.BLOCKS,
+            SoundEvents.COPPER_BULB_TURN_ON,
+            SoundSource.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_OFF,
-            SoundEvents.BLOCK_COPPER_BULB_TURN_OFF,
-            SoundCategory.BLOCKS,
+            SoundEvents.COPPER_BULB_TURN_OFF,
+            SoundSource.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_BREAK,
-            SoundEvents.BLOCK_GLASS_BREAK,
-            SoundCategory.BLOCKS,
+            SoundEvents.GLASS_BREAK,
+            SoundSource.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_REPAIR,
-            SoundEvents.ENTITY_IRON_GOLEM_REPAIR,
-            SoundCategory.BLOCKS,
+            SoundEvents.IRON_GOLEM_REPAIR,
+            SoundSource.BLOCKS,
             exporter
         )
         multiRedirect(
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_INVERT,
-            SoundCategory.BLOCKS,
+            SoundSource.BLOCKS,
             exporter,
-            SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON,
-            SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF
+            SoundEvents.STONE_BUTTON_CLICK_ON,
+            SoundEvents.STONE_BUTTON_CLICK_OFF
         )
     }
 
     private fun simpleRedirect(
         from: SoundEvent,
         to: SoundEvent,
-        soundCategory: SoundCategory,
+        soundCategory: SoundSource,
         exporter: SoundExporter
     ) {
         exporter.add(
@@ -120,7 +120,7 @@ class SoundEventDatagen(
 
     private fun multiRedirect(
         from: SoundEvent,
-        soundCategory: SoundCategory,
+        soundCategory: SoundSource,
         exporter: SoundExporter,
         vararg to: SoundEvent
     ) {
@@ -136,9 +136,9 @@ class SoundEventDatagen(
 
     private fun fromFiles(
         event: SoundEvent,
-        soundCategory: SoundCategory,
+        soundCategory: SoundSource,
         exporter: SoundExporter,
-        vararg files: Identifier
+        vararg files: ResourceLocation
     ) {
         val soundBuilder = SoundTypeBuilder.of()
         files.iterator().forEach { soundBuilder.sound(SoundTypeBuilder.EntryBuilder.ofFile(it)) }
@@ -152,14 +152,14 @@ class SoundEventDatagen(
 
     private fun fromFiles(
         event: SoundEvent,
-        soundCategory: SoundCategory,
+        soundCategory: SoundSource,
         exporter: SoundExporter,
         vararg files: String
     ) {
-        fromFiles(event, soundCategory, exporter, *files.asList().map { Identifier.of(DustyDecorMod.MODID, it) }.toTypedArray())
+        fromFiles(event, soundCategory, exporter, *files.asList().map { ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, it) }.toTypedArray())
     }
 
     companion object {
-        fun getSubtitle(soundEvent: SoundEvent): String = "subtitles.${DustyDecorMod.MODID}.${soundEvent.id.path}"
+        fun getSubtitle(soundEvent: SoundEvent): String = "subtitles.${DustyDecorMod.MODID}.${soundEvent.location.path}"
     }
 }

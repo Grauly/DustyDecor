@@ -4,19 +4,19 @@ import grauly.dustydecor.ItemDatagenWrapper
 import grauly.dustydecor.ModItems
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
-import net.minecraft.client.data.BlockStateModelGenerator
-import net.minecraft.client.data.ItemModelGenerator
-import net.minecraft.client.data.Models
+import net.minecraft.client.data.models.BlockModelGenerators
+import net.minecraft.client.data.models.ItemModelGenerators
+import net.minecraft.client.data.models.model.ModelTemplates
 
 class ItemModelDatagen(output: FabricDataOutput) : FabricModelProvider(output) {
-    override fun generateItemModels(itemModelGenerator: ItemModelGenerator) {
+    override fun generateItemModels(itemModelGenerator: ItemModelGenerators) {
         ItemDatagenWrapper.entries.filter { it.generateBaseModel }.forEach {
-            itemModelGenerator.register(it.item, Models.HANDHELD)
+            itemModelGenerator.generateFlatItem(it.item, ModelTemplates.FLAT_HANDHELD_ITEM)
         }
-        itemModelGenerator.registerWithInHandModel(ModItems.VAC_CAPSULE)
+        itemModelGenerator.generateSpyglass(ModItems.VAC_CAPSULE)
     }
 
-    override fun generateBlockStateModels(p0: BlockStateModelGenerator?) {
+    override fun generateBlockStateModels(p0: BlockModelGenerators?) {
         //[Intentionally Left Blank]
     }
 

@@ -4,14 +4,14 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.ModParticleTypes
 import io.netty.buffer.ByteBuf
-import net.minecraft.network.codec.PacketCodec
-import net.minecraft.particle.ParticleEffect
-import net.minecraft.particle.ParticleType
-import net.minecraft.util.math.Direction
+import net.minecraft.network.codec.StreamCodec
+import net.minecraft.core.particles.ParticleOptions
+import net.minecraft.core.particles.ParticleType
+import net.minecraft.core.Direction
 
 class AirInflowParticleEffect(
     val inflowDirection: Direction
-): ParticleEffect {
+): ParticleOptions {
     override fun getType(): ParticleType<*> = ModParticleTypes.AIR_INFLOW
 
     companion object {
@@ -20,8 +20,8 @@ class AirInflowParticleEffect(
                 Direction.CODEC.fieldOf("inflowDirection").forGetter { it.inflowDirection }
             ).apply(it, ::AirInflowParticleEffect)
         }
-        val PACKET_CODEC: PacketCodec<ByteBuf, AirInflowParticleEffect> = PacketCodec.tuple(
-            Direction.PACKET_CODEC,
+        val PACKET_CODEC: StreamCodec<ByteBuf, AirInflowParticleEffect> = StreamCodec.composite(
+            Direction.STREAM_CODEC,
             AirInflowParticleEffect::inflowDirection,
             ::AirInflowParticleEffect
         )

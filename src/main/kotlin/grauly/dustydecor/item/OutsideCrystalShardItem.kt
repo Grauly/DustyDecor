@@ -3,48 +3,48 @@ package grauly.dustydecor.item
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.block.voidgoop.LayerThresholdSpreadingBlock
-import net.minecraft.block.Blocks
-import net.minecraft.item.Item
-import net.minecraft.item.ItemUsageContext
-import net.minecraft.server.world.ServerWorld
-import net.minecraft.text.Text
-import net.minecraft.util.ActionResult
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.world.WorldAccess
+import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.context.UseOnContext
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.network.chat.Component
+import net.minecraft.world.InteractionResult
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.world.level.LevelAccessor
 
-class OutsideCrystalShardItem(settings: Settings) : Item(settings) {
-    override fun useOnBlock(context: ItemUsageContext): ActionResult? {
-        val interactedState = context.world.getBlockState(context.blockPos)
-        if (!interactedState.isOf(ModBlocks.VOID_GOOP)) return super.useOnBlock(context)
-        if (context.world.isClient) return super.useOnBlock(context)
-        val world = context.world as ServerWorld
+class OutsideCrystalShardItem(settings: Properties) : Item(settings) {
+    override fun useOn(context: UseOnContext): InteractionResult? {
+        val interactedState = context.level.getBlockState(context.clickedPos)
+        if (!interactedState.`is`(ModBlocks.VOID_GOOP)) return super.useOn(context)
+        if (context.level.isClientSide) return super.useOn(context)
+        val world = context.level as ServerLevel
         val foundVoidGoop: MutableSet<BlockPos> = mutableSetOf()
-        val foundLayers = getConnectedGoop(context.blockPos, world, foundVoidGoop)
-        if (context.player?.isSneaking == false) {
-            context.player?.sendMessage(Text.translatable(VOID_GOOP_FIND, foundLayers, ModItems.VOID_GOOP.name), true)
-            return ActionResult.SUCCESS
+        val foundLayers = getConnectedGoop(context.clickedPos, world, foundVoidGoop)
+        if (context.player?.isShiftKeyDown == false) {
+            context.player?.displayClientMessage(Component.translatable(VOID_GOOP_FIND, foundLayers, ModItems.VOID_GOOP.name), true)
+            return InteractionResult.SUCCESS
         }
         removeFoundGoop(foundVoidGoop, world)
-        context.stack.decrementUnlessCreative(1, context.player)
-        context.player?.sendMessage(Text.translatable(VOID_GOOP_REMOVAL, foundLayers, ModItems.VOID_GOOP.name), true)
-        return ActionResult.SUCCESS
+        context.itemInHand.consume(1, context.player)
+        context.player?.displayClientMessage(Component.translatable(VOID_GOOP_REMOVAL, foundLayers, ModItems.VOID_GOOP.name), true)
+        return InteractionResult.SUCCESS
     }
 
-    private fun removeFoundGoop(foundVoidGoop: MutableSet<BlockPos>, world: ServerWorld) {
+    private fun removeFoundGoop(foundVoidGoop: MutableSet<BlockPos>, world: ServerLevel) {
         foundVoidGoop.forEach {
-            world.setBlockState(it, Blocks.AIR.defaultState)
+            world.setBlockAndUpdate(it, Blocks.AIR.defaultBlockState())
         }
     }
 
-    fun getConnectedGoop(pos: BlockPos, world: WorldAccess, found: MutableSet<BlockPos>): Int {
+    fun getConnectedGoop(pos: BlockPos, world: LevelAccessor, found: MutableSet<BlockPos>): Int {
         if (found.contains(pos)) return 0
         val state = world.getBlockState(pos)
-        if (!state.isOf(ModBlocks.VOID_GOOP)) return 0
+        if (!state.`is`(ModBlocks.VOID_GOOP)) return 0
         found.add(pos)
-        var foundLayers = state.get(LayerThresholdSpreadingBlock.LAYERS)
+        var foundLayers = state.getValue(LayerThresholdSpreadingBlock.LAYERS)
         Direction.entries.forEach {
-            foundLayers += getConnectedGoop(pos.offset(it), world, found)
+            foundLayers += getConnectedGoop(pos.relative(it), world, found)
         }
         return foundLayers
     }

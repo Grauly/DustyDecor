@@ -1,12 +1,12 @@
 package grauly.dustydecor.entity
 
-import net.minecraft.client.render.Frustum
-import net.minecraft.client.render.entity.EntityRenderer
-import net.minecraft.client.render.entity.EntityRendererFactory
-import net.minecraft.client.render.entity.state.EntityRenderState
-import net.minecraft.entity.Entity
+import net.minecraft.client.renderer.culling.Frustum
+import net.minecraft.client.renderer.entity.EntityRenderer
+import net.minecraft.client.renderer.entity.EntityRendererProvider
+import net.minecraft.client.renderer.entity.state.EntityRenderState
+import net.minecraft.world.entity.Entity
 
-class EmptyEntityRenderer<T : Entity>(context: EntityRendererFactory.Context) :
+class EmptyEntityRenderer<T : Entity>(context: EntityRendererProvider.Context) :
     EntityRenderer<T, EntityRenderState>(context) {
     private val state = EntityRenderState()
 

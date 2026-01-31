@@ -4,40 +4,40 @@ import grauly.dustydecor.ModComponentTypes
 import grauly.dustydecor.ModConventionalItemTags
 import grauly.dustydecor.ModSoundEvents
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.ItemStack
-import net.minecraft.sound.SoundCategory
-import net.minecraft.sound.SoundEvent
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.World
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
+import net.minecraft.sounds.SoundSource
+import net.minecraft.sounds.SoundEvent
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.Level
 
 object ToolUtils {
     fun isScrewdriver(stack: ItemStack): Boolean {
-        if (stack.isIn(ModConventionalItemTags.SCREWDRIVER_TOOLS)) return true
-        if (stack.components.contains(ModComponentTypes.SCREWDRIVER)) return true
+        if (stack.`is`(ModConventionalItemTags.SCREWDRIVER_TOOLS)) return true
+        if (stack.components.has(ModComponentTypes.SCREWDRIVER)) return true
         return false
     }
 
-    fun playScrewdriverSound(world: World, pos: BlockPos, player: PlayerEntity? = null) {
+    fun playScrewdriverSound(world: Level, pos: BlockPos, player: Player? = null) {
         playToolSound(world, pos, ModSoundEvents.ITEM_SCREWDRIVER_USE, player)
     }
 
     fun isWrench(stack: ItemStack): Boolean {
-        if (stack.isIn(ConventionalItemTags.WRENCH_TOOLS)) return true
-        if (stack.components.contains(ModComponentTypes.WRENCH)) return true
+        if (stack.`is`(ConventionalItemTags.WRENCH_TOOLS)) return true
+        if (stack.components.has(ModComponentTypes.WRENCH)) return true
         return false
     }
 
-    fun playWrenchSound(world: World, pos: BlockPos, player: PlayerEntity? = null) {
+    fun playWrenchSound(world: Level, pos: BlockPos, player: Player? = null) {
         playToolSound(world, pos, ModSoundEvents.ITEM_WRENCH_USE, player)
     }
 
-    private fun playToolSound(world: World, pos: BlockPos, soundEvent: SoundEvent, player: PlayerEntity?) {
+    private fun playToolSound(world: Level, pos: BlockPos, soundEvent: SoundEvent, player: Player?) {
         world.playSound(
             player,
             pos,
             soundEvent,
-            if (player == null) SoundCategory.BLOCKS else SoundCategory.PLAYERS
+            if (player == null) SoundSource.BLOCKS else SoundSource.PLAYERS
         )
     }
 }

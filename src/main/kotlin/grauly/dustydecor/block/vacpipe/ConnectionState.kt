@@ -1,13 +1,13 @@
 package grauly.dustydecor.block.vacpipe
 
-import net.minecraft.util.StringIdentifiable
-import net.minecraft.util.math.Direction
+import net.minecraft.util.StringRepresentable
+import net.minecraft.core.Direction
 
 enum class ConnectionState(
     val string: String,
     val direction: Direction?,
     val fallDown: Direction?
-) : StringIdentifiable {
+) : StringRepresentable {
     UP("up", Direction.UP, Direction.DOWN),
     DOWN("down", Direction.DOWN, Direction.DOWN),
     NORTH("north", Direction.NORTH, Direction.NORTH),
@@ -16,11 +16,11 @@ enum class ConnectionState(
     EAST("east", Direction.EAST, Direction.WEST),
     NONE("none", null, null);
 
-    override fun asString(): String = string
+    override fun getSerializedName(): String = string
 
     companion object {
-        val CODEC: StringIdentifiable.EnumCodec<ConnectionState> =
-            StringIdentifiable.createCodec(ConnectionState.entries::toTypedArray)
+        val CODEC: StringRepresentable.EnumCodec<ConnectionState> =
+            StringRepresentable.fromEnum(ConnectionState.entries::toTypedArray)
 
         fun fromDirection(direction: Direction?) = when (direction) {
             Direction.UP -> UP

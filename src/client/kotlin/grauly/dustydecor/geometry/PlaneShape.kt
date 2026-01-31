@@ -1,23 +1,23 @@
 package grauly.dustydecor.geometry
 
-import net.minecraft.util.math.Vec2f
-import net.minecraft.util.math.Vec3d
+import net.minecraft.world.phys.Vec2
+import net.minecraft.world.phys.Vec3
 
 object PlaneShape : ShapeDefinition {
-    override fun getPoints(): List<Vec3d> = POINTS
+    override fun getPoints(): List<Vec3> = POINTS
 
-    override fun getUvs(): List<Vec2f> = UVS
+    override fun getUvs(): List<Vec2> = UVS
 
-    private val POINTS: List<Vec3d> = listOf(
-        Vec3d(-0.5, 0.0, -0.5),
-        Vec3d(-0.5, 0.0, 0.5),
-        Vec3d(0.5, 0.0, 0.5),
-        Vec3d(0.5, 0.0, -0.5),
+    private val POINTS: List<Vec3> = listOf(
+        Vec3(-0.5, 0.0, -0.5),
+        Vec3(-0.5, 0.0, 0.5),
+        Vec3(0.5, 0.0, 0.5),
+        Vec3(0.5, 0.0, -0.5),
     )
-    private val UVS: List<Vec2f> = listOf(
-        Vec2f(1f, 1f),
-        Vec2f(1f, 0f),
-        Vec2f(0f, 0f),
-        Vec2f(0f, 1f),
+    private val UVS: List<Vec2> = listOf(
+        Vec2(1f, 1f),
+        Vec2(1f, 0f),
+        Vec2(0f, 0f),
+        Vec2(0f, 1f),
     )
 }

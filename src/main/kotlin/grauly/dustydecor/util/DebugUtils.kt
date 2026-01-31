@@ -1,6 +1,6 @@
 package grauly.dustydecor.util
 
-import net.minecraft.util.math.BlockPos
+import net.minecraft.core.BlockPos
 
 object DebugUtils {
     const val letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

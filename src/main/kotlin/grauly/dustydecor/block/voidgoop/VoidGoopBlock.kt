@@ -3,14 +3,14 @@ package grauly.dustydecor.block.voidgoop
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.ModItemTags
-import net.minecraft.block.BlockState
-import net.minecraft.item.ItemPlacementContext
-import net.minecraft.util.dynamic.Codecs
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.BlockView
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.item.context.BlockPlaceContext
+import net.minecraft.util.ExtraCodecs
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.BlockGetter
 import java.awt.Color
 
-class VoidGoopBlock(threshold: Int, settings: Settings?) : LayerThresholdSpreadingBlock(threshold, settings) {
+class VoidGoopBlock(threshold: Int, settings: Properties?) : LayerThresholdSpreadingBlock(threshold, settings) {
 
     //TODO: add gazing interaction (haha, player go splat)
     //TODO: add eye shaped rain splashes
@@ -19,28 +19,28 @@ class VoidGoopBlock(threshold: Int, settings: Settings?) : LayerThresholdSpreadi
     //TODO: find a way to massively discourage just tp-ing it into random caves
     //TODO: fix the two-layer stable states from being permanent
 
-    override fun canReplace(
+    override fun canBeReplaced(
         state: BlockState,
-        context: ItemPlacementContext
+        context: BlockPlaceContext
     ): Boolean {
-        if (context.stack.isIn(ModItemTags.VOID_GOOP)) {
-            if (state.get(LAYERS) < MAX_LAYERS) {
+        if (context.itemInHand.`is`(ModItemTags.VOID_GOOP)) {
+            if (state.getValue(LAYERS) < MAX_LAYERS) {
                 return true
             }
         }
-        return super.canReplace(state, context)
+        return super.canBeReplaced(state, context)
     }
 
-    override fun getCodec(): MapCodec<out VoidGoopBlock> {
+    override fun codec(): MapCodec<out VoidGoopBlock> {
         return RecordCodecBuilder.mapCodec {
             it.group(
-                Codecs.POSITIVE_INT.fieldOf("threshold").forGetter { block -> block.threshold },
-                createSettingsCodec()
+                ExtraCodecs.POSITIVE_INT.fieldOf("threshold").forGetter { block -> block.threshold },
+                propertiesCodec()
             ).apply(it, ::VoidGoopBlock)
         }
     }
 
-    override fun getColor(state: BlockState?, world: BlockView?, pos: BlockPos?): Int {
+    override fun getDustColor(state: BlockState?, world: BlockGetter?, pos: BlockPos?): Int {
         return Color(0f, 0f, 0f, 1f).rgb
     }
 }

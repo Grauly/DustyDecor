@@ -10,110 +10,113 @@ import grauly.dustydecor.util.VoxelShapesUtil
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
 import net.minecraft.block.*
-import net.minecraft.block.entity.BlockEntity
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.fluid.Fluids
-import net.minecraft.item.ItemPlacementContext
-import net.minecraft.item.ItemStack
-import net.minecraft.server.world.ServerWorld
-import net.minecraft.state.StateManager
-import net.minecraft.state.property.BooleanProperty
-import net.minecraft.state.property.Properties
-import net.minecraft.text.Text
-import net.minecraft.util.ActionResult
-import net.minecraft.util.Hand
-import net.minecraft.util.hit.BlockHitResult
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.random.Random
-import net.minecraft.util.shape.VoxelShape
-import net.minecraft.util.shape.VoxelShapes
-import net.minecraft.world.BlockView
-import net.minecraft.world.World
-import net.minecraft.world.WorldView
-import net.minecraft.world.block.WireOrientation
-import net.minecraft.world.tick.ScheduledTickView
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.level.material.Fluids
+import net.minecraft.world.item.context.BlockPlaceContext
+import net.minecraft.world.item.ItemStack
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.network.chat.Component
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.util.RandomSource
+import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.phys.shapes.Shapes
+import net.minecraft.world.level.BlockGetter
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.redstone.Orientation
+import net.minecraft.world.level.ScheduledTickAccess
 
-class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings), Waterloggable, BlockEntityProvider {
+class VacPipeStationBlock(settings: Properties?) : HorizontalDirectionalBlock(settings), SimpleWaterloggedBlock,
+    EntityBlock {
 
     //TODO: do the pipe alignment automatically (find a compromise to stay performant)
     //TODO: add copper golem behaviors
 
     init {
-        defaultState = defaultState
-            .with(FACING, Direction.NORTH)
-            .with(Properties.WATERLOGGED, false)
-            .with(SENDING, false)
+        registerDefaultState(
+            defaultBlockState()
+                .setValue(FACING, Direction.NORTH)
+                .setValue(BlockStateProperties.WATERLOGGED, false)
+                .setValue(SENDING, false)
+        )
     }
 
-    override fun getOutlineShape(
+    override fun getShape(
         state: BlockState?,
-        world: BlockView?,
+        world: BlockGetter?,
         pos: BlockPos?,
-        context: ShapeContext?
+        context: CollisionContext?
     ): VoxelShape {
         return SHAPE
     }
 
     override fun getCollisionShape(
         state: BlockState?,
-        world: BlockView?,
+        world: BlockGetter?,
         pos: BlockPos?,
-        context: ShapeContext?
+        context: CollisionContext?
     ): VoxelShape {
         return SHAPE
     }
 
-    override fun onUse(
+    override fun useWithoutItem(
         state: BlockState,
-        world: World,
+        world: Level,
         pos: BlockPos,
-        player: PlayerEntity,
+        player: Player,
         hit: BlockHitResult
-    ): ActionResult {
-        if (world.isClient) return ActionResult.SUCCESS
+    ): InteractionResult {
+        if (world.isClientSide) return InteractionResult.SUCCESS
         val be = world.getBlockEntity(pos)
-        if (be !is VacPipeStationBlockEntity) return ActionResult.SUCCESS
-        player.openHandledScreen(be)
-        return ActionResult.SUCCESS
+        if (be !is VacPipeStationBlockEntity) return InteractionResult.SUCCESS
+        player.openMenu(be)
+        return InteractionResult.SUCCESS
     }
 
-    override fun onUseWithItem(
+    override fun useItemOn(
         stack: ItemStack,
         state: BlockState,
-        world: World,
+        world: Level,
         pos: BlockPos,
-        player: PlayerEntity,
-        hand: Hand,
+        player: Player,
+        hand: InteractionHand,
         hit: BlockHitResult
-    ): ActionResult {
+    ): InteractionResult {
         if (ToolUtils.isWrench(stack)) {
             invertSending(state, pos, world)
             ToolUtils.playWrenchSound(world, pos, player)
-            return ActionResult.SUCCESS
+            return InteractionResult.SUCCESS
         }
-        return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
+        return super.useItemOn(stack, state, world, pos, player, hand, hit)
     }
 
-    private fun invertSending(state: BlockState, pos: BlockPos, world: World) {
+    private fun invertSending(state: BlockState, pos: BlockPos, world: Level) {
         //TODO: add sounds
-        world.setBlockState(pos, state.with(SENDING, !state.get(SENDING)), NOTIFY_LISTENERS)
+        world.setBlock(pos, state.setValue(SENDING, !state.getValue(SENDING)), UPDATE_CLIENTS)
     }
 
-    override fun getStateForNeighborUpdate(
+    override fun updateShape(
         state: BlockState,
-        world: WorldView,
-        tickView: ScheduledTickView,
+        world: LevelReader,
+        tickView: ScheduledTickAccess,
         pos: BlockPos,
         direction: Direction,
         neighborPos: BlockPos,
         neighborState: BlockState,
-        random: Random
+        random: RandomSource
     ): BlockState {
-        if (state.get(Properties.WATERLOGGED, false)) {
-            tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world))
+        if (state.getValueOrElse(BlockStateProperties.WATERLOGGED, false)) {
+            tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world))
         }
-        return super.getStateForNeighborUpdate(
+        return super.updateShape(
             state,
             world,
             tickView,
@@ -125,52 +128,52 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
         )
     }
 
-    override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
-        return super.getPlacementState(ctx)
-            ?.with(FACING, ctx.horizontalPlayerFacing.opposite)
-            ?.with(Properties.WATERLOGGED, ctx.world.getFluidState(ctx.blockPos).fluid == Fluids.WATER)
+    override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState? {
+        return super.getStateForPlacement(ctx)
+            ?.setValue(FACING, ctx.horizontalDirection.opposite)
+            ?.setValue(BlockStateProperties.WATERLOGGED, ctx.level.getFluidState(ctx.clickedPos).type == Fluids.WATER)
     }
 
-    override fun neighborUpdate(
+    override fun neighborChanged(
         state: BlockState,
-        world: World,
+        world: Level,
         pos: BlockPos,
         sourceBlock: Block,
-        wireOrientation: WireOrientation?,
+        wireOrientation: Orientation?,
         notify: Boolean
     ) {
-        if (world.isClient) return
-        if (!world.isReceivingRedstonePower(pos)) return
-        world.scheduleBlockTick(pos, this, 4)
+        if (world.isClientSide) return
+        if (!world.hasNeighborSignal(pos)) return
+        world.scheduleTick(pos, this, 4)
     }
 
-    override fun scheduledTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
+    override fun tick(state: BlockState, world: ServerLevel, pos: BlockPos, random: RandomSource) {
         val be = world.getBlockEntity(pos)
         if (be !is VacPipeStationBlockEntity) return
-        val offsetPos = pos.offset(Direction.UP)
-        if (!world.getBlockState(offsetPos).isOf(ModBlocks.VAC_PIPE)) return
-        val otherStorage = ItemStorage.SIDED.find(world, pos.offset(Direction.UP), Direction.DOWN) ?: return
+        val offsetPos = pos.relative(Direction.UP)
+        if (!world.getBlockState(offsetPos).`is`(ModBlocks.VAC_PIPE)) return
+        val otherStorage = ItemStorage.SIDED.find(world, pos.relative(Direction.UP), Direction.DOWN) ?: return
         val ownStorage = be.storage
         StorageUtil.move(ownStorage, otherStorage, { true }, 1, null)
     }
 
-    override fun randomDisplayTick(
+    override fun animateTick(
         state: BlockState,
-        world: World,
+        world: Level,
         pos: BlockPos,
-        random: Random
+        random: RandomSource
     ) {
-        if (!world.isClient) return
+        if (!world.isClientSide) return
         indicateSending(state, world, pos)
         indicateLeak(state, world, pos)
     }
 
-    private fun indicateSending (state: BlockState, world: World, pos: BlockPos) {
+    private fun indicateSending (state: BlockState, world: Level, pos: BlockPos) {
         val effect =
-            if (state.get(SENDING)) AirInflowParticleEffect(Direction.UP) else AirOutflowParticleEffect(Direction.DOWN)
-        val origin = pos.toBottomCenterPos().add(0.0, 12.0 / 16.0, 0.0)
+            if (state.getValue(SENDING)) AirInflowParticleEffect(Direction.UP) else AirOutflowParticleEffect(Direction.DOWN)
+        val origin = pos.bottomCenter.add(0.0, 12.0 / 16.0, 0.0)
         for (i in 0..1) {
-            world.addParticleClient(
+            world.addParticle(
                 effect,
                 origin.x, origin.y, origin.z,
                 0.0, 0.0, 0.0
@@ -180,24 +183,24 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
 
     private fun indicateLeak(
         state: BlockState,
-        world: World,
+        world: Level,
         pos: BlockPos
     ) {
-        val topState = world.getBlockState(pos.offset(Direction.UP))
-        val notCanFlow = topState.isSideSolid(world, pos.offset(Direction.UP), Direction.DOWN, SideShapeType.CENTER)
-        val sending = state.get(SENDING)
+        val topState = world.getBlockState(pos.relative(Direction.UP))
+        val notCanFlow = topState.isFaceSturdy(world, pos.relative(Direction.UP), Direction.DOWN, SupportType.CENTER)
+        val sending = state.getValue(SENDING)
         if (notCanFlow) {
-            if (!topState.isOf(ModBlocks.VAC_PIPE)) return
-            if (sending && topState.get(AbConnectableBlock.connections[0]) == ConnectionState.DOWN) return
-            if (!sending && topState.get(AbConnectableBlock.connections[1]) == ConnectionState.DOWN) return
-            indicatePipeLeak(world, pos, Direction.UP, state.get(SENDING))
+            if (!topState.`is`(ModBlocks.VAC_PIPE)) return
+            if (sending && topState.getValue(AbConnectableBlock.connections[0]) == ConnectionState.DOWN) return
+            if (!sending && topState.getValue(AbConnectableBlock.connections[1]) == ConnectionState.DOWN) return
+            indicatePipeLeak(world, pos, Direction.UP, state.getValue(SENDING))
             return
         }
         val topEffect =
             if (sending) AirOutflowParticleEffect(Direction.UP) else AirInflowParticleEffect(Direction.DOWN)
-        val topOrigin = pos.offset(Direction.UP).toBottomCenterPos()
+        val topOrigin = pos.relative(Direction.UP).bottomCenter
         for (i in 0..1) {
-            world.addParticleClient(
+            world.addParticle(
                 topEffect,
                 topOrigin.x, topOrigin.y, topOrigin.z,
                 0.0, 0.0, 0.0
@@ -206,22 +209,22 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
     }
 
 
-    override fun getCodec(): MapCodec<out HorizontalFacingBlock> {
-        return createCodec(::VacPipeStationBlock)
+    override fun codec(): MapCodec<out HorizontalDirectionalBlock> {
+        return simpleCodec(::VacPipeStationBlock)
     }
 
-    override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
-        super.appendProperties(builder)
-        builder.add(FACING, Properties.WATERLOGGED, SENDING)
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
+        super.createBlockStateDefinition(builder)
+        builder.add(FACING, BlockStateProperties.WATERLOGGED, SENDING)
     }
 
-    override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
+    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
         return VacPipeStationBlockEntity(pos, state)
     }
 
     companion object {
-        val SENDING: BooleanProperty = BooleanProperty.of("sending")
-        val SHAPE: VoxelShape = VoxelShapes.union(
+        val SENDING: BooleanProperty = BooleanProperty.create("sending")
+        val SHAPE: VoxelShape = Shapes.or(
             VoxelShapesUtil.intCube(3, 0, 3, 13, 2, 13), //base plate
             VoxelShapesUtil.intCube(5, 2, 5, 11, 3, 11),
             VoxelShapesUtil.intCube(3, 11, 3, 13, 13, 13), //top plate
@@ -233,13 +236,13 @@ class VacPipeStationBlock(settings: Settings?) : HorizontalFacingBlock(settings)
             VoxelShapesUtil.intCube(11, 2, 4, 12, 11, 5),
         )
 
-        fun indicatePipeLeak(world: World, pos: BlockPos, leakDirection: Direction, outflow: Boolean) {
-            val origin = pos.toCenterPos().add(leakDirection.doubleVector.multiply(.5))
-            DIRECTIONS.filter { it != leakDirection && it != leakDirection.opposite }.forEach { direction ->
-                val offset = origin.add(direction.doubleVector.multiply(4.0/16.0))
+        fun indicatePipeLeak(world: Level, pos: BlockPos, leakDirection: Direction, outflow: Boolean) {
+            val origin = pos.center.add(leakDirection.unitVec3.scale(.5))
+            UPDATE_SHAPE_ORDER.filter { it != leakDirection && it != leakDirection.opposite }.forEach { direction ->
+                val offset = origin.add(direction.unitVec3.scale(4.0/16.0))
                 val effect =
                     if (outflow) AirOutflowParticleEffect(direction) else AirInflowParticleEffect(direction.opposite)
-                world.addParticleClient(
+                world.addParticle(
                     effect,
                     offset.x, offset.y, offset.z,
                     0.0, 0.0, 0.0

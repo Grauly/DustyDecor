@@ -5,43 +5,43 @@ import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.block.vent.SideConnectableBlock
 import grauly.dustydecor.generators.BlockModelDatagen
-import net.minecraft.client.data.BlockStateModelGenerator
-import net.minecraft.client.data.MultipartBlockModelDefinitionCreator
-import net.minecraft.client.render.model.json.ModelVariantOperator
-import net.minecraft.client.render.model.json.MultipartModelConditionBuilder
-import net.minecraft.client.render.model.json.WeightedVariant
-import net.minecraft.state.property.Property
-import net.minecraft.util.Identifier
+import net.minecraft.client.data.models.BlockModelGenerators
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator
+import net.minecraft.client.renderer.block.model.VariantMutator
+import net.minecraft.client.data.models.blockstates.ConditionBuilder
+import net.minecraft.client.data.models.MultiVariant
+import net.minecraft.world.level.block.state.properties.Property
+import net.minecraft.resources.ResourceLocation
 
 object VentBlockModel {
-    fun get(blockStateModelGenerator: BlockStateModelGenerator) {
-        val ventModel = MultipartBlockModelDefinitionCreator.create(ModBlocks.VENT)
+    fun get(blockStateModelGenerator: BlockModelGenerators) {
+        val ventModel = MultiPartGenerator.multiPart(ModBlocks.VENT)
             .with(VENT_CORE)
 
         BlockModelDatagen.NORTH_FACING_ROTATION_MAP.forEach { (direction, operator) ->
             ventSideModel(ventModel, BlockModelDatagen.DIRECTION_TO_PROPERTY_MAP[direction]!!, operator)
         }
 
-        blockStateModelGenerator.blockStateCollector?.accept(ventModel)
-        blockStateModelGenerator.registerItemModel(
+        blockStateModelGenerator.blockStateOutput?.accept(ventModel)
+        blockStateModelGenerator.registerSimpleItemModel(
             ModItems.VENT,
-            Identifier.of(DustyDecorMod.MODID, "block/vent/vent_inventory")
+            ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "block/vent/vent_inventory")
         )
     }
 
     private fun ventSideModel(
-        creator: MultipartBlockModelDefinitionCreator,
+        creator: MultiPartGenerator,
         direction: Property<Boolean>,
-        operator: ModelVariantOperator
+        operator: VariantMutator
     ) {
         creator.with(
-            MultipartModelConditionBuilder().put(direction, !SideConnectableBlock.FACE_CONNECTED),
+            ConditionBuilder().term(direction, !SideConnectableBlock.FACE_CONNECTED),
             VENT_COVER
-                .apply(ModelVariantOperator.UV_LOCK.withValue(true))
-                .apply(operator)
+                .with(VariantMutator.UV_LOCK.withValue(true))
+                .with(operator)
         )
     }
 
-    private val VENT_COVER: WeightedVariant = BlockModelDatagen.singleVariant("block/vent/vent_cover")
-    private val VENT_CORE: WeightedVariant = BlockModelDatagen.singleVariant("block/vent/vent_core")
+    private val VENT_COVER: MultiVariant = BlockModelDatagen.singleVariant("block/vent/vent_cover")
+    private val VENT_CORE: MultiVariant = BlockModelDatagen.singleVariant("block/vent/vent_core")
 }

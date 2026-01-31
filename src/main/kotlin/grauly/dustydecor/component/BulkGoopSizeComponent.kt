@@ -5,35 +5,35 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModComponentTypes
-import net.minecraft.component.ComponentsAccess
-import net.minecraft.item.Item
-import net.minecraft.item.tooltip.TooltipAppender
-import net.minecraft.item.tooltip.TooltipType
-import net.minecraft.text.Style
-import net.minecraft.text.Text
-import net.minecraft.text.TextColor
-import net.minecraft.util.Colors
+import net.minecraft.core.component.DataComponentGetter
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.component.TooltipProvider
+import net.minecraft.world.item.TooltipFlag
+import net.minecraft.network.chat.Style
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextColor
+import net.minecraft.util.CommonColors
 import java.util.function.Consumer
 
-data class BulkGoopSizeComponent(var size: Int) : TooltipAppender {
-    override fun appendTooltip(
+data class BulkGoopSizeComponent(var size: Int) : TooltipProvider {
+    override fun addToTooltip(
         context: Item.TooltipContext,
-        textConsumer: Consumer<Text?>,
-        type: TooltipType,
-        components: ComponentsAccess
+        textConsumer: Consumer<Component?>,
+        type: TooltipFlag,
+        components: DataComponentGetter
     ) {
         val comp = components.get(ModComponentTypes.VOID_GOOP_SIZE) ?: return
         textConsumer.accept(
-            Text.translatable(SIZE_INDICATOR, comp.size, ModBlocks.VOID_GOOP.name)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+            Component.translatable(SIZE_INDICATOR, comp.size, ModBlocks.VOID_GOOP.name)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
         )
         textConsumer.accept(
-            Text.translatable(EXPLANATION)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+            Component.translatable(EXPLANATION)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
         )
         textConsumer.accept(
-            Text.translatable(EXPLANATION_L2)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+            Component.translatable(EXPLANATION_L2)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
         )
     }
 

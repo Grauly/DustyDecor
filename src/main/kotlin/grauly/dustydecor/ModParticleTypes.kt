@@ -6,13 +6,13 @@ import grauly.dustydecor.particle.AirOutflowParticleEffect
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
 import io.netty.buffer.ByteBuf
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes
-import net.minecraft.network.codec.PacketCodec
-import net.minecraft.particle.ParticleEffect
-import net.minecraft.particle.ParticleType
-import net.minecraft.particle.SimpleParticleType
-import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
-import net.minecraft.util.Identifier
+import net.minecraft.network.codec.StreamCodec
+import net.minecraft.core.particles.ParticleOptions
+import net.minecraft.core.particles.ParticleType
+import net.minecraft.core.particles.SimpleParticleType
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.core.Registry
+import net.minecraft.resources.ResourceLocation
 
 object ModParticleTypes {
 
@@ -37,18 +37,18 @@ object ModParticleTypes {
         AirOutflowParticleEffect.PACKET_CODEC
     )
 
-    private fun <T: ParticleEffect> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {
-        return registerParticle(Identifier.of(DustyDecorMod.MODID, id), type)
+    private fun <T: ParticleOptions> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {
+        return registerParticle(ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, id), type)
     }
 
-    private fun <T: ParticleEffect> registerParticle(id: Identifier, type: ParticleType<T>): ParticleType<T> {
-        return Registry.register(Registries.PARTICLE_TYPE, id, type)
+    private fun <T: ParticleOptions> registerParticle(id: ResourceLocation, type: ParticleType<T>): ParticleType<T> {
+        return Registry.register(BuiltInRegistries.PARTICLE_TYPE, id, type)
     }
 
-    private fun <T: ParticleEffect> registerComplex(
+    private fun <T: ParticleOptions> registerComplex(
         id: String,
         mapCodec: MapCodec<T>,
-        packetCodec: PacketCodec<ByteBuf, T>,
+        packetCodec: StreamCodec<ByteBuf, T>,
         alwaysShow: Boolean = false
     ): ParticleType<T> {
         return registerParticle(id, FabricParticleTypes.complex(alwaysShow, mapCodec, packetCodec))
@@ -56,8 +56,8 @@ object ModParticleTypes {
 
     private fun registerSimple(id: String, showAlways: Boolean = false): SimpleParticleType {
         return Registry.register(
-            Registries.PARTICLE_TYPE,
-            Identifier.of(DustyDecorMod.MODID, id),
+            BuiltInRegistries.PARTICLE_TYPE,
+            ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, id),
             FabricParticleTypes.simple(showAlways)
         )
     }

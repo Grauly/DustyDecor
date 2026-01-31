@@ -2,31 +2,31 @@ package grauly.dustydecor.block.furniture
 
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.entity.SeatEntity
-import net.minecraft.block.BlockState
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.text.Text
-import net.minecraft.util.ActionResult
-import net.minecraft.util.hit.BlockHitResult
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Vec3d
-import net.minecraft.world.World
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.entity.player.Player
+import net.minecraft.network.chat.Component
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.core.BlockPos
+import net.minecraft.world.phys.Vec3
+import net.minecraft.world.level.Level
 
-abstract class SittableFurnitureBlock(settings: Settings) : SingleFurnitureBlock(settings), SeatLinkable {
-    abstract fun getSitOffset(): Vec3d
+abstract class SittableFurnitureBlock(settings: Properties) : SingleFurnitureBlock(settings), SeatLinkable {
+    abstract fun getSitOffset(): Vec3
 
-    override fun onUse(
+    override fun useWithoutItem(
         state: BlockState,
-        world: World,
+        world: Level,
         pos: BlockPos,
-        player: PlayerEntity,
+        player: Player,
         hit: BlockHitResult
-    ): ActionResult? {
-        if (player.isSneaking) return ActionResult.SUCCESS_SERVER
+    ): InteractionResult? {
+        if (player.isShiftKeyDown) return InteractionResult.SUCCESS_SERVER
         if (SeatEntity.createLinked(world, pos, getSitOffset(), player) == null) {
-            player.sendMessage(Text.translatable(SEAT_OCCUPIED_TRANSLATION_KEY), true)
-            return super.onUse(state, world, pos, player, hit)
+            player.displayClientMessage(Component.translatable(SEAT_OCCUPIED_TRANSLATION_KEY), true)
+            return super.useWithoutItem(state, world, pos, player, hit)
         }
-        return ActionResult.SUCCESS
+        return InteractionResult.SUCCESS
     }
 
     companion object {

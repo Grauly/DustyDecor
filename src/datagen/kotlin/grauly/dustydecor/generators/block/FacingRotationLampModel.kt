@@ -4,54 +4,54 @@ import grauly.dustydecor.block.lamp.FacingLampBlock
 import grauly.dustydecor.block.lamp.FacingRotationLampBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.generators.BlockModelDatagen
-import net.minecraft.client.data.BlockStateModelGenerator
-import net.minecraft.client.data.MultipartBlockModelDefinitionCreator
-import net.minecraft.client.render.model.json.MultipartModelConditionBuilder
-import net.minecraft.state.property.Properties
-import net.minecraft.util.math.Direction
+import net.minecraft.client.data.models.BlockModelGenerators
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator
+import net.minecraft.client.data.models.blockstates.ConditionBuilder
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.core.Direction
 
 class FacingRotationLampModel(lamps: List<FacingRotationLampBlock>, lampPrefix: String) :
     FacingLampModel(lamps, lampPrefix) {
-    override fun createBlockModel(lamp: FacingLampBlock, blockStateModelGenerator: BlockStateModelGenerator) {
-        val creator = MultipartBlockModelDefinitionCreator.create(lamp)
+    override fun createBlockModel(lamp: FacingLampBlock, blockStateModelGenerator: BlockModelGenerators) {
+        val creator = MultiPartGenerator.multiPart(lamp)
         Direction.entries.forEach { direction: Direction ->
             listOf(true, false).forEach { rotated ->
                 creator.with(
-                    MultipartModelConditionBuilder()
-                        .put(Properties.FACING, direction)
-                        .put(FacingRotationLampBlock.ROTATED, rotated),
+                    ConditionBuilder()
+                        .term(BlockStateProperties.FACING, direction)
+                        .term(FacingRotationLampBlock.ROTATED, rotated),
                     (if (rotated) CAGE_R else CAGE)
-                        .apply(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                        .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
                 )
                 creator.with(
-                    MultipartModelConditionBuilder()
-                        .put(Properties.FACING, direction)
-                        .put(LightingFixtureBlock.BROKEN, true)
-                        .put(FacingRotationLampBlock.ROTATED, rotated),
+                    ConditionBuilder()
+                        .term(BlockStateProperties.FACING, direction)
+                        .term(LightingFixtureBlock.BROKEN, true)
+                        .term(FacingRotationLampBlock.ROTATED, rotated),
                     (if (rotated) BROKEN_LAMP_R else BROKEN_LAMP)
-                        .apply(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                        .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
                 )
                 listOf(true, false).forEach litLoop@{ on ->
                     listOf(true, false).forEach invertedLoop@{ inverted ->
                         creator.with(
-                            MultipartModelConditionBuilder()
-                                .put(Properties.FACING, direction)
-                                .put(LightingFixtureBlock.BROKEN, false)
-                                .put(LightingFixtureBlock.LIT, on)
-                                .put(LightingFixtureBlock.INVERTED, inverted)
-                                .put(FacingRotationLampBlock.ROTATED, rotated),
+                            ConditionBuilder()
+                                .term(BlockStateProperties.FACING, direction)
+                                .term(LightingFixtureBlock.BROKEN, false)
+                                .term(LightingFixtureBlock.LIT, on)
+                                .term(LightingFixtureBlock.INVERTED, inverted)
+                                .term(FacingRotationLampBlock.ROTATED, rotated),
                             (if (on != inverted) {
                                 if (rotated) ACTIVE_LAMP_R else ACTIVE_LAMP
                             } else {
                                 if (rotated) INACTIVE_LAMP_R else INACTIVE_LAMP
                             })
-                                .apply(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                                .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
                         )
                     }
                 }
             }
         }
-        blockStateModelGenerator.blockStateCollector.accept(creator)
+        blockStateModelGenerator.blockStateOutput.accept(creator)
     }
 
     //I hate this, but there is no better way. Why can I not just rotate around Z axis?

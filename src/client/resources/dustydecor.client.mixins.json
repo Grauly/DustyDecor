@@ -3,7 +3,7 @@
   "package": "grauly.dustydecor.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "HandledScreenSubmenueHandlerAdder"
+    "AbstractContainerScreenSubmenueHandlerAdder"
   ],
   "injectors": {
     "defaultRequire": 1

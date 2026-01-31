@@ -3,16 +3,16 @@ package grauly.dustydecor.generators
 import grauly.dustydecor.ItemDatagenWrapper
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider
-import net.minecraft.registry.RegistryWrapper
-import net.minecraft.registry.tag.ItemTags
+import net.minecraft.core.HolderLookup
+import net.minecraft.tags.ItemTags
 import java.util.concurrent.CompletableFuture
 
 class ItemTagDatagen(
     output: FabricDataOutput?,
-    registriesFuture: CompletableFuture<RegistryWrapper.WrapperLookup>?
+    registriesFuture: CompletableFuture<HolderLookup.Provider>?
 ) : FabricTagProvider.ItemTagProvider(output, registriesFuture) {
 
-    override fun configure(wrapper: RegistryWrapper.WrapperLookup) {
+    override fun addTags(wrapper: HolderLookup.Provider) {
         val swords = valueLookupBuilder(ItemTags.SWORDS)
         val pickaxes = valueLookupBuilder(ItemTags.PICKAXES)
         val axes = valueLookupBuilder(ItemTags.AXES)

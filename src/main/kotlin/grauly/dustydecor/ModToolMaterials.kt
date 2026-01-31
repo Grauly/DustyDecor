@@ -1,8 +1,8 @@
 package grauly.dustydecor
 
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
-import net.minecraft.item.ToolMaterial
-import net.minecraft.registry.tag.BlockTags
+import net.minecraft.world.item.ToolMaterial
+import net.minecraft.tags.BlockTags
 
 object ModToolMaterials {
     val WRENCH_TOOL_MATERIAL = ToolMaterial(

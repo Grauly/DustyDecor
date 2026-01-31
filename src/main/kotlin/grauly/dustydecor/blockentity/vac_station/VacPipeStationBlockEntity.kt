@@ -7,44 +7,44 @@ import grauly.dustydecor.block.vacpipe.VacPipeStationBlock.Companion.SENDING
 import grauly.dustydecor.screen.VacPipeReceiveStationScreenHandler
 import grauly.dustydecor.screen.VacPipeSendStationScreenHandler
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.block.entity.BlockEntity
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.Inventories
-import net.minecraft.inventory.Inventory
-import net.minecraft.inventory.SimpleInventory
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.network.listener.ClientPlayPacketListener
-import net.minecraft.network.packet.Packet
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket
-import net.minecraft.registry.RegistryWrapper
-import net.minecraft.screen.NamedScreenHandlerFactory
-import net.minecraft.screen.PropertyDelegate
-import net.minecraft.screen.ScreenHandler
-import net.minecraft.screen.ScreenHandlerContext
-import net.minecraft.storage.NbtWriteView
-import net.minecraft.storage.ReadView
-import net.minecraft.storage.WriteView
-import net.minecraft.text.Text
-import net.minecraft.util.ErrorReporter
-import net.minecraft.util.HeldItemContext
-import net.minecraft.util.ItemScatterer
-import net.minecraft.util.collection.DefaultedList
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec3d
-import net.minecraft.world.World
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.ContainerHelper
+import net.minecraft.world.Container
+import net.minecraft.world.SimpleContainer
+import net.minecraft.world.item.ItemStack
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.network.protocol.game.ClientGamePacketListener
+import net.minecraft.network.protocol.Packet
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
+import net.minecraft.core.HolderLookup
+import net.minecraft.world.MenuProvider
+import net.minecraft.world.inventory.ContainerData
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.ContainerLevelAccess
+import net.minecraft.world.level.storage.TagValueOutput
+import net.minecraft.world.level.storage.ValueInput
+import net.minecraft.world.level.storage.ValueOutput
+import net.minecraft.network.chat.Component
+import net.minecraft.util.ProblemReporter
+import net.minecraft.world.entity.ItemOwner
+import net.minecraft.world.Containers
+import net.minecraft.core.NonNullList
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.world.phys.Vec3
+import net.minecraft.world.level.Level
 import kotlin.use
 
 class VacPipeStationBlockEntity(
     pos: BlockPos?,
     state: BlockState?
-) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, pos, state), NamedScreenHandlerFactory, HeldItemContext {
-    private val inventory = object : SimpleInventory(INVENTORY_SIZE) {
-        override fun markDirty() {
+) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, pos, state), MenuProvider, ItemOwner {
+    private val inventory = object : SimpleContainer(INVENTORY_SIZE) {
+        override fun setChanged() {
             markDirtyDelegate()
         }
     }
@@ -53,71 +53,74 @@ class VacPipeStationBlockEntity(
     val propertyDelegate = ModeDelegate()
 
     fun markDirtyDelegate() {
-        markDirty()
+        setChanged()
     }
 
-    fun getItemsForScattering(): DefaultedList<ItemStack> {
-        return inventory.heldStacks
+    fun getItemsForScattering(): NonNullList<ItemStack> {
+        return inventory.items
     }
 
-    override fun onBlockReplaced(pos: BlockPos?, oldState: BlockState?) {
-        ItemScatterer.spawn(world, pos, getItemsForScattering())
+    override fun preRemoveSideEffects(pos: BlockPos?, oldState: BlockState?) {
+        Containers.dropContents(level, pos, getItemsForScattering())
     }
 
-    override fun createMenu(syncId: Int, playerInventory: PlayerInventory, player: PlayerEntity?): ScreenHandler {
-        val handlerConstructor: (Int, PlayerInventory, Inventory, ScreenHandlerContext, PropertyDelegate) -> ScreenHandler =
-            if (cachedState.get(SENDING)) {
+    override fun createMenu(syncId: Int, playerInventory: Inventory, player: Player?): AbstractContainerMenu {
+        val handlerConstructor: (Int, Inventory, Container, ContainerLevelAccess, ContainerData) -> AbstractContainerMenu =
+            if (blockState.getValue(SENDING)) {
                 ::VacPipeSendStationScreenHandler
             } else {
                 ::VacPipeReceiveStationScreenHandler
             }
-        return handlerConstructor.invoke(syncId, playerInventory, inventory, ScreenHandlerContext.create(world, pos), propertyDelegate)
+        return handlerConstructor.invoke(syncId, playerInventory, inventory, ContainerLevelAccess.create(
+            level,
+            worldPosition
+        ), propertyDelegate)
     }
 
-    override fun getDisplayName(): Text {
-        return Text.translatable(cachedState.block.translationKey)
+    override fun getDisplayName(): Component {
+        return Component.translatable(blockState.block.descriptionId)
     }
 
-    override fun markDirty() {
-        super.markDirty()
-        if (world == null) return
-        world!!.updateListeners(pos, cachedState, cachedState, Block.NOTIFY_ALL)
+    override fun setChanged() {
+        super.setChanged()
+        if (level == null) return
+        level!!.sendBlockUpdated(worldPosition, blockState, blockState, Block.UPDATE_ALL)
     }
 
-    override fun toUpdatePacket(): Packet<ClientPlayPacketListener?>? {
-        return BlockEntityUpdateS2CPacket.create(this)
+    override fun getUpdatePacket(): Packet<ClientGamePacketListener?>? {
+        return ClientboundBlockEntityDataPacket.create(this)
     }
 
-    override fun toInitialChunkDataNbt(registries: RegistryWrapper.WrapperLookup?): NbtCompound? {
-        ErrorReporter.Logging(this.reporterContext, DustyDecorMod.logger).use {
-            val view = NbtWriteView.create(it, registries)
-            writeData(view)
-            return view.nbt
+    override fun getUpdateTag(registries: HolderLookup.Provider?): CompoundTag? {
+        ProblemReporter.ScopedCollector(this.problemPath(), DustyDecorMod.logger).use {
+            val view = TagValueOutput.createWithContext(it, registries)
+            saveAdditional(view)
+            return view.buildResult()
         }
     }
 
-    override fun readData(view: ReadView) {
-        super.readData(view)
-        inventory.heldStacks.clear()
-        Inventories.readData(view, inventory.heldStacks)
+    override fun loadAdditional(view: ValueInput) {
+        super.loadAdditional(view)
+        inventory.items.clear()
+        ContainerHelper.loadAllItems(view, inventory.items)
         propertyDelegate.setGolemMode(view.read(GOLEM_MODE_KEY, CopperGolemMode.CODEC).orElseGet { CopperGolemMode.INTERACT })
         propertyDelegate.setRedstoneMode(view.read(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC).orElseGet { RedstoneEmissionMode.ON_RECEIVE })
         propertyDelegate.setSendingMode(view.read(SEND_MODE_KEY, SendMode.CODEC).orElseGet { SendMode.MANUAL })
     }
 
-    override fun writeData(view: WriteView) {
-        super.writeData(view)
-        Inventories.writeData(view, inventory.heldStacks)
-        view.put(GOLEM_MODE_KEY, CopperGolemMode.CODEC, propertyDelegate.getGolemMode())
-        view.put(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC, propertyDelegate.getRedstoneMode())
-        view.put(SEND_MODE_KEY, SendMode.CODEC, propertyDelegate.getSendingMode())
+    override fun saveAdditional(view: ValueOutput) {
+        super.saveAdditional(view)
+        ContainerHelper.saveAllItems(view, inventory.items)
+        view.store(GOLEM_MODE_KEY, CopperGolemMode.CODEC, propertyDelegate.getGolemMode())
+        view.store(REDSTONE_MODE_KEY, RedstoneEmissionMode.CODEC, propertyDelegate.getRedstoneMode())
+        view.store(SEND_MODE_KEY, SendMode.CODEC, propertyDelegate.getSendingMode())
     }
 
-    override fun getEntityWorld(): World? = world
+    override fun level(): Level? = level
 
-    override fun getEntityPos(): Vec3d? = pos.toCenterPos()
+    override fun position(): Vec3? = worldPosition.center
 
-    override fun getBodyYaw(): Float = 0f
+    override fun getVisualRotationYInDegrees(): Float = 0f
 
     companion object {
          const val GOLEM_MODE_KEY = "golemMode"
@@ -131,7 +134,7 @@ class VacPipeStationBlockEntity(
         const val INVENTORY_SIZE = 3
     }
 
-    class ModeDelegate() : PropertyDelegate {
+    class ModeDelegate() : ContainerData {
         val data = IntArray(3)
 
         override fun get(index: Int): Int {
@@ -171,6 +174,6 @@ class VacPipeStationBlockEntity(
             set(SEND_MODE, sendingMode.ordinal)
         }
 
-        override fun size(): Int = 4
+        override fun getCount(): Int = 4
     }
 }

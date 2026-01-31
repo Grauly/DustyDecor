@@ -2,30 +2,30 @@ package grauly.dustydecor.block.vent
 
 import grauly.dustydecor.ModBlockTags
 import grauly.dustydecor.ModBlocks
-import net.minecraft.block.BlockState
-import net.minecraft.block.ShapeContext
-import net.minecraft.entity.ai.pathing.NavigationType
-import net.minecraft.util.math.AxisRotation
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.DirectionTransformation
-import net.minecraft.util.shape.VoxelShape
-import net.minecraft.util.shape.VoxelShapes
-import net.minecraft.world.BlockView
-import net.minecraft.world.WorldView
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.phys.shapes.CollisionContext
+import net.minecraft.world.level.pathfinder.PathComputationType
+import com.mojang.math.Quadrant
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
+import com.mojang.math.OctahedralGroup
+import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.phys.shapes.Shapes
+import net.minecraft.world.level.BlockGetter
+import net.minecraft.world.level.LevelReader
 
-class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBounds().solid()) {
+class VentBlock(settings: Properties) : SideConnectableBlock(settings.dynamicShape().forceSolidOn()) {
 
     //TODO: add potion spreading logic
     //TODO: add smaller vents
 
     init {
-        for (state in stateManager.states) {
+        for (state in stateDefinition.possibleStates) {
             SHAPES[state] = run {
                 var shape = FRAME_SHAPE
                 for (direction: Direction in Direction.entries) {
-                    if (state.get(getStateForDirection(direction), !FACE_CONNECTED) == !FACE_CONNECTED) {
-                        shape = VoxelShapes.union(shape, COVER_SHAPE_MAP[direction])
+                    if (state.getValueOrElse(getStateForDirection(direction), !FACE_CONNECTED) == !FACE_CONNECTED) {
+                        shape = Shapes.or(shape, COVER_SHAPE_MAP[direction])
                     }
                 }
                 shape
@@ -33,59 +33,59 @@ class VentBlock(settings: Settings) : SideConnectableBlock(settings.dynamicBound
         }
     }
 
-    override fun canConnectTo(state: BlockState, pos: BlockPos, world: WorldView, connectingSide: Direction): Boolean {
-        if (!state.isIn(ModBlockTags.LARGE_VENT_CONNECTABLE)) return false
-        if (state.isOf(ModBlocks.VENT_COVER)) {
-            if (state.get(VentCoverBlock.COVERS_FACE).opposite != connectingSide) return false
+    override fun canConnectTo(state: BlockState, pos: BlockPos, world: LevelReader, connectingSide: Direction): Boolean {
+        if (!state.`is`(ModBlockTags.LARGE_VENT_CONNECTABLE)) return false
+        if (state.`is`(ModBlocks.VENT_COVER)) {
+            if (state.getValue(VentCoverBlock.COVERS_FACE).opposite != connectingSide) return false
         }
         return true
     }
 
-    override fun getOutlineShape(
+    override fun getShape(
         state: BlockState,
-        world: BlockView,
+        world: BlockGetter,
         pos: BlockPos,
-        context: ShapeContext
+        context: CollisionContext
     ): VoxelShape {
         return SHAPES[state]!!
     }
 
     override fun getCollisionShape(
         state: BlockState,
-        world: BlockView,
+        world: BlockGetter,
         pos: BlockPos,
-        context: ShapeContext
+        context: CollisionContext
     ): VoxelShape {
-        return getOutlineShape(state, world, pos, context)
+        return getShape(state, world, pos, context)
     }
 
-    override fun canPathfindThrough(state: BlockState?, type: NavigationType?): Boolean = false
+    override fun isPathfindable(state: BlockState?, type: PathComputationType?): Boolean = false
 
     companion object {
         val SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()
         val COVER_SHAPE_MAP: Map<Direction, VoxelShape> =
-            VoxelShapes.createFacingShapeMap(VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 1.0, 1.0 / 16))
+            Shapes.rotateAll(Shapes.box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0 / 16))
         val FRAME_SHAPE: VoxelShape = run {
-            var fourPostShape = VoxelShapes.empty()
-            val singlePost = VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0 / 16, 1.0, 1.0 / 16)
-            for (rotation: AxisRotation in AxisRotation.entries) {
-                fourPostShape = VoxelShapes.union(
+            var fourPostShape = Shapes.empty()
+            val singlePost = Shapes.box(0.0, 0.0, 0.0, 1.0 / 16, 1.0, 1.0 / 16)
+            for (rotation: Quadrant in Quadrant.entries) {
+                fourPostShape = Shapes.or(
                     fourPostShape,
-                    VoxelShapes.transform(
+                    Shapes.rotate(
                         singlePost,
-                        DirectionTransformation.fromRotations(AxisRotation.R0, rotation)
+                        OctahedralGroup.fromXYAngles(Quadrant.R0, rotation)
                     )
                 )
             }
-            VoxelShapes.union(
+            Shapes.or(
                 fourPostShape,
-                VoxelShapes.transform(
+                Shapes.rotate(
                     fourPostShape,
-                    DirectionTransformation.fromRotations(AxisRotation.R90, AxisRotation.R0)
+                    OctahedralGroup.fromXYAngles(Quadrant.R90, Quadrant.R0)
                 ),
-                VoxelShapes.transform(
+                Shapes.rotate(
                     fourPostShape,
-                    DirectionTransformation.fromRotations(AxisRotation.R90, AxisRotation.R90)
+                    OctahedralGroup.fromXYAngles(Quadrant.R90, Quadrant.R90)
                 )
             )
         }

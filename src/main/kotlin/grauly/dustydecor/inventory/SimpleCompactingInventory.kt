@@ -1,12 +1,12 @@
 package grauly.dustydecor.inventory
 
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.ItemStack
-import net.minecraft.util.collection.DefaultedList
-import net.minecraft.util.math.Direction
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
+import net.minecraft.core.NonNullList
+import net.minecraft.core.Direction
 
 class SimpleCompactingInventory(slots: Int): SidedSelfCompactingInventory {
-    override val items: DefaultedList<ItemStack> = DefaultedList.ofSize(slots, ItemStack.EMPTY)
+    override val items: NonNullList<ItemStack> = NonNullList.withSize(slots, ItemStack.EMPTY)
 
     override fun insertDirections(): Set<Direction> {
         return Direction.entries.toSet()
@@ -16,9 +16,9 @@ class SimpleCompactingInventory(slots: Int): SidedSelfCompactingInventory {
         return Direction.entries.toSet()
     }
 
-    override fun markDirty() {
+    override fun setChanged() {
         //Not needed here... probably
     }
 
-    override fun canPlayerUse(player: PlayerEntity?): Boolean = true
+    override fun stillValid(player: Player?): Boolean = true
 }

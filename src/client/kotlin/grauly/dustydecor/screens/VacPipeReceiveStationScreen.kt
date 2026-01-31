@@ -1,13 +1,13 @@
 package grauly.dustydecor.screens
 
 import grauly.dustydecor.screen.VacPipeReceiveStationScreenHandler
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.text.Text
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.network.chat.Component
 
 class VacPipeReceiveStationScreen(
     handler: VacPipeReceiveStationScreenHandler,
-    inventory: PlayerInventory?,
-    title: Text?
+    inventory: Inventory?,
+    title: Component?
 ) : VacPipeStationScreen<VacPipeReceiveStationScreenHandler>(
     handler,
     inventory,

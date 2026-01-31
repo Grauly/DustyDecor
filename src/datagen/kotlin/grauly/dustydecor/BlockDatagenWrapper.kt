@@ -3,9 +3,9 @@ package grauly.dustydecor
 import grauly.dustydecor.BlockDatagenWrapper.MinedBy.*
 import grauly.dustydecor.BlockDatagenWrapper.ToolNeed.*
 import grauly.dustydecor.util.DyeUtils
-import net.minecraft.block.Block
-import net.minecraft.registry.tag.BlockTags
-import net.minecraft.registry.tag.TagKey
+import net.minecraft.world.level.block.Block
+import net.minecraft.tags.BlockTags
+import net.minecraft.tags.TagKey
 
 object BlockDatagenWrapper {
     val entries: MutableList<DatagenSpec> = mutableListOf()
@@ -23,7 +23,7 @@ object BlockDatagenWrapper {
         entries.addAll(DyeUtils.COLOR_ORDER.map {
             val lookupValue = DyeUtils.COLOR_ORDER.indexOf(it)
             val colorString =
-                it.id.split("_").map { s -> s.replaceFirstChar { c -> c.titlecase() } }.reduce { acc, s -> "$acc $s" }
+                it.name.split("_").map { s -> s.replaceFirstChar { c -> c.titlecase() } }.reduce { acc, s -> "$acc $s" }
             return@map mutableListOf(
                 DatagenSpec(ModBlocks.TALL_CAGE_LAMPS[lookupValue], "Tall $colorString Cage Lamp", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.WIDE_CAGE_LAMPS[lookupValue], "Wide $colorString Cage Lamp", STONE, PICKAXE),
@@ -86,10 +86,10 @@ object BlockDatagenWrapper {
     }
 
     fun getMineable(mineing: MinedBy): TagKey<Block>? = when (mineing) {
-        PICKAXE -> BlockTags.PICKAXE_MINEABLE
-        AXE -> BlockTags.AXE_MINEABLE
-        SHOVEL -> BlockTags.SHOVEL_MINEABLE
-        HOE -> BlockTags.HOE_MINEABLE
+        PICKAXE -> BlockTags.MINEABLE_WITH_PICKAXE
+        AXE -> BlockTags.MINEABLE_WITH_AXE
+        SHOVEL -> BlockTags.MINEABLE_WITH_SHOVEL
+        HOE -> BlockTags.MINEABLE_WITH_HOE
         ANY -> null
     }
 

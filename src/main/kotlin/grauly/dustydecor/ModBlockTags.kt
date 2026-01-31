@@ -1,11 +1,11 @@
 package grauly.dustydecor
 
-import net.minecraft.block.Block
-import net.minecraft.registry.RegistryKeys
-import net.minecraft.registry.tag.TagKey
-import net.minecraft.util.Identifier
+import net.minecraft.world.level.block.Block
+import net.minecraft.core.registries.Registries
+import net.minecraft.tags.TagKey
+import net.minecraft.resources.ResourceLocation
 
 object ModBlockTags {
     val LARGE_VENT_CONNECTABLE: TagKey<Block> =
-        TagKey.of(RegistryKeys.BLOCK, Identifier.of(DustyDecorMod.MODID, "large_vent_connectable"))
+        TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "large_vent_connectable"))
 }

@@ -5,12 +5,13 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.ModParticleTypes
 import io.netty.buffer.ByteBuf
-import net.minecraft.network.codec.PacketCodec
-import net.minecraft.network.codec.PacketCodecs
-import net.minecraft.particle.ParticleEffect
-import net.minecraft.particle.ParticleType
+import net.minecraft.network.codec.StreamCodec
+import net.minecraft.network.codec.ByteBufCodecs
+import net.minecraft.core.particles.ParticleOptions
+import net.minecraft.core.particles.ParticleType
 
-class SparkEmitterParticleEffect(val spread: Double, val amount: Int = 6, val block: Boolean = false) : ParticleEffect {
+class SparkEmitterParticleEffect(val spread: Double, val amount: Int = 6, val block: Boolean = false) :
+    ParticleOptions {
     override fun getType(): ParticleType<*> = ModParticleTypes.SPARK_EMITTER_PARTICLE
 
     companion object {
@@ -21,12 +22,12 @@ class SparkEmitterParticleEffect(val spread: Double, val amount: Int = 6, val bl
                 Codec.BOOL.fieldOf("block").forGetter { spark -> spark.block }
             ).apply(it, ::SparkEmitterParticleEffect)
         }
-        val PACKET_CODEC: PacketCodec<ByteBuf, SparkEmitterParticleEffect> = PacketCodec.tuple(
-            PacketCodecs.DOUBLE,
+        val PACKET_CODEC: StreamCodec<ByteBuf, SparkEmitterParticleEffect> = StreamCodec.composite(
+            ByteBufCodecs.DOUBLE,
             { spark -> spark.spread },
-            PacketCodecs.INTEGER,
+            ByteBufCodecs.INT,
             { spark -> spark.amount },
-            PacketCodecs.BOOLEAN,
+            ByteBufCodecs.BOOL,
             { spark -> spark.block },
             ::SparkEmitterParticleEffect
         )

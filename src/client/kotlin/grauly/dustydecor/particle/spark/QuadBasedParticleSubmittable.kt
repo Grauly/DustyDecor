@@ -1,39 +1,39 @@
 package grauly.dustydecor.particle.spark
 
 import grauly.dustydecor.particle.QuadDataCache
-import net.minecraft.client.particle.BillboardParticle
-import net.minecraft.client.render.RenderLayer
-import net.minecraft.client.render.RenderPhase
-import net.minecraft.client.render.Submittable
-import net.minecraft.client.render.VertexFormats
-import net.minecraft.client.render.command.OrderedRenderCommandQueue
-import net.minecraft.client.render.state.CameraRenderState
-import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.client.particle.SingleQuadParticle
+import net.minecraft.client.renderer.RenderType
+import net.minecraft.client.renderer.RenderStateShard
+import net.minecraft.client.renderer.state.ParticleGroupRenderState
+import com.mojang.blaze3d.vertex.DefaultVertexFormat
+import net.minecraft.client.renderer.SubmitNodeCollector
+import net.minecraft.client.renderer.state.CameraRenderState
+import com.mojang.blaze3d.vertex.PoseStack
 import org.joml.Vector3f
 
 class QuadBasedParticleSubmittable(
     initialBufferSize: Int = 128
-) : Submittable {
+) : ParticleGroupRenderState {
 
     private var dataCache = QuadDataCache(initialBufferSize)
 
     override fun submit(
-        queue: OrderedRenderCommandQueue,
+        queue: SubmitNodeCollector,
         cameraRenderState: CameraRenderState
     ) {
         if (dataCache.getWrittenQuads() <= 0) return
-        val matrices = MatrixStack()
-        queue.submitCustom(
+        val matrices = PoseStack()
+        queue.submitCustomGeometry(
             matrices,
             RENDER_LAYER
         ) { matrixEnty, vertexConsumer ->
             dataCache.forEachVertex { pos, u, v, light, color ->
-                vertexConsumer.vertex(pos).texture(u, v).light(light).color(color)
+                vertexConsumer.addVertex(pos).setUv(u, v).setLight(light).setColor(color)
             }
         }
     }
 
-    override fun onFrameEnd() {
+    override fun clear() {
         dataCache.clear()
     }
 
@@ -60,21 +60,21 @@ class QuadBasedParticleSubmittable(
     }
 
     companion object {
-        private val RENDER_LAYER = RenderLayer.of(
+        private val RENDER_LAYER = RenderType.create(
             "dustydecor_spark_particle",
-            VertexFormats.POSITION_COLOR_TEXTURE_LIGHT.vertexSize,
+            DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP.vertexSize,
             false,
             false,
-            BillboardParticle.RenderType.PARTICLE_ATLAS_OPAQUE.pipeline,
-            RenderLayer.MultiPhaseParameters.builder()
-                .texture(
-                    RenderPhase.Texture(
-                        BillboardParticle.RenderType.PARTICLE_ATLAS_OPAQUE.textureAtlasLocation,
+            SingleQuadParticle.Layer.OPAQUE.pipeline,
+            RenderType.CompositeState.builder()
+                .setTextureState(
+                    RenderStateShard.TextureStateShard(
+                        SingleQuadParticle.Layer.OPAQUE.textureAtlasLocation,
                         false
                     )
                 )
-                .lightmap(RenderPhase.ENABLE_LIGHTMAP)
-                .build(false)
+                .setLightmapState(RenderStateShard.LIGHTMAP)
+                .createCompositeState(false)
         )
     }
 }

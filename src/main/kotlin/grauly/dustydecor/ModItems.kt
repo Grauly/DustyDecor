@@ -7,20 +7,20 @@ import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.item.VacCapsuleItem
 import grauly.dustydecor.util.DyeUtils
-import net.minecraft.block.Block
-import net.minecraft.component.DataComponentTypes
-import net.minecraft.component.type.AttributeModifierSlot
-import net.minecraft.component.type.AttributeModifiersComponent
-import net.minecraft.entity.attribute.EntityAttributeModifier
-import net.minecraft.entity.attribute.EntityAttributes
-import net.minecraft.item.BlockItem
-import net.minecraft.item.Item
-import net.minecraft.item.Item.Settings
-import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
-import net.minecraft.registry.RegistryKey
-import net.minecraft.registry.RegistryKeys
-import net.minecraft.util.Identifier
+import net.minecraft.world.level.block.Block
+import net.minecraft.core.component.DataComponents
+import net.minecraft.world.entity.EquipmentSlotGroup
+import net.minecraft.world.item.component.ItemAttributeModifiers
+import net.minecraft.world.entity.ai.attributes.AttributeModifier
+import net.minecraft.world.entity.ai.attributes.Attributes
+import net.minecraft.world.item.BlockItem
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.Item.Properties
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.core.Registry
+import net.minecraft.resources.ResourceKey
+import net.minecraft.core.registries.Registries
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.Unit
 
 object ModItems {
@@ -42,34 +42,35 @@ object ModItems {
     val BULK_VOID_GOOP: Item = registerItem(
         ::BulkVoidGoopItem,
         "bulk_void_goop",
-        Settings()
+        Properties()
             .component(ModComponentTypes.VOID_GOOP_SIZE, BulkGoopSizeComponent.DEFAULT)
-            .attributeModifiers(AttributeModifiersComponent.builder()
+            .attributes(
+                ItemAttributeModifiers.builder()
                 .add(
-                    EntityAttributes.BLOCK_INTERACTION_RANGE,
-                    EntityAttributeModifier(
-                        Identifier.of(DustyDecorMod.MODID, "bulk_goop_place_range"),
+                    Attributes.BLOCK_INTERACTION_RANGE,
+                    AttributeModifier(
+                        ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "bulk_goop_place_range"),
                         2.0,
-                        EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                        AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
                     ),
-                    AttributeModifierSlot.MAINHAND
+                    EquipmentSlotGroup.MAINHAND
                 ).build())
     )
     val OUTSIDE_CRYSTAL_SHARD: Item = registerItem(::OutsideCrystalShardItem, "outside_crystal_shard")
     val SCREWDRIVER: Item = registerItem(
         ::Item,
         "screwdriver",
-        Settings()
+        Properties()
             .sword(ModToolMaterials.SCREWDRIVER_TOOL_MATERIAL, -0.5f, 2.0f)
-            .component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE)
+            .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
             .component(ModComponentTypes.SCREWDRIVER, ScrewdriverComponent)
     )
     val WRENCH: Item = registerItem(
         ::Item,
         "wrench",
-        Settings()
+        Properties()
             .sword(ModToolMaterials.WRENCH_TOOL_MATERIAL, 1.0f, -3.2f)
-            .component(DataComponentTypes.UNBREAKABLE, Unit.INSTANCE)
+            .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
             .component(ModComponentTypes.WRENCH, WrenchComponent)
     )
 
@@ -99,24 +100,24 @@ object ModItems {
     }
 
     private fun registerItem(
-        itemFactory: (Settings) -> Item,
+        itemFactory: (Properties) -> Item,
         id: String,
-        settings: Settings = Settings(),
+        settings: Properties = Properties(),
         namespace: String = DustyDecorMod.MODID
     ): Item {
-        val key: RegistryKey<Item> = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(namespace, id))
-        settings.registryKey(key)
-        return Registry.register(Registries.ITEM, key, itemFactory.invoke(settings))
+        val key: ResourceKey<Item> = ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(namespace, id))
+        settings.setId(key)
+        return Registry.register(BuiltInRegistries.ITEM, key, itemFactory.invoke(settings))
     }
 
     private fun registerBlockItem(
         block: Block,
         id: String,
-        itemSettings: Settings = Settings(),
+        itemSettings: Properties = Properties(),
         namespace: String = DustyDecorMod.MODID
     ): Item {
         return registerItem(
-            { settings: Settings -> BlockItem(block, settings) },
+            { settings: Properties -> BlockItem(block, settings) },
             id,
             settings = itemSettings,
             namespace

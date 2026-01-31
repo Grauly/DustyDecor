@@ -1,30 +1,30 @@
 package grauly.dustydecor.block.lamp
 
-import net.minecraft.block.BlockState
-import net.minecraft.entity.ai.pathing.NavigationType
-import net.minecraft.state.property.Properties
-import net.minecraft.util.math.Direction
-import net.minecraft.util.shape.VoxelShape
-import net.minecraft.util.shape.VoxelShapes
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.pathfinder.PathComputationType
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.core.Direction
+import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.phys.shapes.Shapes
 
-class TubeLampBlock(settings: Settings?) : FacingRotationLampBlock(settings) {
+class TubeLampBlock(settings: Properties?) : FacingRotationLampBlock(settings) {
 
     //TODO: add proper sounds
 
     override fun getShape(state: BlockState): VoxelShape {
-        return (SHAPES[state.get(ROTATED)]!!)[state.get(Properties.FACING).opposite]!!
+        return (SHAPES[state.getValue(ROTATED)]!!)[state.getValue(BlockStateProperties.FACING).opposite]!!
     }
 
-    override fun canPathfindThrough(
+    override fun isPathfindable(
         state: BlockState?,
-        type: NavigationType?
+        type: PathComputationType?
     ): Boolean = true
 
     companion object {
-        private val BASE_SHAPE: VoxelShape = VoxelShapes.cuboid(7.0/16, 0.0/16, 0.0/16, 9.0/16, 16.0/16, 2.0/16)
-        private val ROTATED_SHAPE: VoxelShape = VoxelShapes.cuboid(0.0/16, 7.0/16, 0.0/16, 16.0/16, 9.0/16, 2.0/16)
+        private val BASE_SHAPE: VoxelShape = Shapes.box(7.0/16, 0.0/16, 0.0/16, 9.0/16, 16.0/16, 2.0/16)
+        private val ROTATED_SHAPE: VoxelShape = Shapes.box(0.0/16, 7.0/16, 0.0/16, 16.0/16, 9.0/16, 2.0/16)
         val SHAPES: Map<Boolean, Map<Direction, VoxelShape>> = (listOf(true, false).fold(mutableMapOf()) { acc, element ->
-            acc[element] = VoxelShapes.createFacingShapeMap(if (element) ROTATED_SHAPE else BASE_SHAPE); acc
+            acc[element] = Shapes.rotateAll(if (element) ROTATED_SHAPE else BASE_SHAPE); acc
         })
     }
 }

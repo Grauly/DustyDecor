@@ -4,122 +4,124 @@ import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.extensions.spawnParticle
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
 import grauly.dustydecor.util.ToolUtils
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.block.Waterloggable
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.entity.projectile.ProjectileEntity
-import net.minecraft.fluid.FluidState
-import net.minecraft.fluid.Fluids
-import net.minecraft.item.ItemPlacementContext
-import net.minecraft.item.ItemStack
-import net.minecraft.server.world.ServerWorld
-import net.minecraft.sound.SoundCategory
-import net.minecraft.state.StateManager
-import net.minecraft.state.property.BooleanProperty
-import net.minecraft.state.property.Properties
-import net.minecraft.util.ActionResult
-import net.minecraft.util.BlockMirror
-import net.minecraft.util.BlockRotation
-import net.minecraft.util.Hand
-import net.minecraft.util.hit.BlockHitResult
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.random.Random
-import net.minecraft.world.World
-import net.minecraft.world.WorldView
-import net.minecraft.world.block.WireOrientation
-import net.minecraft.world.tick.ScheduledTickView
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.SimpleWaterloggedBlock
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.entity.projectile.Projectile
+import net.minecraft.world.level.material.FluidState
+import net.minecraft.world.level.material.Fluids
+import net.minecraft.world.item.context.BlockPlaceContext
+import net.minecraft.world.item.ItemStack
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.sounds.SoundSource
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.level.block.Mirror
+import net.minecraft.world.level.block.Rotation
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.util.RandomSource
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.redstone.Orientation
+import net.minecraft.world.level.ScheduledTickAccess
 
-abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Waterloggable {
+abstract class LightingFixtureBlock(settings: Properties?) : Block(settings), SimpleWaterloggedBlock {
 
     init {
-        defaultState = defaultState
-            .with(LIT, false)
-            .with(INVERTED, false)
-            .with(BROKEN, false)
-            .with(Properties.WATERLOGGED, false)
+        registerDefaultState(
+            defaultBlockState()
+                .setValue(LIT, false)
+                .setValue(INVERTED, false)
+                .setValue(BROKEN, false)
+                .setValue(BlockStateProperties.WATERLOGGED, false)
+        )
     }
 
-    override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
-        return defaultState
-            .with(LIT, ctx.world.isReceivingRedstonePower(ctx.blockPos))
-            .with(Properties.WATERLOGGED, ctx.world.getFluidState(ctx.blockPos).fluid == Fluids.WATER)
+    override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState? {
+        return defaultBlockState()
+            .setValue(LIT, ctx.level.hasNeighborSignal(ctx.clickedPos))
+            .setValue(BlockStateProperties.WATERLOGGED, ctx.level.getFluidState(ctx.clickedPos).type == Fluids.WATER)
     }
 
-    override fun neighborUpdate(
+    override fun neighborChanged(
         state: BlockState,
-        world: World,
+        world: Level,
         pos: BlockPos,
         sourceBlock: Block,
-        wireOrientation: WireOrientation?,
+        wireOrientation: Orientation?,
         notify: Boolean
     ) {
-        if (world.isClient) return
-        val isPowered = world.isReceivingRedstonePower(pos)
-        if (state.get(LIT) == isPowered) return
+        if (world.isClientSide) return
+        val isPowered = world.hasNeighborSignal(pos)
+        if (state.getValue(LIT) == isPowered) return
         changeOnState(isPowered, state, pos, world)
     }
 
-    override fun onUseWithItem(
+    override fun useItemOn(
         stack: ItemStack,
         state: BlockState,
-        world: World,
+        world: Level,
         pos: BlockPos,
-        player: PlayerEntity,
-        hand: Hand,
+        player: Player,
+        hand: InteractionHand,
         hit: BlockHitResult
-    ): ActionResult {
+    ): InteractionResult {
         if (ToolUtils.isScrewdriver(stack)) {
             ToolUtils.playScrewdriverSound(world, pos, player)
             toggleInverted(state, pos, world, player)
-            return ActionResult.SUCCESS
+            return InteractionResult.SUCCESS
         }
         if (ToolUtils.isWrench(stack)) {
             val hasRepaired = repair(state, pos, world, player)
             if (hasRepaired) {
                 ToolUtils.playWrenchSound(world, pos, player)
-                return ActionResult.SUCCESS
+                return InteractionResult.SUCCESS
             }
         }
-        return super.onUseWithItem(stack, state, world, pos, player, hand, hit)
+        return super.useItemOn(stack, state, world, pos, player, hand, hit)
     }
 
     override fun onProjectileHit(
-        world: World,
+        world: Level,
         state: BlockState,
         hit: BlockHitResult,
-        projectile: ProjectileEntity
+        projectile: Projectile
     ) {
         breakFixture(state, hit.blockPos, world)
         super.onProjectileHit(world, state, hit, projectile)
     }
 
-    override fun onBlockBreakStart(state: BlockState, world: World, pos: BlockPos, player: PlayerEntity) {
-        val stack = player.getStackInHand(Hand.MAIN_HAND)
+    override fun attack(state: BlockState, world: Level, pos: BlockPos, player: Player) {
+        val stack = player.getItemInHand(InteractionHand.MAIN_HAND)
         if (ToolUtils.isWrench(stack)) {
             breakFixture(state, pos, world)
         }
-        super.onBlockBreakStart(state, world, pos, player)
+        super.attack(state, world, pos, player)
     }
 
-    override fun randomTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
-        if (!state.get(BROKEN)) return
+    override fun randomTick(state: BlockState, world: ServerLevel, pos: BlockPos, random: RandomSource) {
+        if (!state.getValue(BROKEN)) return
         if (random.nextInt(40) != 1) return
         spark(state, pos, world)
     }
 
-    override fun hasRandomTicks(state: BlockState): Boolean {
-        return super.hasRandomTicks(state) && state.get(BROKEN)
+    override fun isRandomlyTicking(state: BlockState): Boolean {
+        return super.isRandomlyTicking(state) && state.getValue(BROKEN)
     }
 
-    protected open fun changeOnState(shouldBeOn: Boolean, state: BlockState, pos: BlockPos, world: World): Boolean {
-        val isLit = state.get(LIT)
-        val isBroken = state.get(BROKEN)
+    protected open fun changeOnState(shouldBeOn: Boolean, state: BlockState, pos: BlockPos, world: Level): Boolean {
+        val isLit = state.getValue(LIT)
+        val isBroken = state.getValue(BROKEN)
         if (isBroken) { //Broken lamps can turn off, but no longer on
             spark(state, pos, world)
             if (!shouldBeOn && isLit) {
-                world.setBlockState(pos, state.with(LIT, false))
+                world.setBlockAndUpdate(pos, state.setValue(LIT, false))
                 return true
             }
             return false
@@ -129,75 +131,75 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
             null,
             pos,
             if (shouldBeOn) ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_ON else ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_OFF,
-            SoundCategory.BLOCKS
+            SoundSource.BLOCKS
         )
-        world.setBlockState(pos, state.with(LIT, shouldBeOn))
+        world.setBlockAndUpdate(pos, state.setValue(LIT, shouldBeOn))
         return true
     }
 
-    protected open fun spark(state: BlockState, pos: BlockPos, world: World) {
+    protected open fun spark(state: BlockState, pos: BlockPos, world: Level) {
         //TODO: implement sounds
-        if (world !is ServerWorld) return
+        if (world !is ServerLevel) return
         val sparkEffect = SparkEmitterParticleEffect(0.1, 12, true)
-        val sparkDirection = state.get(Properties.FACING)
-        world.spawnParticle(sparkEffect, pos.toCenterPos(), sparkDirection.doubleVector, 0.4)
+        val sparkDirection = state.getValue(BlockStateProperties.FACING)
+        world.spawnParticle(sparkEffect, pos.center, sparkDirection.unitVec3, 0.4)
     }
 
-    protected open fun breakFixture(state: BlockState, pos: BlockPos, world: World): Boolean {
-        val isBroken = state.get(BROKEN)
+    protected open fun breakFixture(state: BlockState, pos: BlockPos, world: Level): Boolean {
+        val isBroken = state.getValue(BROKEN)
         if (isBroken) return false
-        world.playSound(null, pos, ModSoundEvents.BLOCK_LIGHTING_FIXTURE_BREAK, SoundCategory.BLOCKS)
+        world.playSound(null, pos, ModSoundEvents.BLOCK_LIGHTING_FIXTURE_BREAK, SoundSource.BLOCKS)
         spark(state, pos, world)
-        world.setBlockState(pos, state.with(BROKEN, true), NOTIFY_LISTENERS)
+        world.setBlock(pos, state.setValue(BROKEN, true), UPDATE_CLIENTS)
         return true
     }
 
-    protected open fun repair(state: BlockState, pos: BlockPos, world: World, player: PlayerEntity): Boolean {
-        val isBroken = state.get(BROKEN)
+    protected open fun repair(state: BlockState, pos: BlockPos, world: Level, player: Player): Boolean {
+        val isBroken = state.getValue(BROKEN)
         if (!isBroken) return false
         world.playSound(
             player,
             pos,
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_REPAIR,
-            SoundCategory.BLOCKS
+            SoundSource.BLOCKS
         )
-        world.setBlockState(pos, state.with(BROKEN, false), NOTIFY_LISTENERS)
+        world.setBlock(pos, state.setValue(BROKEN, false), UPDATE_CLIENTS)
         return true
     }
 
-    protected open fun toggleInverted(state: BlockState, pos: BlockPos, world: World, player: PlayerEntity): Boolean {
+    protected open fun toggleInverted(state: BlockState, pos: BlockPos, world: Level, player: Player): Boolean {
         world.playSound(
             player,
             pos,
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_INVERT,
-            SoundCategory.BLOCKS
+            SoundSource.BLOCKS
         )
-        world.setBlockState(pos, state.with(INVERTED, !state.get(INVERTED)))
+        world.setBlockAndUpdate(pos, state.setValue(INVERTED, !state.getValue(INVERTED)))
         return true
     }
 
     override fun getFluidState(state: BlockState): FluidState {
-        return if (state.get(Properties.WATERLOGGED)) {
-            Fluids.WATER.getStill(false)
+        return if (state.getValue(BlockStateProperties.WATERLOGGED)) {
+            Fluids.WATER.getSource(false)
         } else {
             super.getFluidState(state)
         }
     }
 
-    override fun getStateForNeighborUpdate(
+    override fun updateShape(
         state: BlockState,
-        world: WorldView,
-        tickView: ScheduledTickView,
+        world: LevelReader,
+        tickView: ScheduledTickAccess,
         pos: BlockPos,
         direction: Direction,
         neighborPos: BlockPos,
         neighborState: BlockState,
-        random: Random
+        random: RandomSource
     ): BlockState {
-        if (state.get(Properties.WATERLOGGED)) {
-            tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world))
+        if (state.getValue(BlockStateProperties.WATERLOGGED)) {
+            tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world))
         }
-        return super.getStateForNeighborUpdate(
+        return super.updateShape(
             state,
             world,
             tickView,
@@ -209,22 +211,22 @@ abstract class LightingFixtureBlock(settings: Settings?) : Block(settings), Wate
         )
     }
 
-    override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
-        super.appendProperties(builder)
-        builder.add(LIT, INVERTED, BROKEN, Properties.WATERLOGGED)
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
+        super.createBlockStateDefinition(builder)
+        builder.add(LIT, INVERTED, BROKEN, BlockStateProperties.WATERLOGGED)
     }
 
-    abstract override fun mirror(state: BlockState, mirror: BlockMirror): BlockState
-    abstract override fun rotate(state: BlockState, rotation: BlockRotation): BlockState
+    abstract override fun mirror(state: BlockState, mirror: Mirror): BlockState
+    abstract override fun rotate(state: BlockState, rotation: Rotation): BlockState
 
     companion object {
-        val LIT: BooleanProperty = BooleanProperty.of("on")
-        val INVERTED: BooleanProperty = BooleanProperty.of("inverted")
-        val BROKEN: BooleanProperty = BooleanProperty.of("broken")
+        val LIT: BooleanProperty = BooleanProperty.create("on")
+        val INVERTED: BooleanProperty = BooleanProperty.create("inverted")
+        val BROKEN: BooleanProperty = BooleanProperty.create("broken")
         fun getLightingFunction(broken: Int, active: Int): (BlockState) -> Int {
             return lambda@{ state: BlockState ->
-                if (state.get(LIT) == state.get(INVERTED)) return@lambda 0
-                if (state.get(BROKEN)) return@lambda broken
+                if (state.getValue(LIT) == state.getValue(INVERTED)) return@lambda 0
+                if (state.getValue(BROKEN)) return@lambda broken
                 return@lambda active
             }
         }

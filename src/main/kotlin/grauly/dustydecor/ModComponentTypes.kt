@@ -5,26 +5,26 @@ import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ScrewdriverComponent
 import grauly.dustydecor.component.WrenchComponent
 import grauly.dustydecor.item.BulkVoidGoopItem
-import net.minecraft.component.ComponentType
-import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
-import net.minecraft.util.Identifier
+import net.minecraft.core.component.DataComponentType
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.core.Registry
+import net.minecraft.resources.ResourceLocation
 
 object ModComponentTypes {
 
-    val SCREWDRIVER: ComponentType<ScrewdriverComponent> = registerComponent(ScrewdriverComponent.CODEC, "screwdriver")
-    val WRENCH: ComponentType<WrenchComponent> = registerComponent(WrenchComponent.CODEC, "wrench")
-    val VOID_GOOP_SIZE: ComponentType<BulkGoopSizeComponent> = registerComponent(BulkGoopSizeComponent.CODEC, "bulk_goop")
+    val SCREWDRIVER: DataComponentType<ScrewdriverComponent> = registerComponent(ScrewdriverComponent.CODEC, "screwdriver")
+    val WRENCH: DataComponentType<WrenchComponent> = registerComponent(WrenchComponent.CODEC, "wrench")
+    val VOID_GOOP_SIZE: DataComponentType<BulkGoopSizeComponent> = registerComponent(BulkGoopSizeComponent.CODEC, "bulk_goop")
 
     private fun <T> registerComponent(
         codec: Codec<T>,
         id: String,
         namespace: String = DustyDecorMod.MODID
-    ): ComponentType<T> {
+    ): DataComponentType<T> {
         return Registry.register(
-            Registries.DATA_COMPONENT_TYPE,
-            Identifier.of(namespace, id),
-            ComponentType.builder<T>().codec(codec).build()
+            BuiltInRegistries.DATA_COMPONENT_TYPE,
+            ResourceLocation.fromNamespaceAndPath(namespace, id),
+            DataComponentType.builder<T>().persistent(codec).build()
         )
     }
 

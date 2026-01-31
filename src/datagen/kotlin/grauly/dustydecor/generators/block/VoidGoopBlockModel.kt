@@ -4,20 +4,20 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.generators.BlockModelDatagen
-import net.minecraft.client.data.BlockStateModelGenerator
-import net.minecraft.client.data.BlockStateVariantMap
-import net.minecraft.client.data.VariantsBlockModelDefinitionCreator
-import net.minecraft.state.property.Properties
-import net.minecraft.util.Identifier
+import net.minecraft.client.data.models.BlockModelGenerators
+import net.minecraft.client.data.models.blockstates.PropertyDispatch
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.resources.ResourceLocation
 
 object VoidGoopBlockModel {
-    fun get(blockStateModelGenerator: BlockStateModelGenerator) {
-        val creator = VariantsBlockModelDefinitionCreator.of(ModBlocks.VOID_GOOP)
-        val layersMap = BlockStateVariantMap.models(Properties.LAYERS).generate { layers ->
+    fun get(blockStateModelGenerator: BlockModelGenerators) {
+        val creator = MultiVariantGenerator.dispatch(ModBlocks.VOID_GOOP)
+        val layersMap = PropertyDispatch.initial(BlockStateProperties.LAYERS).generate { layers ->
             BlockModelDatagen.singleVariant("${LAYER_BASE_PATH}_$layers")
         }
-        blockStateModelGenerator.blockStateCollector.accept(creator.with(layersMap))
-        blockStateModelGenerator.registerItemModel(ModItems.VOID_GOOP)
+        blockStateModelGenerator.blockStateOutput.accept(creator.with(layersMap))
+        blockStateModelGenerator.registerSimpleFlatItemModel(ModItems.VOID_GOOP)
     }
 
     private const val LAYER_BASE_PATH = "block/void_goop/void_goop"

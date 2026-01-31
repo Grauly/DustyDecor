@@ -1,10 +1,10 @@
 package grauly.dustydecor
 
-import net.minecraft.item.Item
-import net.minecraft.registry.RegistryKeys
-import net.minecraft.registry.tag.TagKey
-import net.minecraft.util.Identifier
+import net.minecraft.world.item.Item
+import net.minecraft.core.registries.Registries
+import net.minecraft.tags.TagKey
+import net.minecraft.resources.ResourceLocation
 
 object ModItemTags {
-    val VOID_GOOP: TagKey<Item> = TagKey.of(RegistryKeys.ITEM, Identifier.of(DustyDecorMod.MODID, "void_goop"))
+    val VOID_GOOP: TagKey<Item> = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "void_goop"))
 }

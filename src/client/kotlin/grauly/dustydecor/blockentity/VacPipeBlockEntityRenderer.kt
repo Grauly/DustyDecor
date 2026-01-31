@@ -3,48 +3,48 @@ package grauly.dustydecor.blockentity
 import grauly.dustydecor.DustyDecorMod
 import it.unimi.dsi.fastutil.HashCommon
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey
-import net.minecraft.client.render.OverlayTexture
-import net.minecraft.client.render.block.entity.BlockEntityRenderer
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState
-import net.minecraft.client.render.command.ModelCommandRenderer
-import net.minecraft.client.render.command.OrderedRenderCommandQueue
-import net.minecraft.client.render.item.ItemRenderState
-import net.minecraft.client.render.state.CameraRenderState
-import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.item.ItemDisplayContext
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec3d
+import net.minecraft.client.renderer.texture.OverlayTexture
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer
+import net.minecraft.client.renderer.SubmitNodeCollector
+import net.minecraft.client.renderer.item.ItemStackRenderState
+import net.minecraft.client.renderer.state.CameraRenderState
+import com.mojang.blaze3d.vertex.PoseStack
+import net.minecraft.world.item.ItemDisplayContext
+import net.minecraft.core.Direction
+import net.minecraft.world.phys.Vec3
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.min
 
 class VacPipeBlockEntityRenderer(
-    private val blockRenderContext: BlockEntityRendererFactory.Context
+    private val blockRenderContext: BlockEntityRendererProvider.Context
 ) : BlockEntityRenderer<VacPipeBlockEntity, BlockEntityRenderState> {
-    private val itemModelManager = blockRenderContext.itemModelManager
+    private val itemModelManager = blockRenderContext.itemModelResolver
 
     override fun createRenderState(): BlockEntityRenderState? = BlockEntityRenderState()
 
-    override fun updateRenderState(
+    override fun extractRenderState(
         blockEntity: VacPipeBlockEntity,
         state: BlockEntityRenderState,
         tickProgress: Float,
-        cameraPos: Vec3d,
-        crumblingOverlay: ModelCommandRenderer.CrumblingOverlayCommand?
+        cameraPos: Vec3,
+        crumblingOverlay: ModelFeatureRenderer.CrumblingOverlay?
     ) {
-        super.updateRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay)
+        super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay)
         val stack = blockEntity.storage.variant.toStack()
         if (stack.isEmpty) return
 
-        val itemRenderState = ItemRenderState()
-        itemModelManager.clearAndUpdate(
+        val itemRenderState = ItemStackRenderState()
+        itemModelManager.updateForTopItem(
             itemRenderState,
             stack,
             ItemDisplayContext.NONE,
-            blockEntity.world,
+            blockEntity.level,
             blockEntity,
-            HashCommon.long2int(blockEntity.pos.asLong())
+            HashCommon.long2int(blockEntity.blockPos.asLong())
         )
         state.setData(ITEM, itemRenderState)
 
@@ -60,16 +60,16 @@ class VacPipeBlockEntityRenderer(
         state.setData(DELTA, blockEntity.ticksSinceLastChange + tickProgress)
     }
 
-    override fun render(
+    override fun submit(
         state: BlockEntityRenderState,
-        matrices: MatrixStack,
-        queue: OrderedRenderCommandQueue,
+        matrices: PoseStack,
+        queue: SubmitNodeCollector,
         cameraState: CameraRenderState
     ) {
-        val itemRenderState: ItemRenderState = state.getData(ITEM) ?: return
+        val itemRenderState: ItemStackRenderState = state.getData(ITEM) ?: return
         val delta: Float = state.getData(DELTA)!!
 
-        var positionOffset: Vec3d = Vec3d.ZERO
+        var positionOffset: Vec3 = Vec3.ZERO
         val rotation: Quaternionf = Quaternionf()
         val start = state.getData(START_POS)!!
         val middle = state.getData(MIDDLE_POS)!!
@@ -84,43 +84,43 @@ class VacPipeBlockEntityRenderer(
                 rotation.rotateTo(up, start.toVector3f())
             } else if (delta >= 0.5) {
                 positionOffset = middle.lerp(end, min((delta - 0.5) * 2, 2.0))
-                rotation.rotateTo(up, (if (middle == end) start else end).negate().toVector3f())
+                rotation.rotateTo(up, (if (middle == end) start else end).reverse().toVector3f())
             }
         }
 
-        matrices.push()
+        matrices.pushPose()
         matrices.translate(0.5, 0.5, 0.5)
         matrices.translate(positionOffset)
-        matrices.multiply(rotation)
+        matrices.mulPose(rotation)
 
-        itemRenderState.render(
+        itemRenderState.submit(
             matrices,
             queue,
-            state.lightmapCoordinates,
-            OverlayTexture.DEFAULT_UV,
+            state.lightCoords,
+            OverlayTexture.NO_OVERLAY,
             0
         )
 
-        matrices.pop()
+        matrices.popPose()
     }
 
-    private fun directionToPos(direction: Direction?): Vec3d =
+    private fun directionToPos(direction: Direction?): Vec3 =
         when (direction) {
-            Direction.UP -> Vec3d(0.0, 0.5, 0.0)
-            Direction.DOWN -> Vec3d(0.0, -0.5, 0.0)
-            Direction.NORTH -> Vec3d(0.0, 0.0, -0.5)
-            Direction.SOUTH -> Vec3d(0.0, 0.0, 0.5)
-            Direction.EAST -> Vec3d(0.5, 0.0, 0.0)
-            Direction.WEST -> Vec3d(-0.5, 0.0, 0.0)
-            else -> Vec3d.ZERO
+            Direction.UP -> Vec3(0.0, 0.5, 0.0)
+            Direction.DOWN -> Vec3(0.0, -0.5, 0.0)
+            Direction.NORTH -> Vec3(0.0, 0.0, -0.5)
+            Direction.SOUTH -> Vec3(0.0, 0.0, 0.5)
+            Direction.EAST -> Vec3(0.5, 0.0, 0.0)
+            Direction.WEST -> Vec3(-0.5, 0.0, 0.0)
+            else -> Vec3.ZERO
         }
 
     companion object {
-        val ITEM: RenderStateDataKey<ItemRenderState> = RenderStateDataKey<ItemRenderState>.create()
+        val ITEM: RenderStateDataKey<ItemStackRenderState> = RenderStateDataKey<ItemStackRenderState>.create()
         val NEEDS_ITEM_MOVEMENT: RenderStateDataKey<Boolean> = RenderStateDataKey<Boolean>.create()
         val DELTA: RenderStateDataKey<Float> = RenderStateDataKey<Float>.create()
-        val START_POS: RenderStateDataKey<Vec3d> = RenderStateDataKey<Vec3d>.create()
-        val MIDDLE_POS: RenderStateDataKey<Vec3d> = RenderStateDataKey<Vec3d>.create()
-        val END_POS: RenderStateDataKey<Vec3d> = RenderStateDataKey<Vec3d>.create()
+        val START_POS: RenderStateDataKey<Vec3> = RenderStateDataKey<Vec3>.create()
+        val MIDDLE_POS: RenderStateDataKey<Vec3> = RenderStateDataKey<Vec3>.create()
+        val END_POS: RenderStateDataKey<Vec3> = RenderStateDataKey<Vec3>.create()
     }
 }

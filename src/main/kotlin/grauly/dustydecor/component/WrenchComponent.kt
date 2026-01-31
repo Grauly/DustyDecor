@@ -4,44 +4,44 @@ import com.mojang.serialization.Codec
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import io.netty.buffer.ByteBuf
-import net.minecraft.component.ComponentsAccess
-import net.minecraft.item.Item
-import net.minecraft.item.tooltip.TooltipAppender
-import net.minecraft.item.tooltip.TooltipType
-import net.minecraft.network.codec.PacketCodec
-import net.minecraft.text.Style
-import net.minecraft.text.Text
-import net.minecraft.text.TextColor
-import net.minecraft.util.Colors
+import net.minecraft.core.component.DataComponentGetter
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.component.TooltipProvider
+import net.minecraft.world.item.TooltipFlag
+import net.minecraft.network.codec.StreamCodec
+import net.minecraft.network.chat.Style
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextColor
+import net.minecraft.util.CommonColors
 import java.util.function.Consumer
 
-object WrenchComponent : TooltipAppender {
-    override fun appendTooltip(
+object WrenchComponent : TooltipProvider {
+    override fun addToTooltip(
         context: Item.TooltipContext,
-        textConsumer: Consumer<Text>,
-        type: TooltipType,
-        components: ComponentsAccess
+        textConsumer: Consumer<Component>,
+        type: TooltipFlag,
+        components: DataComponentGetter
     ) {
-        textConsumer.accept(Text.empty())
+        textConsumer.accept(Component.empty())
         textConsumer.accept(
-            Text.translatable(VAC_PIPE_TRANSLATION_KEY, ModBlocks.VAC_PIPE.name)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+            Component.translatable(VAC_PIPE_TRANSLATION_KEY, ModBlocks.VAC_PIPE.name)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
         )
         textConsumer.accept(
-            Text.translatable(VAC_PIPE_CONNECTION_TRANSLATION_KEY)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+            Component.translatable(VAC_PIPE_CONNECTION_TRANSLATION_KEY)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
         )
         textConsumer.accept(
-            Text.translatable(VAP_PIPE_CONNECTION_FIX_TRANSLATION_KEY)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+            Component.translatable(VAP_PIPE_CONNECTION_FIX_TRANSLATION_KEY)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
         )
         textConsumer.accept(
-            Text.translatable(VAC_PIPE_STATION_TRANSLATION_KEY, ModBlocks.VAC_PIPE_STATION.name)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+            Component.translatable(VAC_PIPE_STATION_TRANSLATION_KEY, ModBlocks.VAC_PIPE_STATION.name)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
         )
         textConsumer.accept(
-            Text.translatable(LAMPS_TRANSLATION_KEY)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(Colors.LIGHT_GRAY)))
+            Component.translatable(LAMPS_TRANSLATION_KEY)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
         )
     }
 
@@ -52,5 +52,5 @@ object WrenchComponent : TooltipAppender {
     const val LAMPS_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.lamps"
 
     val CODEC: Codec<WrenchComponent> = Codec.unit(this)
-    val PACKET_CODEC: PacketCodec<ByteBuf, WrenchComponent> = PacketCodec.unit(this)
+    val PACKET_CODEC: StreamCodec<ByteBuf, WrenchComponent> = StreamCodec.unit(this)
 }

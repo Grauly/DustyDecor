@@ -12,14 +12,14 @@ import grauly.dustydecor.block.vent.VentBlock
 import grauly.dustydecor.block.vent.VentCoverBlock
 import grauly.dustydecor.block.voidgoop.VoidGoopBlock
 import grauly.dustydecor.util.DyeUtils
-import net.minecraft.block.AbstractBlock.Settings
-import net.minecraft.block.Block
-import net.minecraft.block.Blocks
-import net.minecraft.registry.Registries
-import net.minecraft.registry.Registry
-import net.minecraft.registry.RegistryKey
-import net.minecraft.registry.RegistryKeys
-import net.minecraft.util.Identifier
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.core.Registry
+import net.minecraft.resources.ResourceKey
+import net.minecraft.core.registries.Registries
+import net.minecraft.resources.ResourceLocation
 
 object ModBlocks {
 
@@ -30,75 +30,75 @@ object ModBlocks {
     - Texture/Model
      */
 
-    val VENT: Block = registerBlock(::VentBlock, "vent", Settings.copy(Blocks.IRON_BLOCK))
+    val VENT: Block = registerBlock(::VentBlock, "vent", Properties.ofFullCopy(Blocks.IRON_BLOCK))
     val VENT_COVER: Block =
-        registerBlock(::VentCoverBlock, "vent_cover", Settings.copy(Blocks.IRON_TRAPDOOR).ticksRandomly().nonOpaque())
-    val VAC_PIPE: Block = registerBlock(::VacPipeBlock, "vac_pipe", Settings.copy(Blocks.HOPPER))
-    val VAC_PIPE_STATION: Block = registerBlock(::VacPipeStationBlock, "vac_pipe_station", Settings.copy(Blocks.HOPPER))
-    val VOID_GOOP: Block = registerBlock({settings -> VoidGoopBlock(1, settings) }, "void_goop")
+        registerBlock(::VentCoverBlock, "vent_cover", Properties.ofFullCopy(Blocks.IRON_TRAPDOOR).randomTicks().noOcclusion())
+    val VAC_PIPE: Block = registerBlock(::VacPipeBlock, "vac_pipe", Properties.ofFullCopy(Blocks.HOPPER))
+    val VAC_PIPE_STATION: Block = registerBlock(::VacPipeStationBlock, "vac_pipe_station", Properties.ofFullCopy(Blocks.HOPPER))
+    val VOID_GOOP: Block = registerBlock({ settings -> VoidGoopBlock(1, settings) }, "void_goop")
 
     val TALL_CAGE_LAMPS: List<TallCageLampBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.id}_tall_cage_lamp"
+        val id = "${it.name}_tall_cage_lamp"
         (registerBlock(
             ::TallCageLampBlock,
             id,
-            Settings.copy(Blocks.LANTERN)
-                .luminance(LightingFixtureBlock.getLightingFunction(3, 15))
-                .ticksRandomly()
+            Properties.ofFullCopy(Blocks.LANTERN)
+                .lightLevel(LightingFixtureBlock.getLightingFunction(3, 15))
+                .randomTicks()
         ) as TallCageLampBlock)
     }
 
     val ALARM_CAGE_LAMPS: List<AlarmCageLampBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.id}_alarm_cage_lamp"
+        val id = "${it.name}_alarm_cage_lamp"
         (registerBlock(
             ::AlarmCageLampBlock,
             id,
-            Settings.copy(Blocks.LANTERN)
-                .luminance(LightingFixtureBlock.getLightingFunction(3, 15))
-                .ticksRandomly()
+            Properties.ofFullCopy(Blocks.LANTERN)
+                .lightLevel(LightingFixtureBlock.getLightingFunction(3, 15))
+                .randomTicks()
         ) as AlarmCageLampBlock)
     }
 
     val WIDE_CAGE_LAMPS: List<WideCageLampBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.id}_wide_cage_lamp"
+        val id = "${it.name}_wide_cage_lamp"
         (registerBlock(
             ::WideCageLampBlock,
             id,
-            Settings.copy(Blocks.LANTERN)
-                .luminance(LightingFixtureBlock.getLightingFunction(3, 15))
-                .ticksRandomly()
+            Properties.ofFullCopy(Blocks.LANTERN)
+                .lightLevel(LightingFixtureBlock.getLightingFunction(3, 15))
+                .randomTicks()
         ) as WideCageLampBlock)
     }
 
     val TUBE_LAMPS: List<TubeLampBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.id}_tube_lamp"
+        val id = "${it.name}_tube_lamp"
         (registerBlock(
             ::TubeLampBlock,
             id,
-            Settings.copy(Blocks.LANTERN)
-                .luminance(LightingFixtureBlock.getLightingFunction(3, 15))
-                .ticksRandomly()
+            Properties.ofFullCopy(Blocks.LANTERN)
+                .lightLevel(LightingFixtureBlock.getLightingFunction(3, 15))
+                .randomTicks()
         ) as TubeLampBlock)
     }
 
     val STOOLS: List<StoolBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.id}_stool"
+        val id = "${it.name}_stool"
         (registerBlock(
             ::StoolBlock,
             id,
-            Settings.copy(Blocks.IRON_BLOCK).nonOpaque()
+            Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()
         ) as StoolBlock)
     }
 
     private fun registerBlock(
-        blockFactory: (Settings) -> Block,
+        blockFactory: (Properties) -> Block,
         id: String,
-        settings: Settings = Settings.create(),
+        settings: Properties = Properties.of(),
         namespace: String = DustyDecorMod.MODID
     ): Block {
-        val key: RegistryKey<Block> = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(namespace, id))
-        settings.registryKey(key)
-        return Registry.register(Registries.BLOCK, key, blockFactory.invoke(settings))
+        val key: ResourceKey<Block> = ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(namespace, id))
+        settings.setId(key)
+        return Registry.register(BuiltInRegistries.BLOCK, key, blockFactory.invoke(settings))
     }
 
     fun init() {

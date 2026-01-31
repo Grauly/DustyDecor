@@ -3,14 +3,14 @@ package grauly.dustydecor.event
 import grauly.dustydecor.ModAttachmentTypes
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModDamageTypes
-import net.minecraft.entity.damage.DamageSource
-import net.minecraft.entity.damage.DamageSources
-import net.minecraft.entity.effect.StatusEffects
-import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.server.world.ServerWorld
-import net.minecraft.text.Text
-import net.minecraft.util.hit.HitResult
-import net.minecraft.world.RaycastContext
+import net.minecraft.world.damagesource.DamageSource
+import net.minecraft.world.damagesource.DamageSources
+import net.minecraft.world.effect.MobEffects
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.network.chat.Component
+import net.minecraft.world.phys.HitResult
+import net.minecraft.world.level.ClipContext
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -21,8 +21,8 @@ object VoidGoopLookHandler {
     private const val CONSUMPTION_TICK_INCREMENT: Float = 1f / CONSUMPTION_TIME_TICKS
     private const val ATTENUATE_MULTIPLIER: Float = 1f / 8
 
-    fun onEndTick(serverWorld: ServerWorld) {
-        serverWorld.players.forEach { player ->
+    fun onEndTick(serverWorld: ServerLevel) {
+        serverWorld.players().forEach { player ->
             val isLooking = isLookingAtGoop(player, serverWorld)
             val previous = player.modifyAttached(ModAttachmentTypes.VOID_CONSUMPTION) {
                 val value = it ?: 0f
@@ -31,35 +31,35 @@ object VoidGoopLookHandler {
                 } else {
                     max(
                         0f,
-                        value - CONSUMPTION_TICK_INCREMENT * if(player.gameMode.isSurvivalLike) ATTENUATE_MULTIPLIER else 1f
+                        value - CONSUMPTION_TICK_INCREMENT * if(player.gameMode().isSurvival) ATTENUATE_MULTIPLIER else 1f
                     )
                 }
             }
             if ((previous ?: 0f) < 1f) return@forEach
-            player.damage(
+            player.hurtServer(
                 serverWorld,
-                serverWorld.damageSources.create(ModDamageTypes.VOID_CONSUMPTION),
+                serverWorld.damageSources().source(ModDamageTypes.VOID_CONSUMPTION),
                 5f
             )
         }
     }
 
-    private fun isLookingAtGoop(player: ServerPlayerEntity, world: ServerWorld): Boolean {
-        if (!player.gameMode.isSurvivalLike) return false
-        if (player.hasStatusEffect(StatusEffects.BLINDNESS)) return false
-        val pos = player.getCameraPosVec(0f)
-        val rotation = player.getRotationVec(0f).normalize().multiply(MAX_DISTANCE)
-        val hitResult = world.raycast(
-            RaycastContext(
+    private fun isLookingAtGoop(player: ServerPlayer, world: ServerLevel): Boolean {
+        if (!player.gameMode().isSurvival) return false
+        if (player.hasEffect(MobEffects.BLINDNESS)) return false
+        val pos = player.getEyePosition(0f)
+        val rotation = player.getViewVector(0f).normalize().scale(MAX_DISTANCE)
+        val hitResult = world.clip(
+            ClipContext(
                 pos,
                 pos.add(rotation),
-                RaycastContext.ShapeType.VISUAL,
-                RaycastContext.FluidHandling.NONE,
+                ClipContext.Block.VISUAL,
+                ClipContext.Fluid.NONE,
                 player
             )
         )
         if (hitResult.type == HitResult.Type.MISS) return false
         val lookAtState = world.getBlockState(hitResult.blockPos)
-        return lookAtState.isOf(ModBlocks.VOID_GOOP)
+        return lookAtState.`is`(ModBlocks.VOID_GOOP)
     }
 }

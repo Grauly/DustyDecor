@@ -1,25 +1,25 @@
 package grauly.dustydecor
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents
-import net.minecraft.item.ItemGroups
-import net.minecraft.item.Items
+import net.minecraft.world.item.CreativeModeTabs
+import net.minecraft.world.item.Items
 
 object ModItemGroups {
     fun init() {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS)
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS)
             .register {
                 it.addAfter(Items.IRON_CHAIN, ModItems.VENT, ModItems.VENT_COVER)
             }
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
             .register {
                 it.addAfter(Items.BRUSH, ModItems.SCREWDRIVER, ModItems.WRENCH)
                 it.addAfter(Items.PINK_BUNDLE, ModItems.VAC_CAPSULE)
             }
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL)
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS)
             .register {
                 it.addAfter(Items.WAXED_OXIDIZED_COPPER_CHEST, ModItems.VAC_PIPE, ModItems.VAC_PIPE_STATION)
             }
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS)
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COLORED_BLOCKS)
             .register {
                 it.addAfter(
                     Items.PINK_CANDLE,
@@ -30,11 +30,11 @@ object ModItemGroups {
                     *ModItems.STOOLS.toTypedArray()
                 )
             }
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS)
             .register {
                 it.addAfter(Items.POPPED_CHORUS_FRUIT, ModItems.OUTSIDE_CRYSTAL_SHARD)
             }
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL)
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.NATURAL_BLOCKS)
             .register {
                 it.addAfter(Items.SCULK_SENSOR, ModItems.VOID_GOOP, ModItems.BULK_VOID_GOOP)
             }

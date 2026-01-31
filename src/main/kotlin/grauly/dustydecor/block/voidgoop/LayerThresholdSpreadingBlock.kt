@@ -3,163 +3,165 @@ package grauly.dustydecor.block.voidgoop
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.util.DebugUtils
 import net.minecraft.block.*
-import net.minecraft.entity.FallingBlockEntity
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.ai.pathing.NavigationType
-import net.minecraft.item.AutomaticItemPlacementContext
-import net.minecraft.item.ItemPlacementContext
-import net.minecraft.item.ItemStack
-import net.minecraft.server.world.ServerWorld
-import net.minecraft.state.StateManager
-import net.minecraft.state.property.BooleanProperty
-import net.minecraft.state.property.IntProperty
-import net.minecraft.state.property.Properties
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.random.Random
-import net.minecraft.util.shape.VoxelShape
-import net.minecraft.world.BlockView
-import net.minecraft.world.World
-import net.minecraft.world.WorldView
-import net.minecraft.world.tick.ScheduledTickView
+import net.minecraft.world.entity.item.FallingBlockEntity
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.level.pathfinder.PathComputationType
+import net.minecraft.world.item.context.DirectionalPlaceContext
+import net.minecraft.world.item.context.BlockPlaceContext
+import net.minecraft.world.item.ItemStack
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.block.state.properties.IntegerProperty
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.util.RandomSource
+import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.level.BlockGetter
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.ScheduledTickAccess
 import kotlin.math.min
 
-abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settings?) : FallingBlock(settings) {
+abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Properties?) : FallingBlock(settings) {
 
     //TODO: add leaf piles
     //TODO: add sand/gravel piles
 
     init {
-        defaultState = defaultState
-            .with(LAYERS, 1)
-            .with(FALLING, false)
+        registerDefaultState(
+            defaultBlockState()
+                .setValue(LAYERS, 1)
+                .setValue(FALLING, false)
+        )
     }
 
-    override fun getStateForNeighborUpdate(
+    override fun updateShape(
         state: BlockState,
-        world: WorldView,
-        tickView: ScheduledTickView,
+        world: LevelReader,
+        tickView: ScheduledTickAccess,
         pos: BlockPos,
         direction: Direction,
         neighborPos: BlockPos,
         neighborState: BlockState,
-        random: Random
+        random: RandomSource
     ): BlockState? {
-        if (!world.isClient) {
-            world as ServerWorld
-            world.scheduleBlockTick(pos, this, fallDelay)
+        if (!world.isClientSide) {
+            world as ServerLevel
+            world.scheduleTick(pos, this, delayAfterPlace)
         }
         return state
     }
 
-    override fun onPlaced(
-        world: World,
+    override fun setPlacedBy(
+        world: Level,
         pos: BlockPos,
         state: BlockState,
         placer: LivingEntity?,
         itemStack: ItemStack?
     ) {
-        super.onPlaced(world, pos, state, placer, itemStack)
-        world.scheduleBlockTick(pos, this, fallDelay)
+        super.setPlacedBy(world, pos, state, placer, itemStack)
+        world.scheduleTick(pos, this, delayAfterPlace)
     }
 
-    override fun scheduledTick(
+    override fun tick(
         state: BlockState,
-        world: ServerWorld,
+        world: ServerLevel,
         pos: BlockPos,
-        random: Random
+        random: RandomSource
     ) {
-        val downState = world.getBlockState(pos.down())
-        val canFallThrough = canFallThrough(downState)
-        val canMerge = if (downState.isOf(this)) {
-            downState.get(LAYERS) < MAX_LAYERS
+        val downState = world.getBlockState(pos.below())
+        val canFallThrough = isFree(downState)
+        val canMerge = if (downState.`is`(this)) {
+            downState.getValue(LAYERS) < MAX_LAYERS
         } else false
         if (canMerge) {
-            val ownLayers = state.get(LAYERS)
-            val mergeLayers = min(MAX_LAYERS - downState.get(LAYERS), ownLayers)
-            world.setBlockState(pos.down(), downState.with(LAYERS, downState.get(LAYERS) + mergeLayers))
-            val placeState = if (mergeLayers == ownLayers) Blocks.AIR.defaultState else state.with(LAYERS, ownLayers - mergeLayers)
-            world.setBlockState(pos, placeState)
+            val ownLayers = state.getValue(LAYERS)
+            val mergeLayers = min(MAX_LAYERS - downState.getValue(LAYERS), ownLayers)
+            world.setBlockAndUpdate(pos.below(), downState.setValue(LAYERS, downState.getValue(LAYERS) + mergeLayers))
+            val placeState = if (mergeLayers == ownLayers) Blocks.AIR.defaultBlockState() else state.setValue(LAYERS, ownLayers - mergeLayers)
+            world.setBlockAndUpdate(pos, placeState)
             return
         }
-        if (canFallThrough && pos.y >= world.bottomY) {
-            val fallingBlock = FallingBlockEntity.spawnFromBlock(world, pos, state.with(FALLING, true))
-            this.configureFallingBlockEntity(fallingBlock)
+        if (canFallThrough && pos.y >= world.minY) {
+            val fallingBlock = FallingBlockEntity.fall(world, pos, state.setValue(FALLING, true))
+            this.falling(fallingBlock)
         }
         val updatedState = world.getBlockState(pos)
         if (updatedState.isAir) return
-        world.setBlockState(pos, trySpread(pos, world, updatedState))
+        world.setBlockAndUpdate(pos, trySpread(pos, world, updatedState))
     }
 
-    override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
-        val placementBlockState = ctx.world.getBlockState(ctx.blockPos)
-        if (placementBlockState.isOf(this)) {
-            val existingLayers = placementBlockState.get(LAYERS)
-            return placementBlockState.with(LAYERS, min(MAX_LAYERS, existingLayers + 1))
+    override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState? {
+        val placementBlockState = ctx.level.getBlockState(ctx.clickedPos)
+        if (placementBlockState.`is`(this)) {
+            val existingLayers = placementBlockState.getValue(LAYERS)
+            return placementBlockState.setValue(LAYERS, min(MAX_LAYERS, existingLayers + 1))
         } else {
-            return super.getPlacementState(ctx)
+            return super.getStateForPlacement(ctx)
         }
     }
 
-    override fun canPlaceAt(state: BlockState, world: WorldView, pos: BlockPos): Boolean {
-        val placedOnState = world.getBlockState(pos.down())
-        return isFaceFullSquare(placedOnState.getCollisionShape(world, pos.down()), Direction.UP) ||
-                placedOnState.isOf(this) && placedOnState.get(LAYERS) == MAX_LAYERS
+    override fun canSurvive(state: BlockState, world: LevelReader, pos: BlockPos): Boolean {
+        val placedOnState = world.getBlockState(pos.below())
+        return isFaceFull(placedOnState.getCollisionShape(world, pos.below()), Direction.UP) ||
+                placedOnState.`is`(this) && placedOnState.getValue(LAYERS) == MAX_LAYERS
     }
 
-    override fun canReplace(state: BlockState, context: ItemPlacementContext): Boolean {
-        if (context.stack.isOf(this.asItem())) {
-            return (state.get(LAYERS) < MAX_LAYERS)
+    override fun canBeReplaced(state: BlockState, context: BlockPlaceContext): Boolean {
+        if (context.itemInHand.`is`(this.asItem())) {
+            return (state.getValue(LAYERS) < MAX_LAYERS)
         }
         return false
     }
 
-    override fun configureFallingBlockEntity(entity: FallingBlockEntity) {
-        super.configureFallingBlockEntity(entity)
+    override fun falling(entity: FallingBlockEntity) {
+        super.falling(entity)
         entity.dropItem = false
     }
 
-    override fun onLanding(
-        world: World,
+    override fun onLand(
+        world: Level,
         pos: BlockPos,
         fallingBlockState: BlockState,
         currentStateInPos: BlockState,
         fallingBlockEntity: FallingBlockEntity
     ) {
-        if (!currentStateInPos.isOf(this)) {
-            world.setBlockState(pos, fallingBlockState.with(FALLING, false))
+        if (!currentStateInPos.`is`(this)) {
+            world.setBlockAndUpdate(pos, fallingBlockState.setValue(FALLING, false))
             return
         }
-        val layersToIntegrate = fallingBlockState.get(LAYERS)
-        val integrateBlockLayers = currentStateInPos.get(LAYERS)
+        val layersToIntegrate = fallingBlockState.getValue(LAYERS)
+        val integrateBlockLayers = currentStateInPos.getValue(LAYERS)
         val totalLayers = layersToIntegrate + integrateBlockLayers
         if (totalLayers > MAX_LAYERS) {
 
             val overflowLayers = totalLayers - MAX_LAYERS
-            val overflowPos = pos.up()
+            val overflowPos = pos.above()
             val overflowState = world.getBlockState(overflowPos)
-            val canPlace = overflowState.canPlaceAt(world, overflowPos)
-            val canReplace = overflowState.canReplace(
-                AutomaticItemPlacementContext(
-                    world, overflowPos, Direction.DOWN, this.asItem().defaultStack, Direction.UP
+            val canPlace = overflowState.canSurvive(world, overflowPos)
+            val canReplace = overflowState.canBeReplaced(
+                DirectionalPlaceContext(
+                    world, overflowPos, Direction.DOWN, this.asItem().defaultInstance, Direction.UP
                 )
             )
             if (canPlace && canReplace) {
-                world.setBlockState(overflowPos, defaultState.with(LAYERS, overflowLayers))
+                world.setBlockAndUpdate(overflowPos, defaultBlockState().setValue(LAYERS, overflowLayers))
             }
         }
-        world.setBlockState(
+        world.setBlockAndUpdate(
             pos,
             currentStateInPos
-                .with(LAYERS, min(MAX_LAYERS, totalLayers))
-                .with(FALLING, false)
+                .setValue(LAYERS, min(MAX_LAYERS, totalLayers))
+                .setValue(FALLING, false)
         )
     }
 
-    private fun trySpread(pos: BlockPos, world: ServerWorld, state: BlockState): BlockState {
-        val layers = state.get(LAYERS)
+    private fun trySpread(pos: BlockPos, world: ServerLevel, state: BlockState): BlockState {
+        val layers = state.getValue(LAYERS)
         val spreadTargets: Map<Direction, Int> = Direction.entries.filter { it.axis.isHorizontal }
-            .associateWith { getSpreadDifferential(pos.offset(it), it, world) }
+            .associateWith { getSpreadDifferential(pos.relative(it), it, world) }
         if (spreadTargets.all { it.value >= layers }) return state //surrounded by higher/equal blocks
         if (spreadTargets.all { layers - it.value <= threshold }) return state //none have enough differential
         var updatedLayerCount = layers
@@ -176,102 +178,102 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Settin
             updatedLayerCount -= 1
         }
         spreadActions.filterValues { it != 0 }.forEach { entry ->
-            val offsetPos = pos.offset(entry.key)
+            val offsetPos = pos.relative(entry.key)
             val offsetState = world.getBlockState(offsetPos)
-            val workingState = if (offsetState.isOf(this)) {
+            val workingState = if (offsetState.`is`(this)) {
                 DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} - ${entry.key} -> ${DebugUtils.nameBlockPos(offsetPos)}: $offsetState, ${entry.value}")
-                offsetState.with(LAYERS, offsetState.get(LAYERS) + entry.value)
+                offsetState.setValue(LAYERS, offsetState.getValue(LAYERS) + entry.value)
             } else {
-                defaultState.with(LAYERS, entry.value)
+                defaultBlockState().setValue(LAYERS, entry.value)
             }
-            world.setBlockState(offsetPos, workingState)
+            world.setBlockAndUpdate(offsetPos, workingState)
         }
-        if (updatedLayerCount == 0) return Blocks.AIR.defaultState
+        if (updatedLayerCount == 0) return Blocks.AIR.defaultBlockState()
 
-        return state.with(LAYERS, updatedLayerCount)
+        return state.setValue(LAYERS, updatedLayerCount)
     }
 
     private fun getSpreadDifferential(
         pos: BlockPos,
         searchDirection: Direction,
-        world: ServerWorld,
+        world: ServerLevel,
         searchDepth: Int = 0,
         maxSearchDepth: Int = 1
     ): Int {
         val localState = world.getBlockState(pos)
-        val canPlace = defaultState.canPlaceAt(world, pos)
-        val canReplace = localState.canReplace(
-            AutomaticItemPlacementContext(
+        val canPlace = defaultBlockState().canSurvive(world, pos)
+        val canReplace = localState.canBeReplaced(
+            DirectionalPlaceContext(
                 world, pos,
                 searchDirection,
-                this.asItem().defaultStack,
+                this.asItem().defaultInstance,
                 searchDirection.opposite
             )
         )
         if (!canReplace) return -searchDepth * MAX_LAYERS + MAX_LAYERS
-        if (localState.isOf(this)) {
-            DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} (seek $searchDirection): $searchDepth, ${localState.get(LAYERS)}")
-            return -searchDepth * MAX_LAYERS + localState.get(LAYERS)
+        if (localState.`is`(this)) {
+            DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} (seek $searchDirection): $searchDepth, ${localState.getValue(LAYERS)}")
+            return -searchDepth * MAX_LAYERS + localState.getValue(LAYERS)
         }
         if (!canPlace) {
             if (searchDepth >= maxSearchDepth) {
                 return -searchDepth * MAX_LAYERS
             }
             DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} (seek $searchDirection): $searchDepth, $localState, going down")
-            return getSpreadDifferential(pos.down(), searchDirection, world, searchDepth + 1, maxSearchDepth)
+            return getSpreadDifferential(pos.below(), searchDirection, world, searchDepth + 1, maxSearchDepth)
         }
         return -searchDepth * MAX_LAYERS
     }
 
-    override fun canPathfindThrough(state: BlockState, type: NavigationType): Boolean {
-        if (type != NavigationType.LAND) return false
-        return state.get(LAYERS) < 5
+    override fun isPathfindable(state: BlockState, type: PathComputationType): Boolean {
+        if (type != PathComputationType.LAND) return false
+        return state.getValue(LAYERS) < 5
     }
 
-    override fun getOutlineShape(
+    override fun getShape(
         state: BlockState,
-        world: BlockView,
+        world: BlockGetter,
         pos: BlockPos,
-        context: ShapeContext
-    ): VoxelShape = SHAPES[state.get(LAYERS)]
+        context: CollisionContext
+    ): VoxelShape = SHAPES[state.getValue(LAYERS)]
 
-    override fun getSidesShape(
+    override fun getBlockSupportShape(
         state: BlockState,
-        world: BlockView,
+        world: BlockGetter,
         pos: BlockPos
-    ): VoxelShape = SHAPES[state.get(LAYERS)]
+    ): VoxelShape = SHAPES[state.getValue(LAYERS)]
 
     override fun getCollisionShape(
         state: BlockState,
-        world: BlockView,
+        world: BlockGetter,
         pos: BlockPos,
-        context: ShapeContext
-    ): VoxelShape = SHAPES[state.get(LAYERS)]
+        context: CollisionContext
+    ): VoxelShape = SHAPES[state.getValue(LAYERS)]
 
-    override fun getCameraCollisionShape(
+    override fun getVisualShape(
         state: BlockState,
-        world: BlockView,
+        world: BlockGetter,
         pos: BlockPos,
-        context: ShapeContext
-    ): VoxelShape = SHAPES[state.get(LAYERS)]
+        context: CollisionContext
+    ): VoxelShape = SHAPES[state.getValue(LAYERS)]
 
-    override fun getAmbientOcclusionLightLevel(state: BlockState, world: BlockView, pos: BlockPos): Float {
+    override fun getShadeBrightness(state: BlockState, world: BlockGetter, pos: BlockPos): Float {
         return 0.9f
     }
 
-    override fun hasSidedTransparency(state: BlockState): Boolean = true
+    override fun useShapeForLightOcclusion(state: BlockState): Boolean = true
 
-    override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
-        super.appendProperties(builder)
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
+        super.createBlockStateDefinition(builder)
         builder.add(LAYERS, FALLING)
     }
 
     companion object {
-        val LAYERS: IntProperty = Properties.LAYERS
-        val FALLING: BooleanProperty = BooleanProperty.of("falling")
+        val LAYERS: IntegerProperty = BlockStateProperties.LAYERS
+        val FALLING: BooleanProperty = BooleanProperty.create("falling")
         const val MAX_LAYERS: Int = 8
-        val SHAPES: Array<VoxelShape> = createShapeArray(MAX_LAYERS) { layers ->
-            createColumnShape(16.0, 0.0, (layers * 2).toDouble())
+        val SHAPES: Array<VoxelShape> = boxes(MAX_LAYERS) { layers ->
+            column(16.0, 0.0, (layers * 2).toDouble())
         }
     }
 }

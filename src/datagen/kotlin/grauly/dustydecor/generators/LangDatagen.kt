@@ -19,18 +19,18 @@ import grauly.dustydecor.screens.VacPipeStationScreen
 import kotlinx.coroutines.flow.combine
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
-import net.minecraft.item.Item
-import net.minecraft.registry.RegistryWrapper
-import net.minecraft.registry.tag.TagKey
-import net.minecraft.sound.SoundEvent
+import net.minecraft.world.item.Item
+import net.minecraft.core.HolderLookup
+import net.minecraft.tags.TagKey
+import net.minecraft.sounds.SoundEvent
 import java.util.concurrent.CompletableFuture
 
 class LangDatagen(
     output: FabricDataOutput,
-    registriesFuture: CompletableFuture<RegistryWrapper.WrapperLookup>?
+    registriesFuture: CompletableFuture<HolderLookup.Provider>?
 ) : FabricLanguageProvider(output, "en_us", registriesFuture) {
     private val subtitles: MutableMap<SoundEvent, String> = mutableMapOf()
-    override fun generateTranslations(wrapper: RegistryWrapper.WrapperLookup, builder: TranslationBuilder) {
+    override fun generateTranslations(wrapper: HolderLookup.Provider, builder: TranslationBuilder) {
         BlockDatagenWrapper.entries.forEach {
             builder.add(it.block, it.name)
             builder.add(it.block.asItem(), it.name)
@@ -123,6 +123,6 @@ class LangDatagen(
     }
 
     private fun tagTranslationKey(itemTagKey: TagKey<Item>): String {
-        return "tag.item.${itemTagKey.id.toTranslationKey().replace("/",".")}"
+        return "tag.item.${itemTagKey.location.toLanguageKey().replace("/",".")}"
     }
 }

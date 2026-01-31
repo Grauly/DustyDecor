@@ -9,38 +9,38 @@ import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Compa
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.SEND_MODE
 import grauly.dustydecor.screen.VacPipeStationScreenHandler
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.gl.RenderPipelines
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.screen.ingame.HandledScreen
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.item.ItemStack
-import net.minecraft.item.Items
-import net.minecraft.screen.ScreenHandler
-import net.minecraft.screen.ScreenHandlerListener
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
+import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.RenderPipelines
+import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.ContainerListener
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceLocation
 
 abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     handler: T,
-    inventory: PlayerInventory?,
-    title: Text?,
-    private val texture: Identifier,
-) : HandledScreen<T>(handler, inventory, title) {
+    inventory: Inventory?,
+    title: Component?,
+    private val texture: ResourceLocation,
+) : AbstractContainerScreen<T>(handler, inventory, title) {
     private lateinit var golemModeButton: ImageCyclingButtonWidget<CopperGolemMode>
     private lateinit var redstoneModeButton: ImageCyclingButtonWidget<RedstoneEmissionMode>
     private lateinit var sendingModeButton: ImageCyclingButtonWidget<SendMode>
-    private val updateListener: ScreenHandlerListener = object : ScreenHandlerListener {
-        override fun onSlotUpdate(
-            handler: ScreenHandler?,
+    private val updateListener: ContainerListener = object : ContainerListener {
+        override fun slotChanged(
+            handler: AbstractContainerMenu?,
             slotId: Int,
             stack: ItemStack?
         ) {
             // [Space intentionally left blank]
         }
 
-        override fun onPropertyUpdate(
-            handler: ScreenHandler?,
+        override fun dataChanged(
+            handler: AbstractContainerMenu?,
             property: Int,
             value: Int
         ) {
@@ -60,31 +60,31 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     }
 
     init {
-        backgroundWidth = 176
-        backgroundHeight = 189
-        playerInventoryTitleY = this.backgroundHeight - 94
-        handler.addListener(updateListener)
+        imageWidth = 176
+        imageHeight = 189
+        inventoryLabelY = this.imageHeight - 94
+        handler.addSlotListener(updateListener)
     }
 
     override fun init() {
         super.init()
-        golemModeButton = addDrawableChild(
+        golemModeButton = addRenderableWidget(
             ImageCyclingButtonWidget(
-                x + 96, y + 74,
+                leftPos + 96, topPos + 74,
                 18, 18,
-                Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY),
+                Component.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY),
                 listOf(
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         CopperGolemMode.INTERACT,
-                        Items.COPPER_GOLEM_STATUE.defaultStack,
-                        Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT),
-                        Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT_NARRATION)
+                        Items.COPPER_GOLEM_STATUE.defaultInstance,
+                        Component.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT),
+                        Component.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         CopperGolemMode.IGNORE,
-                        Items.BARRIER.defaultStack,
-                        Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE),
-                        Text.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE_NARRATION)
+                        Items.BARRIER.defaultInstance,
+                        Component.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE),
+                        Component.translatable(COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE_NARRATION)
                     )
                 )
             ) { button, mode ->
@@ -92,35 +92,35 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             }
         )
 
-        redstoneModeButton = addDrawableChild(
+        redstoneModeButton = addRenderableWidget(
             ImageCyclingButtonWidget(
-                x + 122, y + 74,
+                leftPos + 122, topPos + 74,
                 18, 18,
-                Text.translatable(REDSTONE_MODE_TRANSLATION_KEY),
+                Component.translatable(REDSTONE_MODE_TRANSLATION_KEY),
                 listOf(
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         RedstoneEmissionMode.ON_SEND,
-                        Items.OAK_BUTTON.defaultStack,
-                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_SEND),
-                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_SEND_NARRATION)
+                        Items.OAK_BUTTON.defaultInstance,
+                        Component.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_SEND),
+                        Component.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_SEND_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         RedstoneEmissionMode.ON_RECEIVE,
-                        Items.TARGET.defaultStack,
-                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE),
-                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE_NARRATION)
+                        Items.TARGET.defaultInstance,
+                        Component.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE),
+                        Component.translatable(REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         RedstoneEmissionMode.WHILE_EMPTY,
-                        Items.GLASS_BOTTLE.defaultStack,
-                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY),
-                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY_NARRATION)
+                        Items.GLASS_BOTTLE.defaultInstance,
+                        Component.translatable(REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY),
+                        Component.translatable(REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         RedstoneEmissionMode.NONE,
-                        Items.BARRIER.defaultStack,
-                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_NONE),
-                        Text.translatable(REDSTONE_MODE_TRANSLATION_KEY_NONE_NARRATION)
+                        Items.BARRIER.defaultInstance,
+                        Component.translatable(REDSTONE_MODE_TRANSLATION_KEY_NONE),
+                        Component.translatable(REDSTONE_MODE_TRANSLATION_KEY_NONE_NARRATION)
                     )
                 )
             ) { button, mode ->
@@ -128,29 +128,29 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             }
         )
 
-        sendingModeButton = addDrawableChild(
+        sendingModeButton = addRenderableWidget(
             ImageCyclingButtonWidget(
-                x + 144, y + 74,
+                leftPos + 144, topPos + 74,
                 18, 18,
-                Text.translatable(SENDING_MODE_TRANSLATION_KEY),
+                Component.translatable(SENDING_MODE_TRANSLATION_KEY),
                 listOf(
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         SendMode.MANUAL,
-                        Items.OAK_BUTTON.defaultStack,
-                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_MANUAL),
-                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_MANUAL_NARRATION)
+                        Items.OAK_BUTTON.defaultInstance,
+                        Component.translatable(SENDING_MODE_TRANSLATION_KEY_MANUAL),
+                        Component.translatable(SENDING_MODE_TRANSLATION_KEY_MANUAL_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         SendMode.ON_REDSTONE,
-                        Items.REDSTONE.defaultStack,
-                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_REDSTONE),
-                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_REDSTONE_NARRATION)
+                        Items.REDSTONE.defaultInstance,
+                        Component.translatable(SENDING_MODE_TRANSLATION_KEY_REDSTONE),
+                        Component.translatable(SENDING_MODE_TRANSLATION_KEY_REDSTONE_NARRATION)
                     ),
                     ImageCyclingButtonWidget.ItemCycleEntry(
                         SendMode.AUTOMATIC,
-                        Items.PISTON.defaultStack,
-                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_AUTOMATIC),
-                        Text.translatable(SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION)
+                        Items.PISTON.defaultInstance,
+                        Component.translatable(SENDING_MODE_TRANSLATION_KEY_AUTOMATIC),
+                        Component.translatable(SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION)
                     ),
                 )
             ) { button, mode ->
@@ -158,47 +158,47 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
             }
         )
 
-        golemModeButton.setValue(handler.getGolemMode())
-        redstoneModeButton.setValue(handler.getRedstoneMode())
-        sendingModeButton.setValue(handler.getSendingMode())
+        golemModeButton.setValue(menu.getGolemMode())
+        redstoneModeButton.setValue(menu.getRedstoneMode())
+        sendingModeButton.setValue(menu.getSendingMode())
     }
 
     private fun sendPropertyUpdate(property: Int, value: Int) {
-        MinecraftClient.getInstance().interactionManager?.clickButton(handler.syncId, property * 10 + value)
+        Minecraft.getInstance().gameMode?.handleInventoryButtonClick(menu.containerId, property * 10 + value)
     }
 
-    override fun handledScreenTick() {
-        super.handledScreenTick()
-        golemModeButton.setValue(handler.getGolemMode())
-        redstoneModeButton.setValue(handler.getRedstoneMode())
-        sendingModeButton.setValue(handler.getSendingMode())
+    override fun containerTick() {
+        super.containerTick()
+        golemModeButton.setValue(menu.getGolemMode())
+        redstoneModeButton.setValue(menu.getRedstoneMode())
+        sendingModeButton.setValue(menu.getSendingMode())
     }
 
-    override fun drawBackground(context: DrawContext, deltaTicks: Float, mouseX: Int, mouseY: Int) {
-        context.drawTexture(
+    override fun renderBg(context: GuiGraphics, deltaTicks: Float, mouseX: Int, mouseY: Int) {
+        context.blit(
             RenderPipelines.GUI_TEXTURED,
             texture,
-            x,
-            y,
+            leftPos,
+            topPos,
             0f,
             0f,
-            backgroundWidth,
-            backgroundHeight,
+            imageWidth,
+            imageHeight,
             256,
             256
         )
     }
 
-    override fun render(context: DrawContext?, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+    override fun render(context: GuiGraphics?, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         super.render(context, mouseX, mouseY, deltaTicks)
-        drawMouseoverTooltip(context, mouseX, mouseY)
+        renderTooltip(context, mouseX, mouseY)
     }
 
     companion object {
-        val SEND_TEXTURE: Identifier =
-            Identifier.of(DustyDecorMod.MODID, "textures/gui/container/vac_pipe_station_send.png")
-        val RECEIVE_TEXTURE: Identifier =
-            Identifier.of(DustyDecorMod.MODID, "textures/gui/container/vac_pipe_station_receive.png")
+        val SEND_TEXTURE: ResourceLocation =
+            ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/gui/container/vac_pipe_station_send.png")
+        val RECEIVE_TEXTURE: ResourceLocation =
+            ResourceLocation.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/gui/container/vac_pipe_station_receive.png")
 
         const val COPPER_GOLEM_MODE_TRANSLATION_KEY: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.copper_golem"
         const val COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT: String = "$COPPER_GOLEM_MODE_TRANSLATION_KEY.interact"
