@@ -38,7 +38,7 @@ object ModBlocks {
     val VOID_GOOP: Block = registerBlock({ settings -> VoidGoopBlock(1, settings) }, "void_goop")
 
     val TALL_CAGE_LAMPS: List<TallCageLampBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.name}_tall_cage_lamp"
+        val id = "${it.getName()}_tall_cage_lamp"
         (registerBlock(
             ::TallCageLampBlock,
             id,
@@ -49,7 +49,7 @@ object ModBlocks {
     }
 
     val ALARM_CAGE_LAMPS: List<AlarmCageLampBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.name}_alarm_cage_lamp"
+        val id = "${it.getName()}_alarm_cage_lamp"
         (registerBlock(
             ::AlarmCageLampBlock,
             id,
@@ -60,7 +60,7 @@ object ModBlocks {
     }
 
     val WIDE_CAGE_LAMPS: List<WideCageLampBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.name}_wide_cage_lamp"
+        val id = "${it.getName()}_wide_cage_lamp"
         (registerBlock(
             ::WideCageLampBlock,
             id,
@@ -71,7 +71,7 @@ object ModBlocks {
     }
 
     val TUBE_LAMPS: List<TubeLampBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.name}_tube_lamp"
+        val id = "${it.getName()}_tube_lamp"
         (registerBlock(
             ::TubeLampBlock,
             id,
@@ -82,7 +82,7 @@ object ModBlocks {
     }
 
     val STOOLS: List<StoolBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.name}_stool"
+        val id = "${it.getName()}_stool"
         (registerBlock(
             ::StoolBlock,
             id,

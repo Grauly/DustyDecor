@@ -15,8 +15,8 @@ class EmptyEntityRenderer<T : Entity>(context: EntityRendererProvider.Context) :
     }
 
     override fun shouldRender(
-        entity: T?,
-        frustum: Frustum?,
+        entity: T,
+        frustum: Frustum,
         x: Double,
         y: Double,
         z: Double

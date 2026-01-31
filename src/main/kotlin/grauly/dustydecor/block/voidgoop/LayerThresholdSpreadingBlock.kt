@@ -2,7 +2,6 @@ package grauly.dustydecor.block.voidgoop
 
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.util.DebugUtils
-import net.minecraft.block.*
 import net.minecraft.world.entity.item.FallingBlockEntity
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.level.pathfinder.PathComputationType
@@ -22,9 +21,15 @@ import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.ScheduledTickAccess
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.FallingBlock
+import net.minecraft.world.level.block.state.BlockBehaviour
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.phys.shapes.CollisionContext
 import kotlin.math.min
 
-abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Properties?) : FallingBlock(settings) {
+abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: BlockBehaviour.Properties?) : FallingBlock(settings) {
 
     //TODO: add leaf piles
     //TODO: add sand/gravel piles

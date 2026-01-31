@@ -9,7 +9,6 @@ import grauly.dustydecor.util.ToolUtils
 import grauly.dustydecor.util.VoxelShapesUtil
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
-import net.minecraft.block.*
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.material.Fluids
@@ -19,7 +18,6 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.network.chat.Component
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.phys.BlockHitResult
@@ -33,8 +31,15 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.redstone.Orientation
 import net.minecraft.world.level.ScheduledTickAccess
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.EntityBlock
+import net.minecraft.world.level.block.HorizontalDirectionalBlock
+import net.minecraft.world.level.block.SimpleWaterloggedBlock
+import net.minecraft.world.level.block.SupportType
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.phys.shapes.CollisionContext
 
-class VacPipeStationBlock(settings: Properties?) : HorizontalDirectionalBlock(settings), SimpleWaterloggedBlock,
+class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(settings), SimpleWaterloggedBlock,
     EntityBlock {
 
     //TODO: do the pipe alignment automatically (find a compromise to stay performant)
@@ -138,7 +143,7 @@ class VacPipeStationBlock(settings: Properties?) : HorizontalDirectionalBlock(se
         state: BlockState,
         world: Level,
         pos: BlockPos,
-        sourceBlock: Block,
+        block: Block,
         wireOrientation: Orientation?,
         notify: Boolean
     ) {
@@ -209,7 +214,7 @@ class VacPipeStationBlock(settings: Properties?) : HorizontalDirectionalBlock(se
     }
 
 
-    override fun codec(): MapCodec<out HorizontalDirectionalBlock> {
+    override fun codec(): MapCodec<VacPipeStationBlock?>? {
         return simpleCodec(::VacPipeStationBlock)
     }
 

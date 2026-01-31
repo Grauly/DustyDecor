@@ -60,7 +60,7 @@ class SparkParticle(
     init {
         this.gravity = gravity.toFloat()
         this.friction = drag.toFloat()
-        lifetime = lifetime
+        age = lifetime
         scale = 0.9f + random.nextFloat() * 0.2f
     }
 
