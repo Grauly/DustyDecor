@@ -1,9 +1,13 @@
 package grauly.dustydecor.generators.block
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.block.furniture.SingleFurnitureBlock
 import grauly.dustydecor.generators.BlockModelDatagen
+import grauly.dustydecor.util.DyeUtils
 import net.minecraft.client.data.BlockStateModelGenerator
+import net.minecraft.client.data.ItemModels
 import net.minecraft.client.data.VariantsBlockModelDefinitionCreator
+import net.minecraft.util.Identifier
 
 open class SingleFurnitureBlockModel(private val blocks: List<SingleFurnitureBlock>, private val modelPrefix: String) {
     fun get(blockStateModelGenerator: BlockStateModelGenerator) {
@@ -25,8 +29,12 @@ open class SingleFurnitureBlockModel(private val blocks: List<SingleFurnitureBlo
     }
 
     protected fun createItem(block: SingleFurnitureBlock, blockStateModelGenerator: BlockStateModelGenerator) {
-        //TODO: figure out if I need this
+        val color = DyeUtils.COLOR_ORDER[blocks.indexOf(block)].signColor
+        val tint = ItemModels.constantTintSource(color)
+        val model = ItemModels.tinted(Identifier.of(DustyDecorMod.MODID, MODEL_PATH), tint)
+        blockStateModelGenerator.itemModelOutput.accept(block.asItem(), model)
     }
 
-    protected val MODEL = BlockModelDatagen.singleVariant("block/$modelPrefix")
+    protected val MODEL_PATH = "block/$modelPrefix"
+    protected val MODEL = BlockModelDatagen.singleVariant(MODEL_PATH)
 }

@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dustydecor:block/light_blue_stool"
+    "model": "dustydecor:block/stool/stool",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -6635315
+      }
+    ]
   }
 }

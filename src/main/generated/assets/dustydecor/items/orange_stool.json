@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dustydecor:block/orange_stool"
+    "model": "dustydecor:block/stool/stool",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -38881
+      }
+    ]
   }
 }
