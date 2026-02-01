@@ -22,11 +22,11 @@ object ModAttachmentTypes {
         //[Space intentionally left blank]
     }
 
-    private fun <A> registerPersistent(identifier: Identifier, codec: Codec<A>): AttachmentType<A> {
+    private fun <A: Any> registerPersistent(identifier: Identifier, codec: Codec<A>): AttachmentType<A> {
         return AttachmentRegistry.createPersistent(identifier, codec)
     }
 
-    private fun <A> registerPersistent(id: String, codec: Codec<A>): AttachmentType<A> {
+    private fun <A: Any> registerPersistent(id: String, codec: Codec<A>): AttachmentType<A> {
         return registerPersistent(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id), codec)
     }
 }
