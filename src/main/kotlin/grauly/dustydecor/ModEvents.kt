@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 
 object ModEvents {
     fun init() {
-        ServerTickEvents.END_WORLD_TICK.register {
+        ServerTickEvents.END_LEVEL_TICK.register {
             VoidGoopLookHandler.onEndTick(it)
         }
     }
