@@ -18,7 +18,7 @@ import java.util.function.Consumer
 data class BulkGoopSizeComponent(var size: Int) : TooltipProvider {
     override fun addToTooltip(
         context: Item.TooltipContext,
-        textConsumer: Consumer<Component?>,
+        textConsumer: Consumer<Component>,
         type: TooltipFlag,
         components: DataComponentGetter
     ) {

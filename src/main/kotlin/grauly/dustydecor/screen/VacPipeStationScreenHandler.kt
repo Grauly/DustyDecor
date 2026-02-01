@@ -62,7 +62,7 @@ abstract class VacPipeStationScreenHandler<T : AbstractContainerMenu> private co
         addDataSlots(propertyDelegate)
     }
 
-    override fun clickMenuButton(player: Player?, id: Int): Boolean {
+    override fun clickMenuButton(player: Player, id: Int): Boolean {
         val category = floor(id / 10.0).toInt()
         val value = id - category * 10
         propertyDelegate.set(category, value)
@@ -73,9 +73,9 @@ abstract class VacPipeStationScreenHandler<T : AbstractContainerMenu> private co
     abstract fun addVariantSlots(inventory: Container)
 
     override fun quickMoveStack(
-        player: Player?,
+        player: Player,
         slotIndex: Int
-    ): ItemStack? {
+    ): ItemStack {
         val fromSlot: Slot = slots[slotIndex]
         if (!fromSlot.hasItem()) return ItemStack.EMPTY
         val movingStack = fromSlot.item
@@ -92,7 +92,7 @@ abstract class VacPipeStationScreenHandler<T : AbstractContainerMenu> private co
         return originalStack
     }
 
-    override fun stillValid(player: Player?): Boolean =
+    override fun stillValid(player: Player): Boolean =
         inventory.stillValid(player)
 
     fun getGolemMode(): CopperGolemMode {
@@ -123,7 +123,7 @@ abstract class VacPipeStationScreenHandler<T : AbstractContainerMenu> private co
     }
 
     override fun dataChanged(
-        handler: AbstractContainerMenu?,
+        handler: AbstractContainerMenu,
         property: Int,
         value: Int
     ) {
@@ -132,9 +132,9 @@ abstract class VacPipeStationScreenHandler<T : AbstractContainerMenu> private co
     }
 
     override fun slotChanged(
-        handler: AbstractContainerMenu?,
+        handler: AbstractContainerMenu,
         slotId: Int,
-        stack: ItemStack?
+        stack: ItemStack
     ) {
         //[Space intentionally left blank]
     }

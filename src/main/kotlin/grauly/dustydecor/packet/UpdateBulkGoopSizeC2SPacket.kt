@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.resources.Identifier
 
 class UpdateBulkGoopSizeC2SPacket(val slotId: Int, val size: Int): CustomPacketPayload {
-    override fun type(): CustomPacketPayload.Type<out CustomPacketPayload?>? = ID
+    override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = ID
 
     fun handle(context: ServerPlayNetworking.Context) {
         val player: ServerPlayer? = context.server().playerList.getPlayer(context.player().uuid)

@@ -72,7 +72,7 @@ class VentCoverBlock(settings: Properties) : TrapDoorBlock(BlockSetType.COPPER, 
         return super.useWithoutItem(state, world, pos, player, hit)
     }
 
-    override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState? {
+    override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState {
         val directionPlacedAgainst = ctx.clickedFace
         val checkHand = if (ctx.hand == InteractionHand.MAIN_HAND) InteractionHand.OFF_HAND else InteractionHand.MAIN_HAND
         val isHoldingScrewdriver = isModifyTool(ctx.player?.getItemInHand(checkHand) ?: ItemStack.EMPTY)
@@ -80,10 +80,10 @@ class VentCoverBlock(settings: Properties) : TrapDoorBlock(BlockSetType.COPPER, 
             ToolUtils.playScrewdriverSound(ctx.level, ctx.clickedPos, ctx.player)
             playLockSound(ctx.level, ctx.player, ctx.clickedPos)
         }
-        return super.getStateForPlacement(ctx)
-            ?.setValue(COVERS_FACE, directionPlacedAgainst.opposite)
-            ?.setValue(OPEN, directionPlacedAgainst.axis.isHorizontal)
-            ?.setValue(BlockStateProperties.LOCKED, isHoldingScrewdriver)
+        return super.getStateForPlacement(ctx)!!
+            .setValue(COVERS_FACE, directionPlacedAgainst.opposite)
+            .setValue(OPEN, directionPlacedAgainst.axis.isHorizontal)
+            .setValue(BlockStateProperties.LOCKED, isHoldingScrewdriver)
     }
 
     override fun randomTick(state: BlockState, world: ServerLevel, pos: BlockPos, random: RandomSource) {

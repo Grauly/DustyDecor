@@ -36,14 +36,14 @@ class SeatEntity(type: EntityType<*>, world: Level) : Entity(type, world) {
     }
 
     override fun hurtServer(
-        world: ServerLevel?,
-        source: DamageSource?,
+        world: ServerLevel,
+        source: DamageSource,
         amount: Float
     ): Boolean {
         return false
     }
 
-    override fun defineSynchedData(builder: SynchedEntityData.Builder?) {
+    override fun defineSynchedData(builder: SynchedEntityData.Builder) {
         // [Space intentionally left blank]
     }
 

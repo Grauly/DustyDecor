@@ -20,7 +20,7 @@ abstract class SittableFurnitureBlock(settings: Properties) : SingleFurnitureBlo
         pos: BlockPos,
         player: Player,
         hit: BlockHitResult
-    ): InteractionResult? {
+    ): InteractionResult {
         if (player.isShiftKeyDown) return InteractionResult.SUCCESS_SERVER
         if (SeatEntity.createLinked(world, pos, getSitOffset(), player) == null) {
             player.displayClientMessage(Component.translatable(SEAT_OCCUPIED_TRANSLATION_KEY), true)

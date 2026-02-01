@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.Level
 
-class AlarmCageLampBlock(settings: Properties?) : TallCageLampBlock(settings), EntityBlock {
+class AlarmCageLampBlock(settings: Properties) : TallCageLampBlock(settings), EntityBlock {
 
     //TODO: add proper activation sound
 
@@ -17,7 +17,7 @@ class AlarmCageLampBlock(settings: Properties?) : TallCageLampBlock(settings), E
         return AlarmCageLampBlockEntity(pos, state)
     }
 
-    override fun <T : BlockEntity?> getTicker(
+    override fun <T : BlockEntity> getTicker(
         world: Level,
         state: BlockState,
         type: BlockEntityType<T>

@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.core.Direction
 
-abstract class FacingRotationLampBlock(settings: Properties?) : FacingLampBlock(settings) {
+abstract class FacingRotationLampBlock(settings: Properties) : FacingLampBlock(settings) {
 
     init {
         registerDefaultState(

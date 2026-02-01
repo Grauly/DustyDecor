@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.shapes.CollisionContext
 import kotlin.math.min
 
-abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: BlockBehaviour.Properties?) : FallingBlock(settings) {
+abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: BlockBehaviour.Properties) : FallingBlock(settings) {
 
     //TODO: add leaf piles
     //TODO: add sand/gravel piles
@@ -51,7 +51,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: BlockB
         neighborPos: BlockPos,
         neighborState: BlockState,
         random: RandomSource
-    ): BlockState? {
+    ): BlockState {
         if (!world.isClientSide) {
             world as ServerLevel
             world.scheduleTick(pos, this, delayAfterPlace)
@@ -64,7 +64,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: BlockB
         pos: BlockPos,
         state: BlockState,
         placer: LivingEntity?,
-        itemStack: ItemStack?
+        itemStack: ItemStack
     ) {
         super.setPlacedBy(world, pos, state, placer, itemStack)
         world.scheduleTick(pos, this, delayAfterPlace)

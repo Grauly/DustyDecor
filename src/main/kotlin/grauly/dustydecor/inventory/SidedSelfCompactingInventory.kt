@@ -50,8 +50,7 @@ interface SidedSelfCompactingInventory : WorldlyContainer {
     fun insertDirections(): Set<Direction>
     fun extractDirections(): Set<Direction>
 
-    override fun getSlotsForFace(side: Direction?): IntArray {
-        if (side == null) return IntArray(0)
+    override fun getSlotsForFace(side: Direction): IntArray {
         val combinedSet: Set<Direction> = setOf(*insertDirections().toTypedArray(), *extractDirections().toTypedArray())
         val fullAccessArray = IntArray(items.size)
         for (i in fullAccessArray.indices) {
@@ -60,9 +59,8 @@ interface SidedSelfCompactingInventory : WorldlyContainer {
         return if (combinedSet.contains(side)) fullAccessArray else IntArray(0)
     }
 
-    override fun canPlaceItemThroughFace(slot: Int, stack: ItemStack?, dir: Direction?): Boolean {
+    override fun canPlaceItemThroughFace(slot: Int, stack: ItemStack, dir: Direction?): Boolean {
         if (dir == null) return false
-        if (stack == null) return false
         if (!insertDirections().contains(dir)) return false
         for (item in items) {
             if (ItemStack.isSameItemSameComponents(item, stack) && item.count < item.maxStackSize || item.isEmpty) {
@@ -72,9 +70,7 @@ interface SidedSelfCompactingInventory : WorldlyContainer {
         return false
     }
 
-    override fun canTakeItemThroughFace(slot: Int, stack: ItemStack?, dir: Direction?): Boolean {
-        if (dir == null) return false
-        if (stack == null) return false
+    override fun canTakeItemThroughFace(slot: Int, stack: ItemStack, dir: Direction): Boolean {
         if (!extractDirections().contains(dir)) return false
         for (item in items) {
             if (ItemStack.isSameItemSameComponents(item, stack)) return true

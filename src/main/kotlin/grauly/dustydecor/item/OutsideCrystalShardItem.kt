@@ -14,7 +14,7 @@ import net.minecraft.core.Direction
 import net.minecraft.world.level.LevelAccessor
 
 class OutsideCrystalShardItem(settings: Properties) : Item(settings) {
-    override fun useOn(context: UseOnContext): InteractionResult? {
+    override fun useOn(context: UseOnContext): InteractionResult {
         val interactedState = context.level.getBlockState(context.clickedPos)
         if (!interactedState.`is`(ModBlocks.VOID_GOOP)) return super.useOn(context)
         if (context.level.isClientSide) return super.useOn(context)

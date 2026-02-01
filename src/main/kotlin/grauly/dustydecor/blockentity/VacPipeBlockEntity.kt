@@ -34,8 +34,8 @@ import net.minecraft.world.phys.Vec3
 import net.minecraft.world.level.Level
 
 class VacPipeBlockEntity(
-    pos: BlockPos?,
-    state: BlockState?,
+    pos: BlockPos,
+    state: BlockState,
 ) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_ENTITY, pos, state), ItemOwner {
     val storage: SingleVariantStorage<ItemVariant> = object : SingleVariantStorage<ItemVariant>() {
         override fun getCapacity(itemVariant: ItemVariant): Long = itemVariant.toStack().maxStackSize.toLong()
@@ -74,11 +74,11 @@ class VacPipeBlockEntity(
         if (movedAmount > 0 && targetBe is VacPipeBlockEntity) targetBe.notifyInsert(world)
     }
 
-    override fun getUpdatePacket(): Packet<ClientGamePacketListener?>? {
+    override fun getUpdatePacket(): Packet<ClientGamePacketListener>? {
         return ClientboundBlockEntityDataPacket.create(this)
     }
 
-    override fun getUpdateTag(registries: HolderLookup.Provider?): CompoundTag? {
+    override fun getUpdateTag(registries: HolderLookup.Provider): CompoundTag {
         ProblemReporter.ScopedCollector(this.problemPath(), DustyDecorMod.logger).use {
             val view = TagValueOutput.createWithContext(it, registries)
             saveAdditional(view)
@@ -101,7 +101,7 @@ class VacPipeBlockEntity(
         return list
     }
 
-    override fun preRemoveSideEffects(pos: BlockPos?, oldState: BlockState?) {
+    override fun preRemoveSideEffects(pos: BlockPos, oldState: BlockState) {
         Containers.dropContents(level, pos, getItemsForScattering())
     }
 
@@ -130,9 +130,9 @@ class VacPipeBlockEntity(
         super.saveAdditional(view)
     }
 
-    override fun level(): Level? = level
+    override fun level(): Level = level
 
-    override fun position(): Vec3? = worldPosition.center
+    override fun position(): Vec3 = worldPosition.center
 
     override fun getVisualRotationYInDegrees(): Float = 0f
 

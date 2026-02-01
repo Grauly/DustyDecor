@@ -7,13 +7,13 @@ import net.minecraft.core.Direction
 import net.minecraft.world.phys.shapes.VoxelShape
 import net.minecraft.world.phys.shapes.Shapes
 
-class WideCageLampBlock(settings: Properties?) : FacingRotationLampBlock(settings) {
+class WideCageLampBlock(settings: Properties) : FacingRotationLampBlock(settings) {
 
     override fun getShape(state: BlockState): VoxelShape {
         return (SHAPES[state.getValue(ROTATED)]!!)[state.getValue(BlockStateProperties.FACING).opposite]!!
     }
 
-    override fun isPathfindable(state: BlockState?, type: PathComputationType?): Boolean = false
+    override fun isPathfindable(state: BlockState, type: PathComputationType): Boolean = false
 
     companion object {
         private val BASE_SHAPE: VoxelShape = Shapes.box(5.0/16, 4.0/16, 0.0, 11.0/16, 12.0/16, 5.0/16)

@@ -7,7 +7,7 @@ import net.minecraft.core.Direction
 import net.minecraft.world.phys.shapes.VoxelShape
 import net.minecraft.world.phys.shapes.Shapes
 
-class TubeLampBlock(settings: Properties?) : FacingRotationLampBlock(settings) {
+class TubeLampBlock(settings: Properties) : FacingRotationLampBlock(settings) {
 
     //TODO: add proper sounds
 
@@ -16,8 +16,8 @@ class TubeLampBlock(settings: Properties?) : FacingRotationLampBlock(settings) {
     }
 
     override fun isPathfindable(
-        state: BlockState?,
-        type: PathComputationType?
+        state: BlockState,
+        type: PathComputationType
     ): Boolean = true
 
     companion object {

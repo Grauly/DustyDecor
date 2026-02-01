@@ -59,7 +59,7 @@ class VentBlock(settings: Properties) : SideConnectableBlock(settings.dynamicSha
         return getShape(state, world, pos, context)
     }
 
-    override fun isPathfindable(state: BlockState?, type: PathComputationType?): Boolean = false
+    override fun isPathfindable(state: BlockState, type: PathComputationType): Boolean = false
 
     companion object {
         val SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()

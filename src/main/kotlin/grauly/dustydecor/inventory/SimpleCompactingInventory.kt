@@ -20,5 +20,5 @@ class SimpleCompactingInventory(slots: Int): SidedSelfCompactingInventory {
         //Not needed here... probably
     }
 
-    override fun stillValid(player: Player?): Boolean = true
+    override fun stillValid(player: Player): Boolean = true
 }

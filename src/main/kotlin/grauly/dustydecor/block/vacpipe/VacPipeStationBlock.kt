@@ -55,19 +55,19 @@ class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(set
     }
 
     override fun getShape(
-        state: BlockState?,
-        world: BlockGetter?,
-        pos: BlockPos?,
-        context: CollisionContext?
+        state: BlockState,
+        world: BlockGetter,
+        pos: BlockPos,
+        context: CollisionContext
     ): VoxelShape {
         return SHAPE
     }
 
     override fun getCollisionShape(
-        state: BlockState?,
-        world: BlockGetter?,
-        pos: BlockPos?,
-        context: CollisionContext?
+        state: BlockState,
+        world: BlockGetter,
+        pos: BlockPos,
+        context: CollisionContext
     ): VoxelShape {
         return SHAPE
     }
@@ -214,7 +214,7 @@ class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(set
     }
 
 
-    override fun codec(): MapCodec<VacPipeStationBlock?>? {
+    override fun codec(): MapCodec<VacPipeStationBlock> {
         return simpleCodec(::VacPipeStationBlock)
     }
 

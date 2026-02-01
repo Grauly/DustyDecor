@@ -11,7 +11,7 @@ import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.block.state.BlockBehaviour
 import java.awt.Color
 
-class VoidGoopBlock(threshold: Int, settings: BlockBehaviour.Properties?) : LayerThresholdSpreadingBlock(threshold, settings) {
+class VoidGoopBlock(threshold: Int, settings: Properties) : LayerThresholdSpreadingBlock(threshold, settings) {
 
     //TODO: add gazing interaction (haha, player go splat)
     //TODO: add eye shaped rain splashes
@@ -41,7 +41,7 @@ class VoidGoopBlock(threshold: Int, settings: BlockBehaviour.Properties?) : Laye
         }
     }
 
-    override fun getDustColor(state: BlockState?, world: BlockGetter?, pos: BlockPos?): Int {
+    override fun getDustColor(state: BlockState, world: BlockGetter, pos: BlockPos): Int {
         return Color(0f, 0f, 0f, 1f).rgb
     }
 }

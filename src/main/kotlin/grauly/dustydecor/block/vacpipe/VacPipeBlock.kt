@@ -83,7 +83,7 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
         state: BlockState,
         world: BlockGetter,
         pos: BlockPos,
-        context: CollisionContext?
+        context: CollisionContext
     ): VoxelShape {
         return SHAPES[normalizeStateForShape(state)]!!
     }
@@ -92,7 +92,7 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
         state: BlockState,
         world: BlockGetter,
         pos: BlockPos,
-        context: CollisionContext?
+        context: CollisionContext
     ): VoxelShape {
         return SHAPES[normalizeStateForShape(state)]!!
     }
@@ -309,17 +309,17 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
         builder.add(*windowStates.toTypedArray(), SHOULD_HAVE_WINDOW)
     }
 
-    override fun isPathfindable(state: BlockState?, type: PathComputationType?): Boolean = false
+    override fun isPathfindable(state: BlockState, type: PathComputationType): Boolean = false
 
     override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
         return VacPipeBlockEntity(pos, state)
     }
 
-    override fun <T : BlockEntity?> getTicker(
+    override fun <T : BlockEntity> getTicker(
         world: Level,
         state: BlockState,
         type: BlockEntityType<T>
-    ): BlockEntityTicker<T> {
+    ): BlockEntityTicker<T>? {
         return BlockEntityTicker { world, pos, state, blockEntity ->
             if (blockEntity !is VacPipeBlockEntity) return@BlockEntityTicker
             blockEntity.tick(world, pos, state)

@@ -14,7 +14,7 @@ import net.minecraft.core.Direction
 import net.minecraft.world.level.Level
 import kotlin.math.min
 
-class BulkVoidGoopItem(settings: Properties?) : Item(settings) {
+class BulkVoidGoopItem(settings: Properties) : Item(settings) {
     override fun useOn(context: UseOnContext): InteractionResult {
         val pos = context.clickedPos.relative(context.clickedFace)
         val goopToPlace = context.itemInHand.get(ModDataComponentTypes.VOID_GOOP_SIZE)?.size ?: 0

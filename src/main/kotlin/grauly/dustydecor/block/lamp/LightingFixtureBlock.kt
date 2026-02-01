@@ -31,7 +31,7 @@ import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.redstone.Orientation
 import net.minecraft.world.level.ScheduledTickAccess
 
-abstract class LightingFixtureBlock(settings: Properties?) : Block(settings), SimpleWaterloggedBlock {
+abstract class LightingFixtureBlock(settings: Properties) : Block(settings), SimpleWaterloggedBlock {
 
     init {
         registerDefaultState(

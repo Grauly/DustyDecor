@@ -40,8 +40,8 @@ import net.minecraft.world.level.Level
 import kotlin.use
 
 class VacPipeStationBlockEntity(
-    pos: BlockPos?,
-    state: BlockState?
+    pos: BlockPos,
+    state: BlockState
 ) : BlockEntity(ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, pos, state), MenuProvider, ItemOwner {
     private val inventory = object : SimpleContainer(INVENTORY_SIZE) {
         override fun setChanged() {
@@ -60,11 +60,11 @@ class VacPipeStationBlockEntity(
         return inventory.items
     }
 
-    override fun preRemoveSideEffects(pos: BlockPos?, oldState: BlockState?) {
+    override fun preRemoveSideEffects(pos: BlockPos, oldState: BlockState) {
         Containers.dropContents(level, pos, getItemsForScattering())
     }
 
-    override fun createMenu(syncId: Int, playerInventory: Inventory, player: Player?): AbstractContainerMenu {
+    override fun createMenu(syncId: Int, playerInventory: Inventory, player: Player): AbstractContainerMenu? {
         val handlerConstructor: (Int, Inventory, Container, ContainerLevelAccess, ContainerData) -> AbstractContainerMenu =
             if (blockState.getValue(SENDING)) {
                 ::VacPipeSendStationScreenHandler
@@ -87,11 +87,11 @@ class VacPipeStationBlockEntity(
         level!!.sendBlockUpdated(worldPosition, blockState, blockState, Block.UPDATE_ALL)
     }
 
-    override fun getUpdatePacket(): Packet<ClientGamePacketListener?>? {
+    override fun getUpdatePacket(): Packet<ClientGamePacketListener>? {
         return ClientboundBlockEntityDataPacket.create(this)
     }
 
-    override fun getUpdateTag(registries: HolderLookup.Provider?): CompoundTag? {
+    override fun getUpdateTag(registries: HolderLookup.Provider): CompoundTag {
         ProblemReporter.ScopedCollector(this.problemPath(), DustyDecorMod.logger).use {
             val view = TagValueOutput.createWithContext(it, registries)
             saveAdditional(view)
@@ -116,9 +116,9 @@ class VacPipeStationBlockEntity(
         view.store(SEND_MODE_KEY, SendMode.CODEC, propertyDelegate.getSendingMode())
     }
 
-    override fun level(): Level? = level
+    override fun level(): Level = level
 
-    override fun position(): Vec3? = worldPosition.center
+    override fun position(): Vec3 = worldPosition.center
 
     override fun getVisualRotationYInDegrees(): Float = 0f
 

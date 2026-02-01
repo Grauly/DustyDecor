@@ -121,8 +121,8 @@ abstract class SideConnectableBlock(settings: Properties) : Block(settings.noOcc
         Direction.EAST -> EAST
     }
 
-    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>?) {
-        builder?.add(UP, DOWN, NORTH, SOUTH, EAST, WEST, WATERLOGGED)
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
+        builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST, WATERLOGGED)
     }
 
     companion object {
