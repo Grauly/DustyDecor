@@ -10,7 +10,7 @@ object DustyDecorMod : ModInitializer {
     override fun onInitialize() {
         ModBlocks.init()
         ModItems.init()
-        ModItemGroups.init()
+        ModCreativeModeTabs.init()
         ModSoundEvents.init()
         ModDataComponentTypes.init()
         ModTooltips.init()
