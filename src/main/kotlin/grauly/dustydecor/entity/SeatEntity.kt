@@ -1,6 +1,6 @@
 package grauly.dustydecor.entity
 
-import grauly.dustydecor.DustyDecorMod
+import com.mojang.serialization.Codec
 import grauly.dustydecor.ModEntities
 import grauly.dustydecor.block.furniture.SeatLinkable
 import net.minecraft.world.entity.Entity
@@ -15,12 +15,13 @@ import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec3
 import net.minecraft.world.level.Level
 
-class SeatEntity(type: EntityType<*>, world: Level) : Entity(type, world) {
-    private var linkedLocation: BlockPos? = null
+class SeatEntity(private var linkedLocation: BlockPos, private var isLocationLinked: Boolean, type: EntityType<*>, world: Level) : Entity(type, world) {
+
+    constructor(type: EntityType<*>, world: Level) : this(BlockPos.ZERO, false, type, world)
 
     override fun tick() {
         super.tick()
-        if (linkedLocation == null) return
+        if (!isLocationLinked) return
         if (!BlockPos.containing(position()).equals(linkedLocation)) {
             discard()
             return
@@ -48,23 +49,23 @@ class SeatEntity(type: EntityType<*>, world: Level) : Entity(type, world) {
     }
 
     override fun readAdditionalSaveData(view: ValueInput) {
-        linkedLocation = view.read(LINKED_LOCATION_KEY, BlockPos.CODEC).orElse(null)
+        linkedLocation = view.read(LINKED_LOCATION_KEY, BlockPos.CODEC).orElse(BlockPos.ZERO)
+        isLocationLinked = view.read(LOCATION_LINKED_KEY, Codec.BOOL).orElse(true)
     }
 
     override fun addAdditionalSaveData(view: ValueOutput) {
-        if (linkedLocation != null) {
-            view.store(LINKED_LOCATION_KEY, BlockPos.CODEC, linkedLocation)
-        }
+        view.store(LOCATION_LINKED_KEY, Codec.BOOL, isLocationLinked)
+        view.store(LINKED_LOCATION_KEY, BlockPos.CODEC, linkedLocation)
     }
 
     companion object {
         const val LINKED_LOCATION_KEY = "linkedLocation"
+        const val LOCATION_LINKED_KEY = "isLocationLinked"
         fun createLinked(world: Level, pos: BlockPos, offset: Vec3, entity: Entity): SeatEntity? {
             if (world !is ServerLevel) return null
             if (world.getEntitiesOfClass(SeatEntity::class.java, AABB(pos), { _ -> true}).isNotEmpty()) return null
-            val seat = SeatEntity(ModEntities.SEAT_ENTITY, world)
+            val seat = SeatEntity(pos, true, ModEntities.SEAT_ENTITY, world)
             seat.setPos(Vec3(pos).add(offset))
-            seat.linkedLocation = pos
             world.addFreshEntity(seat)
             entity.isSprinting = false
             entity.startRiding(seat)
