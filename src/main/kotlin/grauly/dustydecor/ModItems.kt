@@ -1,8 +1,8 @@
 package grauly.dustydecor
 
 import grauly.dustydecor.component.BulkGoopSizeComponent
-import grauly.dustydecor.component.ScrewdriverComponent
-import grauly.dustydecor.component.WrenchComponent
+import grauly.dustydecor.component.ScrewdriverDataComponent
+import grauly.dustydecor.component.WrenchDataComponent
 import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.item.VacCapsuleItem
@@ -63,7 +63,7 @@ object ModItems {
         Properties()
             .sword(ModToolMaterials.SCREWDRIVER_TOOL_MATERIAL, -0.5f, 2.0f)
             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-            .component(ModDataComponentTypes.SCREWDRIVER, ScrewdriverComponent)
+            .component(ModDataComponentTypes.SCREWDRIVER, ScrewdriverDataComponent)
     )
     val WRENCH: Item = registerItem(
         ::Item,
@@ -71,7 +71,7 @@ object ModItems {
         Properties()
             .sword(ModToolMaterials.WRENCH_TOOL_MATERIAL, 1.0f, -3.2f)
             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-            .component(ModDataComponentTypes.WRENCH, WrenchComponent)
+            .component(ModDataComponentTypes.WRENCH, WrenchDataComponent)
     )
 
     val TALL_CAGE_LAMPS: List<Item> = ModBlocks.TALL_CAGE_LAMPS.map {

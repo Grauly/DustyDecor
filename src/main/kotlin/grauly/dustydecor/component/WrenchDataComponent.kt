@@ -1,6 +1,7 @@
 package grauly.dustydecor.component
 
 import com.mojang.serialization.Codec
+import com.mojang.serialization.MapCodec
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import io.netty.buffer.ByteBuf
@@ -15,7 +16,7 @@ import net.minecraft.network.chat.TextColor
 import net.minecraft.util.CommonColors
 import java.util.function.Consumer
 
-object WrenchComponent : TooltipProvider {
+object WrenchDataComponent : TooltipProvider {
     override fun addToTooltip(
         context: Item.TooltipContext,
         textConsumer: Consumer<Component>,
@@ -51,6 +52,6 @@ object WrenchComponent : TooltipProvider {
     const val VAC_PIPE_STATION_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.vac_station.toggle"
     const val LAMPS_TRANSLATION_KEY = "component.wrench.${DustyDecorMod.MODID}.lamps"
 
-    val CODEC: Codec<WrenchComponent> = Codec.unit(this)
-    val PACKET_CODEC: StreamCodec<ByteBuf, WrenchComponent> = StreamCodec.unit(this)
+    val CODEC: Codec<WrenchDataComponent> = MapCodec.unitCodec(this)
+    val PACKET_CODEC: StreamCodec<ByteBuf, WrenchDataComponent> = StreamCodec.unit(this)
 }

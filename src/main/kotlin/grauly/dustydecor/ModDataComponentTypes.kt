@@ -2,8 +2,8 @@ package grauly.dustydecor
 
 import com.mojang.serialization.Codec
 import grauly.dustydecor.component.BulkGoopSizeComponent
-import grauly.dustydecor.component.ScrewdriverComponent
-import grauly.dustydecor.component.WrenchComponent
+import grauly.dustydecor.component.ScrewdriverDataComponent
+import grauly.dustydecor.component.WrenchDataComponent
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.Registry
@@ -11,8 +11,8 @@ import net.minecraft.resources.Identifier
 
 object ModDataComponentTypes {
 
-    val SCREWDRIVER: DataComponentType<ScrewdriverComponent> = registerComponent(ScrewdriverComponent.CODEC, "screwdriver")
-    val WRENCH: DataComponentType<WrenchComponent> = registerComponent(WrenchComponent.CODEC, "wrench")
+    val SCREWDRIVER: DataComponentType<ScrewdriverDataComponent> = registerComponent(ScrewdriverDataComponent.CODEC, "screwdriver")
+    val WRENCH: DataComponentType<WrenchDataComponent> = registerComponent(WrenchDataComponent.CODEC, "wrench")
     val VOID_GOOP_SIZE: DataComponentType<BulkGoopSizeComponent> = registerComponent(BulkGoopSizeComponent.CODEC, "bulk_goop")
 
     private fun <T: Any> registerComponent(

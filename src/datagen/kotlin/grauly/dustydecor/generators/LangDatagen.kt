@@ -5,18 +5,14 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ItemDatagenWrapper
 import grauly.dustydecor.ModConventionalItemTags
 import grauly.dustydecor.ModItemTags
-import grauly.dustydecor.ModItems
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.block.furniture.SittableFurnitureBlock
-import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
 import grauly.dustydecor.component.BulkGoopSizeComponent
-import grauly.dustydecor.component.ScrewdriverComponent
-import grauly.dustydecor.component.WrenchComponent
-import grauly.dustydecor.entity.SeatEntity
+import grauly.dustydecor.component.ScrewdriverDataComponent
+import grauly.dustydecor.component.WrenchDataComponent
 import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.screens.VacPipeStationScreen
-import kotlinx.coroutines.flow.combine
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
 import net.minecraft.world.item.Item
@@ -57,20 +53,20 @@ class LangDatagen(
         sub(ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_ON, "Lighting fixture turns on")
         sub(ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_OFF, "Lighting fixture turns off")
 
-        builder.add(WrenchComponent.VAC_PIPE_TRANSLATION_KEY, "Can edit %s connections")
+        builder.add(WrenchDataComponent.VAC_PIPE_TRANSLATION_KEY, "Can edit %s connections")
         builder.add(
-            WrenchComponent.VAC_PIPE_CONNECTION_TRANSLATION_KEY,
+            WrenchDataComponent.VAC_PIPE_CONNECTION_TRANSLATION_KEY,
             "Use on a exiting connection to attempt a different connection for it"
         )
         builder.add(
-            WrenchComponent.VAP_PIPE_CONNECTION_FIX_TRANSLATION_KEY,
+            WrenchDataComponent.VAP_PIPE_CONNECTION_FIX_TRANSLATION_KEY,
             "Use on the core of the pipe to attempt to fix a broken connection"
         )
-        builder.add(WrenchComponent.VAC_PIPE_STATION_TRANSLATION_KEY, "Can toggle whether %s's send or receive")
-        builder.add(WrenchComponent.LAMPS_TRANSLATION_KEY, "Can break and repair some lamps")
-        builder.add(ScrewdriverComponent.VAC_TUBE_TRANSLATION_KEY, "Can toggle windows on %s's")
-        builder.add(ScrewdriverComponent.VENT_COVER_TRANSLATION_KEY, "Can lock/unlock %s's")
-        builder.add(ScrewdriverComponent.LAMPS_TRANSLATION_KEY, "Can invert some lamps")
+        builder.add(WrenchDataComponent.VAC_PIPE_STATION_TRANSLATION_KEY, "Can toggle whether %s's send or receive")
+        builder.add(WrenchDataComponent.LAMPS_TRANSLATION_KEY, "Can break and repair some lamps")
+        builder.add(ScrewdriverDataComponent.VAC_TUBE_TRANSLATION_KEY, "Can toggle windows on %s's")
+        builder.add(ScrewdriverDataComponent.VENT_COVER_TRANSLATION_KEY, "Can lock/unlock %s's")
+        builder.add(ScrewdriverDataComponent.LAMPS_TRANSLATION_KEY, "Can invert some lamps")
 
         builder.add(tagTranslationKey(ModConventionalItemTags.SCREWDRIVER_TOOLS), "Screwdrivers")
         builder.add(tagTranslationKey(ModItemTags.VOID_GOOP), "Void Goop")
