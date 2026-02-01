@@ -25,7 +25,7 @@ class VentBlock(settings: Properties) : SideConnectableBlock(settings.dynamicSha
                 var shape = FRAME_SHAPE
                 for (direction: Direction in Direction.entries) {
                     if (state.getValueOrElse(getStateForDirection(direction), !FACE_CONNECTED) == !FACE_CONNECTED) {
-                        shape = Shapes.or(shape, COVER_SHAPE_MAP[direction])
+                        shape = Shapes.or(shape, COVER_SHAPE_MAP[direction]!!)
                     }
                 }
                 shape
@@ -73,7 +73,7 @@ class VentBlock(settings: Properties) : SideConnectableBlock(settings.dynamicSha
                     fourPostShape,
                     Shapes.rotate(
                         singlePost,
-                        OctahedralGroup.fromXYAngles(Quadrant.R0, rotation)
+                        Quadrant.fromXYAngles(Quadrant.R0, rotation)
                     )
                 )
             }
@@ -81,11 +81,11 @@ class VentBlock(settings: Properties) : SideConnectableBlock(settings.dynamicSha
                 fourPostShape,
                 Shapes.rotate(
                     fourPostShape,
-                    OctahedralGroup.fromXYAngles(Quadrant.R90, Quadrant.R0)
+                    Quadrant.fromXYAngles(Quadrant.R90, Quadrant.R0)
                 ),
                 Shapes.rotate(
                     fourPostShape,
-                    OctahedralGroup.fromXYAngles(Quadrant.R90, Quadrant.R90)
+                    Quadrant.fromXYAngles(Quadrant.R90, Quadrant.R90)
                 )
             )
         }
