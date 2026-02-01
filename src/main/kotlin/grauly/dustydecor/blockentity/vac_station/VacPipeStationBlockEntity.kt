@@ -6,7 +6,7 @@ import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
 import grauly.dustydecor.block.vacpipe.VacPipeStationBlock.Companion.SENDING
 import grauly.dustydecor.screen.VacPipeReceiveStationScreenHandler
 import grauly.dustydecor.screen.VacPipeSendStationScreenHandler
-import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage
+import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -48,7 +48,7 @@ class VacPipeStationBlockEntity(
             markDirtyDelegate()
         }
     }
-    val storage: InventoryStorage = InventoryStorage.of(inventory, Direction.UP)
+    val storage: ContainerStorage = ContainerStorage.of(inventory, Direction.UP)
 
     val propertyDelegate = ModeDelegate()
 
@@ -61,7 +61,7 @@ class VacPipeStationBlockEntity(
     }
 
     override fun preRemoveSideEffects(pos: BlockPos, oldState: BlockState) {
-        Containers.dropContents(level, pos, getItemsForScattering())
+        Containers.dropContents(level!!, pos, getItemsForScattering())
     }
 
     override fun createMenu(syncId: Int, playerInventory: Inventory, player: Player): AbstractContainerMenu? {
@@ -72,7 +72,7 @@ class VacPipeStationBlockEntity(
                 ::VacPipeReceiveStationScreenHandler
             }
         return handlerConstructor.invoke(syncId, playerInventory, inventory, ContainerLevelAccess.create(
-            level,
+            level!!,
             worldPosition
         ), propertyDelegate)
     }
@@ -116,7 +116,7 @@ class VacPipeStationBlockEntity(
         view.store(SEND_MODE_KEY, SendMode.CODEC, propertyDelegate.getSendingMode())
     }
 
-    override fun level(): Level = level
+    override fun level(): Level = level!!
 
     override fun position(): Vec3 = worldPosition.center
 

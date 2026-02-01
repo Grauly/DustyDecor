@@ -56,8 +56,8 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
                 if (connectionDirection != ConnectionState.NONE) {
                     workingShape = Shapes.or(
                         workingShape,
-                        if (shouldHaveWindow) GLASS_CONNECTOR_SHAPE_MAP[connectionDirection.direction]
-                        else CONNECTOR_SHAPE_MAP[connectionDirection.direction]
+                        (if (shouldHaveWindow) GLASS_CONNECTOR_SHAPE_MAP[connectionDirection.direction]
+                        else CONNECTOR_SHAPE_MAP[connectionDirection.direction])!!
                     )
                 }
             }
@@ -280,20 +280,20 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
         val shouldHaveWindow = state.getValueOrElse(SHOULD_HAVE_WINDOW, false)
         for (connection in connections) {
             if (shouldHaveWindow) {
-                workingState = workingState.setValue(windowMap[connection], true)
+                workingState = workingState.setValue(windowMap[connection]!!, true)
                 continue
             }
             val connectionDirection = state.getValueOrElse(connection, ConnectionState.NONE)
             if (connectionDirection == ConnectionState.NONE) {
-                workingState = workingState.setValue(windowMap[connection], shouldHaveWindow)
+                workingState = workingState.setValue(windowMap[connection]!!, shouldHaveWindow)
                 continue
             }
-            val checkState = world.getBlockState(pos.relative(connectionDirection.direction))
+            val checkState = world.getBlockState(pos.relative(connectionDirection.direction!!))
             if (checkState.getValueOrElse(SHOULD_HAVE_WINDOW, false)) {
-                workingState = workingState.setValue(windowMap[connection], true)
+                workingState = workingState.setValue(windowMap[connection]!!, true)
                 continue
             }
-            workingState = workingState.setValue(windowMap[connection], false)
+            workingState = workingState.setValue(windowMap[connection]!!, false)
         }
         return workingState
     }

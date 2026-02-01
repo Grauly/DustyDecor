@@ -82,8 +82,8 @@ abstract class AbConnectableBlock(settings: Properties) : Block(settings), Simpl
     ): Boolean {
         val currentConnection = ownState.getValue(connection)
         if (currentConnection == ConnectionState.NONE) return true
-        val offsetPos = ownPos.relative(currentConnection.direction)
-        return !canConnectTo(world.getBlockState(offsetPos), offsetPos, world, currentConnection.direction!!)
+        val offsetPos = ownPos.relative(currentConnection.direction!!)
+        return !canConnectTo(world.getBlockState(offsetPos), offsetPos, world, currentConnection.direction)
     }
 
     private fun canConnectTo(
@@ -138,7 +138,7 @@ abstract class AbConnectableBlock(settings: Properties) : Block(settings), Simpl
                 returnState =
                     returnState.setValue(
                         connection,
-                        ConnectionState.Companion.fromDirection(mirror.mirror(state.getValue(connection).direction))
+                        ConnectionState.Companion.fromDirection(mirror.mirror(state.getValue(connection).direction!!))
                     )
             }
         }
@@ -151,7 +151,7 @@ abstract class AbConnectableBlock(settings: Properties) : Block(settings), Simpl
             if (state.getValueOrElse(connection, ConnectionState.NONE) != ConnectionState.NONE) {
                 returnState = returnState.setValue(
                     connection,
-                    ConnectionState.Companion.fromDirection(rotation.rotate(state.getValue(connection).direction))
+                    ConnectionState.Companion.fromDirection(rotation.rotate(state.getValue(connection).direction!!))
                 )
             }
         }

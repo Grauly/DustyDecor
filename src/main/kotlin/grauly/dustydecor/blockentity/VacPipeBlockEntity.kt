@@ -65,7 +65,7 @@ class VacPipeBlockEntity(
         if (isWaitingToMoveItems(world)) return
         val followDirection = state.getValue(AbConnectableBlock.connections[1])
         if (followDirection == ConnectionState.NONE) return
-        val targetBe = world.getBlockEntity(pos.relative(followDirection.direction))
+        val targetBe = world.getBlockEntity(pos.relative(followDirection.direction!!))
         if (targetBe !is VacPipeBlockEntity && targetBe !is VacPipeStationBlockEntity) return
         val targetStorage =
             ItemStorage.SIDED.find(world, pos.relative(followDirection.direction), followDirection.direction?.opposite)
@@ -102,7 +102,7 @@ class VacPipeBlockEntity(
     }
 
     override fun preRemoveSideEffects(pos: BlockPos, oldState: BlockState) {
-        Containers.dropContents(level, pos, getItemsForScattering())
+        Containers.dropContents(level!!, pos, getItemsForScattering())
     }
 
     override fun setChanged() {
@@ -130,7 +130,7 @@ class VacPipeBlockEntity(
         super.saveAdditional(view)
     }
 
-    override fun level(): Level = level
+    override fun level(): Level = level!!
 
     override fun position(): Vec3 = worldPosition.center
 
