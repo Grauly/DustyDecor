@@ -42,7 +42,7 @@ abstract class SingleFurnitureBlock(settings: Properties) : Block(settings) {
         neighborPos: BlockPos,
         neighborState: BlockState,
         random: RandomSource
-    ): BlockState? {
+    ): BlockState {
         if (state.getValue(WATERLOGGED)) {
             tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world))
         }
@@ -61,20 +61,20 @@ abstract class SingleFurnitureBlock(settings: Properties) : Block(settings) {
     override fun mirror(
         state: BlockState,
         mirror: Mirror
-    ): BlockState? {
+    ): BlockState {
         return state.setValue(ROTATION, mirror.mirror(state.getValue(ROTATION), 16))
     }
 
     override fun rotate(
         state: BlockState,
         rotation: Rotation
-    ): BlockState? {
+    ): BlockState {
         return state.setValue(ROTATION, rotation.rotate(state.getValue(ROTATION), 16))
     }
 
-    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block?, BlockState?>?) {
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         super.createBlockStateDefinition(builder)
-        builder?.add(WATERLOGGED, ROTATION)
+        builder.add(WATERLOGGED, ROTATION)
     }
 
     companion object {
