@@ -3,15 +3,15 @@ package grauly.dustydecor.item
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.block.voidgoop.LayerThresholdSpreadingBlock
-import net.minecraft.world.level.block.Blocks
-import net.minecraft.world.item.Item
-import net.minecraft.world.item.context.UseOnContext
-import net.minecraft.server.level.ServerLevel
-import net.minecraft.network.chat.Component
-import net.minecraft.world.InteractionResult
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.network.chat.Component
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.context.UseOnContext
 import net.minecraft.world.level.LevelAccessor
+import net.minecraft.world.level.block.Blocks
 
 class OutsideCrystalShardItem(settings: Properties) : Item(settings) {
     override fun useOn(context: UseOnContext): InteractionResult {
@@ -22,12 +22,24 @@ class OutsideCrystalShardItem(settings: Properties) : Item(settings) {
         val foundVoidGoop: MutableSet<BlockPos> = mutableSetOf()
         val foundLayers = getConnectedGoop(context.clickedPos, world, foundVoidGoop)
         if (context.player?.isShiftKeyDown == false) {
-            context.player?.displayClientMessage(Component.translatable(VOID_GOOP_FIND, foundLayers, ModItems.VOID_GOOP.name), true)
+            context.player?.displayClientMessage(
+                Component.translatable(
+                    VOID_GOOP_FIND,
+                    foundLayers,
+                    ModItems.VOID_GOOP.getName(ModItems.VOID_GOOP.defaultInstance)
+                ), true
+            )
             return InteractionResult.SUCCESS
         }
         removeFoundGoop(foundVoidGoop, world)
         context.itemInHand.consume(1, context.player)
-        context.player?.displayClientMessage(Component.translatable(VOID_GOOP_REMOVAL, foundLayers, ModItems.VOID_GOOP.name), true)
+        context.player?.displayClientMessage(
+            Component.translatable(
+                VOID_GOOP_REMOVAL,
+                foundLayers,
+                ModItems.VOID_GOOP.getName(ModItems.VOID_GOOP.defaultInstance)
+            ), true
+        )
         return InteractionResult.SUCCESS
     }
 
