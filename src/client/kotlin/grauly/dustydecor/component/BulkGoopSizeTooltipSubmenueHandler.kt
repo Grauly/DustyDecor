@@ -1,6 +1,6 @@
 package grauly.dustydecor.component
 
-import grauly.dustydecor.ModComponentTypes
+import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.packet.UpdateBulkGoopSizeC2SPacket
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
@@ -27,9 +27,9 @@ class BulkGoopSizeTooltipSubmenueHandler(
         val vec = scroller.onMouseScroll(horizontal, vertical)
         val scrollProgress = if (vec.y == 0) -vec.x else -vec.y
         if (scrollProgress == 0) return true
-        if (!item.has(ModComponentTypes.VOID_GOOP_SIZE)) return true
+        if (!item.has(ModDataComponentTypes.VOID_GOOP_SIZE)) return true
         val multiplier = if (minecraftClient.hasShiftDown()) 10 else 1
-        val currentGoop = item.get(ModComponentTypes.VOID_GOOP_SIZE)!!.size
+        val currentGoop = item.get(ModDataComponentTypes.VOID_GOOP_SIZE)!!.size
         var newGoop = (currentGoop + scrollProgress.sign * multiplier)
         if (newGoop > BulkGoopSizeComponent.MAX_SIZE) newGoop -= BulkGoopSizeComponent.MAX_SIZE
         if (newGoop <= 0) newGoop += BulkGoopSizeComponent.MAX_SIZE

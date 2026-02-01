@@ -1,7 +1,7 @@
 package grauly.dustydecor.packet
 
 import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.ModComponentTypes
+import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import io.netty.buffer.ByteBuf
@@ -20,9 +20,9 @@ class UpdateBulkGoopSizeC2SPacket(val slotId: Int, val size: Int): CustomPacketP
         if (player == null) return
         val stack = player.inventory.getItem(slotId)
         if (!stack.`is`(ModItems.BULK_VOID_GOOP)) return
-        if (!stack.has(ModComponentTypes.VOID_GOOP_SIZE)) return
+        if (!stack.has(ModDataComponentTypes.VOID_GOOP_SIZE)) return
         if (size > BulkGoopSizeComponent.MAX_SIZE) return
-        stack.set(ModComponentTypes.VOID_GOOP_SIZE, BulkGoopSizeComponent(size))
+        stack.set(ModDataComponentTypes.VOID_GOOP_SIZE, BulkGoopSizeComponent(size))
     }
 
     companion object {

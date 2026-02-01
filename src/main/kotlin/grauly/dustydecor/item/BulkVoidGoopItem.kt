@@ -1,7 +1,7 @@
 package grauly.dustydecor.item
 
 import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.ModComponentTypes
+import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.block.voidgoop.LayerThresholdSpreadingBlock
 import net.minecraft.world.item.context.DirectionalPlaceContext
@@ -17,7 +17,7 @@ import kotlin.math.min
 class BulkVoidGoopItem(settings: Properties?) : Item(settings) {
     override fun useOn(context: UseOnContext): InteractionResult {
         val pos = context.clickedPos.relative(context.clickedFace)
-        val goopToPlace = context.itemInHand.get(ModComponentTypes.VOID_GOOP_SIZE)?.size ?: 0
+        val goopToPlace = context.itemInHand.get(ModDataComponentTypes.VOID_GOOP_SIZE)?.size ?: 0
         val results = findPlacementLocations(pos, context.level, goopToPlace).filterValues { it > 0 }
         val actuallyPlaced = results.values.reduceOrNull { acc, i -> acc + i }
         context.player?.displayClientMessage(Component.translatable(VOID_GOOP_PLACED, actuallyPlaced ?: 0, ModBlocks.VOID_GOOP.name), true)

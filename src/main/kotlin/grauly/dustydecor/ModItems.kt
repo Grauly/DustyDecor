@@ -43,7 +43,7 @@ object ModItems {
         ::BulkVoidGoopItem,
         "bulk_void_goop",
         Properties()
-            .component(ModComponentTypes.VOID_GOOP_SIZE, BulkGoopSizeComponent.DEFAULT)
+            .component(ModDataComponentTypes.VOID_GOOP_SIZE, BulkGoopSizeComponent.DEFAULT)
             .attributes(
                 ItemAttributeModifiers.builder()
                 .add(
@@ -63,7 +63,7 @@ object ModItems {
         Properties()
             .sword(ModToolMaterials.SCREWDRIVER_TOOL_MATERIAL, -0.5f, 2.0f)
             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-            .component(ModComponentTypes.SCREWDRIVER, ScrewdriverComponent)
+            .component(ModDataComponentTypes.SCREWDRIVER, ScrewdriverComponent)
     )
     val WRENCH: Item = registerItem(
         ::Item,
@@ -71,7 +71,7 @@ object ModItems {
         Properties()
             .sword(ModToolMaterials.WRENCH_TOOL_MATERIAL, 1.0f, -3.2f)
             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-            .component(ModComponentTypes.WRENCH, WrenchComponent)
+            .component(ModDataComponentTypes.WRENCH, WrenchComponent)
     )
 
     val TALL_CAGE_LAMPS: List<Item> = ModBlocks.TALL_CAGE_LAMPS.map {

@@ -1,6 +1,6 @@
 package grauly.dustydecor.util
 
-import grauly.dustydecor.ModComponentTypes
+import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModConventionalItemTags
 import grauly.dustydecor.ModSoundEvents
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level
 object ToolUtils {
     fun isScrewdriver(stack: ItemStack): Boolean {
         if (stack.`is`(ModConventionalItemTags.SCREWDRIVER_TOOLS)) return true
-        if (stack.components.has(ModComponentTypes.SCREWDRIVER)) return true
+        if (stack.components.has(ModDataComponentTypes.SCREWDRIVER)) return true
         return false
     }
 
@@ -24,7 +24,7 @@ object ToolUtils {
 
     fun isWrench(stack: ItemStack): Boolean {
         if (stack.`is`(ConventionalItemTags.WRENCH_TOOLS)) return true
-        if (stack.components.has(ModComponentTypes.WRENCH)) return true
+        if (stack.components.has(ModDataComponentTypes.WRENCH)) return true
         return false
     }
 

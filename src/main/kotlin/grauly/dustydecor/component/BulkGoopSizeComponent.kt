@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.ModComponentTypes
+import grauly.dustydecor.ModDataComponentTypes
 import net.minecraft.core.component.DataComponentGetter
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.component.TooltipProvider
@@ -22,7 +22,7 @@ data class BulkGoopSizeComponent(var size: Int) : TooltipProvider {
         type: TooltipFlag,
         components: DataComponentGetter
     ) {
-        val comp = components.get(ModComponentTypes.VOID_GOOP_SIZE) ?: return
+        val comp = components.get(ModDataComponentTypes.VOID_GOOP_SIZE) ?: return
         textConsumer.accept(
             Component.translatable(SIZE_INDICATOR, comp.size, ModBlocks.VOID_GOOP.name)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
