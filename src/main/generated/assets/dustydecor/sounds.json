@@ -1,6 +1,5 @@
 {
   "block.lighting_fixture.break": {
-    "category": "block",
     "sounds": [
       {
         "type": "event",
@@ -10,7 +9,6 @@
     "subtitle": "subtitles.dustydecor.block.lighting_fixture.break"
   },
   "block.lighting_fixture.invert": {
-    "category": "block",
     "sounds": [
       {
         "type": "event",
@@ -24,7 +22,6 @@
     "subtitle": "subtitles.dustydecor.block.lighting_fixture.invert"
   },
   "block.lighting_fixture.repair": {
-    "category": "block",
     "sounds": [
       {
         "type": "event",
@@ -34,7 +31,6 @@
     "subtitle": "subtitles.dustydecor.block.lighting_fixture.repair"
   },
   "block.lighting_fixture.turn_off": {
-    "category": "block",
     "sounds": [
       {
         "type": "event",
@@ -44,7 +40,6 @@
     "subtitle": "subtitles.dustydecor.block.lighting_fixture.turn_off"
   },
   "block.lighting_fixture.turn_on": {
-    "category": "block",
     "sounds": [
       {
         "type": "event",
@@ -54,7 +49,6 @@
     "subtitle": "subtitles.dustydecor.block.lighting_fixture.turn_on"
   },
   "block.vac_pipe.add_window": {
-    "category": "block",
     "sounds": [
       {
         "type": "event",
@@ -64,7 +58,6 @@
     "subtitle": "subtitles.dustydecor.block.vac_pipe.add_window"
   },
   "block.vac_pipe.remove_window": {
-    "category": "block",
     "sounds": [
       {
         "type": "event",
@@ -74,7 +67,6 @@
     "subtitle": "subtitles.dustydecor.block.vac_pipe.remove_window"
   },
   "block.vent.lock": {
-    "category": "block",
     "sounds": [
       {
         "type": "event",
@@ -84,7 +76,6 @@
     "subtitle": "subtitles.dustydecor.block.vent.lock"
   },
   "block.vent.rattle": {
-    "category": "block",
     "sounds": [
       {
         "type": "event",
@@ -94,7 +85,6 @@
     "subtitle": "subtitles.dustydecor.block.vent.rattle"
   },
   "block.vent.unlock": {
-    "category": "block",
     "sounds": [
       {
         "type": "event",
@@ -104,7 +94,6 @@
     "subtitle": "subtitles.dustydecor.block.vent.unlock"
   },
   "item.screwdriver.use": {
-    "category": "player",
     "sounds": [
       "dustydecor:screwdriver1",
       "dustydecor:screwdriver2",
@@ -116,7 +105,6 @@
     "subtitle": "subtitles.dustydecor.item.screwdriver.use"
   },
   "item.wrench.use": {
-    "category": "player",
     "sounds": [
       "dustydecor:wrench1",
       "dustydecor:wrench2",

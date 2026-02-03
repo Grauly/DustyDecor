@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.client.datagen.v1.builder.SoundTypeBuilder
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricSoundsProvider
 import net.minecraft.data.PackOutput
 import net.minecraft.core.HolderLookup
-import net.minecraft.sounds.SoundSource
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.resources.Identifier
@@ -22,36 +21,30 @@ class SoundEventDatagen(
         simpleRedirect(
             ModSoundEvents.BLOCK_VENT_LOCK,
             SoundEvents.VAULT_DEACTIVATE,
-            SoundSource.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_VENT_UNLOCK,
             SoundEvents.VAULT_ACTIVATE,
-            SoundSource.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_VENT_RATTLE,
             SoundEvents.VAULT_CLOSE_SHUTTER,
-            SoundSource.BLOCKS,
             exporter
         )
         multiRedirect(
             ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW,
-            SoundSource.BLOCKS,
             exporter,
             SoundEvents.ITEM_FRAME_ADD_ITEM
         )
         multiRedirect(
             ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
-            SoundSource.BLOCKS,
             exporter,
             SoundEvents.ITEM_FRAME_REMOVE_ITEM
         )
         fromFiles(
             ModSoundEvents.ITEM_WRENCH_USE,
-            SoundSource.PLAYERS,
             exporter,
             "wrench1",
             "wrench2",
@@ -61,7 +54,6 @@ class SoundEventDatagen(
         )
         fromFiles(
             ModSoundEvents.ITEM_SCREWDRIVER_USE,
-            SoundSource.PLAYERS,
             exporter,
             "screwdriver1",
             "screwdriver2",
@@ -73,30 +65,25 @@ class SoundEventDatagen(
         simpleRedirect(
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_ON,
             SoundEvents.COPPER_BULB_TURN_ON,
-            SoundSource.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_OFF,
             SoundEvents.COPPER_BULB_TURN_OFF,
-            SoundSource.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_BREAK,
             SoundEvents.GLASS_BREAK,
-            SoundSource.BLOCKS,
             exporter
         )
         simpleRedirect(
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_REPAIR,
             SoundEvents.IRON_GOLEM_REPAIR,
-            SoundSource.BLOCKS,
             exporter
         )
         multiRedirect(
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_INVERT,
-            SoundSource.BLOCKS,
             exporter,
             SoundEvents.STONE_BUTTON_CLICK_ON,
             SoundEvents.STONE_BUTTON_CLICK_OFF
@@ -106,7 +93,6 @@ class SoundEventDatagen(
     private fun simpleRedirect(
         from: SoundEvent,
         to: SoundEvent,
-        soundCategory: SoundSource,
         exporter: SoundExporter
     ) {
         exporter.add(
@@ -114,13 +100,11 @@ class SoundEventDatagen(
             SoundTypeBuilder.of()
                 .sound(SoundTypeBuilder.RegistrationBuilder.ofEvent(to))
                 .subtitle(getSubtitle(from))
-                .source(soundCategory)
         )
     }
 
     private fun multiRedirect(
         from: SoundEvent,
-        soundCategory: SoundSource,
         exporter: SoundExporter,
         vararg to: SoundEvent
     ) {
@@ -130,13 +114,11 @@ class SoundEventDatagen(
             from,
             soundBuilder
                 .subtitle(getSubtitle(from))
-                .source(soundCategory)
         )
     }
 
     private fun fromFiles(
         event: SoundEvent,
-        soundCategory: SoundSource,
         exporter: SoundExporter,
         vararg files: Identifier
     ) {
@@ -146,17 +128,15 @@ class SoundEventDatagen(
             event,
             soundBuilder
                 .subtitle(getSubtitle(event))
-                .source(soundCategory)
         )
     }
 
     private fun fromFiles(
         event: SoundEvent,
-        soundCategory: SoundSource,
         exporter: SoundExporter,
         vararg files: String
     ) {
-        fromFiles(event, soundCategory, exporter, *files.asList().map { Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, it) }.toTypedArray())
+        fromFiles(event, exporter, *files.asList().map { Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, it) }.toTypedArray())
     }
 
     companion object {
