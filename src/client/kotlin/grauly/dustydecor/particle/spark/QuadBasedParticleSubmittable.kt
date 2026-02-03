@@ -2,13 +2,13 @@ package grauly.dustydecor.particle.spark
 
 import grauly.dustydecor.particle.QuadDataCache
 import net.minecraft.client.particle.SingleQuadParticle
-import net.minecraft.client.renderer.RenderType
-import net.minecraft.client.renderer.RenderStateShard
 import net.minecraft.client.renderer.state.ParticleGroupRenderState
-import com.mojang.blaze3d.vertex.DefaultVertexFormat
 import net.minecraft.client.renderer.SubmitNodeCollector
 import net.minecraft.client.renderer.state.CameraRenderState
 import com.mojang.blaze3d.vertex.PoseStack
+import net.minecraft.client.renderer.RenderPipelines
+import net.minecraft.client.renderer.rendertype.RenderSetup
+import net.minecraft.client.renderer.rendertype.RenderType
 import org.joml.Vector3f
 
 class QuadBasedParticleSubmittable(
@@ -18,14 +18,14 @@ class QuadBasedParticleSubmittable(
     private var dataCache = QuadDataCache(initialBufferSize)
 
     override fun submit(
-        queue: SubmitNodeCollector,
+        collector: SubmitNodeCollector,
         cameraRenderState: CameraRenderState
     ) {
         if (dataCache.getWrittenQuads() <= 0) return
-        val matrices = PoseStack()
-        queue.submitCustomGeometry(
-            matrices,
-            RENDER_LAYER
+        val poseStack = PoseStack()
+        collector.submitCustomGeometry(
+            poseStack,
+            RENDER_TYPE
         ) { matrixEnty, vertexConsumer ->
             dataCache.forEachVertex { pos, u, v, light, color ->
                 vertexConsumer.addVertex(pos).setUv(u, v).setLight(light).setColor(color)
@@ -60,21 +60,12 @@ class QuadBasedParticleSubmittable(
     }
 
     companion object {
-        private val RENDER_LAYER = RenderType.create(
+        private val RENDER_TYPE = RenderType.create(
             "dustydecor_spark_particle",
-            DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP.vertexSize,
-            false,
-            false,
-            SingleQuadParticle.Layer.OPAQUE.pipeline,
-            RenderType.CompositeState.builder()
-                .setTextureState(
-                    RenderStateShard.TextureStateShard(
-                        SingleQuadParticle.Layer.OPAQUE.textureAtlasLocation,
-                        false
-                    )
-                )
-                .setLightmapState(RenderStateShard.LIGHTMAP)
-                .createCompositeState(false)
+            RenderSetup.builder(RenderPipelines.OPAQUE_PARTICLE)
+                .withTexture("Sampler0", SingleQuadParticle.Layer.OPAQUE.textureAtlasLocation)
+                .useLightmap()
+                .createRenderSetup()
         )
     }
 }
