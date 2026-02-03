@@ -16,7 +16,7 @@ class BlockTagDatagen(
 
     override fun addTags(wrapper: HolderLookup.Provider) {
         BlockDatagenWrapper.entries.filter { it.toolNeed.needsProcessing() }.forEach {
-            valueLookupBuilder(BlockDatagenWrapper.getToolNeed(it.toolNeed.toolNeed)).add(it.block)
+            valueLookupBuilder(BlockDatagenWrapper.getToolNeed(it.toolNeed.toolNeed)!!).add(it.block)
             val override = it.toolNeed.override ?: return@forEach
             valueLookupBuilder(override).add(it.block)
         }
