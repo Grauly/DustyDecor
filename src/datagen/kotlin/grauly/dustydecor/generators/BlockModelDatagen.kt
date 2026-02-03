@@ -5,7 +5,7 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.generators.block.*
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.ItemModelGenerators
 import net.minecraft.client.renderer.block.model.Variant
@@ -18,7 +18,7 @@ import net.minecraft.util.random.WeightedList
 import com.mojang.math.Quadrant
 import net.minecraft.core.Direction
 
-class BlockModelDatagen(generator: FabricDataOutput) : FabricModelProvider(generator) {
+class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(generator) {
 
     override fun generateBlockStateModels(blockStateModelGenerator: BlockModelGenerators) {
         BlockDatagenWrapper.entries.filter { it.generateCubeAllModel }

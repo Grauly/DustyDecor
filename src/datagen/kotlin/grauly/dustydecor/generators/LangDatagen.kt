@@ -13,7 +13,7 @@ import grauly.dustydecor.component.WrenchDataComponent
 import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.screens.VacPipeStationScreen
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
 import net.minecraft.world.item.Item
 import net.minecraft.core.HolderLookup
@@ -22,7 +22,7 @@ import net.minecraft.sounds.SoundEvent
 import java.util.concurrent.CompletableFuture
 
 class LangDatagen(
-    output: FabricDataOutput,
+    output: FabricPackOutput?,
     registriesFuture: CompletableFuture<HolderLookup.Provider>?
 ) : FabricLanguageProvider(output, "en_us", registriesFuture) {
     private val subtitles: MutableMap<SoundEvent, String> = mutableMapOf()

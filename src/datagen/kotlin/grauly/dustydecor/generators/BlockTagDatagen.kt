@@ -3,16 +3,16 @@ package grauly.dustydecor.generators
 import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.ModBlockTags
 import grauly.dustydecor.ModBlocks
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider
 import net.minecraft.core.HolderLookup
 import net.minecraft.tags.BlockTags
 import java.util.concurrent.CompletableFuture
 
 class BlockTagDatagen(
-    output: FabricDataOutput?,
+    output: FabricPackOutput?,
     registriesFuture: CompletableFuture<HolderLookup.Provider>?
-) : FabricTagProvider.BlockTagProvider(output, registriesFuture) {
+) : FabricTagsProvider.BlockTagsProvider(output, registriesFuture) {
 
     override fun addTags(wrapper: HolderLookup.Provider) {
         BlockDatagenWrapper.entries.filter { it.toolNeed.needsProcessing() }.forEach {
