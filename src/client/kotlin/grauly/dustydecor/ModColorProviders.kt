@@ -3,14 +3,14 @@ package grauly.dustydecor
 import grauly.dustydecor.block.furniture.StoolBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.util.DyeUtils
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry
+import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.BlockAndTintGetter
 import java.awt.Color
 
-object ModColorProviders {
+object ModBlockColors {
     fun init() {
         registerCageLamps()
         registerSingleColorBlocks()
@@ -25,7 +25,7 @@ object ModColorProviders {
 
     private fun generateColoredStool(lookupIndex: Int, blocks: List<StoolBlock>) {
         val color = DyeUtils.COLOR_ORDER[lookupIndex].textureDiffuseColor
-        ColorProviderRegistry.BLOCK.register(
+        BlockColorRegistry.register(
             { state: BlockState, blockRenderView: BlockAndTintGetter?, blockPos: BlockPos?, tintIndex: Int ->
                 return@register color
             },
@@ -46,7 +46,7 @@ object ModColorProviders {
     private fun generateColoredCageLamp(index: Int, lamps: List<Block>) {
         val color = DyeUtils.COLOR_ORDER[index].textColor
         val lowerColor = Color(DyeUtils.COLOR_ORDER[index].textureDiffuseColor).darker().darker().darker().rgb
-        ColorProviderRegistry.BLOCK.register(
+        BlockColorRegistry.register(
             { state: BlockState, blockRenderView: BlockAndTintGetter?, blockPos: BlockPos?, tintIndex: Int ->
                 if (state.getValue(LightingFixtureBlock.LIT) != state.getValue(LightingFixtureBlock.INVERTED) &&
                     !state.getValue(LightingFixtureBlock.BROKEN)
