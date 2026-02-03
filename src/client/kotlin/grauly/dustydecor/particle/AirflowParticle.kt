@@ -53,7 +53,7 @@ class AirflowParticle(
         tickProgress: Float
     ) {
         val offset = Vector3f(4/16f, -3/16f, 0f).rotate(rotation)
-        val cameraPos = camera.position
+        val cameraPos = camera.position()
         val x1: Float = (x + offset.x - cameraPos.x).toFloat()
         val y1: Float = (y + offset.y - cameraPos.y).toFloat()
         val z1: Float = (z + offset.z - cameraPos.z).toFloat()

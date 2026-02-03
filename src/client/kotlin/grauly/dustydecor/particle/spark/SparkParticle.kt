@@ -157,9 +157,9 @@ class SparkParticle(
         camera: Camera,
         tickProgress: Float
     ) {
-        val renderLocalPos = lastPos.lerp(pos, tickProgress.toDouble()).subtract(camera.position)
+        val renderLocalPos = lastPos.lerp(pos, tickProgress.toDouble()).subtract(camera.position())
         val renderLocalLastPos = lastLastPos.lerp(lastPos, tickProgress.toDouble())
-            .subtract(camera.position)
+            .subtract(camera.position())
         val centerPos = renderLocalLastPos.lerp(renderLocalPos, 0.5)
         val spanVector = renderLocalPos.subtract(renderLocalLastPos)
         val speedSquared = spanVector.lengthSqr()
