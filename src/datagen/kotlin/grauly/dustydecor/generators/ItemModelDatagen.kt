@@ -16,7 +16,7 @@ class ItemModelDatagen(output: FabricPackOutput) : FabricModelProvider(output) {
         itemModelGenerator.generateSpyglass(ModItems.VAC_CAPSULE)
     }
 
-    override fun generateBlockStateModels(p0: BlockModelGenerators?) {
+    override fun generateBlockStateModels(p0: BlockModelGenerators) {
         //[Intentionally Left Blank]
     }
 

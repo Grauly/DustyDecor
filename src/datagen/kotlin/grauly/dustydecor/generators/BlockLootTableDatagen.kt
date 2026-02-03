@@ -7,8 +7,8 @@ import net.minecraft.core.HolderLookup
 import java.util.concurrent.CompletableFuture
 
 class BlockLootTableDatagen(
-    dataOutput: FabricPackOutput?,
-    registryLookup: CompletableFuture<HolderLookup.Provider>?
+    dataOutput: FabricPackOutput,
+    registryLookup: CompletableFuture<HolderLookup.Provider>
 ) : FabricBlockLootSubProvider(dataOutput, registryLookup) {
 
     override fun generate() {

@@ -10,8 +10,8 @@ import net.minecraft.tags.BlockTags
 import java.util.concurrent.CompletableFuture
 
 class BlockTagDatagen(
-    output: FabricPackOutput?,
-    registriesFuture: CompletableFuture<HolderLookup.Provider>?
+    output: FabricPackOutput,
+    registriesFuture: CompletableFuture<HolderLookup.Provider>
 ) : FabricTagsProvider.BlockTagsProvider(output, registriesFuture) {
 
     override fun addTags(wrapper: HolderLookup.Provider) {

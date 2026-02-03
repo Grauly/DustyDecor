@@ -13,8 +13,8 @@ import net.minecraft.resources.Identifier
 import java.util.concurrent.CompletableFuture
 
 class SoundEventDatagen(
-    output: PackOutput?,
-    registriesFuture: CompletableFuture<HolderLookup.Provider>?
+    output: PackOutput,
+    registriesFuture: CompletableFuture<HolderLookup.Provider>
 ) : FabricSoundsProvider(output, registriesFuture) {
     override fun getName(): String = "Sound Event generator"
 

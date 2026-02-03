@@ -13,8 +13,8 @@ import net.minecraft.core.HolderLookup
 import java.util.concurrent.CompletableFuture
 
 class RecipeDatagen(
-    output: FabricPackOutput?,
-    registriesFuture: CompletableFuture<HolderLookup.Provider>?,
+    output: FabricPackOutput,
+    registriesFuture: CompletableFuture<HolderLookup.Provider>,
 ) : FabricRecipeProvider(output, registriesFuture) {
     override fun getName(): String {
         return "Recipe Provider"

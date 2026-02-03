@@ -8,8 +8,8 @@ import net.minecraft.tags.ItemTags
 import java.util.concurrent.CompletableFuture
 
 class ItemTagDatagen(
-    output: FabricPackOutput?,
-    registriesFuture: CompletableFuture<HolderLookup.Provider>?
+    output: FabricPackOutput,
+    registriesFuture: CompletableFuture<HolderLookup.Provider>
 ) : FabricTagsProvider.ItemTagsProvider(output, registriesFuture) {
 
     override fun addTags(wrapper: HolderLookup.Provider) {

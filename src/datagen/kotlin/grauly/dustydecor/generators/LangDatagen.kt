@@ -22,8 +22,8 @@ import net.minecraft.sounds.SoundEvent
 import java.util.concurrent.CompletableFuture
 
 class LangDatagen(
-    output: FabricPackOutput?,
-    registriesFuture: CompletableFuture<HolderLookup.Provider>?
+    output: FabricPackOutput,
+    registriesFuture: CompletableFuture<HolderLookup.Provider>
 ) : FabricLanguageProvider(output, "en_us", registriesFuture) {
     private val subtitles: MutableMap<SoundEvent, String> = mutableMapOf()
     override fun generateTranslations(wrapper: HolderLookup.Provider, builder: TranslationBuilder) {
