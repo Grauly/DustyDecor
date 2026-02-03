@@ -92,8 +92,8 @@ class AirflowParticle(
             velocityX: Double,
             velocityY: Double,
             velocityZ: Double,
-            random: RandomSource?
-        ): Particle {
+            random: RandomSource
+        ): Particle? {
             return AirflowParticle(
                 world,
                 x, y, z,

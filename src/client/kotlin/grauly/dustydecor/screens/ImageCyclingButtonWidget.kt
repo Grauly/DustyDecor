@@ -55,7 +55,7 @@ class ImageCyclingButtonWidget<T>(
         }
     }
 
-    override fun renderWidget(
+    override fun renderContents(
         context: GuiGraphics,
         mouseX: Int,
         mouseY: Int,

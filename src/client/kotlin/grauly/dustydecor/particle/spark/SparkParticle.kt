@@ -8,7 +8,6 @@ import net.minecraft.client.particle.ParticleRenderType
 import net.minecraft.client.particle.SpriteSet
 import net.minecraft.client.Camera
 import net.minecraft.client.renderer.culling.Frustum
-import net.minecraft.client.renderer.LightTexture
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.core.particles.SimpleParticleType
@@ -16,6 +15,7 @@ import net.minecraft.util.CommonColors
 import net.minecraft.world.phys.HitResult
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.util.LightCoordsUtil
 import net.minecraft.world.phys.Vec3
 import net.minecraft.util.RandomSource
 import net.minecraft.world.level.LightLayer
@@ -191,7 +191,7 @@ class SparkParticle(
         val side = Vector3f(to).sub(from).normalize()
         val camForward = Vector3f(to).lerp(from, 0.5f)
         val sparkUp = Vector3f(side).cross(camForward).normalize().mul((getSize(tickProgress) / 2))
-        val light = getLightColor(0f)
+        val light = getLightCoords(0f)
 
         submittable.beginQuad()
         submittable.addVertex(
@@ -225,12 +225,12 @@ class SparkParticle(
         submittable.endQuad()
     }
 
-    override fun getLightColor(tint: Float): Int {
+    override fun getLightCoords(tint: Float): Int {
         val sparkBrightness: Int = ((age.toFloat() / lifetime) * 15).roundToInt()
         val pos: BlockPos = BlockPos.containing(pos)
         val blockLight: Int = level.getBrightness(LightLayer.BLOCK, pos)
         val skyLight: Int = level.getBrightness(LightLayer.SKY, pos)
-        return LightTexture.pack(max(sparkBrightness, blockLight), skyLight)
+        return LightCoordsUtil.pack(max(sparkBrightness, blockLight), skyLight)
     }
 
     private fun getSize(tickProgress: Float): Float {
@@ -243,7 +243,7 @@ class SparkParticle(
 
     class LargeSparkFactory(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
-            parameters: SimpleParticleType?,
+            parameters: SimpleParticleType,
             world: ClientLevel,
             x: Double,
             y: Double,
@@ -252,7 +252,7 @@ class SparkParticle(
             velocityY: Double,
             velocityZ: Double,
             random: RandomSource
-        ): Particle {
+        ): Particle? {
             return SparkParticle(
                 world,
                 x,
@@ -271,7 +271,7 @@ class SparkParticle(
 
     class SmallSparkFactory(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
-            parameters: SimpleParticleType?,
+            parameters: SimpleParticleType,
             world: ClientLevel,
             x: Double,
             y: Double,
@@ -280,7 +280,7 @@ class SparkParticle(
             velocityY: Double,
             velocityZ: Double,
             random: RandomSource
-        ): Particle {
+        ): Particle? {
             return SparkParticle(
                 world,
                 x,

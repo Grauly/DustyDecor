@@ -6,8 +6,8 @@ import net.minecraft.network.chat.Component
 
 class VacPipeReceiveStationScreen(
     handler: VacPipeReceiveStationScreenHandler,
-    inventory: Inventory?,
-    title: Component?
+    inventory: Inventory,
+    title: Component
 ) : VacPipeStationScreen<VacPipeReceiveStationScreenHandler>(
     handler,
     inventory,

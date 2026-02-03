@@ -9,7 +9,7 @@ import net.minecraft.client.gui.ItemSlotMouseAction
 import net.minecraft.client.ScrollWheelHandler
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.inventory.Slot
-import net.minecraft.world.inventory.ClickType
+import net.minecraft.world.inventory.ContainerInput
 import kotlin.math.sign
 
 class BulkGoopSizeTooltipSubmenueHandler(
@@ -54,7 +54,7 @@ class BulkGoopSizeTooltipSubmenueHandler(
 
     override fun onSlotClicked(
         slot: Slot,
-        actionType: ClickType
+        containerInput: ContainerInput
     ) {
         //[Space intentionally left blank]
     }

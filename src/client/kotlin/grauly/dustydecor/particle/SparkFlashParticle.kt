@@ -6,7 +6,7 @@ import net.minecraft.core.particles.SimpleParticleType
 import net.minecraft.util.RandomSource
 
 class SparkFlashParticle(
-    clientWorld: ClientLevel?,
+    clientWorld: ClientLevel,
     x: Double,
     y: Double,
     z: Double,
@@ -29,8 +29,8 @@ class SparkFlashParticle(
 
     class Factory(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
-            parameters: SimpleParticleType?,
-            world: ClientLevel?,
+            parameters: SimpleParticleType,
+            world: ClientLevel,
             x: Double,
             y: Double,
             z: Double,
@@ -38,7 +38,7 @@ class SparkFlashParticle(
             velocityY: Double,
             velocityZ: Double,
             random: RandomSource
-        ): Particle {
+        ): Particle? {
             return SparkFlashParticle(
                 world,
                 x, y, z, velocityX, velocityY, velocityZ, spriteProvider

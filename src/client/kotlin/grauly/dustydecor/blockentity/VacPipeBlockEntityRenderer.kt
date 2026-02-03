@@ -24,7 +24,7 @@ class VacPipeBlockEntityRenderer(
 ) : BlockEntityRenderer<VacPipeBlockEntity, BlockEntityRenderState> {
     private val itemModelManager = blockRenderContext.itemModelResolver
 
-    override fun createRenderState(): BlockEntityRenderState? = BlockEntityRenderState()
+    override fun createRenderState(): BlockEntityRenderState = BlockEntityRenderState()
 
     override fun extractRenderState(
         blockEntity: VacPipeBlockEntity,

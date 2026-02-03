@@ -23,8 +23,8 @@ import net.minecraft.resources.Identifier
 
 abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     handler: T,
-    inventory: Inventory?,
-    title: Component?,
+    inventory: Inventory,
+    title: Component,
     private val texture: Identifier,
 ) : AbstractContainerScreen<T>(handler, inventory, title) {
     private lateinit var golemModeButton: ImageCyclingButtonWidget<CopperGolemMode>
@@ -32,15 +32,15 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     private lateinit var sendingModeButton: ImageCyclingButtonWidget<SendMode>
     private val updateListener: ContainerListener = object : ContainerListener {
         override fun slotChanged(
-            handler: AbstractContainerMenu?,
+            handler: AbstractContainerMenu,
             slotId: Int,
-            stack: ItemStack?
+            stack: ItemStack
         ) {
             // [Space intentionally left blank]
         }
 
         override fun dataChanged(
-            handler: AbstractContainerMenu?,
+            handler: AbstractContainerMenu,
             property: Int,
             value: Int
         ) {
@@ -189,7 +189,7 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
         )
     }
 
-    override fun render(context: GuiGraphics?, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+    override fun render(context: GuiGraphics, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         super.render(context, mouseX, mouseY, deltaTicks)
         renderTooltip(context, mouseX, mouseY)
     }
