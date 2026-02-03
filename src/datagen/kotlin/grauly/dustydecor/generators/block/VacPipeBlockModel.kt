@@ -267,9 +267,9 @@ object VacPipeBlockModel {
         BlockModelDatagen.singleVariant("block/vac_pipe/vac_pipe_connector_window_connector")
 
     private fun getVacCoreEastTop(shouldHaveWindow: Boolean, primaryDirection: Direction) =
-        getVariant("block/vac_pipe/vac_pipe_east_top_core_${primaryDirection.name}", shouldHaveWindow)
+        getVariant("block/vac_pipe/vac_pipe_east_top_core_${primaryDirection.getName()}", shouldHaveWindow)
     private fun getVacCoreNorthTop(shouldHaveWindow: Boolean, primaryDirection: Direction) =
-        getVariant("block/vac_pipe/vac_pipe_north_top_core_${primaryDirection.name}", shouldHaveWindow)
+        getVariant("block/vac_pipe/vac_pipe_north_top_core_${primaryDirection.getName()}", shouldHaveWindow)
 
     private fun getVacCoreStraightMap(window: Boolean) = mapOf(
         ConnectionState.NORTH.fallDown to getVariant("block/vac_pipe/vac_pipe_straight_core_north_south", window),

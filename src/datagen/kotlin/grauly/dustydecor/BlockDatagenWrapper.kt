@@ -23,7 +23,7 @@ object BlockDatagenWrapper {
         entries.addAll(DyeUtils.COLOR_ORDER.map {
             val lookupValue = DyeUtils.COLOR_ORDER.indexOf(it)
             val colorString =
-                it.name.split("_").map { s -> s.replaceFirstChar { c -> c.titlecase() } }.reduce { acc, s -> "$acc $s" }
+                it.getName().split("_").map { s -> s.replaceFirstChar { c -> c.titlecase() } }.reduce { acc, s -> "$acc $s" }
             return@map mutableListOf(
                 DatagenSpec(ModBlocks.TALL_CAGE_LAMPS[lookupValue], "Tall $colorString Cage Lamp", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.WIDE_CAGE_LAMPS[lookupValue], "Wide $colorString Cage Lamp", STONE, PICKAXE),
