@@ -11,6 +11,7 @@ import net.minecraft.client.particle.SpriteSet
 import net.minecraft.client.Camera
 import net.minecraft.client.renderer.texture.TextureAtlas
 import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.client.particle.SingleQuadParticle
 import net.minecraft.resources.Identifier
 import net.minecraft.core.Direction
 import net.minecraft.util.RandomSource
@@ -107,7 +108,7 @@ class AirflowParticle(
     companion object {
         val RENDER_TYPE = Layer(
             false,
-            TextureAtlas.LOCATION_PARTICLES,
+            SingleQuadParticle.Layer.OPAQUE.textureAtlasLocation(),
             RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)
                 .withCull(false)
                 .withLocation(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "opaque_no_cull"))
