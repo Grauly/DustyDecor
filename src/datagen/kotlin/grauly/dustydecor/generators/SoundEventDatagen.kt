@@ -112,9 +112,9 @@ class SoundEventDatagen(
         exporter.add(
             from,
             SoundTypeBuilder.of()
-                .sound(SoundTypeBuilder.EntryBuilder.ofEvent(to))
-                .category(soundCategory)
+                .sound(SoundTypeBuilder.RegistrationBuilder.ofEvent(to))
                 .subtitle(getSubtitle(from))
+                .source(soundCategory)
         )
     }
 
@@ -125,12 +125,12 @@ class SoundEventDatagen(
         vararg to: SoundEvent
     ) {
         val soundBuilder = SoundTypeBuilder.of()
-        to.iterator().forEach { soundBuilder.sound(SoundTypeBuilder.EntryBuilder.ofEvent(it)) }
+        to.iterator().forEach { soundBuilder.sound(SoundTypeBuilder.RegistrationBuilder.ofEvent(it)) }
         exporter.add(
             from,
             soundBuilder
-                .category(soundCategory)
                 .subtitle(getSubtitle(from))
+                .source(soundCategory)
         )
     }
 
@@ -141,12 +141,12 @@ class SoundEventDatagen(
         vararg files: Identifier
     ) {
         val soundBuilder = SoundTypeBuilder.of()
-        files.iterator().forEach { soundBuilder.sound(SoundTypeBuilder.EntryBuilder.ofFile(it)) }
+        files.iterator().forEach { soundBuilder.sound(SoundTypeBuilder.RegistrationBuilder.ofFile(it)) }
         exporter.add(
             event,
             soundBuilder
-                .category(soundCategory)
                 .subtitle(getSubtitle(event))
+                .source(soundCategory)
         )
     }
 
