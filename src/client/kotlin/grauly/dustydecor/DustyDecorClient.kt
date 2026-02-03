@@ -4,7 +4,7 @@ import net.fabricmc.api.ClientModInitializer
 
 object DustyDecorClient : ClientModInitializer {
     override fun onInitializeClient() {
-        ModBlockLayerRenderMapEntries.init()
+        ModChunkSectionRenderMapEntries.init()
         ModColorProviders.init()
         ModParticles.init()
         ModBlockEntityRenderers.init()
