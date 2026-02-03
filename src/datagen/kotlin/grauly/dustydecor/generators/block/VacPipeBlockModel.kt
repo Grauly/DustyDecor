@@ -7,10 +7,14 @@ import grauly.dustydecor.block.vacpipe.ConnectionState
 import grauly.dustydecor.block.vacpipe.VacPipeBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.models.BlockModelGenerators
+import net.minecraft.client.data.models.MultiVariant
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator
-import net.minecraft.client.render.model.json.*
 import net.minecraft.world.level.block.state.properties.EnumProperty
 import com.mojang.math.Quadrant
+import net.minecraft.client.data.models.blockstates.ConditionBuilder
+import net.minecraft.client.renderer.block.model.VariantMutator
+import net.minecraft.client.renderer.block.model.multipart.CombinedCondition
+import net.minecraft.client.renderer.block.model.multipart.Condition
 import net.minecraft.core.Direction
 
 object VacPipeBlockModel {
@@ -65,10 +69,10 @@ object VacPipeBlockModel {
         creator.with(
             ConditionBuilder()
                 .term(connection, aDirection)
-                .term(VacPipeBlock.windowMap[connection], hasWindow)
+                .term(VacPipeBlock.windowMap[connection]!!, hasWindow)
                 .term(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow),
             getConnector(hasWindow)
-                .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction])
+                .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction]!!)
                 .with(uvLock(true))
         )
     }
@@ -81,17 +85,17 @@ object VacPipeBlockModel {
         if (aDirection == ConnectionState.NONE) return
         val condition = ConditionBuilder()
                 .term(connection, aDirection)
-                .term(VacPipeBlock.windowMap[connection], true)
+                .term(VacPipeBlock.windowMap[connection]!!, true)
                 .term(VacPipeBlock.SHOULD_HAVE_WINDOW, false)
         creator.with(
             condition,
             VAC_CONNECTOR_WINDOW_ATTACHMENT
-                .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction])
+                .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction]!!)
         )
         creator.with(
             condition,
             VAC_CONNECTOR_WINDOW_CONNECTOR
-                .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction])
+                .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[aDirection.direction]!!)
                 .with(uvLock(true))
         )
     }
@@ -123,7 +127,7 @@ object VacPipeBlockModel {
                 .term(AbConnectableBlock.connections[1], bDirection)
                 .term(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow),
             getVacCoreNorth(shouldHaveWindow)
-                .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction])
+                .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction]!!)
                 .with(uvLock(true))
         )
     }
@@ -139,7 +143,7 @@ object VacPipeBlockModel {
                 .term(AbConnectableBlock.connections[0], aDirection)
                 .term(AbConnectableBlock.connections[1], bDirection)
                 .term(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow),
-            getVacCoreStraightMap(shouldHaveWindow)[aDirection.fallDown]
+            getVacCoreStraightMap(shouldHaveWindow)[aDirection.fallDown]!!
         )
     }
 
@@ -234,7 +238,7 @@ object VacPipeBlockModel {
     private fun isReachableViaYRotation(direction: Direction): Boolean = yRotationDirections.contains(direction)
 
     //again, bc I messed that up before: true means move the uv (lock the result to original rotation of the image), false means keep the original UV mapping
-    private fun uvLock(lock: Boolean): VariantMutator? {
+    private fun uvLock(lock: Boolean): VariantMutator {
         return VariantMutator.UV_LOCK.withValue(lock)
     }
 
