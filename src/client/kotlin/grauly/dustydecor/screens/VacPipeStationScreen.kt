@@ -26,7 +26,7 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     inventory: Inventory,
     title: Component,
     private val texture: Identifier,
-) : AbstractContainerScreen<T>(handler, inventory, title) {
+) : AbstractContainerScreen<T>(handler, inventory, title, 176, 189) {
     private lateinit var golemModeButton: ImageCyclingButtonWidget<CopperGolemMode>
     private lateinit var redstoneModeButton: ImageCyclingButtonWidget<RedstoneEmissionMode>
     private lateinit var sendingModeButton: ImageCyclingButtonWidget<SendMode>
@@ -60,8 +60,6 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     }
 
     init {
-        imageWidth = 176
-        imageHeight = 189
         inventoryLabelY = this.imageHeight - 94
         handler.addSlotListener(updateListener)
     }
