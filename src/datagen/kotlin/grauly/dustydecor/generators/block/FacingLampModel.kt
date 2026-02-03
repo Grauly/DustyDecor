@@ -32,14 +32,14 @@ open class FacingLampModel(private val lamps: List<FacingLampBlock>, private val
                 ConditionBuilder()
                     .term(BlockStateProperties.FACING, direction),
                 CAGE
-                    .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                    .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction]!!)
             )
             creator.with(
                 ConditionBuilder()
                     .term(BlockStateProperties.FACING, direction)
                     .term(LightingFixtureBlock.BROKEN, true),
                 BROKEN_LAMP
-                    .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                    .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction]!!)
             )
             listOf(true, false).forEach litLoop@{ on ->
                 listOf(true, false).forEach invertedLoop@{ inverted ->
@@ -50,7 +50,7 @@ open class FacingLampModel(private val lamps: List<FacingLampBlock>, private val
                             .term(LightingFixtureBlock.LIT, on)
                             .term(LightingFixtureBlock.INVERTED, inverted),
                         (if (on != inverted) ACTIVE_LAMP else INACTIVE_LAMP)
-                            .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                            .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction]!!)
                     )
                 }
             }

@@ -21,7 +21,7 @@ class FacingRotationLampModel(lamps: List<FacingRotationLampBlock>, lampPrefix: 
                         .term(BlockStateProperties.FACING, direction)
                         .term(FacingRotationLampBlock.ROTATED, rotated),
                     (if (rotated) CAGE_R else CAGE)
-                        .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                        .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction]!!)
                 )
                 creator.with(
                     ConditionBuilder()
@@ -29,7 +29,7 @@ class FacingRotationLampModel(lamps: List<FacingRotationLampBlock>, lampPrefix: 
                         .term(LightingFixtureBlock.BROKEN, true)
                         .term(FacingRotationLampBlock.ROTATED, rotated),
                     (if (rotated) BROKEN_LAMP_R else BROKEN_LAMP)
-                        .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                        .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction]!!)
                 )
                 listOf(true, false).forEach litLoop@{ on ->
                     listOf(true, false).forEach invertedLoop@{ inverted ->
@@ -45,7 +45,7 @@ class FacingRotationLampModel(lamps: List<FacingRotationLampBlock>, lampPrefix: 
                             } else {
                                 if (rotated) INACTIVE_LAMP_R else INACTIVE_LAMP
                             })
-                                .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction])
+                                .with(BlockModelDatagen.TOP_FACING_ROTATION_MAP[direction]!!)
                         )
                     }
                 }
