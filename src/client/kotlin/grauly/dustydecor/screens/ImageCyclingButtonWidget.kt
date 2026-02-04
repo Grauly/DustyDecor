@@ -56,13 +56,13 @@ class ImageCyclingButtonWidget<T>(
     }
 
     override fun renderContents(
-        context: GuiGraphics,
+        graphics: GuiGraphics,
         mouseX: Int,
         mouseY: Int,
         deltaTicks: Float
     ) {
-        super.renderWidget(context, mouseX, mouseY, deltaTicks)
-        getActiveElement().render(context, mouseX, mouseY, deltaTicks, x, y, width, height)
+        this.renderDefaultSprite(graphics)
+        getActiveElement().render(graphics, mouseX, mouseY, deltaTicks, x, y, width, height)
     }
 
     fun getValue(): T = getActiveElement().value
