@@ -20,14 +20,14 @@ object VoidGoopLookHandler {
     fun onEndTick(serverLevel: ServerLevel) {
         serverLevel.players().forEach { player ->
             val isLooking = isLookingAtGoop(player, serverLevel)
-            val previous = player.modifyAttached(ModAttachmentTypes.VOID_CONSUMPTION) {
+            val previous = player.modifyAttached(ModAttachmentTypes.VOID_CONSUMPTION) { it: Float? ->
                 val value = it ?: 0f
                 if (isLooking) {
                     min(1f, value + CONSUMPTION_TICK_INCREMENT)
                 } else {
                     max(
                         0f,
-                        value - CONSUMPTION_TICK_INCREMENT * if(player.gameMode().isSurvival) ATTENUATE_MULTIPLIER else 1f
+                        value - CONSUMPTION_TICK_INCREMENT * if(player.gameMode.gameModeForPlayer.isSurvival) ATTENUATE_MULTIPLIER else 1f
                     )
                 }
             }
@@ -41,7 +41,7 @@ object VoidGoopLookHandler {
     }
 
     private fun isLookingAtGoop(player: ServerPlayer, world: ServerLevel): Boolean {
-        if (player.gameMode.isSurvival) return false
+        if (!player.gameMode.gameModeForPlayer.isSurvival) return false
         if (player.hasEffect(MobEffects.BLINDNESS)) return false
         val pos = player.getEyePosition(0f)
         val rotation = player.getViewVector(0f).normalize().scale(MAX_DISTANCE)
