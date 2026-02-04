@@ -1,14 +1,17 @@
 package grauly.dustydecor.particle.spark
 
+import com.mojang.blaze3d.pipeline.RenderPipeline
+import com.mojang.blaze3d.vertex.PoseStack
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.particle.QuadDataCache
 import net.minecraft.client.particle.SingleQuadParticle
-import net.minecraft.client.renderer.state.ParticleGroupRenderState
-import net.minecraft.client.renderer.SubmitNodeCollector
-import net.minecraft.client.renderer.state.CameraRenderState
-import com.mojang.blaze3d.vertex.PoseStack
 import net.minecraft.client.renderer.RenderPipelines
+import net.minecraft.client.renderer.SubmitNodeCollector
 import net.minecraft.client.renderer.rendertype.RenderSetup
 import net.minecraft.client.renderer.rendertype.RenderType
+import net.minecraft.client.renderer.state.CameraRenderState
+import net.minecraft.client.renderer.state.ParticleGroupRenderState
+import net.minecraft.resources.Identifier
 import org.joml.Vector3f
 
 class QuadBasedParticleSubmittable(
@@ -62,10 +65,17 @@ class QuadBasedParticleSubmittable(
     companion object {
         private val RENDER_TYPE = RenderType.create(
             "dustydecor_spark_particle",
-            RenderSetup.builder(RenderPipelines.OPAQUE_PARTICLE)
+            RenderSetup.builder(
+                RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)
+                    .withCull(false)
+                    .withLocation(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "spark_opaque"))
+                    .withSampler("Sampler0")
+                    .build()
+            )
                 .withTexture("Sampler0", SingleQuadParticle.Layer.OPAQUE.textureAtlasLocation)
                 .useLightmap()
                 .createRenderSetup()
         )
+        //TODO: figure out how to do a no-cull render type. again.
     }
 }
