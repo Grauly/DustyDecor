@@ -20,6 +20,7 @@ import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
+import net.minecraft.world.level.block.SoundType
 
 object ModBlocks {
 
@@ -86,7 +87,7 @@ object ModBlocks {
         (registerBlock(
             ::StoolBlock,
             id,
-            Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()
+            Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it).sound(SoundType.LANTERN)
         ) as StoolBlock)
     }
 
