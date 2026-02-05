@@ -1,6 +1,5 @@
 package grauly.dustydecor.block.furniture
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.entity.SeatEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.entity.player.Player
@@ -22,14 +21,10 @@ abstract class SittableFurnitureBlock(settings: Properties) : SingleFurnitureBlo
         hit: BlockHitResult
     ): InteractionResult {
         if (player.isShiftKeyDown) return InteractionResult.SUCCESS_SERVER
-        if (SeatEntity.createLinked(world, pos, getSitOffset(), player) == null) {
-            player.displayClientMessage(Component.translatable(SEAT_OCCUPIED_TRANSLATION_KEY), true)
-            return super.useWithoutItem(state, world, pos, player, hit)
+        val seatResult = SeatEntity.seatEntity(world, pos, getSitOffset(), player)
+        if (seatResult.type.shouldDisplayMessage) {
+            player.displayClientMessage(Component.translatable(seatResult.type.messageTranslationKey), true)
         }
         return InteractionResult.SUCCESS
-    }
-
-    companion object {
-        const val SEAT_OCCUPIED_TRANSLATION_KEY = "sittable.${DustyDecorMod.MODID}.occupied"
     }
 }

@@ -61,9 +61,15 @@ class SeatEntity(private var linkedLocation: BlockPos, private var isLocationLin
     companion object {
         const val LINKED_LOCATION_KEY = "linkedLocation"
         const val LOCATION_LINKED_KEY = "isLocationLinked"
-        fun createLinked(world: Level, pos: BlockPos, offset: Vec3, entity: Entity): SeatEntity? {
-            if (world !is ServerLevel) return null
-            if (world.getEntitiesOfClass(SeatEntity::class.java, AABB(pos), { _ -> true}).isNotEmpty()) return null
+        fun seatEntity(world: Level, pos: BlockPos, offset: Vec3, entity: Entity): SitResult {
+            if (world !is ServerLevel) return SitResult(SitResultType.NONE, null)
+            if (world.getEntitiesOfClass(SeatEntity::class.java, AABB(pos), { _ -> true}).isNotEmpty()) return SitResult(SitResultType.OCCUPIED, null)
+            if (entity.isPassenger) return SitResult(SitResultType.ALREADY_SITTING, null)
+            val seat = createLinked(world, pos, offset, entity)
+            return SitResult(SitResultType.SUCCESS, seat)
+        }
+
+        fun createLinked(world: ServerLevel, pos: BlockPos, offset: Vec3, entity: Entity): SeatEntity {
             val seat = SeatEntity(pos, true, ModEntities.SEAT_ENTITY, world)
             seat.setPos(Vec3(pos).add(offset))
             world.addFreshEntity(seat)
@@ -72,4 +78,6 @@ class SeatEntity(private var linkedLocation: BlockPos, private var isLocationLin
             return seat
         }
     }
+
+    data class SitResult(val type: SitResultType, val seat: SeatEntity?)
 }

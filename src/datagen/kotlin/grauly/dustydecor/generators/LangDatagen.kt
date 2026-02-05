@@ -10,6 +10,8 @@ import grauly.dustydecor.block.furniture.SittableFurnitureBlock
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ScrewdriverDataComponent
 import grauly.dustydecor.component.WrenchDataComponent
+import grauly.dustydecor.entity.SeatEntity
+import grauly.dustydecor.entity.SitResultType
 import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.screens.VacPipeStationScreen
@@ -107,7 +109,10 @@ class LangDatagen(
 
         builder.add("entity.${DustyDecorMod.MODID}.seat", "Seat")
 
-        builder.add(SittableFurnitureBlock.SEAT_OCCUPIED_TRANSLATION_KEY, "Already occupied")
+        builder.add(SitResultType.SUCCESS.messageTranslationKey, "Now sitting down")
+        builder.add(SitResultType.OCCUPIED.messageTranslationKey, "Already occupied")
+        builder.add(SitResultType.ALREADY_SITTING.messageTranslationKey, "Already sitting")
+        builder.add(SitResultType.NONE.messageTranslationKey, "The seat is a lie")
 
         subtitles.forEach { (e, t) ->
             builder.add(SoundEventDatagen.getSubtitle(e), t)
