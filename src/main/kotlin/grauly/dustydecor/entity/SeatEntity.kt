@@ -1,6 +1,7 @@
 package grauly.dustydecor.entity
 
 import com.mojang.serialization.Codec
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModEntities
 import grauly.dustydecor.block.furniture.SeatLinkable
 import net.minecraft.world.entity.Entity
@@ -11,6 +12,9 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 import net.minecraft.core.BlockPos
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.Pose
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec3
 import net.minecraft.world.level.Level
@@ -18,6 +22,8 @@ import net.minecraft.world.level.Level
 class SeatEntity(private var linkedLocation: BlockPos, private var isLocationLinked: Boolean, type: EntityType<*>, world: Level) : Entity(type, world) {
 
     constructor(type: EntityType<*>, world: Level) : this(BlockPos.ZERO, false, type, world)
+
+    //TODO: dismount location handling
 
     override fun tick() {
         super.tick()
@@ -30,10 +36,19 @@ class SeatEntity(private var linkedLocation: BlockPos, private var isLocationLin
             discard()
             return
         }
-        if (!hasExactlyOnePlayerPassenger()) {
+        if (!isVehicle) {
             discard()
             return
         }
+    }
+
+    override fun positionRider(
+        passenger: Entity,
+        moveFunction: MoveFunction
+    ) {
+        super.positionRider(passenger, moveFunction)
+        if (passenger !is Player) return
+        passenger.yBodyRot = passenger.yRot
     }
 
     override fun hurtServer(
@@ -56,6 +71,11 @@ class SeatEntity(private var linkedLocation: BlockPos, private var isLocationLin
     override fun addAdditionalSaveData(view: ValueOutput) {
         view.store(LOCATION_LINKED_KEY, Codec.BOOL, isLocationLinked)
         view.store(LINKED_LOCATION_KEY, BlockPos.CODEC, linkedLocation)
+    }
+
+    override fun getDismountLocationForPassenger(passenger: LivingEntity): Vec3 {
+        val box = passenger.getLocalBoundsForPose(Pose.STANDING)
+        return super.getDismountLocationForPassenger(passenger)
     }
 
     companion object {
