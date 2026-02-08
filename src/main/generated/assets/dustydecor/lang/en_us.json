@@ -207,6 +207,7 @@
   "sittable.dustydecor.none": "The seat is a lie",
   "sittable.dustydecor.occupied": "Already occupied",
   "sittable.dustydecor.success": "Now sitting down",
+  "sittable.dustydecor.too_far": "Too far away",
   "subtitles.dustydecor.block.lighting_fixture.break": "Lighting fixture breaks",
   "subtitles.dustydecor.block.lighting_fixture.invert": "Lighting fixture inverted",
   "subtitles.dustydecor.block.lighting_fixture.repair": "Lighting fixture repaired",

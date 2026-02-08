@@ -112,6 +112,7 @@ class LangDatagen(
         builder.add(SitResultType.SUCCESS.messageTranslationKey, "Now sitting down")
         builder.add(SitResultType.OCCUPIED.messageTranslationKey, "Already occupied")
         builder.add(SitResultType.ALREADY_SITTING.messageTranslationKey, "Already sitting")
+        builder.add(SitResultType.TOO_FAR.messageTranslationKey, "Too far away")
         builder.add(SitResultType.NONE.messageTranslationKey, "The seat is a lie")
 
         subtitles.forEach { (e, t) ->
