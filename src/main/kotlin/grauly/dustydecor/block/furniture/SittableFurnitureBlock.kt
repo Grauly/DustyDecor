@@ -7,8 +7,11 @@ import net.minecraft.network.chat.Component
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
 import net.minecraft.world.phys.Vec3
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.pathfinder.PathComputationType
 
 abstract class SittableFurnitureBlock(settings: Properties) : SingleFurnitureBlock(settings), SeatLinkable {
     abstract fun getSitOffset(): Vec3
@@ -26,5 +29,20 @@ abstract class SittableFurnitureBlock(settings: Properties) : SingleFurnitureBlo
             player.displayClientMessage(Component.translatable(seatResult.type.messageTranslationKey), true)
         }
         return InteractionResult.SUCCESS
+    }
+
+    override fun isPathfindable(
+        state: BlockState,
+        type: PathComputationType
+    ): Boolean = false
+
+    override fun canSurvive(
+        state: BlockState,
+        level: LevelReader,
+        pos: BlockPos
+    ): Boolean {
+        if (!super.canSurvive(state, level, pos)) return false
+        val checkState = level.getBlockState(pos.relative(Direction.DOWN))
+        return checkState.isFaceSturdy(level, pos, Direction.UP)
     }
 }

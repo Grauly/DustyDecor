@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.properties.RotationSegment
 import net.minecraft.util.RandomSource
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.ScheduledTickAccess
+import net.minecraft.world.level.block.Blocks
 
 abstract class SingleFurnitureBlock(settings: Properties) : Block(settings) {
     init {
@@ -35,7 +36,7 @@ abstract class SingleFurnitureBlock(settings: Properties) : Block(settings) {
 
     override fun updateShape(
         state: BlockState,
-        world: LevelReader,
+        level: LevelReader,
         tickView: ScheduledTickAccess,
         pos: BlockPos,
         direction: Direction,
@@ -44,11 +45,12 @@ abstract class SingleFurnitureBlock(settings: Properties) : Block(settings) {
         random: RandomSource
     ): BlockState {
         if (state.getValue(WATERLOGGED)) {
-            tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world))
+            tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level))
         }
+        if (!canSurvive(state, level, pos)) return Blocks.AIR.defaultBlockState()
         return super.updateShape(
             state,
-            world,
+            level,
             tickView,
             pos,
             direction,
