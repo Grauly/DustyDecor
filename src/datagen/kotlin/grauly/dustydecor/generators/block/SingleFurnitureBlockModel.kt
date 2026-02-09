@@ -38,7 +38,7 @@ open class SingleFurnitureBlockModel(private val blocks: List<SingleFurnitureBlo
     }
 
     protected fun createItem(block: SingleFurnitureBlock, blockStateModelGenerator: BlockModelGenerators) {
-        val color = DyeUtils.COLOR_ORDER[blocks.indexOf(block)].textColor
+        val color = DyeUtils.COLOR_ORDER[blocks.indexOf(block)].textureDiffuseColor
         val tint = ItemModelUtils.constantTint(color)
         val model = ItemModelUtils.tintedModel(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "${MODEL_PATH}_0"), tint)
         blockStateModelGenerator.itemModelOutput.accept(block.asItem(), model)
