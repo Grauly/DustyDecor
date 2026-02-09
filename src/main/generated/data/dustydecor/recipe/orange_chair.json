@@ -5,7 +5,7 @@
     "d": "#c:dyes/orange",
     "i": "#c:ingots/iron",
     "l": "#c:leathers",
-    "n": "minecraft:iron_nugget"
+    "n": "#c:nuggets/iron"
   },
   "pattern": [
     "ld ",

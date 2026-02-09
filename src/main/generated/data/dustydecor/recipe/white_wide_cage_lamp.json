@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "c": "minecraft:iron_nugget",
     "d": "#c:dyes/white",
-    "g": "minecraft:glowstone_dust",
-    "i": "#c:ingots/iron"
+    "g": "#c:dusts/glowstone",
+    "i": "#c:ingots/iron",
+    "n": "#c:nuggets/iron"
   },
   "pattern": [
-    "ccc",
+    "nnn",
     "gdg",
-    "ici"
+    "ini"
   ],
   "result": {
     "count": 3,

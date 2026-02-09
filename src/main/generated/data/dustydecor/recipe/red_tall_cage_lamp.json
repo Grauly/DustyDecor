@@ -2,14 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "c": "minecraft:iron_nugget",
     "d": "#c:dyes/red",
-    "g": "minecraft:glowstone_dust",
+    "g": "#c:dusts/glowstone",
     "i": "#c:ingots/iron",
+    "n": "#c:nuggets/iron",
     "r": "#c:dusts/redstone"
   },
   "pattern": [
-    "ccc",
+    "nnn",
     "gdg",
     "iri"
   ],

@@ -80,12 +80,12 @@ class RecipeDatagen(
                 ModItems.TALL_CAGE_LAMPS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.TALL_CAGE_LAMPS.indexOf(it)]
                     shaped(RecipeCategory.REDSTONE, it, 3)
-                        .define('c', Items.IRON_NUGGET)
-                        .define('g', Items.GLOWSTONE_DUST)
+                        .define('n', ConventionalItemTags.IRON_NUGGETS)
+                        .define('g', ConventionalItemTags.GLOWSTONE_DUSTS)
                         .define('r', ConventionalItemTags.REDSTONE_DUSTS)
                         .define('d', dye)
                         .define('i', ConventionalItemTags.IRON_INGOTS)
-                        .pattern("ccc")
+                        .pattern("nnn")
                         .pattern("gdg")
                         .pattern("iri")
                         .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
@@ -94,11 +94,11 @@ class RecipeDatagen(
                 ModItems.ALARM_CAGE_LAMPS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.ALARM_CAGE_LAMPS.indexOf(it)]
                     shaped(RecipeCategory.REDSTONE, it, 3)
-                        .define('c', Items.IRON_NUGGET)
+                        .define('n', ConventionalItemTags.IRON_NUGGETS)
                         .define('l', Items.REDSTONE_LAMP)
                         .define('d', dye)
                         .define('i', ConventionalItemTags.IRON_INGOTS)
-                        .pattern("ccc")
+                        .pattern("nnn")
                         .pattern(" l ")
                         .pattern("idi")
                         .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
@@ -107,32 +107,32 @@ class RecipeDatagen(
                 ModItems.WIDE_CAGE_LAMPS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.WIDE_CAGE_LAMPS.indexOf(it)]
                     shaped(RecipeCategory.REDSTONE, it, 3)
-                        .define('c', Items.IRON_NUGGET)
-                        .define('g', Items.GLOWSTONE_DUST)
+                        .define('n', ConventionalItemTags.IRON_NUGGETS)
+                        .define('g', ConventionalItemTags.GLOWSTONE_DUSTS)
                         .define('d', dye)
                         .define('i', ConventionalItemTags.IRON_INGOTS)
-                        .pattern("ccc")
+                        .pattern("nnn")
                         .pattern("gdg")
-                        .pattern("ici")
+                        .pattern("ini")
                         .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
                         .save(exporter)
                 }
                 ModItems.STOOLS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.STOOLS.indexOf(it)]
                     shaped(RecipeCategory.DECORATIONS, it, 1)
-                        .define('c', Items.IRON_NUGGET)
+                        .define('n', ConventionalItemTags.IRON_NUGGETS)
                         .define('l', ConventionalItemTags.LEATHERS)
                         .define('d', dye)
                         .define('i', ConventionalItemTags.IRON_INGOTS)
-                        .pattern("cdc")
-                        .pattern("cli")
+                        .pattern("ndn")
+                        .pattern("nli")
                         .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
                         .save(exporter)
                 }
                 ModItems.CHAIRS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.CHAIRS.indexOf(it)]
                     shaped(RecipeCategory.DECORATIONS, it, 1)
-                        .define('n', Items.IRON_NUGGET)
+                        .define('n', ConventionalItemTags.IRON_NUGGETS)
                         .define('l', ConventionalItemTags.LEATHERS)
                         .define('d', dye)
                         .define('i', ConventionalItemTags.IRON_INGOTS)

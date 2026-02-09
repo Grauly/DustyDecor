@@ -2,14 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "c": "minecraft:iron_nugget",
     "d": "#c:dyes/brown",
     "i": "#c:ingots/iron",
-    "l": "#c:leathers"
+    "l": "#c:leathers",
+    "n": "#c:nuggets/iron"
   },
   "pattern": [
-    "cdc",
-    "cli"
+    "ndn",
+    "nli"
   ],
   "result": {
     "id": "dustydecor:brown_stool"

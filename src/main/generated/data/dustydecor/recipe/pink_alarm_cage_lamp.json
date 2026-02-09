@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "c": "minecraft:iron_nugget",
     "d": "#c:dyes/pink",
     "i": "#c:ingots/iron",
-    "l": "minecraft:redstone_lamp"
+    "l": "minecraft:redstone_lamp",
+    "n": "#c:nuggets/iron"
   },
   "pattern": [
-    "ccc",
+    "nnn",
     " l ",
     "idi"
   ],
