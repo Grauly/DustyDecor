@@ -81,7 +81,7 @@ class SeatEntity(private var linkedLocation: BlockPos, private var isLocationLin
         val result = level().clip(ClipContext(
             from,
             to,
-            ClipContext.Block.COLLIDER,
+            ClipContext.Block.VISUAL,
             ClipContext.Fluid.NONE,
             passenger
         ))
