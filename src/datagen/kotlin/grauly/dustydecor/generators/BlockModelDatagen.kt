@@ -33,6 +33,7 @@ class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(gener
         VacPipeStationBlockModel.get(blockStateModelGenerator)
         VoidGoopBlockModel.get(blockStateModelGenerator)
         SingleFurnitureBlockModel(ModBlocks.STOOLS, "stool/stool").get(blockStateModelGenerator)
+        SingleFurnitureBlockModel(ModBlocks.CHAIRS, "chair/chair").get(blockStateModelGenerator)
     }
 
 

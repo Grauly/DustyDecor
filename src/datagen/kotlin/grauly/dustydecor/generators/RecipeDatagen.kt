@@ -129,6 +129,19 @@ class RecipeDatagen(
                         .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
                         .save(exporter)
                 }
+                ModItems.CHAIRS.forEach {
+                    val dye = DyeUtils.DYE_TAG_ORDER[ModItems.CHAIRS.indexOf(it)]
+                    shaped(RecipeCategory.DECORATIONS, it, 1)
+                        .define('n', Items.IRON_NUGGET)
+                        .define('l', ConventionalItemTags.LEATHERS)
+                        .define('d', dye)
+                        .define('i', ConventionalItemTags.IRON_INGOTS)
+                        .pattern("ld ")
+                        .pattern("nln")
+                        .pattern("nii")
+                        .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
+                        .save(exporter)
+                }
             }
         }
     }

@@ -14,7 +14,7 @@ import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.pathfinder.PathComputationType
 
 abstract class SittableFurnitureBlock(settings: Properties) : SingleFurnitureBlock(settings), SeatLinkable {
-    abstract fun getSitOffset(): Vec3
+    abstract fun getSitOffset(state: BlockState): Vec3
 
     override fun useWithoutItem(
         state: BlockState,
@@ -24,7 +24,7 @@ abstract class SittableFurnitureBlock(settings: Properties) : SingleFurnitureBlo
         hit: BlockHitResult
     ): InteractionResult {
         if (player.isShiftKeyDown) return InteractionResult.SUCCESS_SERVER
-        val seatResult = SeatEntity.seatEntity(world, pos, getSitOffset(), player)
+        val seatResult = SeatEntity.seatEntity(world, pos, getSitOffset(state), player)
         if (seatResult.type.shouldDisplayMessage) {
             player.displayClientMessage(Component.translatable(seatResult.type.messageTranslationKey), true)
         }

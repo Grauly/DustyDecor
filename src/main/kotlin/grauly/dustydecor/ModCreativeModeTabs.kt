@@ -27,7 +27,8 @@ object ModCreativeModeTabs {
                     *ModItems.WIDE_CAGE_LAMPS.toTypedArray(),
                     *ModItems.ALARM_CAGE_LAMPS.toTypedArray(),
                     *ModItems.TUBE_LAMPS.toTypedArray(),
-                    *ModItems.STOOLS.toTypedArray()
+                    *ModItems.STOOLS.toTypedArray(),
+                    *ModItems.CHAIRS.toTypedArray(),
                 )
             }
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS)

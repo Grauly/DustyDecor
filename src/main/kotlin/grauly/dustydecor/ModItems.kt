@@ -28,7 +28,7 @@ object ModItems {
     /*
     Checklist for adding a new Item:
     - ItemDatagen Entry (optional for BlockItems)
-    - ModItemGroups Entry
+    - ModCreativeModeTags Entry
     - Texture/Model
     - Recipes
      */
@@ -96,6 +96,11 @@ object ModItems {
 
     val STOOLS: List<Item> = ModBlocks.STOOLS.map {
         val id = "${DyeUtils.COLOR_ORDER[ModBlocks.STOOLS.indexOf(it)]}_stool"
+        registerBlockItem(it, id)
+    }
+
+    val CHAIRS: List<Item> = ModBlocks.CHAIRS.map {
+        val id = "${DyeUtils.COLOR_ORDER[ModBlocks.CHAIRS.indexOf(it)]}_chair"
         registerBlockItem(it, id)
     }
 

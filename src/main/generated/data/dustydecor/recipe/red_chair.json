@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "d": "#c:dyes/red",
+    "i": "#c:ingots/iron",
+    "l": "#c:leathers",
+    "n": "minecraft:iron_nugget"
+  },
+  "pattern": [
+    "ld ",
+    "nln",
+    "nii"
+  ],
+  "result": {
+    "id": "dustydecor:red_chair"
+  }
+}

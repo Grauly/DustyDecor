@@ -13,7 +13,7 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 
 class StoolBlock(settings: Properties) : SittableFurnitureBlock(settings) {
-    override fun getSitOffset(): Vec3 = Vec3(.5, 9.0 / 16.0, .5)
+    override fun getSitOffset(state: BlockState): Vec3 = Vec3(.5, 9.0 / 16.0, .5)
 
     override fun getShape(
         state: BlockState,

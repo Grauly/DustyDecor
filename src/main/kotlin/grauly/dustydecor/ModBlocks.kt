@@ -1,5 +1,6 @@
 package grauly.dustydecor
 
+import grauly.dustydecor.block.furniture.ChairBlock
 import grauly.dustydecor.block.furniture.StoolBlock
 import grauly.dustydecor.block.lamp.AlarmCageLampBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
@@ -89,6 +90,15 @@ object ModBlocks {
             id,
             Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it).sound(SoundType.LANTERN)
         ) as StoolBlock)
+    }
+
+    val CHAIRS: List<ChairBlock> = DyeUtils.COLOR_ORDER.map {
+        val id = "${it.getName()}_chair"
+        (registerBlock(
+            ::ChairBlock,
+            id,
+            Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it).sound(SoundType.LANTERN)
+        ) as ChairBlock)
     }
 
     private fun registerBlock(

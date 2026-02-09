@@ -1,6 +1,6 @@
 package grauly.dustydecor
 
-import grauly.dustydecor.block.furniture.StoolBlock
+import grauly.dustydecor.block.furniture.SingleFurnitureBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.util.DyeUtils
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry
@@ -19,11 +19,12 @@ object ModBlockColors {
     private fun registerSingleColorBlocks() {
         DyeUtils.COLOR_ORDER.forEach {
             val lookupIndex = DyeUtils.COLOR_ORDER.indexOf(it)
-            generateColoredStool(lookupIndex, ModBlocks.STOOLS)
+            generateColoredFurniture(lookupIndex, ModBlocks.STOOLS)
+            generateColoredFurniture(lookupIndex, ModBlocks.CHAIRS)
         }
     }
 
-    private fun generateColoredStool(lookupIndex: Int, blocks: List<StoolBlock>) {
+    private fun generateColoredFurniture(lookupIndex: Int, blocks: List<SingleFurnitureBlock>) {
         val color = DyeUtils.COLOR_ORDER[lookupIndex].textureDiffuseColor
         BlockColorRegistry.register(
             { state: BlockState, blockRenderView: BlockAndTintGetter?, blockPos: BlockPos?, tintIndex: Int ->

@@ -30,6 +30,7 @@ object BlockDatagenWrapper {
                 DatagenSpec(ModBlocks.ALARM_CAGE_LAMPS[lookupValue], "$colorString Alarm Cage Lamp", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.TUBE_LAMPS[lookupValue], "$colorString Tube Lamp", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.STOOLS[lookupValue], "$colorString Stool", STONE, PICKAXE),
+                DatagenSpec(ModBlocks.CHAIRS[lookupValue], "$colorString Chair", STONE, PICKAXE),
             )
         }.reduce { acc: MutableList<DatagenSpec>, elem: MutableList<DatagenSpec> -> acc.addAll(elem); acc })
     }
