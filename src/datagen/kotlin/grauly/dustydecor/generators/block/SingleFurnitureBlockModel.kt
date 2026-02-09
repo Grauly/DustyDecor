@@ -31,8 +31,9 @@ open class SingleFurnitureBlockModel(private val blocks: List<SingleFurnitureBlo
             MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(BlockStateProperties.ROTATION_16).generate {
                 val rotationIndex = it % 4
                 val baseRotation = floor(it / 4.0).toInt()
-                val rotationQuadrant = Quadrant.entries[baseRotation]
-                getModel(rotationIndex).with(VariantMutator.Y_ROT.withValue(rotationQuadrant))
+                val rotationQuadrant = Quadrant.entries[(baseRotation + 2) % 4]
+                getModel(rotationIndex)
+                    .with(VariantMutator.Y_ROT.withValue(rotationQuadrant))
             })
         )
     }
