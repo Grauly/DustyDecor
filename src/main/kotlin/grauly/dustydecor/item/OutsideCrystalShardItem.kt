@@ -22,23 +22,23 @@ class OutsideCrystalShardItem(settings: Properties) : Item(settings) {
         val foundVoidGoop: MutableSet<BlockPos> = mutableSetOf()
         val foundLayers = getConnectedGoop(context.clickedPos, world, foundVoidGoop)
         if (context.player?.isShiftKeyDown == false) {
-            context.player?.displayClientMessage(
+            context.player?.sendOverlayMessage(
                 Component.translatable(
                     VOID_GOOP_FIND,
                     foundLayers,
                     ModItems.VOID_GOOP.getName(ModItems.VOID_GOOP.defaultInstance)
-                ), true
+                )
             )
             return InteractionResult.SUCCESS
         }
         removeFoundGoop(foundVoidGoop, world)
         context.itemInHand.consume(1, context.player)
-        context.player?.displayClientMessage(
+        context.player?.sendOverlayMessage(
             Component.translatable(
                 VOID_GOOP_REMOVAL,
                 foundLayers,
                 ModItems.VOID_GOOP.getName(ModItems.VOID_GOOP.defaultInstance)
-            ), true
+            )
         )
         return InteractionResult.SUCCESS
     }

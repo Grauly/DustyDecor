@@ -26,7 +26,7 @@ abstract class SittableFurnitureBlock(settings: Properties) : SingleFurnitureBlo
         if (player.isShiftKeyDown) return InteractionResult.SUCCESS_SERVER
         val seatResult = SeatEntity.seatEntity(world, pos, getSitOffset(state), player)
         if (seatResult.type.shouldDisplayMessage) {
-            player.displayClientMessage(Component.translatable(seatResult.type.messageTranslationKey), true)
+            player.sendOverlayMessage(Component.translatable(seatResult.type.messageTranslationKey))
         }
         return InteractionResult.SUCCESS
     }
