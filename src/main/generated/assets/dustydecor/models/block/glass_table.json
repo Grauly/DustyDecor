@@ -1,0 +1,6 @@
+{
+  "parent": "dustydecor:block/glass_table/glass_table",
+  "textures": {
+    "1": "minecraft:block/glass"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "i": "#c:ingots/iron",
+    "n": "#c:nuggets/iron",
+    "p": "minecraft:light_gray_stained_glass_pane"
+  },
+  "pattern": [
+    "npn",
+    "n n",
+    "ini"
+  ],
+  "result": {
+    "id": "dustydecor:light_gray_glass_table"
+  }
+}

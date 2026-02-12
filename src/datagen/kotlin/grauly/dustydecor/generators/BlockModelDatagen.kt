@@ -16,7 +16,11 @@ import net.minecraft.world.level.block.state.properties.Property
 import net.minecraft.resources.Identifier
 import net.minecraft.util.random.WeightedList
 import com.mojang.math.Quadrant
+import grauly.dustydecor.util.DyeUtils
+import net.minecraft.client.data.models.model.ModelLocationUtils
 import net.minecraft.core.Direction
+import net.minecraft.world.item.Items
+import net.minecraft.world.level.block.Blocks
 
 class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(generator) {
 
@@ -34,6 +38,16 @@ class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(gener
         VoidGoopBlockModel.get(blockStateModelGenerator)
         SingleFurnitureBlockModel(ModBlocks.STOOLS, "stool/stool").get(blockStateModelGenerator)
         SingleFurnitureBlockModel(ModBlocks.CHAIRS, "chair/chair").get(blockStateModelGenerator)
+        ParentedSingleFurnitureBlockModel(
+            ModBlocks.GLASS_TABLES,
+            DyeUtils.GLASS_ORDER.map { pane -> ModelLocationUtils.getModelLocation(pane) },
+            Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "block/glass_table/glass_table")
+        ).get(blockStateModelGenerator)
+        ParentedSingleFurnitureBlockModel(
+            listOf(ModBlocks.GLASS_TABLE),
+            listOf(ModelLocationUtils.getModelLocation(Blocks.GLASS)),
+            Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "block/glass_table/glass_table")
+        ).get(blockStateModelGenerator)
     }
 
 

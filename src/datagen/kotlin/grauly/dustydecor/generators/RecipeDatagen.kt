@@ -142,6 +142,27 @@ class RecipeDatagen(
                         .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
                         .save(exporter)
                 }
+                ModItems.GLASS_TABLES.forEach {
+                    val pane = DyeUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.GLASS_TABLES.indexOf(it)]
+                    shaped(RecipeCategory.DECORATIONS, it, 1)
+                        .define('n', ConventionalItemTags.IRON_NUGGETS)
+                        .define('p', pane)
+                        .define('i', ConventionalItemTags.IRON_INGOTS)
+                        .pattern("npn")
+                        .pattern("n n")
+                        .pattern("ini")
+                        .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
+                        .save(exporter)
+                }
+                shaped(RecipeCategory.DECORATIONS, ModItems.GLASS_TABLE, 1)
+                    .define('n', ConventionalItemTags.IRON_NUGGETS)
+                    .define('p', Items.GLASS_PANE)
+                    .define('i', ConventionalItemTags.IRON_INGOTS)
+                    .pattern("npn")
+                    .pattern("n n")
+                    .pattern("ini")
+                    .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
+                    .save(exporter)
             }
         }
     }

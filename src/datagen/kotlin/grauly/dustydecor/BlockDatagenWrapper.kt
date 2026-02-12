@@ -17,7 +17,8 @@ object BlockDatagenWrapper {
                 DatagenSpec(ModBlocks.VENT_COVER, "Vent Grate", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.VAC_PIPE, "Vacuum Tube", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.VAC_PIPE_STATION, "Vacuum Tube Station", STONE, PICKAXE),
-                DatagenSpec(ModBlocks.VOID_GOOP, "Void Goop")
+                DatagenSpec(ModBlocks.VOID_GOOP, "Void Goop"),
+                DatagenSpec(ModBlocks.GLASS_TABLE, "Glass Table", STONE, PICKAXE),
             )
         )
         entries.addAll(DyeUtils.COLOR_ORDER.map {
@@ -31,6 +32,7 @@ object BlockDatagenWrapper {
                 DatagenSpec(ModBlocks.TUBE_LAMPS[lookupValue], "$colorString Tube Lamp", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.STOOLS[lookupValue], "$colorString Stool", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.CHAIRS[lookupValue], "$colorString Chair", STONE, PICKAXE),
+                DatagenSpec(ModBlocks.GLASS_TABLES[lookupValue], "$colorString Glass Table", STONE, PICKAXE),
             )
         }.reduce { acc: MutableList<DatagenSpec>, elem: MutableList<DatagenSpec> -> acc.addAll(elem); acc })
     }

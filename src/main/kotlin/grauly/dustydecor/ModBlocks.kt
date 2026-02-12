@@ -1,6 +1,8 @@
 package grauly.dustydecor
 
 import grauly.dustydecor.block.furniture.ChairBlock
+import grauly.dustydecor.block.furniture.GlassTableBlock
+import grauly.dustydecor.block.furniture.SingleFurnitureBlock
 import grauly.dustydecor.block.furniture.StoolBlock
 import grauly.dustydecor.block.lamp.AlarmCageLampBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
@@ -21,6 +23,7 @@ import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
+import net.minecraft.world.item.DyeColor
 import net.minecraft.world.level.block.SoundType
 
 object ModBlocks {
@@ -100,6 +103,20 @@ object ModBlocks {
             Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it).sound(SoundType.LANTERN)
         ) as ChairBlock)
     }
+
+    val GLASS_TABLES: List<GlassTableBlock> = DyeUtils.COLOR_ORDER.map {
+        val id = "${it.getName()}_glass_table"
+        (registerBlock(
+            ::GlassTableBlock,
+            id,
+            Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it).sound(SoundType.GLASS)
+        ) as GlassTableBlock)
+    }
+
+    val GLASS_TABLE: GlassTableBlock = registerBlock(::GlassTableBlock,
+        "glass_table",
+        Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.WHITE).sound(SoundType.GLASS)
+    ) as GlassTableBlock
 
     private fun registerBlock(
         blockFactory: (Properties) -> Block,
