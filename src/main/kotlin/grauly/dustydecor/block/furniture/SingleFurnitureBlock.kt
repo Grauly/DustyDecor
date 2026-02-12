@@ -31,7 +31,7 @@ abstract class SingleFurnitureBlock(settings: Properties) : Block(settings) {
         val fluidState = ctx.level.getFluidState(ctx.clickedPos)
         return defaultBlockState()
             .setValue(WATERLOGGED, fluidState.`is`(Fluids.WATER))
-            .setValue(ROTATION, RotationSegment.convertToSegment(ctx.rotation + 180f))
+            .setValue(ROTATION, RotationSegment.convertToSegment(ctx.rotation))
     }
 
     override fun updateShape(
