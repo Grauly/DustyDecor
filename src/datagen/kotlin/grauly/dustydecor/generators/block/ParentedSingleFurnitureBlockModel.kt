@@ -1,11 +1,13 @@
 package grauly.dustydecor.generators.block
 
 import com.mojang.math.Quadrant
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.block.furniture.SingleFurnitureBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator
 import net.minecraft.client.data.models.blockstates.PropertyDispatch
+import net.minecraft.client.data.models.model.ModelLocationUtils
 import net.minecraft.client.data.models.model.ModelTemplate
 import net.minecraft.client.data.models.model.TextureMapping
 import net.minecraft.client.data.models.model.TextureSlot
@@ -34,7 +36,7 @@ class ParentedSingleFurnitureBlockModel(
 
     fun createBlock(block: SingleFurnitureBlock, replaceTexture: Identifier, generator: BlockModelGenerators) {
         val variantList = listOf(0,1,2,3).map { variant ->
-            val variantBaseModel = Identifier.fromNamespaceAndPath(baseModel.namespace, "${baseModel.path}_$variant");
+            val variantBaseModel = Identifier.fromNamespaceAndPath(baseModel.namespace, "${baseModel.path}_$variant")
             val mapping = TextureMapping.singleSlot(
                 GLASS_TABLE_TEXTURE_SLOT,
                 Material(replaceTexture),
@@ -61,7 +63,8 @@ class ParentedSingleFurnitureBlockModel(
     }
 
     fun createItem(block: SingleFurnitureBlock, replaceTexture: Identifier, generator: BlockModelGenerators) {
-        //[Space intentionally left blank]
+        val defaultPath = ModelLocationUtils.getModelLocation(block)
+        generator.registerSimpleItemModel(block, Identifier.fromNamespaceAndPath(defaultPath.namespace, "${defaultPath.path}_0"))
     }
 
     val GLASS_TABLE_TEXTURE_SLOT = TextureSlot.create("1")
