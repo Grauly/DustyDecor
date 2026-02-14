@@ -120,7 +120,7 @@ object ModBlocks {
 
     val SMALL_GLASS_TABLE_FRAME: GlassTableFrameBlock = registerBlock(::GlassTableFrameBlock,
         "small_glass_table_frame",
-        Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.WHITE).sound(SoundType.GLASS)
+        Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.GRAY).sound(SoundType.LANTERN)
         ) as GlassTableFrameBlock
 
     private fun registerBlock(

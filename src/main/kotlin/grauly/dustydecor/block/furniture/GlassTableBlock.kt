@@ -1,10 +1,16 @@
 package grauly.dustydecor.block.furniture
 
+import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.util.DyeUtils
 import net.minecraft.core.BlockPos
+import net.minecraft.sounds.SoundSource
+import net.minecraft.world.entity.projectile.Projectile
 import net.minecraft.world.level.BlockGetter
+import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
@@ -35,6 +41,33 @@ class GlassTableBlock(settings: Properties) : RestrictedRotationFurnitureBlock(s
         context: CollisionContext
     ): VoxelShape {
         return OUTLINE_SHAPE
+    }
+
+    override fun onProjectileHit(
+        level: Level,
+        state: BlockState,
+        blockHit: BlockHitResult,
+        projectile: Projectile
+    ) {
+        val replaceState = ModBlocks.SMALL_GLASS_TABLE_FRAME.defaultBlockState()
+            .setValue(ROTATION, state.getValue(ROTATION))
+            .setValue(WATERLOGGED, state.getValue(WATERLOGGED))
+        level.setBlock(blockHit.blockPos, replaceState, UPDATE_ALL)
+        level.playSound(
+            null,
+            blockHit.blockPos,
+            getSoundType(state).breakSound,
+            SoundSource.BLOCKS
+        )
+        blockHit.blockPos.bottomCenter.add(0.0, 15.5 / 16.0, 0.0)
+        for (i in 0..5) {
+            level.addDestroyBlockEffect(blockHit.blockPos, getGlassState(state.block))
+        }
+    }
+
+    fun getGlassState(block: Block): BlockState {
+        if (block == ModBlocks.SMALL_GLASS_TABLE) return Blocks.GLASS_PANE.defaultBlockState()
+        return DyeUtils.GLASS_PANE_ORDER[ModBlocks.SMALL_GLASS_TABLES.indexOf(block)].defaultBlockState()
     }
 
     companion object {
