@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "stools",
   "key": {
     "d": "#c:dyes/red",
     "i": "#c:ingots/iron",

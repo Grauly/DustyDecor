@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "group": "tall_cage_lamps",
   "key": {
     "d": "#c:dyes/gray",
     "g": "#c:dusts/glowstone",

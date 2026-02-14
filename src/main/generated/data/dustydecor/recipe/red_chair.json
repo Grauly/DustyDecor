@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "chairs",
   "key": {
     "d": "#c:dyes/red",
     "i": "#c:ingots/iron",

@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "group": "alarm_cage_lamps",
   "key": {
     "d": "#c:dyes/purple",
     "i": "#c:ingots/iron",

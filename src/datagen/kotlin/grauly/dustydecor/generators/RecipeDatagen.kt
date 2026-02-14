@@ -84,6 +84,7 @@ class RecipeDatagen(
                 ModItems.TALL_CAGE_LAMPS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.TALL_CAGE_LAMPS.indexOf(it)]
                     shaped(RecipeCategory.REDSTONE, it, 3)
+                        .group("tall_cage_lamps")
                         .define('n', ConventionalItemTags.IRON_NUGGETS)
                         .define('g', ConventionalItemTags.GLOWSTONE_DUSTS)
                         .define('r', ConventionalItemTags.REDSTONE_DUSTS)
@@ -98,6 +99,7 @@ class RecipeDatagen(
                 ModItems.ALARM_CAGE_LAMPS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.ALARM_CAGE_LAMPS.indexOf(it)]
                     shaped(RecipeCategory.REDSTONE, it, 3)
+                        .group("alarm_cage_lamps")
                         .define('n', ConventionalItemTags.IRON_NUGGETS)
                         .define('l', Items.REDSTONE_LAMP)
                         .define('d', dye)
@@ -111,6 +113,7 @@ class RecipeDatagen(
                 ModItems.WIDE_CAGE_LAMPS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.WIDE_CAGE_LAMPS.indexOf(it)]
                     shaped(RecipeCategory.REDSTONE, it, 3)
+                        .group("wide_cage_lamps")
                         .define('n', ConventionalItemTags.IRON_NUGGETS)
                         .define('g', ConventionalItemTags.GLOWSTONE_DUSTS)
                         .define('d', dye)
@@ -124,6 +127,7 @@ class RecipeDatagen(
                 ModItems.STOOLS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.STOOLS.indexOf(it)]
                     shaped(RecipeCategory.DECORATIONS, it, 1)
+                        .group("stools")
                         .define('n', ConventionalItemTags.IRON_NUGGETS)
                         .define('l', ConventionalItemTags.LEATHERS)
                         .define('d', dye)
@@ -136,6 +140,7 @@ class RecipeDatagen(
                 ModItems.CHAIRS.forEach {
                     val dye = DyeUtils.DYE_TAG_ORDER[ModItems.CHAIRS.indexOf(it)]
                     shaped(RecipeCategory.DECORATIONS, it, 1)
+                        .group("chairs")
                         .define('n', ConventionalItemTags.IRON_NUGGETS)
                         .define('l', ConventionalItemTags.LEATHERS)
                         .define('d', dye)
