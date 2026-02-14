@@ -1,15 +1,19 @@
 package grauly.dustydecor.generators
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.util.DyeUtils
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
+import net.minecraft.core.HolderLookup
+import net.minecraft.core.registries.Registries
+import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.data.recipes.RecipeProvider
+import net.minecraft.resources.Identifier
+import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Items
-import net.minecraft.data.recipes.RecipeCategory
-import net.minecraft.core.HolderLookup
 import java.util.concurrent.CompletableFuture
 
 class RecipeDatagen(
@@ -144,7 +148,9 @@ class RecipeDatagen(
                 }
                 ModItems.GLASS_TABLES.forEach {
                     val pane = DyeUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.GLASS_TABLES.indexOf(it)]
-                    shaped(RecipeCategory.DECORATIONS, it, 1)
+                    val recipe = shaped(RecipeCategory.DECORATIONS, it, 1)
+                    recipe
+                        .group("small_glass_tables_from_scratch")
                         .define('n', ConventionalItemTags.IRON_NUGGETS)
                         .define('p', pane)
                         .define('i', ConventionalItemTags.IRON_INGOTS)
@@ -152,9 +158,20 @@ class RecipeDatagen(
                         .pattern("n n")
                         .pattern("ini")
                         .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
-                        .save(exporter)
+                        .save(
+                            exporter,
+                            ResourceKey.create(
+                                Registries.RECIPE,
+                                Identifier.fromNamespaceAndPath(
+                                    DustyDecorMod.MODID,
+                                    "${recipe.defaultId().identifier().path}_from_scratch"
+                                )
+                            )
+                        )
                 }
-                shaped(RecipeCategory.DECORATIONS, ModItems.GLASS_TABLE, 1)
+                val smallGlassTableFromScratchRecipe = shaped(RecipeCategory.DECORATIONS, ModItems.GLASS_TABLE, 1)
+                smallGlassTableFromScratchRecipe
+                    .group("small_glass_tables_from_scratch")
                     .define('n', ConventionalItemTags.IRON_NUGGETS)
                     .define('p', Items.GLASS_PANE)
                     .define('i', ConventionalItemTags.IRON_INGOTS)
@@ -162,7 +179,51 @@ class RecipeDatagen(
                     .pattern("n n")
                     .pattern("ini")
                     .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
-                    .save(exporter)
+                    .save(
+                        exporter,
+                        ResourceKey.create(
+                            Registries.RECIPE,
+                            Identifier.fromNamespaceAndPath(
+                                DustyDecorMod.MODID,
+                                "${smallGlassTableFromScratchRecipe.defaultId().identifier().path}_from_scratch"
+                            )
+                        )
+                    )
+                ModItems.GLASS_TABLES.forEach {
+                    val pane = DyeUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.GLASS_TABLES.indexOf(it)]
+                    val recipe = shapeless(RecipeCategory.DECORATIONS, it, 1)
+                    recipe
+                        .group("small_glass_tables_from_frame")
+                        .requires(pane)
+                        .requires(ModItems.GLASS_TABLE_FRAME)
+                        .unlockedBy("has_frame", has(ModItems.GLASS_TABLE_FRAME))
+                        .save(
+                            exporter,
+                            ResourceKey.create(
+                                Registries.RECIPE,
+                                Identifier.fromNamespaceAndPath(
+                                    DustyDecorMod.MODID,
+                                    "${recipe.defaultId().identifier().path}_from_frame"
+                                )
+                            )
+                        )
+                }
+                val smallGlassTableFromFrameRecipe = shapeless(RecipeCategory.DECORATIONS, ModItems.GLASS_TABLE_FRAME, 1)
+                smallGlassTableFromFrameRecipe
+                    .group("small_glass_tables_from_frame")
+                    .requires(Items.GLASS_PANE)
+                    .requires(ModItems.GLASS_TABLE_FRAME)
+                    .unlockedBy("has_frame", has(ModItems.GLASS_TABLE_FRAME))
+                    .save(
+                        exporter,
+                        ResourceKey.create(
+                            Registries.RECIPE,
+                            Identifier.fromNamespaceAndPath(
+                                DustyDecorMod.MODID,
+                                "${smallGlassTableFromFrameRecipe.defaultId().identifier().path}_from_frame"
+                            )
+                        )
+                    )
             }
         }
     }

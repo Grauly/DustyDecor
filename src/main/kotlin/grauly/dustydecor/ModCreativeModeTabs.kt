@@ -31,6 +31,7 @@ object ModCreativeModeTabs {
                     *ModItems.CHAIRS.toTypedArray(),
                     ModItems.GLASS_TABLE,
                     *ModItems.GLASS_TABLES.toTypedArray(),
+                    ModItems.GLASS_TABLE_FRAME,
                 )
             }
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS)

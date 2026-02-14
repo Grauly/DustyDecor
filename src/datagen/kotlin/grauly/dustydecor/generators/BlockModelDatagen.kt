@@ -48,6 +48,7 @@ class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(gener
             listOf(ModelLocationUtils.getModelLocation(Blocks.GLASS)),
             Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "block/glass_table/glass_table")
         ).get(blockStateModelGenerator)
+        SingleFurnitureBlockModel(listOf(ModBlocks.GLASS_TABLE_FRAME), "glass_table/glass_table_frame").get(blockStateModelGenerator)
     }
 
 

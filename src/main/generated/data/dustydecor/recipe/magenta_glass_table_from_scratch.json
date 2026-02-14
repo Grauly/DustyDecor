@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "small_glass_tables_from_scratch",
+  "key": {
+    "i": "#c:ingots/iron",
+    "n": "#c:nuggets/iron",
+    "p": "minecraft:magenta_stained_glass_pane"
+  },
+  "pattern": [
+    "npn",
+    "n n",
+    "ini"
+  ],
+  "result": {
+    "id": "dustydecor:magenta_glass_table"
+  }
+}

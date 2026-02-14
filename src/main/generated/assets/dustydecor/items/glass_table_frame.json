@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dustydecor:block/glass_table/glass_table_frame_0",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -393218
+      }
+    ]
+  }
+}

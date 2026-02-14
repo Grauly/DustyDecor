@@ -110,6 +110,7 @@ object ModItems {
         val id = "${DyeUtils.COLOR_ORDER[ModBlocks.GLASS_TABLES.indexOf(it)]}_glass_table"
         registerBlockItem(it, id)
     }
+    val GLASS_TABLE_FRAME: Item = registerBlockItem(ModBlocks.GLASS_TABLE_FRAME, "glass_table_frame")
 
     private fun registerItem(
         itemFactory: (Properties) -> Item,

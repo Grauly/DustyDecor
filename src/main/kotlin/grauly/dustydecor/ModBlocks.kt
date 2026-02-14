@@ -2,6 +2,7 @@ package grauly.dustydecor
 
 import grauly.dustydecor.block.furniture.ChairBlock
 import grauly.dustydecor.block.furniture.GlassTableBlock
+import grauly.dustydecor.block.furniture.GlassTableFrameBlock
 import grauly.dustydecor.block.furniture.SingleFurnitureBlock
 import grauly.dustydecor.block.furniture.StoolBlock
 import grauly.dustydecor.block.lamp.AlarmCageLampBlock
@@ -117,6 +118,11 @@ object ModBlocks {
         "glass_table",
         Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.WHITE).sound(SoundType.GLASS)
     ) as GlassTableBlock
+
+    val GLASS_TABLE_FRAME: GlassTableFrameBlock = registerBlock(::GlassTableFrameBlock,
+        "glass_table_frame",
+        Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.WHITE).sound(SoundType.GLASS)
+        ) as GlassTableFrameBlock
 
     private fun registerBlock(
         blockFactory: (Properties) -> Block,
