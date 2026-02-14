@@ -8,6 +8,7 @@ import net.minecraft.world.level.material.Fluids
 
 open class RestrictedRotationFurnitureBlock(settings: Properties) : SingleFurnitureBlock(settings) {
     override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState {
+        if (ctx.player?.isCrouching == true) return super.getStateForPlacement(ctx)
         val fluidState = ctx.level.getFluidState(ctx.clickedPos)
         val rotationOrdinal = when (ctx.horizontalDirection.opposite) {
             Direction.NORTH -> 0
