@@ -3,7 +3,6 @@ package grauly.dustydecor
 import grauly.dustydecor.block.furniture.ChairBlock
 import grauly.dustydecor.block.furniture.GlassTableBlock
 import grauly.dustydecor.block.furniture.GlassTableFrameBlock
-import grauly.dustydecor.block.furniture.SingleFurnitureBlock
 import grauly.dustydecor.block.furniture.StoolBlock
 import grauly.dustydecor.block.lamp.AlarmCageLampBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
@@ -105,8 +104,8 @@ object ModBlocks {
         ) as ChairBlock)
     }
 
-    val GLASS_TABLES: List<GlassTableBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "${it.getName()}_glass_table"
+    val SMALL_GLASS_TABLES: List<GlassTableBlock> = DyeUtils.COLOR_ORDER.map {
+        val id = "small_${it.getName()}_glass_table"
         (registerBlock(
             ::GlassTableBlock,
             id,
@@ -114,13 +113,13 @@ object ModBlocks {
         ) as GlassTableBlock)
     }
 
-    val GLASS_TABLE: GlassTableBlock = registerBlock(::GlassTableBlock,
-        "glass_table",
+    val SMALL_GLASS_TABLE: GlassTableBlock = registerBlock(::GlassTableBlock,
+        "small_glass_table",
         Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.WHITE).sound(SoundType.GLASS)
     ) as GlassTableBlock
 
-    val GLASS_TABLE_FRAME: GlassTableFrameBlock = registerBlock(::GlassTableFrameBlock,
-        "glass_table_frame",
+    val SMALL_GLASS_TABLE_FRAME: GlassTableFrameBlock = registerBlock(::GlassTableFrameBlock,
+        "small_glass_table_frame",
         Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.WHITE).sound(SoundType.GLASS)
         ) as GlassTableFrameBlock
 

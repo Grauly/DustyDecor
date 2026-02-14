@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "small_glass_tables_from_frame",
+  "ingredients": [
+    "minecraft:lime_stained_glass_pane",
+    "dustydecor:small_glass_table_frame"
+  ],
+  "result": {
+    "id": "dustydecor:small_lime_glass_table"
+  }
+}

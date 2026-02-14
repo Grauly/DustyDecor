@@ -1,6 +1,5 @@
 package grauly.dustydecor
 
-import grauly.dustydecor.block.furniture.GlassTableBlock
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ScrewdriverDataComponent
 import grauly.dustydecor.component.WrenchDataComponent
@@ -105,12 +104,12 @@ object ModItems {
         registerBlockItem(it, id)
     }
 
-    val GLASS_TABLE: Item = registerBlockItem(ModBlocks.GLASS_TABLE, "glass_table")
-    val GLASS_TABLES: List<Item> = ModBlocks.GLASS_TABLES.map {
-        val id = "${DyeUtils.COLOR_ORDER[ModBlocks.GLASS_TABLES.indexOf(it)]}_glass_table"
+    val SMALL_GLASS_TABLE: Item = registerBlockItem(ModBlocks.SMALL_GLASS_TABLE, "small_glass_table")
+    val SMALL_GLASS_TABLES: List<Item> = ModBlocks.SMALL_GLASS_TABLES.map {
+        val id = "small_${DyeUtils.COLOR_ORDER[ModBlocks.SMALL_GLASS_TABLES.indexOf(it)]}_glass_table"
         registerBlockItem(it, id)
     }
-    val GLASS_TABLE_FRAME: Item = registerBlockItem(ModBlocks.GLASS_TABLE_FRAME, "glass_table_frame")
+    val SMALL_GLASS_TABLE_FRAME: Item = registerBlockItem(ModBlocks.SMALL_GLASS_TABLE_FRAME, "small_glass_table_frame")
 
     private fun registerItem(
         itemFactory: (Properties) -> Item,

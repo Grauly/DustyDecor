@@ -146,8 +146,8 @@ class RecipeDatagen(
                         .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
                         .save(exporter)
                 }
-                ModItems.GLASS_TABLES.forEach {
-                    val pane = DyeUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.GLASS_TABLES.indexOf(it)]
+                ModItems.SMALL_GLASS_TABLES.forEach {
+                    val pane = DyeUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.SMALL_GLASS_TABLES.indexOf(it)]
                     val recipe = shaped(RecipeCategory.DECORATIONS, it, 1)
                     recipe
                         .group("small_glass_tables_from_scratch")
@@ -169,7 +169,7 @@ class RecipeDatagen(
                             )
                         )
                 }
-                val smallGlassTableFromScratchRecipe = shaped(RecipeCategory.DECORATIONS, ModItems.GLASS_TABLE, 1)
+                val smallGlassTableFromScratchRecipe = shaped(RecipeCategory.DECORATIONS, ModItems.SMALL_GLASS_TABLE, 1)
                 smallGlassTableFromScratchRecipe
                     .group("small_glass_tables_from_scratch")
                     .define('n', ConventionalItemTags.IRON_NUGGETS)
@@ -189,14 +189,14 @@ class RecipeDatagen(
                             )
                         )
                     )
-                ModItems.GLASS_TABLES.forEach {
-                    val pane = DyeUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.GLASS_TABLES.indexOf(it)]
+                ModItems.SMALL_GLASS_TABLES.forEach {
+                    val pane = DyeUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.SMALL_GLASS_TABLES.indexOf(it)]
                     val recipe = shapeless(RecipeCategory.DECORATIONS, it, 1)
                     recipe
                         .group("small_glass_tables_from_frame")
                         .requires(pane)
-                        .requires(ModItems.GLASS_TABLE_FRAME)
-                        .unlockedBy("has_frame", has(ModItems.GLASS_TABLE_FRAME))
+                        .requires(ModItems.SMALL_GLASS_TABLE_FRAME)
+                        .unlockedBy("has_frame", has(ModItems.SMALL_GLASS_TABLE_FRAME))
                         .save(
                             exporter,
                             ResourceKey.create(
@@ -208,12 +208,12 @@ class RecipeDatagen(
                             )
                         )
                 }
-                val smallGlassTableFromFrameRecipe = shapeless(RecipeCategory.DECORATIONS, ModItems.GLASS_TABLE_FRAME, 1)
+                val smallGlassTableFromFrameRecipe = shapeless(RecipeCategory.DECORATIONS, ModItems.SMALL_GLASS_TABLE_FRAME, 1)
                 smallGlassTableFromFrameRecipe
                     .group("small_glass_tables_from_frame")
                     .requires(Items.GLASS_PANE)
-                    .requires(ModItems.GLASS_TABLE_FRAME)
-                    .unlockedBy("has_frame", has(ModItems.GLASS_TABLE_FRAME))
+                    .requires(ModItems.SMALL_GLASS_TABLE_FRAME)
+                    .unlockedBy("has_frame", has(ModItems.SMALL_GLASS_TABLE_FRAME))
                     .save(
                         exporter,
                         ResourceKey.create(
