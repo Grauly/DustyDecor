@@ -56,7 +56,7 @@ class LangDatagen(
 
         builder.add(
             ToolComponents.VAC_TUBE_EDIT.lines[0],
-            "Can edit %s connections"
+            "Can edit %s connections:"
         )
         builder.add(
             ToolComponents.VAC_TUBE_EDIT.lines[1],

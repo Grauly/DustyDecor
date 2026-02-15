@@ -13,23 +13,26 @@ import net.minecraft.world.item.component.TooltipProvider
 object ToolComponents {
 
     val VENT_LOCK_TOGGLE = makeToolComponent(
-        "component.screwdriver.${DustyDecorMod.MODID}.tooltip.vent_cover",
+        tooltip("vent_cover_toggle"),
         ModBlocks.VENT_COVER.name
     )
     val VAC_TUBE_WINDOW_TOGGLE = makeToolComponent(
-        "component.screwdriver.${DustyDecorMod.MODID}.tooltip.vac_tube",
+        tooltip("vac_tube_window_toggle"),
         ModBlocks.VAC_PIPE.name
     )
     val VAC_TUBE_EDIT = makeMultilineComponent(
         mapOf(
-            "component.wrench.${DustyDecorMod.MODID}.tooltip.vac_pipe.edit" to listOf(ModBlocks.VAC_PIPE.name),
-            "component.wrench.${DustyDecorMod.MODID}.vac_pipe.connection" to listOf(),
-            "component.wrench.${DustyDecorMod.MODID}.vap_pipe.fix" to listOf(),
+            tooltip("vac_tube_edit.can_edit") to listOf(ModBlocks.VAC_PIPE.name),
+            tooltip("vac_tube_edit.can_redirect_connections") to listOf(),
+            tooltip("vac_tube_edit.can_fix_connections") to listOf(),
         )
     )
-    val VAC_STATION_INVERT = makeToolComponent("component.wrench.${DustyDecorMod.MODID}.vac_station.toggle", ModBlocks.VAC_PIPE_STATION.name)
-    val LAMPS_INVERT = makeToolComponent("component.screwdriver.${DustyDecorMod.MODID}.tooltip.")
-    val LAMPS_REPAIR = makeToolComponent("component.wrench.${DustyDecorMod.MODID}.lamps")
+    val VAC_STATION_INVERT = makeToolComponent(
+        tooltip("vac_station_invert"),
+        ModBlocks.VAC_PIPE_STATION.name
+    )
+    val LAMPS_INVERT = makeToolComponent(tooltip("lamps_invert"))
+    val LAMPS_REPAIR = makeToolComponent(tooltip("lamps_repair"))
 
     fun makeToolComponent(translationKey: String, vararg insertions: Component): ToolComponent {
         val component = Component.translatable(translationKey, *insertions)
@@ -48,6 +51,9 @@ object ToolComponents {
         val codec = MapCodec.unitCodec(provider)
         return MultiLineToolComponent(lines.keys.toList(), provider, codec)
     }
+
+    fun tooltip(snippet: String): String =
+        "component.${DustyDecorMod.MODID}.$snippet.tooltip"
 
     data class ToolComponent(
         val translationKey: String,
