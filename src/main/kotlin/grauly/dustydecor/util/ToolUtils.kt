@@ -12,12 +12,6 @@ import net.minecraft.core.BlockPos
 import net.minecraft.world.level.Level
 
 object ToolUtils {
-    fun isScrewdriver(stack: ItemStack): Boolean {
-        if (stack.`is`(ModConventionalItemTags.SCREWDRIVER_TOOLS)) return true
-        if (stack.components.has(ModDataComponentTypes.SCREWDRIVER)) return true
-        return false
-    }
-
     fun playScrewdriverSound(world: Level, pos: BlockPos, player: Player? = null) {
         playToolSound(world, pos, ModSoundEvents.ITEM_SCREWDRIVER_USE, player)
     }

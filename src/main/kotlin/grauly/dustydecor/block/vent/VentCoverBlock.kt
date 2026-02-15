@@ -1,5 +1,6 @@
 package grauly.dustydecor.block.vent
 
+import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.world.level.block.Block
@@ -105,7 +106,7 @@ class VentCoverBlock(settings: Properties) : TrapDoorBlock(BlockSetType.COPPER, 
             BlockStateProperties.LOCKED)
     }
 
-    private fun isModifyTool(stack: ItemStack): Boolean = ToolUtils.isScrewdriver(stack)
+    private fun isModifyTool(stack: ItemStack): Boolean = stack.has(ModDataComponentTypes.VENT_COVER_LOCK)
 
     private fun playLockSound(world: Level, player: Player?, pos: BlockPos) {
         world.playSound(

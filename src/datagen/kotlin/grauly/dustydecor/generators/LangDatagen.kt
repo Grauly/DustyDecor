@@ -8,7 +8,7 @@ import grauly.dustydecor.ModItemTags
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.block.furniture.SittableFurnitureBlock
 import grauly.dustydecor.component.BulkGoopSizeComponent
-import grauly.dustydecor.component.ScrewdriverDataComponent
+import grauly.dustydecor.component.ToolComponents
 import grauly.dustydecor.component.WrenchDataComponent
 import grauly.dustydecor.entity.SeatEntity
 import grauly.dustydecor.entity.SitResultType
@@ -66,9 +66,9 @@ class LangDatagen(
         )
         builder.add(WrenchDataComponent.VAC_PIPE_STATION_TRANSLATION_KEY, "Can toggle whether %s's send or receive")
         builder.add(WrenchDataComponent.LAMPS_TRANSLATION_KEY, "Can break and repair some lamps")
-        builder.add(ScrewdriverDataComponent.VAC_TUBE_TRANSLATION_KEY, "Can toggle windows on %s's")
-        builder.add(ScrewdriverDataComponent.VENT_COVER_TRANSLATION_KEY, "Can lock/unlock %s's")
-        builder.add(ScrewdriverDataComponent.LAMPS_TRANSLATION_KEY, "Can invert some lamps")
+        builder.add(ToolComponents.VAC_TUBE_WINDOW_TOGGLE.translationKey, "Can toggle windows on %s's")
+        builder.add(ToolComponents.VENT_LOCK_TOGGLE.translationKey, "Can lock/unlock %s's")
+        builder.add(ToolComponents.LAMPS_INVERT.translationKey, "Can invert some lamps")
 
         builder.add(tagTranslationKey(ModConventionalItemTags.SCREWDRIVER_TOOLS), "Screwdrivers")
         builder.add(tagTranslationKey(ModItemTags.VOID_GOOP), "Void Goop")

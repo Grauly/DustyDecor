@@ -1,5 +1,6 @@
 package grauly.dustydecor.block.lamp
 
+import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.extensions.spawnParticle
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
@@ -72,7 +73,7 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
         hand: InteractionHand,
         hit: BlockHitResult
     ): InteractionResult {
-        if (ToolUtils.isScrewdriver(stack)) {
+        if (stack.has(ModDataComponentTypes.LAMP_INVERSION)) {
             ToolUtils.playScrewdriverSound(world, pos, player)
             toggleInverted(state, pos, world, player)
             return InteractionResult.SUCCESS

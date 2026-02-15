@@ -2,6 +2,7 @@ package grauly.dustydecor.block.vacpipe
 
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.block.vacpipe.ConnectionState
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
@@ -127,7 +128,7 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
         hit: BlockHitResult
     ): InteractionResult {
         var workingState = state
-        if (ToolUtils.isScrewdriver(stack)) {
+        if (stack.has(ModDataComponentTypes.VAC_TUBE_WINDOW_TOGGLE)) {
             val newWindowState: Boolean = togglePipeWindow(state, pos, world)
             workingState = updateWindows(world.getBlockState(pos), world, pos)
             ToolUtils.playScrewdriverSound(world, pos, player)
