@@ -2,7 +2,6 @@ package grauly.dustydecor
 
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ToolComponents
-import grauly.dustydecor.component.WrenchDataComponent
 import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.item.VacCapsuleItem
@@ -65,7 +64,7 @@ object ModItems {
             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
             .component(ModDataComponentTypes.VENT_COVER_LOCK, ToolComponents.VENT_LOCK_TOGGLE.component)
             .component(ModDataComponentTypes.VAC_TUBE_WINDOW_TOGGLE, ToolComponents.VAC_TUBE_WINDOW_TOGGLE.component)
-            .component(ModDataComponentTypes.LAMP_INVERSION, ToolComponents.LAMPS_INVERT.component)
+            .component(ModDataComponentTypes.LAMPS_INVERT, ToolComponents.LAMPS_INVERT.component)
     )
     val WRENCH: Item = registerItem(
         ::Item,
@@ -73,7 +72,9 @@ object ModItems {
         Properties()
             .sword(ModToolMaterials.WRENCH_TOOL_MATERIAL, 1.0f, -3.2f)
             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-            .component(ModDataComponentTypes.WRENCH, WrenchDataComponent)
+            .component(ModDataComponentTypes.VAC_TUBE_EDIT, ToolComponents.VAC_TUBE_EDIT.component)
+            .component(ModDataComponentTypes.VAC_STATION_INVERT, ToolComponents.VAC_STATION_INVERT.component)
+            .component(ModDataComponentTypes.LAMPS_REPAIR, ToolComponents.LAMPS_REPAIR.component)
     )
 
     val TALL_CAGE_LAMPS: List<Item> = ModBlocks.TALL_CAGE_LAMPS.map {

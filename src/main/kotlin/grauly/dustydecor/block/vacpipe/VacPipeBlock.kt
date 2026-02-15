@@ -138,7 +138,7 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
                 if (newWindowState) ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW else ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
                 SoundSource.BLOCKS
             )
-        } else if (ToolUtils.isWrench(stack)) {
+        } else if (stack.has(ModDataComponentTypes.VAC_TUBE_EDIT)) {
             ToolUtils.playWrenchSound(world, pos, player)
             val boxExpansion = 0.01
             val relativePos = hit.location.subtract(Vec3.atLowerCornerOf(pos))

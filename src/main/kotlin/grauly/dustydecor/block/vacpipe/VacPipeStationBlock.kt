@@ -2,6 +2,7 @@ package grauly.dustydecor.block.vacpipe
 
 import com.mojang.serialization.MapCodec
 import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
 import grauly.dustydecor.particle.AirInflowParticleEffect
 import grauly.dustydecor.particle.AirOutflowParticleEffect
@@ -95,7 +96,7 @@ class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(set
         hand: InteractionHand,
         hit: BlockHitResult
     ): InteractionResult {
-        if (ToolUtils.isWrench(stack)) {
+        if (stack.has(ModDataComponentTypes.VAC_STATION_INVERT)) {
             invertSending(state, pos, world)
             ToolUtils.playWrenchSound(world, pos, player)
             return InteractionResult.SUCCESS

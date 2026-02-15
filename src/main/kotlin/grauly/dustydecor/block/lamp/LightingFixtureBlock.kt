@@ -26,6 +26,7 @@ import net.minecraft.world.InteractionHand
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.core.component.DataComponents
 import net.minecraft.util.RandomSource
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
@@ -73,12 +74,12 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
         hand: InteractionHand,
         hit: BlockHitResult
     ): InteractionResult {
-        if (stack.has(ModDataComponentTypes.LAMP_INVERSION)) {
+        if (stack.has(ModDataComponentTypes.LAMPS_INVERT)) {
             ToolUtils.playScrewdriverSound(world, pos, player)
             toggleInverted(state, pos, world, player)
             return InteractionResult.SUCCESS
         }
-        if (ToolUtils.isWrench(stack)) {
+        if (stack.has(ModDataComponentTypes.LAMPS_REPAIR)) {
             val hasRepaired = repair(state, pos, world, player)
             if (hasRepaired) {
                 ToolUtils.playWrenchSound(world, pos, player)
@@ -100,7 +101,7 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
 
     override fun attack(state: BlockState, world: Level, pos: BlockPos, player: Player) {
         val stack = player.getItemInHand(InteractionHand.MAIN_HAND)
-        if (ToolUtils.isWrench(stack)) {
+        if (stack.has(DataComponents.WEAPON)) {
             breakFixture(state, pos, world)
         }
         super.attack(state, world, pos, player)

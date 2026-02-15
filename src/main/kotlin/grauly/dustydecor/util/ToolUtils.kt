@@ -16,12 +16,6 @@ object ToolUtils {
         playToolSound(world, pos, ModSoundEvents.ITEM_SCREWDRIVER_USE, player)
     }
 
-    fun isWrench(stack: ItemStack): Boolean {
-        if (stack.`is`(ConventionalItemTags.WRENCH_TOOLS)) return true
-        if (stack.components.has(ModDataComponentTypes.WRENCH)) return true
-        return false
-    }
-
     fun playWrenchSound(world: Level, pos: BlockPos, player: Player? = null) {
         playToolSound(world, pos, ModSoundEvents.ITEM_WRENCH_USE, player)
     }

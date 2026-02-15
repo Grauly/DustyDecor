@@ -9,7 +9,6 @@ import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.block.furniture.SittableFurnitureBlock
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ToolComponents
-import grauly.dustydecor.component.WrenchDataComponent
 import grauly.dustydecor.entity.SeatEntity
 import grauly.dustydecor.entity.SitResultType
 import grauly.dustydecor.item.BulkVoidGoopItem
@@ -55,17 +54,20 @@ class LangDatagen(
         sub(ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_ON, "Lighting fixture turns on")
         sub(ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_OFF, "Lighting fixture turns off")
 
-        builder.add(WrenchDataComponent.VAC_PIPE_TRANSLATION_KEY, "Can edit %s connections")
         builder.add(
-            WrenchDataComponent.VAC_PIPE_CONNECTION_TRANSLATION_KEY,
+            ToolComponents.VAC_TUBE_EDIT.lines[0],
+            "Can edit %s connections"
+        )
+        builder.add(
+            ToolComponents.VAC_TUBE_EDIT.lines[1],
             "Use on a exiting connection to attempt a different connection for it"
         )
         builder.add(
-            WrenchDataComponent.VAP_PIPE_CONNECTION_FIX_TRANSLATION_KEY,
+            ToolComponents.VAC_TUBE_EDIT.lines[2],
             "Use on the core of the pipe to attempt to fix a broken connection"
         )
-        builder.add(WrenchDataComponent.VAC_PIPE_STATION_TRANSLATION_KEY, "Can toggle whether %s's send or receive")
-        builder.add(WrenchDataComponent.LAMPS_TRANSLATION_KEY, "Can break and repair some lamps")
+        builder.add(ToolComponents.VAC_STATION_INVERT.translationKey, "Can toggle whether %s's send or receive")
+        builder.add(ToolComponents.LAMPS_REPAIR.translationKey, "Can break and repair some lamps")
         builder.add(ToolComponents.VAC_TUBE_WINDOW_TOGGLE.translationKey, "Can toggle windows on %s's")
         builder.add(ToolComponents.VENT_LOCK_TOGGLE.translationKey, "Can lock/unlock %s's")
         builder.add(ToolComponents.LAMPS_INVERT.translationKey, "Can invert some lamps")
