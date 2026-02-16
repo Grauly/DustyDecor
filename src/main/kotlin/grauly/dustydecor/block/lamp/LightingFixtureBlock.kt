@@ -101,7 +101,7 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
 
     override fun attack(state: BlockState, world: Level, pos: BlockPos, player: Player) {
         val stack = player.getItemInHand(InteractionHand.MAIN_HAND)
-        if (stack.has(DataComponents.WEAPON)) {
+        if (stack.has(DataComponents.WEAPON) || stack.has(DataComponents.KINETIC_WEAPON)) {
             breakFixture(state, pos, world)
         }
         super.attack(state, world, pos, player)
