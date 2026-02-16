@@ -6,6 +6,7 @@ import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.item.VacCapsuleItem
 import grauly.dustydecor.util.DyeUtils
+import grauly.dustydecor.util.GlassUtils
 import net.minecraft.world.level.block.Block
 import net.minecraft.core.component.DataComponents
 import net.minecraft.world.entity.EquipmentSlotGroup
@@ -107,9 +108,8 @@ object ModItems {
         registerBlockItem(it, id)
     }
 
-    val SMALL_GLASS_TABLE: Item = registerBlockItem(ModBlocks.SMALL_GLASS_TABLE, "small_glass_table")
     val SMALL_GLASS_TABLES: List<Item> = ModBlocks.SMALL_GLASS_TABLES.map {
-        val id = "small_${DyeUtils.COLOR_ORDER[ModBlocks.SMALL_GLASS_TABLES.indexOf(it)]}_glass_table"
+        val id = "small_${GlassUtils.GLASS_ID_ORDER[ModBlocks.SMALL_GLASS_TABLES.indexOf(it)]}_glass_table"
         registerBlockItem(it, id)
     }
     val SMALL_GLASS_TABLE_FRAME: Item = registerBlockItem(ModBlocks.SMALL_GLASS_TABLE_FRAME, "small_glass_table_frame")

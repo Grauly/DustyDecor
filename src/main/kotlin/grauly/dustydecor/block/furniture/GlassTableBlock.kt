@@ -2,6 +2,7 @@ package grauly.dustydecor.block.furniture
 
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.util.DyeUtils
+import grauly.dustydecor.util.GlassUtils
 import net.minecraft.core.BlockPos
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.entity.projectile.Projectile
@@ -10,6 +11,7 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.gameevent.GameEvent
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
@@ -66,8 +68,7 @@ class GlassTableBlock(settings: Properties) : RestrictedRotationFurnitureBlock(s
     }
 
     fun getGlassState(block: Block): BlockState {
-        if (block == ModBlocks.SMALL_GLASS_TABLE) return Blocks.GLASS_PANE.defaultBlockState()
-        return DyeUtils.GLASS_PANE_ORDER[ModBlocks.SMALL_GLASS_TABLES.indexOf(block)].defaultBlockState()
+        return GlassUtils.GLASS_PANE_ORDER[ModBlocks.SMALL_GLASS_TABLES.indexOf(block)].defaultBlockState()
     }
 
     companion object {

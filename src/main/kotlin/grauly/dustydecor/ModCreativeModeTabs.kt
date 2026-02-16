@@ -29,7 +29,6 @@ object ModCreativeModeTabs {
                     *ModItems.TUBE_LAMPS.toTypedArray(),
                     *ModItems.STOOLS.toTypedArray(),
                     *ModItems.CHAIRS.toTypedArray(),
-                    ModItems.SMALL_GLASS_TABLE,
                     *ModItems.SMALL_GLASS_TABLES.toTypedArray(),
                     ModItems.SMALL_GLASS_TABLE_FRAME,
                 )

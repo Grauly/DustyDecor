@@ -3,9 +3,12 @@ package grauly.dustydecor
 import grauly.dustydecor.BlockDatagenWrapper.MinedBy.*
 import grauly.dustydecor.BlockDatagenWrapper.ToolNeed.*
 import grauly.dustydecor.util.DyeUtils
+import grauly.dustydecor.util.GlassUtils
 import net.minecraft.world.level.block.Block
 import net.minecraft.tags.BlockTags
 import net.minecraft.tags.TagKey
+import java.util.Locale
+import java.util.Locale.getDefault
 
 object BlockDatagenWrapper {
     val entries: MutableList<DatagenSpec> = mutableListOf()
@@ -18,7 +21,6 @@ object BlockDatagenWrapper {
                 DatagenSpec(ModBlocks.VAC_PIPE, "Vacuum Tube", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.VAC_PIPE_STATION, "Vacuum Tube Station", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.VOID_GOOP, "Void Goop"),
-                DatagenSpec(ModBlocks.SMALL_GLASS_TABLE, "Small Glass Table", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.SMALL_GLASS_TABLE_FRAME, "Small Glass Table Frame", STONE, PICKAXE),
             )
         )
@@ -33,6 +35,13 @@ object BlockDatagenWrapper {
                 DatagenSpec(ModBlocks.TUBE_LAMPS[lookupValue], "$colorString Tube Lamp", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.STOOLS[lookupValue], "$colorString Stool", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.CHAIRS[lookupValue], "$colorString Chair", STONE, PICKAXE),
+            )
+        }.reduce { acc: MutableList<DatagenSpec>, elem: MutableList<DatagenSpec> -> acc.addAll(elem); acc })
+        entries.addAll(GlassUtils.GLASS_ID_ORDER.map { id ->
+            val lookupValue = GlassUtils.GLASS_ID_ORDER.indexOf(id)
+            val colorString =
+                id.replaceFirstChar { if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString() }
+            return@map mutableListOf(
                 DatagenSpec(ModBlocks.SMALL_GLASS_TABLES[lookupValue], "Small $colorString Glass Table", STONE, PICKAXE),
             )
         }.reduce { acc: MutableList<DatagenSpec>, elem: MutableList<DatagenSpec> -> acc.addAll(elem); acc })

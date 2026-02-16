@@ -15,6 +15,7 @@ import grauly.dustydecor.block.vent.VentBlock
 import grauly.dustydecor.block.vent.VentCoverBlock
 import grauly.dustydecor.block.voidgoop.VoidGoopBlock
 import grauly.dustydecor.util.DyeUtils
+import grauly.dustydecor.util.GlassUtils
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
@@ -104,19 +105,15 @@ object ModBlocks {
         ) as ChairBlock)
     }
 
-    val SMALL_GLASS_TABLES: List<GlassTableBlock> = DyeUtils.COLOR_ORDER.map {
-        val id = "small_${it.getName()}_glass_table"
+    val SMALL_GLASS_TABLES: List<GlassTableBlock> = GlassUtils.GLASS_ORDER.map {
+        val index = GlassUtils.GLASS_ORDER.indexOf(it)
+        val id = "small_${GlassUtils.GLASS_ID_ORDER[index]}_glass_table"
         (registerBlock(
             ::GlassTableBlock,
             id,
-            Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it).sound(SoundType.GLASS)
+            Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it.defaultMapColor()).sound(SoundType.GLASS)
         ) as GlassTableBlock)
     }
-
-    val SMALL_GLASS_TABLE: GlassTableBlock = registerBlock(::GlassTableBlock,
-        "small_glass_table",
-        Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.WHITE).sound(SoundType.GLASS)
-    ) as GlassTableBlock
 
     val SMALL_GLASS_TABLE_FRAME: GlassTableFrameBlock = registerBlock(::GlassTableFrameBlock,
         "small_glass_table_frame",

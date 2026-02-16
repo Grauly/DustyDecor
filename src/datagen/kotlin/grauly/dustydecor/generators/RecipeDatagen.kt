@@ -3,6 +3,7 @@ package grauly.dustydecor.generators
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.util.DyeUtils
+import grauly.dustydecor.util.GlassUtils
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
@@ -152,7 +153,7 @@ class RecipeDatagen(
                         .save(exporter)
                 }
                 ModItems.SMALL_GLASS_TABLES.forEach {
-                    val pane = DyeUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.SMALL_GLASS_TABLES.indexOf(it)]
+                    val pane = GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.SMALL_GLASS_TABLES.indexOf(it)]
                     val recipe = shaped(RecipeCategory.DECORATIONS, it, 1)
                     recipe
                         .group("small_glass_tables_from_scratch")
@@ -174,28 +175,8 @@ class RecipeDatagen(
                             )
                         )
                 }
-                val smallGlassTableFromScratchRecipe = shaped(RecipeCategory.DECORATIONS, ModItems.SMALL_GLASS_TABLE, 1)
-                smallGlassTableFromScratchRecipe
-                    .group("small_glass_tables_from_scratch")
-                    .define('n', ConventionalItemTags.IRON_NUGGETS)
-                    .define('p', Items.GLASS_PANE)
-                    .define('i', ConventionalItemTags.IRON_INGOTS)
-                    .pattern("npn")
-                    .pattern("n n")
-                    .pattern("ini")
-                    .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
-                    .save(
-                        exporter,
-                        ResourceKey.create(
-                            Registries.RECIPE,
-                            Identifier.fromNamespaceAndPath(
-                                DustyDecorMod.MODID,
-                                "${smallGlassTableFromScratchRecipe.defaultId().identifier().path}_from_scratch"
-                            )
-                        )
-                    )
                 ModItems.SMALL_GLASS_TABLES.forEach {
-                    val pane = DyeUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.SMALL_GLASS_TABLES.indexOf(it)]
+                    val pane = GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.SMALL_GLASS_TABLES.indexOf(it)]
                     val recipe = shapeless(RecipeCategory.DECORATIONS, it, 1)
                     recipe
                         .group("small_glass_tables_from_frame")
