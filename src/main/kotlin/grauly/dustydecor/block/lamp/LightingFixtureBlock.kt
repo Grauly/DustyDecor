@@ -68,25 +68,25 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
     override fun useItemOn(
         stack: ItemStack,
         state: BlockState,
-        world: Level,
+        level: Level,
         pos: BlockPos,
         player: Player,
         hand: InteractionHand,
         hit: BlockHitResult
     ): InteractionResult {
         if (stack.has(ModDataComponentTypes.LAMPS_INVERT)) {
-            ToolUtils.playScrewdriverSound(world, pos, player)
-            toggleInverted(state, pos, world, player)
+            ToolUtils.playToolSound(stack, pos, level, player)
+            toggleInverted(state, pos, level, player)
             return InteractionResult.SUCCESS
         }
         if (stack.has(ModDataComponentTypes.LAMPS_REPAIR)) {
-            val hasRepaired = repair(state, pos, world, player)
+            val hasRepaired = repair(state, pos, level, player)
             if (hasRepaired) {
-                ToolUtils.playWrenchSound(world, pos, player)
+                ToolUtils.playToolSound(stack, pos, level, player)
                 return InteractionResult.SUCCESS
             }
         }
-        return super.useItemOn(stack, state, world, pos, player, hand, hit)
+        return super.useItemOn(stack, state, level, pos, player, hand, hit)
     }
 
     override fun onProjectileHit(

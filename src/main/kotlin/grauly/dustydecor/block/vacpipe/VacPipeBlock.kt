@@ -1,10 +1,8 @@
 package grauly.dustydecor.block.vacpipe
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModSoundEvents
-import grauly.dustydecor.block.vacpipe.ConnectionState
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.world.level.block.Block
@@ -35,7 +33,6 @@ import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.ScheduledTickAccess
-import java.sql.Connection
 import kotlin.collections.get
 
 class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityBlock {
@@ -121,7 +118,7 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
     override fun useItemOn(
         stack: ItemStack,
         state: BlockState,
-        world: Level,
+        level: Level,
         pos: BlockPos,
         player: Player,
         hand: InteractionHand,
@@ -129,17 +126,17 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
     ): InteractionResult {
         var workingState = state
         if (stack.has(ModDataComponentTypes.VAC_TUBE_WINDOW_TOGGLE)) {
-            val newWindowState: Boolean = togglePipeWindow(state, pos, world)
-            workingState = updateWindows(world.getBlockState(pos), world, pos)
-            ToolUtils.playScrewdriverSound(world, pos, player)
-            world.playSound(
+            val newWindowState: Boolean = togglePipeWindow(state, pos, level)
+            workingState = updateWindows(level.getBlockState(pos), level, pos)
+            ToolUtils.playToolSound(stack, pos, level, player)
+            level.playSound(
                 player,
                 pos,
                 if (newWindowState) ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW else ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
                 SoundSource.BLOCKS
             )
         } else if (stack.has(ModDataComponentTypes.VAC_TUBE_EDIT)) {
-            ToolUtils.playWrenchSound(world, pos, player)
+            ToolUtils.playToolSound(stack, pos, level, player)
             val boxExpansion = 0.01
             val relativePos = hit.location.subtract(Vec3.atLowerCornerOf(pos))
             val clickedConnection: EnumProperty<ConnectionState>? = connections.firstOrNull {
@@ -151,20 +148,20 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
                 return@firstOrNull boundingBox.contains(relativePos)
             }
             if (clickedConnection != null) {
-                val success = tryDisableConnection(pos, workingState, clickedConnection, world)
+                val success = tryDisableConnection(pos, workingState, clickedConnection, level)
                 if (success) {
                     return InteractionResult.SUCCESS
                     //TODO: success sound
                 }
                 //TODO: some fail sound
             } else {
-                workingState = tryFixConnection(world, pos, workingState)
+                workingState = tryFixConnection(level, pos, workingState)
             }
         }
         if (workingState != state) {
-            world.setBlock(pos, workingState, UPDATE_CLIENTS)
+            level.setBlock(pos, workingState, UPDATE_CLIENTS)
         }
-        return super.useItemOn(stack, workingState, world, pos, player, hand, hit)
+        return super.useItemOn(stack, workingState, level, pos, player, hand, hit)
     }
 
     private fun tryDisableConnection(

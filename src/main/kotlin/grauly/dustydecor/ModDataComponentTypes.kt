@@ -3,6 +3,7 @@ package grauly.dustydecor
 import com.mojang.serialization.Codec
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ToolComponents
+import grauly.dustydecor.component.ToolUseSoundComponent
 import net.minecraft.core.Registry
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.registries.BuiltInRegistries
@@ -12,6 +13,7 @@ import net.minecraft.world.item.component.TooltipProvider
 object ModDataComponentTypes {
 
     val VOID_GOOP_SIZE: DataComponentType<BulkGoopSizeComponent> = registerComponent(BulkGoopSizeComponent.CODEC, "bulk_goop")
+    val TOOL_USE_SOUND: DataComponentType<ToolUseSoundComponent> = registerComponent(ToolUseSoundComponent.CODEC, "tool_use_sound")
 
     val VENT_COVER_LOCK: DataComponentType<TooltipProvider> = registerComponent(ToolComponents.VENT_LOCK_TOGGLE.codec, "vent_cover_lock")
     val VAC_TUBE_WINDOW_TOGGLE: DataComponentType<TooltipProvider> = registerComponent(ToolComponents.VAC_TUBE_WINDOW_TOGGLE.codec, "vac_tube_window_toggle")

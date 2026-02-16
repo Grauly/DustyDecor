@@ -1,31 +1,20 @@
 package grauly.dustydecor.util
 
 import grauly.dustydecor.ModDataComponentTypes
-import grauly.dustydecor.ModConventionalItemTags
-import grauly.dustydecor.ModSoundEvents
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.world.entity.player.Player
-import net.minecraft.world.item.ItemStack
 import net.minecraft.sounds.SoundSource
-import net.minecraft.sounds.SoundEvent
 import net.minecraft.core.BlockPos
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 
 object ToolUtils {
-    fun playScrewdriverSound(world: Level, pos: BlockPos, player: Player? = null) {
-        playToolSound(world, pos, ModSoundEvents.ITEM_SCREWDRIVER_USE, player)
-    }
-
-    fun playWrenchSound(world: Level, pos: BlockPos, player: Player? = null) {
-        playToolSound(world, pos, ModSoundEvents.ITEM_WRENCH_USE, player)
-    }
-
-    private fun playToolSound(world: Level, pos: BlockPos, soundEvent: SoundEvent, player: Player?) {
-        world.playSound(
-            player,
+    fun playToolSound(stack: ItemStack, pos: BlockPos, level: Level, exceptPlayer: Player?) {
+        if (!stack.has(ModDataComponentTypes.TOOL_USE_SOUND)) return
+        level.playSound(
+            exceptPlayer,
             pos,
-            soundEvent,
-            if (player == null) SoundSource.BLOCKS else SoundSource.PLAYERS
+            stack.get(ModDataComponentTypes.TOOL_USE_SOUND)!!.sound,
+            if (exceptPlayer == null) SoundSource.BLOCKS else SoundSource.PLAYERS
         )
     }
 }

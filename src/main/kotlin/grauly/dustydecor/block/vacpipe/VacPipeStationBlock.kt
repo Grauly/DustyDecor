@@ -90,18 +90,18 @@ class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(set
     override fun useItemOn(
         stack: ItemStack,
         state: BlockState,
-        world: Level,
+        level: Level,
         pos: BlockPos,
         player: Player,
         hand: InteractionHand,
         hit: BlockHitResult
     ): InteractionResult {
         if (stack.has(ModDataComponentTypes.VAC_STATION_INVERT)) {
-            invertSending(state, pos, world)
-            ToolUtils.playWrenchSound(world, pos, player)
+            invertSending(state, pos, level)
+            ToolUtils.playToolSound(stack, pos, level, player)
             return InteractionResult.SUCCESS
         }
-        return super.useItemOn(stack, state, world, pos, player, hand, hit)
+        return super.useItemOn(stack, state, level, pos, player, hand, hit)
     }
 
     private fun invertSending(state: BlockState, pos: BlockPos, world: Level) {

@@ -36,27 +36,27 @@ class VentCoverBlock(settings: Properties) : TrapDoorBlock(BlockSetType.COPPER, 
     override fun useItemOn(
         stack: ItemStack,
         state: BlockState,
-        world: Level,
+        level: Level,
         pos: BlockPos,
         player: Player,
         hand: InteractionHand,
         hit: BlockHitResult
     ): InteractionResult {
         if (isModifyTool(stack)) {
-            ToolUtils.playScrewdriverSound(world, pos, player)
-            world.setBlock(
+            ToolUtils.playToolSound(stack, pos, level, player)
+            level.setBlock(
                 pos,
                 state.setValue(BlockStateProperties.LOCKED, !state.getValue(BlockStateProperties.LOCKED)),
                 UPDATE_CLIENTS
             )
             if (state.getValue(BlockStateProperties.LOCKED)) {
-                playUnlockSound(world, player, pos)
+                playUnlockSound(level, player, pos)
             } else {
-                playLockSound(world, player, pos)
+                playLockSound(level, player, pos)
             }
             return InteractionResult.SUCCESS
         }
-        return super.useItemOn(stack, state, world, pos, player, hand, hit)
+        return super.useItemOn(stack, state, level, pos, player, hand, hit)
     }
 
     override fun useWithoutItem(
@@ -76,9 +76,10 @@ class VentCoverBlock(settings: Properties) : TrapDoorBlock(BlockSetType.COPPER, 
     override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState {
         val directionPlacedAgainst = ctx.clickedFace
         val checkHand = if (ctx.hand == InteractionHand.MAIN_HAND) InteractionHand.OFF_HAND else InteractionHand.MAIN_HAND
-        val isHoldingScrewdriver = isModifyTool(ctx.player?.getItemInHand(checkHand) ?: ItemStack.EMPTY)
+        val stack = ctx.player?.getItemInHand(checkHand) ?: ItemStack.EMPTY
+        val isHoldingScrewdriver = isModifyTool(stack)
         if (isHoldingScrewdriver) {
-            ToolUtils.playScrewdriverSound(ctx.level, ctx.clickedPos, ctx.player)
+            ToolUtils.playToolSound(stack, ctx.clickedPos, ctx.level, ctx.player)
             playLockSound(ctx.level, ctx.player, ctx.clickedPos)
         }
         return super.getStateForPlacement(ctx)!!
