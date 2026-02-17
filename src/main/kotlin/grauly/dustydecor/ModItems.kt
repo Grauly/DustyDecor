@@ -68,6 +68,7 @@ object ModItems {
             .component(ModDataComponentTypes.VENT_COVER_LOCK, ToolComponents.VENT_LOCK_TOGGLE.component)
             .component(ModDataComponentTypes.VAC_TUBE_WINDOW_TOGGLE, ToolComponents.VAC_TUBE_WINDOW_TOGGLE.component)
             .component(ModDataComponentTypes.LAMPS_INVERT, ToolComponents.LAMPS_INVERT.component)
+            .component(ModDataComponentTypes.SMALL_GLASS_TABLE_STRIP_PANE, ToolComponents.SMALL_GLASS_TABLE_STRIP_PANE.component)
     )
     val WRENCH: Item = registerItem(
         ::Item,

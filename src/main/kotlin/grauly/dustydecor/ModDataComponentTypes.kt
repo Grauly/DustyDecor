@@ -21,6 +21,7 @@ object ModDataComponentTypes {
     val LAMPS_INVERT: DataComponentType<TooltipProvider> = registerComponent(ToolComponents.LAMPS_INVERT.codec, "lamps_invert")
     val LAMPS_REPAIR: DataComponentType<TooltipProvider> = registerComponent(ToolComponents.LAMPS_REPAIR.codec, "lamps_repair")
     val VAC_STATION_INVERT: DataComponentType<TooltipProvider> = registerComponent(ToolComponents.VAC_STATION_INVERT.codec, "vac_station.invert")
+    val SMALL_GLASS_TABLE_STRIP_PANE: DataComponentType<TooltipProvider> = registerComponent(ToolComponents.SMALL_GLASS_TABLE_STRIP_PANE.codec, "small_glass_table_strip_pane")
 
 
     private fun <T : Any> registerComponent(

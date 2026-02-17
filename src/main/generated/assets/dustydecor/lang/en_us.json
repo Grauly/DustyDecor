@@ -116,6 +116,7 @@
   "component.bulk_goop_size.dustydecor.explanation1": "Press shift to increase by 10",
   "component.dustydecor.lamps_invert.tooltip": "Can invert some lamps",
   "component.dustydecor.lamps_repair.tooltip": "Can break and repair some lamps",
+  "component.dustydecor.small_glass_table_strip_pane.tooltip": "Can safely remove the glass pane from small glass tables",
   "component.dustydecor.vac_station_invert.tooltip": "Can toggle whether %s's send or receive",
   "component.dustydecor.vac_tube_edit.can_edit.tooltip": "Can edit %s connections:",
   "component.dustydecor.vac_tube_edit.can_fix_connections.tooltip": "Use on the core of the pipe to attempt to fix a broken connection",

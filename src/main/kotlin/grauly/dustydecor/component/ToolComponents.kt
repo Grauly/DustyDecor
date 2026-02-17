@@ -34,6 +34,8 @@ object ToolComponents {
     val LAMPS_INVERT = makeToolComponent(tooltip("lamps_invert"))
     val LAMPS_REPAIR = makeToolComponent(tooltip("lamps_repair"))
 
+    val SMALL_GLASS_TABLE_STRIP_PANE = makeToolComponent(tooltip("small_glass_table_strip_pane"))
+
     fun makeToolComponent(translationKey: String, vararg insertions: Component): ToolComponent {
         val component = Component.translatable(translationKey, *insertions)
             .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
