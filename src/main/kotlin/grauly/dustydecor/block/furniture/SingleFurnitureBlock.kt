@@ -17,6 +17,7 @@ import net.minecraft.util.RandomSource
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.ScheduledTickAccess
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.material.FluidState
 
 abstract class SingleFurnitureBlock(settings: Properties) : Block(settings) {
     init {
@@ -58,6 +59,14 @@ abstract class SingleFurnitureBlock(settings: Properties) : Block(settings) {
             neighborState,
             random
         )
+    }
+
+    override fun getFluidState(state: BlockState): FluidState {
+        return if (state.getValue(BlockStateProperties.WATERLOGGED)) {
+            Fluids.WATER.getSource(false)
+        } else {
+            super.getFluidState(state)
+        }
     }
 
     override fun mirror(
