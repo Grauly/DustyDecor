@@ -194,22 +194,6 @@ class RecipeDatagen(
                             )
                         )
                 }
-                val smallGlassTableFromFrameRecipe = shapeless(RecipeCategory.DECORATIONS, ModItems.SMALL_GLASS_TABLE_FRAME, 1)
-                smallGlassTableFromFrameRecipe
-                    .group("small_glass_tables_from_frame")
-                    .requires(Items.GLASS_PANE)
-                    .requires(ModItems.SMALL_GLASS_TABLE_FRAME)
-                    .unlockedBy("has_frame", has(ModItems.SMALL_GLASS_TABLE_FRAME))
-                    .save(
-                        exporter,
-                        ResourceKey.create(
-                            Registries.RECIPE,
-                            Identifier.fromNamespaceAndPath(
-                                DustyDecorMod.MODID,
-                                "${smallGlassTableFromFrameRecipe.defaultId().identifier().path}_from_frame"
-                            )
-                        )
-                    )
             }
         }
     }
