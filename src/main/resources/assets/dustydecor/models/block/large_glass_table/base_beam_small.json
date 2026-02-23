@@ -1,0 +1,22 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "dustydecor:block/large_glass_table_frame",
+		"particle": "dustydecor:block/large_glass_table_frame"
+	},
+	"elements": [
+		{
+			"name": "small_base_beam",
+			"from": [14, 0, 2],
+			"to": [15, 1, 14],
+			"rotation": {"x": 0, "y": 90, "z": 0, "origin": [8, 2, 8]},
+			"faces": {
+				"east": {"uv": [2, 0, 14, 1], "texture": "#0"},
+				"west": {"uv": [2, 0, 14, 1], "texture": "#0"},
+				"up": {"uv": [2, 2, 14, 3], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [2, 1, 14, 2], "rotation": 90, "texture": "#0"}
+			}
+		}
+	]
+}
