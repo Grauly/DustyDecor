@@ -25,7 +25,7 @@ class ConnectingGlassTableBlockModel(
         modelGenerator: MultiPartGenerator
     ) {
         val variantModelIdentifier = Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "$basePath/table_top")
-        val slot = TextureSlot.create("0")
+        val slot = TextureSlot.create("1")
         val mapping = TextureMapping.singleSlot(slot, Material(replaceTexture))
         val template = ModelTemplate(Optional.of(variantModelIdentifier), Optional.empty(), slot)
         val paneModel = BlockModelDatagen.singleVariant(
