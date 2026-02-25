@@ -11,14 +11,14 @@ import net.minecraft.client.data.models.model.TextureMapping
 import net.minecraft.client.data.models.model.TextureSlot
 import net.minecraft.client.renderer.block.model.Material
 import net.minecraft.resources.Identifier
-import java.util.Optional
+import java.util.*
 
 class ConnectingGlassTableBlockModel(
     blocks: List<ConnectingGlassTableBlock>,
     replacements: List<Identifier>,
     basePath: String
 ) : ConnectingGlassTableFrameBlockModel(blocks, replacements, basePath) {
-    override fun extraSetup(
+    override fun extraBlockSetup(
         block: ConnectingGlassTableBlock,
         replaceTexture: Identifier,
         generator: BlockModelGenerators,
@@ -41,5 +41,24 @@ class ConnectingGlassTableBlockModel(
             ConditionBuilder().term(ConnectingGlassTableBlock.BROKEN, false),
             paneModel,
         )
+    }
+
+    override fun createItem(
+        block: ConnectingGlassTableBlock,
+        replaceTexture: Identifier,
+        generator: BlockModelGenerators
+    ) {
+        val variantModelIdentifier =
+            Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "$basePath/glass_table_inventory")
+        val slot = TextureSlot.create("1")
+        val mapping = TextureMapping.singleSlot(slot, Material(replaceTexture))
+        val template = ModelTemplate(Optional.of(variantModelIdentifier), Optional.empty(), slot)
+        val tableModel = template.createWithSuffix(
+            block,
+            "_inventory",
+            mapping,
+            generator.modelOutput
+        )
+        generator.registerSimpleItemModel(block, tableModel)
     }
 }

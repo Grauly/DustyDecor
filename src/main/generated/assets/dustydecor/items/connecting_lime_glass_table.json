@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dustydecor:block/connecting_lime_glass_table"
+    "model": "dustydecor:block/connecting_lime_glass_table_inventory"
   }
 }

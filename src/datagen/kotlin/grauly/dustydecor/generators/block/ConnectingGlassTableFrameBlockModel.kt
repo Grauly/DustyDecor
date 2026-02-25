@@ -39,7 +39,7 @@ open class ConnectingGlassTableFrameBlockModel(
     ) {
 
         val modelGenerator = MultiPartGenerator.multiPart(block)
-        extraSetup(
+        extraBlockSetup(
             block,
             replaceTexture,
             generator,
@@ -79,14 +79,14 @@ open class ConnectingGlassTableFrameBlockModel(
         generator.blockStateOutput.accept(modelGenerator)
     }
 
-    protected open fun extraSetup(
+    protected open fun extraBlockSetup(
         block: ConnectingGlassTableBlock,
         replaceTexture: Identifier,
         generator: BlockModelGenerators,
         modelGenerator: MultiPartGenerator
     ) {}
 
-    private fun singleSide(
+    protected open fun singleSide(
         direction: Direction,
         modelGenerator: MultiPartGenerator
     ) {
@@ -105,7 +105,7 @@ open class ConnectingGlassTableFrameBlockModel(
         )
     }
 
-    fun parallel(
+    protected open fun parallel(
         direction: Direction,
         direction2: Direction,
         modelGenerator: MultiPartGenerator
@@ -131,7 +131,7 @@ open class ConnectingGlassTableFrameBlockModel(
         )
     }
 
-    fun corner(
+    protected open fun corner(
         direction: Direction,
         direction2: Direction,
         modelGenerator: MultiPartGenerator
@@ -155,7 +155,7 @@ open class ConnectingGlassTableFrameBlockModel(
         )
     }
 
-    fun oneConnection(
+    protected open fun oneConnection(
         direction: Direction,
         modelGenerator: MultiPartGenerator
     ) {
@@ -174,7 +174,7 @@ open class ConnectingGlassTableFrameBlockModel(
         )
     }
 
-    private fun createItem(
+    protected open fun createItem(
         block: ConnectingGlassTableBlock,
         replaceTexture: Identifier,
         generator: BlockModelGenerators
