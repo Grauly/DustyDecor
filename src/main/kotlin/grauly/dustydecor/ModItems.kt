@@ -29,7 +29,7 @@ object ModItems {
     /*
     Checklist for adding a new Item:
     - ItemDatagen Entry (optional for BlockItems)
-    - ModCreativeModeTags Entry
+    - ModCreativeModeTabs Entry
     - Texture/Model
     - Recipes
      */
@@ -117,6 +117,12 @@ object ModItems {
         registerBlockItem(it, id)
     }
     val SMALL_GLASS_TABLE_FRAME: Item = registerBlockItem(ModBlocks.SMALL_GLASS_TABLE_FRAME, "small_glass_table_frame")
+
+    val CONNECTING_GLASS_TABLES: List<Item> = ModBlocks.CONNECTING_GLASS_TABLES.map {
+        val id = "connecting_${GlassUtils.GLASS_ID_ORDER[ModBlocks.CONNECTING_GLASS_TABLES.indexOf(it)]}_glass_table"
+        registerBlockItem(it, id)
+    }
+    val CONNECTING_GLASS_TABLE_FRAME: Item = registerBlockItem(ModBlocks.CONNECTING_GLASS_TABLE_FRAME, "connecting_glass_table_frame")
 
     private fun registerItem(
         itemFactory: (Properties) -> Item,

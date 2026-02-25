@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "connecting_glass_tables_from_frame",
+  "ingredients": [
+    "minecraft:white_stained_glass_pane",
+    "dustydecor:connecting_glass_table_frame"
+  ],
+  "result": {
+    "id": "dustydecor:connecting_white_glass_table"
+  }
+}

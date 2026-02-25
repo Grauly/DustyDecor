@@ -66,14 +66,6 @@ open class HorizontalConnectingBlock(properties: Properties) : Block(properties)
         return workingState
     }
 
-    protected fun getPropertyForDirection(direction: Direction): Property<Boolean>? = when (direction) {
-        Direction.NORTH -> NORTH
-        Direction.EAST -> EAST
-        Direction.SOUTH -> SOUTH
-        Direction.WEST -> WEST
-        else -> null
-    }
-
     override fun getFluidState(state: BlockState): FluidState {
         return if (state.getValue(BlockStateProperties.WATERLOGGED)) {
             Fluids.WATER.getSource(false)
@@ -128,5 +120,13 @@ open class HorizontalConnectingBlock(properties: Properties) : Block(properties)
         val SOUTH: BooleanProperty = BooleanProperty.create("south")
         val WEST: BooleanProperty = BooleanProperty.create("west")
         const val FACE_CONNECTED = true
+
+        fun getPropertyForDirection(direction: Direction): Property<Boolean>? = when (direction) {
+            Direction.NORTH -> NORTH
+            Direction.EAST -> EAST
+            Direction.SOUTH -> SOUTH
+            Direction.WEST -> WEST
+            else -> null
+        }
     }
 }

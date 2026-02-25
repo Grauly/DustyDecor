@@ -1,6 +1,7 @@
 package grauly.dustydecor
 
 import grauly.dustydecor.block.furniture.ChairBlock
+import grauly.dustydecor.block.furniture.ConnectingGlassTableBlock
 import grauly.dustydecor.block.furniture.GlassTableBlock
 import grauly.dustydecor.block.furniture.GlassTableFrameBlock
 import grauly.dustydecor.block.furniture.StoolBlock
@@ -119,6 +120,21 @@ object ModBlocks {
         "small_glass_table_frame",
         Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.GRAY).sound(SoundType.LANTERN)
         ) as GlassTableFrameBlock
+
+    val CONNECTING_GLASS_TABLES: List<ConnectingGlassTableBlock> = GlassUtils.GLASS_ORDER.map {
+        val index = GlassUtils.GLASS_ORDER.indexOf(it)
+        val id = "connecting_${GlassUtils.GLASS_ID_ORDER[index]}_glass_table"
+        (registerBlock(
+            ::ConnectingGlassTableBlock,
+            id,
+            Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it.defaultMapColor()).sound(SoundType.GLASS)
+        ) as ConnectingGlassTableBlock)
+    }
+
+    val CONNECTING_GLASS_TABLE_FRAME: ConnectingGlassTableBlock = registerBlock(::ConnectingGlassTableBlock,
+    "connecting_glass_table_frame",
+    Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.GRAY).sound(SoundType.LANTERN)
+    ) as ConnectingGlassTableBlock
 
     private fun registerBlock(
         blockFactory: (Properties) -> Block,

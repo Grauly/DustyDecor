@@ -1,0 +1,6 @@
+{
+  "parent": "dustydecor:block/connecting_glass_table/table_top",
+  "textures": {
+    "0": "minecraft:block/green_stained_glass"
+  }
+}

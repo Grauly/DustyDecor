@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "connecting_glass_tables_from_scratch",
+  "key": {
+    "i": "#c:ingots/iron",
+    "n": "#c:nuggets/iron",
+    "p": "minecraft:black_stained_glass_pane"
+  },
+  "pattern": [
+    "npn",
+    "i i",
+    "nin"
+  ],
+  "result": {
+    "id": "dustydecor:connecting_black_glass_table"
+  }
+}

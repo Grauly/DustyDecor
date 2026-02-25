@@ -194,6 +194,48 @@ class RecipeDatagen(
                             )
                         )
                 }
+                ModItems.CONNECTING_GLASS_TABLES.forEach {
+                    val pane = GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.CONNECTING_GLASS_TABLES.indexOf(it)]
+                    val recipe = shaped(RecipeCategory.DECORATIONS, it, 1)
+                    recipe
+                        .group("connecting_glass_tables_from_scratch")
+                        .define('n', ConventionalItemTags.IRON_NUGGETS)
+                        .define('p', pane)
+                        .define('i', ConventionalItemTags.IRON_INGOTS)
+                        .pattern("npn")
+                        .pattern("i i")
+                        .pattern("nin")
+                        .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
+                        .save(
+                            exporter,
+                            ResourceKey.create(
+                                Registries.RECIPE,
+                                Identifier.fromNamespaceAndPath(
+                                    DustyDecorMod.MODID,
+                                    "${recipe.defaultId().identifier().path}_from_scratch"
+                                )
+                            )
+                        )
+                }
+                ModItems.CONNECTING_GLASS_TABLES.forEach {
+                    val pane = GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.CONNECTING_GLASS_TABLES.indexOf(it)]
+                    val recipe = shapeless(RecipeCategory.DECORATIONS, it, 1)
+                    recipe
+                        .group("connecting_glass_tables_from_frame")
+                        .requires(pane)
+                        .requires(ModItems.CONNECTING_GLASS_TABLE_FRAME)
+                        .unlockedBy("has_frame", has(ModItems.CONNECTING_GLASS_TABLE_FRAME))
+                        .save(
+                            exporter,
+                            ResourceKey.create(
+                                Registries.RECIPE,
+                                Identifier.fromNamespaceAndPath(
+                                    DustyDecorMod.MODID,
+                                    "${recipe.defaultId().identifier().path}_from_frame"
+                                )
+                            )
+                        )
+                }
             }
         }
     }

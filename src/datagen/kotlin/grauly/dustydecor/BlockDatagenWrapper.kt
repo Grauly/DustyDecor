@@ -43,6 +43,7 @@ object BlockDatagenWrapper {
                 id.replaceFirstChar { if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString() }
             return@map mutableListOf(
                 DatagenSpec(ModBlocks.SMALL_GLASS_TABLES[lookupValue], "Small $colorString Glass Table", STONE, PICKAXE),
+                DatagenSpec(ModBlocks.CONNECTING_GLASS_TABLES[lookupValue], "Connecting $colorString Glass Table", STONE, PICKAXE),
             )
         }.reduce { acc: MutableList<DatagenSpec>, elem: MutableList<DatagenSpec> -> acc.addAll(elem); acc })
     }
