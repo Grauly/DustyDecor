@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "alarm_cage_lamps",
+  "key": {
+    "d": "#c:dyes/blue",
+    "i": "#c:ingots/iron",
+    "l": "minecraft:redstone_lamp",
+    "n": "#c:nuggets/iron"
+  },
+  "pattern": [
+    "nnn",
+    " l ",
+    "idi"
+  ],
+  "result": {
+    "count": 3,
+    "id": "dustydecor:blue_alarm_cage_lamp"
+  }
+}

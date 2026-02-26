@@ -1,0 +1,7 @@
+{
+  "parent": "dustydecor:block/connecting_glass_table/glass_table_inventory",
+  "textures": {
+    "1": "minecraft:block/blue_stained_glass",
+    "particle": "minecraft:block/blue_stained_glass"
+  }
+}

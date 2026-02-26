@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "stools",
+  "key": {
+    "d": "#c:dyes/blue",
+    "i": "#c:ingots/iron",
+    "l": "#c:leathers",
+    "n": "#c:nuggets/iron"
+  },
+  "pattern": [
+    "ndn",
+    "nli"
+  ],
+  "result": {
+    "id": "dustydecor:blue_stool"
+  }
+}

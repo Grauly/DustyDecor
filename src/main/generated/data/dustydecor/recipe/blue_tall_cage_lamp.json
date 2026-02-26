@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "tall_cage_lamps",
+  "key": {
+    "d": "#c:dyes/blue",
+    "g": "#c:dusts/glowstone",
+    "i": "#c:ingots/iron",
+    "n": "#c:nuggets/iron",
+    "r": "#c:dusts/redstone"
+  },
+  "pattern": [
+    "nnn",
+    "gdg",
+    "iri"
+  ],
+  "result": {
+    "count": 3,
+    "id": "dustydecor:blue_tall_cage_lamp"
+  }
+}

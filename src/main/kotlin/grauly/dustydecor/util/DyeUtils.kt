@@ -19,6 +19,7 @@ object DyeUtils {
         DyeColor.GREEN,
         DyeColor.CYAN,
         DyeColor.LIGHT_BLUE,
+        DyeColor.BLUE,
         DyeColor.PURPLE,
         DyeColor.MAGENTA,
         DyeColor.PINK
@@ -37,6 +38,7 @@ object DyeUtils {
         Items.GREEN_DYE,
         Items.CYAN_DYE,
         Items.LIGHT_BLUE_DYE,
+        Items.BLUE_DYE,
         Items.PURPLE_DYE,
         Items.MAGENTA_DYE,
         Items.PINK_DYE
@@ -55,6 +57,7 @@ object DyeUtils {
         ConventionalItemTags.GREEN_DYES,
         ConventionalItemTags.CYAN_DYES,
         ConventionalItemTags.LIGHT_BLUE_DYES,
+        ConventionalItemTags.BLUE_DYES,
         ConventionalItemTags.PURPLE_DYES,
         ConventionalItemTags.MAGENTA_DYES,
         ConventionalItemTags.PINK_DYES
