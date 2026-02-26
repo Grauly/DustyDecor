@@ -53,7 +53,7 @@ class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(gener
             listOf(ModBlocks.CONNECTING_GLASS_TABLE_FRAME),
             listOf(ModelLocationUtils.getModelLocation(Blocks.BARRIER)),
             "block/connecting_glass_table"
-        )
+        ).get(blockStateModelGenerator)
     }
 
 

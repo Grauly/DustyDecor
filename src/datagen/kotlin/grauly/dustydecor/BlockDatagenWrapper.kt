@@ -22,6 +22,7 @@ object BlockDatagenWrapper {
                 DatagenSpec(ModBlocks.VAC_PIPE_STATION, "Vacuum Tube Station", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.VOID_GOOP, "Void Goop"),
                 DatagenSpec(ModBlocks.SMALL_GLASS_TABLE_FRAME, "Small Glass Table Frame", STONE, PICKAXE),
+                DatagenSpec(ModBlocks.CONNECTING_GLASS_TABLE_FRAME, "Connecting Glass Table Frame", STONE, PICKAXE),
             )
         )
         entries.addAll(DyeUtils.COLOR_ORDER.map {
