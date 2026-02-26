@@ -1,5 +1,6 @@
 package grauly.dustydecor.generators.block
 
+import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.block.furniture.ConnectingGlassTableBlock
 import grauly.dustydecor.block.furniture.HorizontalConnectingBlock
 import grauly.dustydecor.block.vacpipe.ConnectionState
@@ -179,7 +180,10 @@ open class ConnectingGlassTableFrameBlockModel(
         replaceTexture: Identifier,
         generator: BlockModelGenerators
     ) {
-
+        generator.registerSimpleItemModel(block, Identifier.fromNamespaceAndPath(
+            DustyDecorMod.MODID,
+            "$basePath/four_table_frame"
+        ))
     }
 
     private fun <T> cycleList(list: List<T>): List<T> {
