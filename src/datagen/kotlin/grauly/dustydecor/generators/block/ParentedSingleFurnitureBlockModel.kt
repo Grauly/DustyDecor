@@ -40,11 +40,15 @@ class ParentedSingleFurnitureBlockModel(
             val mapping = TextureMapping.singleSlot(
                 GLASS_TABLE_TEXTURE_SLOT,
                 Material(replaceTexture),
+            ).put(
+                GLASS_TABLE_PARTICLE_SLOT,
+                Material(replaceTexture),
             )
             val template = ModelTemplate(
                 Optional.of(variantBaseModel),
                 Optional.empty(),
-                GLASS_TABLE_TEXTURE_SLOT
+                GLASS_TABLE_TEXTURE_SLOT,
+                GLASS_TABLE_PARTICLE_SLOT
             )
             template.createWithSuffix(block,"_$variant", mapping, generator.modelOutput)
         }
@@ -68,4 +72,5 @@ class ParentedSingleFurnitureBlockModel(
     }
 
     val GLASS_TABLE_TEXTURE_SLOT = TextureSlot.create("1")
+    val GLASS_TABLE_PARTICLE_SLOT = TextureSlot.create("particle")
 }

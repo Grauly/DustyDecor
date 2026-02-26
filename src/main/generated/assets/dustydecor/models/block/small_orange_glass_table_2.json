@@ -1,6 +1,7 @@
 {
   "parent": "dustydecor:block/glass_table/glass_table_2",
   "textures": {
-    "1": "minecraft:block/orange_stained_glass"
+    "1": "minecraft:block/orange_stained_glass",
+    "particle": "minecraft:block/orange_stained_glass"
   }
 }
