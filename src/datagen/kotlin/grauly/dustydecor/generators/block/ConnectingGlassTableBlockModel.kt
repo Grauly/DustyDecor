@@ -11,6 +11,7 @@ import net.minecraft.client.data.models.model.TextureMapping
 import net.minecraft.client.data.models.model.TextureSlot
 import net.minecraft.client.renderer.block.model.Material
 import net.minecraft.resources.Identifier
+import org.w3c.dom.Text
 import java.util.*
 
 class ConnectingGlassTableBlockModel(
@@ -25,9 +26,11 @@ class ConnectingGlassTableBlockModel(
         modelGenerator: MultiPartGenerator
     ) {
         val variantModelIdentifier = Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "$basePath/table_top")
-        val slot = TextureSlot.create("1")
-        val mapping = TextureMapping.singleSlot(slot, Material(replaceTexture))
-        val template = ModelTemplate(Optional.of(variantModelIdentifier), Optional.empty(), slot)
+        val primarySlot = TextureSlot.create("1")
+        val particleSlot = TextureSlot.create("particle")
+        val material = Material(replaceTexture)
+        val mapping = TextureMapping.singleSlot(primarySlot, material).put(particleSlot, material)
+        val template = ModelTemplate(Optional.of(variantModelIdentifier), Optional.empty(), primarySlot, particleSlot)
         val paneModel = BlockModelDatagen.singleVariant(
             template.createWithSuffix(
                 block,
@@ -50,9 +53,11 @@ class ConnectingGlassTableBlockModel(
     ) {
         val variantModelIdentifier =
             Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "$basePath/glass_table_inventory")
-        val slot = TextureSlot.create("1")
-        val mapping = TextureMapping.singleSlot(slot, Material(replaceTexture))
-        val template = ModelTemplate(Optional.of(variantModelIdentifier), Optional.empty(), slot)
+        val primarySlot = TextureSlot.create("1")
+        val particleSlot = TextureSlot.create("particle")
+        val material = Material(replaceTexture)
+        val mapping = TextureMapping.singleSlot(primarySlot, material).put(particleSlot, material)
+        val template = ModelTemplate(Optional.of(variantModelIdentifier), Optional.empty(), primarySlot, particleSlot)
         val tableModel = template.createWithSuffix(
             block,
             "_inventory",
