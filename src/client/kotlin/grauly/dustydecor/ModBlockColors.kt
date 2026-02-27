@@ -4,10 +4,10 @@ import grauly.dustydecor.block.furniture.SingleFurnitureBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.util.DyeUtils
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry
+import net.minecraft.client.renderer.block.BlockAndTintGetter
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.core.BlockPos
-import net.minecraft.world.level.BlockAndTintGetter
 import java.awt.Color
 
 object ModBlockColors {
