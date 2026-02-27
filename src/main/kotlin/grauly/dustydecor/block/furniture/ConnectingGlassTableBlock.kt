@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BooleanProperty
 
-class ConnectingGlassTableBlock(properties: Properties) : HorizontalConnectingBlock(properties) {
+class ConnectingGlassTableBlock(properties: Properties) : GranularHorizontalConnectingBlock(properties) {
 
     init {
         registerDefaultState(

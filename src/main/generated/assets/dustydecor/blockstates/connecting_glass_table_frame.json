@@ -57,6 +57,17 @@
     },
     {
       "apply": {
+        "model": "dustydecor:block/connecting_glass_table/one_inner_frame",
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "north": "true",
+        "north_east": "false"
+      }
+    },
+    {
+      "apply": {
         "model": "dustydecor:block/connecting_glass_table/three_table_frame",
         "y": 90
       },
@@ -93,6 +104,17 @@
     },
     {
       "apply": {
+        "model": "dustydecor:block/connecting_glass_table/one_inner_frame",
+        "y": 180
+      },
+      "when": {
+        "east": "true",
+        "south": "true",
+        "south_east": "false"
+      }
+    },
+    {
+      "apply": {
         "model": "dustydecor:block/connecting_glass_table/three_table_frame",
         "y": 180
       },
@@ -124,6 +146,17 @@
         "east": "true",
         "north": "true",
         "south": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_glass_table/one_inner_frame",
+        "y": 270
+      },
+      "when": {
+        "south": "true",
+        "south_west": "false",
         "west": "true"
       }
     },
@@ -173,6 +206,16 @@
         "north": "true",
         "south": "true",
         "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_glass_table/one_inner_frame"
+      },
+      "when": {
+        "north": "true",
+        "north_west": "false",
+        "west": "true"
       }
     }
   ]

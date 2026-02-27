@@ -54,7 +54,7 @@ open class HorizontalConnectingBlock(properties: Properties) : Block(properties)
         return connectionState.setValue(WATERLOGGED, fluidState.type == Fluids.WATER)
     }
 
-    protected fun getConnectionState(parentState: BlockState, pos: BlockPos, level: LevelReader): BlockState {
+    protected open fun getConnectionState(parentState: BlockState, pos: BlockPos, level: LevelReader): BlockState {
         var workingState = parentState
         CONNECTION_DIRECTIONS.forEach { direction ->
             val offsetPos = pos.relative(direction)

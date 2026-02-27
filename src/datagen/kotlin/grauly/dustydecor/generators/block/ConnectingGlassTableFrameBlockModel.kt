@@ -2,6 +2,7 @@ package grauly.dustydecor.generators.block
 
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.block.furniture.ConnectingGlassTableBlock
+import grauly.dustydecor.block.furniture.GranularHorizontalConnectingBlock
 import grauly.dustydecor.block.furniture.HorizontalConnectingBlock
 import grauly.dustydecor.block.vacpipe.ConnectionState
 import grauly.dustydecor.generators.BlockModelDatagen
@@ -10,6 +11,7 @@ import net.minecraft.client.data.models.blockstates.ConditionBuilder
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator
 import net.minecraft.core.Direction
 import net.minecraft.resources.Identifier
+import net.minecraft.world.level.block.state.properties.BooleanProperty
 
 open class ConnectingGlassTableFrameBlockModel(
     private val blocks: List<ConnectingGlassTableBlock>,
@@ -21,6 +23,7 @@ open class ConnectingGlassTableFrameBlockModel(
     val CORNER = BlockModelDatagen.singleVariant("$basePath/two_corner_table_frame")
     val DEAD_END = BlockModelDatagen.singleVariant("$basePath/three_table_frame")
     val FULL = BlockModelDatagen.singleVariant("$basePath/four_table_frame")
+    val INNER_LEG = BlockModelDatagen.singleVariant("$basePath/one_inner_frame")
 
     fun get(blockStateModelGenerator: BlockModelGenerators) {
         blocks.forEach {
@@ -74,6 +77,12 @@ open class ConnectingGlassTableFrameBlockModel(
             )
             singleSide(
                 directions[indexShift],
+                modelGenerator
+            )
+            innerCorner(
+                directions[indexShift],
+                GranularHorizontalConnectingBlock.DIRECTION_PROPERTIES[(indexShift * 2 + 1) % 8].second,
+                directions[(indexShift + 1) % 4],
                 modelGenerator
             )
         }
@@ -172,6 +181,21 @@ open class ConnectingGlassTableFrameBlockModel(
         modelGenerator.with(
             condition,
             DEAD_END.with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction]!!)
+        )
+    }
+
+    protected open fun innerCorner(
+        mainDirection: Direction,
+        middleProperty: BooleanProperty,
+        secondDirection: Direction,
+        modelGenerator: MultiPartGenerator
+    ) {
+        modelGenerator.with(
+            ConditionBuilder()
+                .term(HorizontalConnectingBlock.getPropertyForDirection(mainDirection)!!, HorizontalConnectingBlock.FACE_CONNECTED)
+                .term(HorizontalConnectingBlock.getPropertyForDirection(secondDirection)!!, HorizontalConnectingBlock.FACE_CONNECTED)
+                .term(middleProperty, !HorizontalConnectingBlock.FACE_CONNECTED),
+            INNER_LEG.with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[secondDirection]!!)
         )
     }
 
