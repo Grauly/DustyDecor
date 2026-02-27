@@ -2,10 +2,222 @@
   "multipart": [
     {
       "apply": {
-        "model": "dustydecor:block/connecting_orange_glass_table_table_top"
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_center"
       },
       "when": {
         "broken": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_edge_inner",
+        "uvlock": true
+      },
+      "when": {
+        "broken": "false",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_edge_outer",
+        "uvlock": true
+      },
+      "when": {
+        "broken": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_corner_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "north": "true",
+        "north_east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_corner_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "OR": [
+          {
+            "north": "!true"
+          },
+          {
+            "east": "!true"
+          },
+          {
+            "north_east": "!true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_edge_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "broken": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_edge_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "broken": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_corner_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "east": "true",
+        "south": "true",
+        "south_east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_corner_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "OR": [
+          {
+            "east": "!true"
+          },
+          {
+            "south": "!true"
+          },
+          {
+            "south_east": "!true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_edge_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "broken": "false",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_edge_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "broken": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_corner_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "south": "true",
+        "south_west": "true",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_corner_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "OR": [
+          {
+            "south": "!true"
+          },
+          {
+            "west": "!true"
+          },
+          {
+            "south_west": "!true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_edge_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_edge_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_corner_inner",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "north_west": "true",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/connecting_orange_glass_table_table_top_corner_outer",
+        "uvlock": true
+      },
+      "when": {
+        "OR": [
+          {
+            "west": "!true"
+          },
+          {
+            "north": "!true"
+          },
+          {
+            "north_west": "!true"
+          }
+        ]
       }
     },
     {

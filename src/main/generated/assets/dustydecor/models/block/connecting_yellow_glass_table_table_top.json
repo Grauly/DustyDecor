@@ -1,7 +1,0 @@
-{
-  "parent": "dustydecor:block/connecting_glass_table/table_top",
-  "textures": {
-    "1": "minecraft:block/yellow_stained_glass",
-    "particle": "minecraft:block/yellow_stained_glass"
-  }
-}

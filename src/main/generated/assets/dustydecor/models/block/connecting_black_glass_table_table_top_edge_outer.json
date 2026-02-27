@@ -1,0 +1,7 @@
+{
+  "parent": "dustydecor:block/connecting_glass_table/table_top_edge_outer",
+  "textures": {
+    "1": "minecraft:block/black_stained_glass",
+    "particle": "minecraft:block/black_stained_glass"
+  }
+}

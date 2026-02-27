@@ -1,0 +1,7 @@
+{
+  "parent": "dustydecor:block/connecting_glass_table/table_top_corner_inner",
+  "textures": {
+    "1": "minecraft:block/glass",
+    "particle": "minecraft:block/glass"
+  }
+}
