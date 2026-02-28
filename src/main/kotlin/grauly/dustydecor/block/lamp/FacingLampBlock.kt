@@ -27,7 +27,7 @@ abstract class FacingLampBlock(settings: Properties) : LightingFixtureBlock(sett
 
     override fun updateShape(
         state: BlockState,
-        world: LevelReader,
+        level: LevelReader,
         tickView: ScheduledTickAccess,
         pos: BlockPos,
         direction: Direction,
@@ -35,10 +35,10 @@ abstract class FacingLampBlock(settings: Properties) : LightingFixtureBlock(sett
         neighborState: BlockState,
         random: RandomSource
     ): BlockState {
-        if (!canSurvive(state, world, pos)) return Blocks.AIR.defaultBlockState()
+        if (!canSurvive(state, level, pos)) return Blocks.AIR.defaultBlockState()
         return super.updateShape(
             state,
-            world,
+            level,
             tickView,
             pos,
             direction,
@@ -48,10 +48,10 @@ abstract class FacingLampBlock(settings: Properties) : LightingFixtureBlock(sett
         )
     }
 
-    override fun canSurvive(state: BlockState, world: LevelReader, pos: BlockPos): Boolean {
+    override fun canSurvive(state: BlockState, level: LevelReader, pos: BlockPos): Boolean {
         val direction = state.getValue(BlockStateProperties.FACING)
-        val checkState = world.getBlockState(pos.relative(direction.opposite))
-        return checkState.isFaceSturdy(world, pos, direction)
+        val checkState = level.getBlockState(pos.relative(direction.opposite))
+        return checkState.isFaceSturdy(level, pos, direction)
     }
 
     override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState {
@@ -63,7 +63,7 @@ abstract class FacingLampBlock(settings: Properties) : LightingFixtureBlock(sett
 
     override fun getShape(
         state: BlockState,
-        world: BlockGetter,
+        level: BlockGetter,
         pos: BlockPos,
         context: CollisionContext
     ): VoxelShape {
@@ -72,7 +72,7 @@ abstract class FacingLampBlock(settings: Properties) : LightingFixtureBlock(sett
 
     override fun getCollisionShape(
         state: BlockState,
-        world: BlockGetter,
+        level: BlockGetter,
         pos: BlockPos,
         context: CollisionContext
     ): VoxelShape {

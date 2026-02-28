@@ -18,7 +18,7 @@ class AlarmCageLampBlock(settings: Properties) : TallCageLampBlock(settings), En
     }
 
     override fun <T : BlockEntity> getTicker(
-        world: Level,
+        level: Level,
         state: BlockState,
         type: BlockEntityType<T>
     ): BlockEntityTicker<T> {

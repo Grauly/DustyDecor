@@ -53,16 +53,16 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
 
     override fun neighborChanged(
         state: BlockState,
-        world: Level,
+        level: Level,
         pos: BlockPos,
         sourceBlock: Block,
         wireOrientation: Orientation?,
         notify: Boolean
     ) {
-        if (world.isClientSide) return
-        val isPowered = world.hasNeighborSignal(pos)
+        if (level.isClientSide) return
+        val isPowered = level.hasNeighborSignal(pos)
         if (state.getValue(LIT) == isPowered) return
-        changeOnState(isPowered, state, pos, world)
+        changeOnState(isPowered, state, pos, level)
     }
 
     override fun useItemOn(
@@ -90,93 +90,93 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
     }
 
     override fun onProjectileHit(
-        world: Level,
+        level: Level,
         state: BlockState,
         hit: BlockHitResult,
         projectile: Projectile
     ) {
-        breakFixture(state, hit.blockPos, world)
-        super.onProjectileHit(world, state, hit, projectile)
+        breakFixture(state, hit.blockPos, level)
+        super.onProjectileHit(level, state, hit, projectile)
     }
 
-    override fun attack(state: BlockState, world: Level, pos: BlockPos, player: Player) {
+    override fun attack(state: BlockState, level: Level, pos: BlockPos, player: Player) {
         val stack = player.getItemInHand(InteractionHand.MAIN_HAND)
         if (stack.has(DataComponents.WEAPON) || stack.has(DataComponents.KINETIC_WEAPON)) {
-            breakFixture(state, pos, world)
+            breakFixture(state, pos, level)
         }
-        super.attack(state, world, pos, player)
+        super.attack(state, level, pos, player)
     }
 
-    override fun randomTick(state: BlockState, world: ServerLevel, pos: BlockPos, random: RandomSource) {
+    override fun randomTick(state: BlockState, level: ServerLevel, pos: BlockPos, random: RandomSource) {
         if (!state.getValue(BROKEN)) return
         if (random.nextInt(40) != 1) return
-        spark(state, pos, world)
+        spark(state, pos, level)
     }
 
     override fun isRandomlyTicking(state: BlockState): Boolean {
         return super.isRandomlyTicking(state) && state.getValue(BROKEN)
     }
 
-    protected open fun changeOnState(shouldBeOn: Boolean, state: BlockState, pos: BlockPos, world: Level): Boolean {
+    protected open fun changeOnState(shouldBeOn: Boolean, state: BlockState, pos: BlockPos, level: Level): Boolean {
         val isLit = state.getValue(LIT)
         val isBroken = state.getValue(BROKEN)
         if (isBroken) { //Broken lamps can turn off, but no longer on
-            spark(state, pos, world)
+            spark(state, pos, level)
             if (!shouldBeOn && isLit) {
-                world.setBlockAndUpdate(pos, state.setValue(LIT, false))
+                level.setBlockAndUpdate(pos, state.setValue(LIT, false))
                 return true
             }
             return false
         }
         if (isLit == shouldBeOn) return false
-        world.playSound(
+        level.playSound(
             null,
             pos,
             if (shouldBeOn) ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_ON else ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_OFF,
             SoundSource.BLOCKS
         )
-        world.setBlockAndUpdate(pos, state.setValue(LIT, shouldBeOn))
+        level.setBlockAndUpdate(pos, state.setValue(LIT, shouldBeOn))
         return true
     }
 
-    protected open fun spark(state: BlockState, pos: BlockPos, world: Level) {
+    protected open fun spark(state: BlockState, pos: BlockPos, level: Level) {
         //TODO: implement sounds
-        if (world !is ServerLevel) return
+        if (level !is ServerLevel) return
         val sparkEffect = SparkEmitterParticleEffect(0.1, 12, true)
         val sparkDirection = state.getValue(BlockStateProperties.FACING)
-        world.spawnParticle(sparkEffect, pos.center, sparkDirection.unitVec3, 0.4)
+        level.spawnParticle(sparkEffect, pos.center, sparkDirection.unitVec3, 0.4)
     }
 
-    protected open fun breakFixture(state: BlockState, pos: BlockPos, world: Level): Boolean {
+    protected open fun breakFixture(state: BlockState, pos: BlockPos, level: Level): Boolean {
         val isBroken = state.getValue(BROKEN)
         if (isBroken) return false
-        world.playSound(null, pos, ModSoundEvents.BLOCK_LIGHTING_FIXTURE_BREAK, SoundSource.BLOCKS)
-        spark(state, pos, world)
-        world.setBlock(pos, state.setValue(BROKEN, true), UPDATE_CLIENTS)
+        level.playSound(null, pos, ModSoundEvents.BLOCK_LIGHTING_FIXTURE_BREAK, SoundSource.BLOCKS)
+        spark(state, pos, level)
+        level.setBlock(pos, state.setValue(BROKEN, true), UPDATE_CLIENTS)
         return true
     }
 
-    protected open fun repair(state: BlockState, pos: BlockPos, world: Level, player: Player): Boolean {
+    protected open fun repair(state: BlockState, pos: BlockPos, level: Level, player: Player): Boolean {
         val isBroken = state.getValue(BROKEN)
         if (!isBroken) return false
-        world.playSound(
+        level.playSound(
             player,
             pos,
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_REPAIR,
             SoundSource.BLOCKS
         )
-        world.setBlock(pos, state.setValue(BROKEN, false), UPDATE_CLIENTS)
+        level.setBlock(pos, state.setValue(BROKEN, false), UPDATE_CLIENTS)
         return true
     }
 
-    protected open fun toggleInverted(state: BlockState, pos: BlockPos, world: Level, player: Player): Boolean {
-        world.playSound(
+    protected open fun toggleInverted(state: BlockState, pos: BlockPos, level: Level, player: Player): Boolean {
+        level.playSound(
             player,
             pos,
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_INVERT,
             SoundSource.BLOCKS
         )
-        world.setBlockAndUpdate(pos, state.setValue(INVERTED, !state.getValue(INVERTED)))
+        level.setBlockAndUpdate(pos, state.setValue(INVERTED, !state.getValue(INVERTED)))
         return true
     }
 
@@ -190,7 +190,7 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
 
     override fun updateShape(
         state: BlockState,
-        world: LevelReader,
+        level: LevelReader,
         tickView: ScheduledTickAccess,
         pos: BlockPos,
         direction: Direction,
@@ -199,11 +199,11 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
         random: RandomSource
     ): BlockState {
         if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-            tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world))
+            tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level))
         }
         return super.updateShape(
             state,
-            world,
+            level,
             tickView,
             pos,
             direction,
