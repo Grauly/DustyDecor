@@ -72,7 +72,7 @@ interface ImpactBreakable {
         pos: BlockPos,
     ): Boolean {
         if (isBlockConverting()) {
-            onRepair(level, state, pos)
+            onBroken(level, state, pos)
             return true
         }
         if (state.hasProperty(BROKEN) && !state.getValue(BROKEN)) {

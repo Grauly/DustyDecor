@@ -58,6 +58,8 @@ class GlassTableBlock(settings: Properties) : RestrictedRotationFurnitureBlock(s
         )
     }
 
+    override fun isBlockConverting(): Boolean = true
+
     override fun attack(state: BlockState, level: Level, pos: BlockPos, player: Player) {
         super.attack(state, level, pos, player)
         onAttacked(state, level, pos, player)
