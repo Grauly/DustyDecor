@@ -70,25 +70,40 @@ interface ImpactBreakable {
         level: ServerLevel,
         state: BlockState,
         pos: BlockPos,
-    ) {
+    ): Boolean {
+        if (isBlockConverting()) {
+            onRepair(level, state, pos)
+            return true
+        }
         if (state.hasProperty(BROKEN) && !state.getValue(BROKEN)) {
             level.setBlock(pos, state.setValue(BROKEN, true), Block.UPDATE_ALL)
+            onBroken(level, state, pos)
+            return true
         }
-        onBroken(level, state, pos)
+        return false
     }
 
     fun repair(
         level: ServerLevel,
         state: BlockState,
         pos: BlockPos,
-    ) {
+    ): Boolean {
+        if (isBlockConverting()) {
+            onRepair(level, state, pos)
+            return true
+        }
         if (state.hasProperty(BROKEN) && state.getValue(BROKEN)) {
             level.setBlock(pos, state.setValue(BROKEN, false), Block.UPDATE_ALL)
+            onRepair(level, state, pos)
+            return true
         }
-        onRepair(level, state, pos)
+        return false
     }
 
+    fun isBlockConverting(): Boolean = false
+
     fun getParticleEffectMultiplier(): Int = 1
+
     fun playBreakParticleEffect(
         level: ServerLevel,
         state: BlockState,

@@ -2,38 +2,39 @@ package grauly.dustydecor.block.lamp
 
 import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.block.ImpactBreakable
 import grauly.dustydecor.extensions.spawnParticle
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
 import grauly.dustydecor.util.ToolUtils
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.block.SimpleWaterloggedBlock
-import net.minecraft.world.entity.player.Player
-import net.minecraft.world.entity.projectile.Projectile
-import net.minecraft.world.level.material.FluidState
-import net.minecraft.world.level.material.Fluids
-import net.minecraft.world.item.context.BlockPlaceContext
-import net.minecraft.world.item.ItemStack
-import net.minecraft.server.level.ServerLevel
-import net.minecraft.sounds.SoundSource
-import net.minecraft.world.level.block.state.StateDefinition
-import net.minecraft.world.level.block.state.properties.BooleanProperty
-import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.world.InteractionResult
-import net.minecraft.world.level.block.Mirror
-import net.minecraft.world.level.block.Rotation
-import net.minecraft.world.InteractionHand
-import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.component.DataComponents
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.sounds.SoundSource
 import net.minecraft.util.RandomSource
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.entity.projectile.Projectile
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
-import net.minecraft.world.level.redstone.Orientation
 import net.minecraft.world.level.ScheduledTickAccess
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Mirror
+import net.minecraft.world.level.block.Rotation
+import net.minecraft.world.level.block.SimpleWaterloggedBlock
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.material.FluidState
+import net.minecraft.world.level.material.Fluids
+import net.minecraft.world.level.redstone.Orientation
+import net.minecraft.world.phys.BlockHitResult
 
-abstract class LightingFixtureBlock(settings: Properties) : Block(settings), SimpleWaterloggedBlock {
+abstract class LightingFixtureBlock(settings: Properties) : Block(settings), SimpleWaterloggedBlock, ImpactBreakable {
 
     init {
         registerDefaultState(
@@ -80,8 +81,8 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
             return InteractionResult.SUCCESS
         }
         if (stack.has(ModDataComponentTypes.LAMPS_REPAIR)) {
-            val hasRepaired = repair(state, pos, level, player)
-            if (hasRepaired) {
+            if (level !is ServerLevel) return super.useItemOn(stack, state, level, pos, player, hand, hit)
+            if (repair(level, state, pos)) {
                 ToolUtils.playToolSound(stack, pos, level, player)
                 return InteractionResult.SUCCESS
             }
@@ -95,15 +96,12 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
         hit: BlockHitResult,
         projectile: Projectile
     ) {
-        breakFixture(state, hit.blockPos, level)
+        onProjectileImpact(level, state, hit, projectile)
         super.onProjectileHit(level, state, hit, projectile)
     }
 
     override fun attack(state: BlockState, level: Level, pos: BlockPos, player: Player) {
-        val stack = player.getItemInHand(InteractionHand.MAIN_HAND)
-        if (stack.has(DataComponents.WEAPON) || stack.has(DataComponents.KINETIC_WEAPON)) {
-            breakFixture(state, pos, level)
-        }
+        onAttacked(state, level, pos, player)
         super.attack(state, level, pos, player)
     }
 
@@ -147,26 +145,19 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
         level.spawnParticle(sparkEffect, pos.center, sparkDirection.unitVec3, 0.4)
     }
 
-    protected open fun breakFixture(state: BlockState, pos: BlockPos, level: Level): Boolean {
-        val isBroken = state.getValue(BROKEN)
-        if (isBroken) return false
+    override fun onBroken(level: ServerLevel, state: BlockState, pos: BlockPos) {
+        super.onBroken(level, state, pos)
         level.playSound(null, pos, ModSoundEvents.BLOCK_LIGHTING_FIXTURE_BREAK, SoundSource.BLOCKS)
         spark(state, pos, level)
-        level.setBlock(pos, state.setValue(BROKEN, true), UPDATE_CLIENTS)
-        return true
     }
 
-    protected open fun repair(state: BlockState, pos: BlockPos, level: Level, player: Player): Boolean {
-        val isBroken = state.getValue(BROKEN)
-        if (!isBroken) return false
+    override fun onRepair(level: ServerLevel, state: BlockState, pos: BlockPos) {
         level.playSound(
-            player,
+            null,
             pos,
             ModSoundEvents.BLOCK_LIGHTING_FIXTURE_REPAIR,
             SoundSource.BLOCKS
         )
-        level.setBlock(pos, state.setValue(BROKEN, false), UPDATE_CLIENTS)
-        return true
     }
 
     protected open fun toggleInverted(state: BlockState, pos: BlockPos, level: Level, player: Player): Boolean {
@@ -224,7 +215,7 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
     companion object {
         val LIT: BooleanProperty = BooleanProperty.create("on")
         val INVERTED: BooleanProperty = BooleanProperty.create("inverted")
-        val BROKEN: BooleanProperty = BooleanProperty.create("broken")
+        val BROKEN: BooleanProperty = ImpactBreakable.BROKEN
         fun getLightingFunction(broken: Int, active: Int): (BlockState) -> Int {
             return lambda@{ state: BlockState ->
                 if (state.getValue(LIT) == state.getValue(INVERTED)) return@lambda 0
