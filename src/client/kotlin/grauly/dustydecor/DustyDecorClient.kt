@@ -11,5 +11,6 @@ object DustyDecorClient : ClientModInitializer {
         ModParticleGroups.init()
         ModHudElements.init()
         ModEntityRenderers.init()
+        ModClientPacketReceivers.init()
     }
 }

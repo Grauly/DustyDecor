@@ -1,7 +1,11 @@
 package grauly.dustydecor.block
 
+import grauly.dustydecor.DustyDecorMod
+import grauly.dustydecor.packet.ClientboundBlockBreakParticlePayload
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.minecraft.core.BlockPos
 import net.minecraft.core.component.DataComponents
+import net.minecraft.core.registries.Registries
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.InteractionHand
@@ -90,7 +94,10 @@ interface ImpactBreakable {
         state: BlockState,
         pos: BlockPos,
     ) {
-        level.addDestroyBlockEffect(pos, state)
+        val trackingPlayers = level.getPlayers { player -> player.chunkTrackingView.contains(level.getChunkAt(pos).pos) }
+        trackingPlayers.forEach { player ->
+            ServerPlayNetworking.send(player, ClientboundBlockBreakParticlePayload(pos, state))
+        }
     }
 
     fun onBroken(
