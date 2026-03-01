@@ -52,6 +52,8 @@ object ModBlocks {
             Properties.ofFullCopy(Blocks.LANTERN)
                 .lightLevel(LightingFixtureBlock.getLightingFunction(3, 15))
                 .randomTicks()
+                .strength(3.5f)
+                .explosionResistance(2.5f)
         ) as TallCageLampBlock)
     }
 
@@ -63,6 +65,8 @@ object ModBlocks {
             Properties.ofFullCopy(Blocks.LANTERN)
                 .lightLevel(LightingFixtureBlock.getLightingFunction(3, 15))
                 .randomTicks()
+                .strength(3.5f)
+                .explosionResistance(2.5f)
         ) as AlarmCageLampBlock)
     }
 
@@ -74,6 +78,8 @@ object ModBlocks {
             Properties.ofFullCopy(Blocks.LANTERN)
                 .lightLevel(LightingFixtureBlock.getLightingFunction(3, 15))
                 .randomTicks()
+                .strength(3.5f)
+                .explosionResistance(2.5f)
         ) as WideCageLampBlock)
     }
 
@@ -85,6 +91,8 @@ object ModBlocks {
             Properties.ofFullCopy(Blocks.LANTERN)
                 .lightLevel(LightingFixtureBlock.getLightingFunction(3, 15))
                 .randomTicks()
+                .strength(3.5f)
+                .explosionResistance(2.5f)
         ) as TubeLampBlock)
     }
 
@@ -93,7 +101,13 @@ object ModBlocks {
         (registerBlock(
             ::StoolBlock,
             id,
-            Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it).sound(SoundType.LANTERN)
+            Properties.of()
+                .noOcclusion()
+                .requiresCorrectToolForDrops()
+                .mapColor(it)
+                .sound(SoundType.LANTERN)
+                .strength(3.5f)
+                .explosionResistance(2.5f)
         ) as StoolBlock)
     }
 
@@ -102,7 +116,13 @@ object ModBlocks {
         (registerBlock(
             ::ChairBlock,
             id,
-            Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it).sound(SoundType.LANTERN)
+            Properties.of()
+                .noOcclusion()
+                .requiresCorrectToolForDrops()
+                .mapColor(it)
+                .sound(SoundType.LANTERN)
+                .strength(3.5f)
+                .explosionResistance(2.5f)
         ) as ChairBlock)
     }
 
@@ -112,13 +132,25 @@ object ModBlocks {
         (registerBlock(
             ::GlassTableBlock,
             id,
-            Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it.defaultMapColor()).sound(SoundType.GLASS)
+            Properties.of()
+                .noOcclusion()
+                .requiresCorrectToolForDrops()
+                .mapColor(it.defaultMapColor())
+                .sound(SoundType.GLASS)
+                .strength(3.5f)
+                .explosionResistance(2.5f)
         ) as GlassTableBlock)
     }
 
     val SMALL_GLASS_TABLE_FRAME: GlassTableFrameBlock = registerBlock(::GlassTableFrameBlock,
         "small_glass_table_frame",
-        Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.GRAY).sound(SoundType.LANTERN)
+        Properties.of()
+            .noOcclusion()
+            .requiresCorrectToolForDrops()
+            .mapColor(DyeColor.GRAY)
+            .sound(SoundType.LANTERN)
+            .strength(3.5f)
+            .explosionResistance(2.5f)
         ) as GlassTableFrameBlock
 
     val CONNECTING_GLASS_TABLES: List<ConnectingGlassTableBlock> = GlassUtils.GLASS_ORDER.map {
@@ -127,13 +159,25 @@ object ModBlocks {
         (registerBlock(
             ::ConnectingGlassTableBlock,
             id,
-            Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(it.defaultMapColor()).sound(SoundType.GLASS)
+            Properties.of()
+                .noOcclusion()
+                .requiresCorrectToolForDrops()
+                .mapColor(it.defaultMapColor())
+                .sound(SoundType.GLASS)
+                .strength(3.5f)
+                .explosionResistance(2.5f)
         ) as ConnectingGlassTableBlock)
     }
 
     val CONNECTING_GLASS_TABLE_FRAME: ConnectingGlassTableBlock = registerBlock(::ConnectingGlassTableBlock,
     "connecting_glass_table_frame",
-    Properties.of().noOcclusion().requiresCorrectToolForDrops().mapColor(DyeColor.GRAY).sound(SoundType.LANTERN)
+        Properties.of()
+            .noOcclusion()
+            .requiresCorrectToolForDrops()
+            .mapColor(DyeColor.GRAY)
+            .sound(SoundType.LANTERN)
+            .strength(3.5f)
+            .explosionResistance(2.5f)
     ) as ConnectingGlassTableBlock
 
     private fun registerBlock(
