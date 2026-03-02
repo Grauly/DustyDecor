@@ -35,6 +35,7 @@
         "y": 90
       },
       "when": {
+        "broken": "false",
         "east": "true",
         "north": "true",
         "north_east": "true"
@@ -47,15 +48,22 @@
         "y": 90
       },
       "when": {
-        "OR": [
+        "AND": [
           {
-            "north": "!true"
+            "OR": [
+              {
+                "north": "!true"
+              },
+              {
+                "east": "!true"
+              },
+              {
+                "north_east": "!true"
+              }
+            ]
           },
           {
-            "east": "!true"
-          },
-          {
-            "north_east": "!true"
+            "broken": "false"
           }
         ]
       }
@@ -89,6 +97,7 @@
         "y": 180
       },
       "when": {
+        "broken": "false",
         "east": "true",
         "south": "true",
         "south_east": "true"
@@ -101,15 +110,22 @@
         "y": 180
       },
       "when": {
-        "OR": [
+        "AND": [
           {
-            "east": "!true"
+            "OR": [
+              {
+                "east": "!true"
+              },
+              {
+                "south": "!true"
+              },
+              {
+                "south_east": "!true"
+              }
+            ]
           },
           {
-            "south": "!true"
-          },
-          {
-            "south_east": "!true"
+            "broken": "false"
           }
         ]
       }
@@ -143,6 +159,7 @@
         "y": 270
       },
       "when": {
+        "broken": "false",
         "south": "true",
         "south_west": "true",
         "west": "true"
@@ -155,15 +172,22 @@
         "y": 270
       },
       "when": {
-        "OR": [
+        "AND": [
           {
-            "south": "!true"
+            "OR": [
+              {
+                "south": "!true"
+              },
+              {
+                "west": "!true"
+              },
+              {
+                "south_west": "!true"
+              }
+            ]
           },
           {
-            "west": "!true"
-          },
-          {
-            "south_west": "!true"
+            "broken": "false"
           }
         ]
       }
@@ -196,6 +220,7 @@
         "uvlock": true
       },
       "when": {
+        "broken": "false",
         "north": "true",
         "north_west": "true",
         "west": "true"
@@ -207,15 +232,22 @@
         "uvlock": true
       },
       "when": {
-        "OR": [
+        "AND": [
           {
-            "west": "!true"
+            "OR": [
+              {
+                "west": "!true"
+              },
+              {
+                "north": "!true"
+              },
+              {
+                "north_west": "!true"
+              }
+            ]
           },
           {
-            "north": "!true"
-          },
-          {
-            "north_west": "!true"
+            "broken": "false"
           }
         ]
       }

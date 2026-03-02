@@ -86,6 +86,7 @@ open class ConnectingGlassTableBlockModel(
         cornerOuter: MultiVariant
     ) {
         val innerCondition = ConditionBuilder()
+            .term(ConnectingGlassTableBlock.BROKEN, false)
             .term(HorizontalConnectingBlock.getPropertyForDirection(direction)!!, HorizontalConnectingBlock.FACE_CONNECTED)
             .term(HorizontalConnectingBlock.getPropertyForDirection(direction2)!!, HorizontalConnectingBlock.FACE_CONNECTED)
             .term(middle, HorizontalConnectingBlock.FACE_CONNECTED)
@@ -100,8 +101,12 @@ open class ConnectingGlassTableBlockModel(
             ConditionBuilder().negatedTerm(HorizontalConnectingBlock.getPropertyForDirection(direction2)!!, HorizontalConnectingBlock.FACE_CONNECTED).build(),
             ConditionBuilder().negatedTerm(middle, HorizontalConnectingBlock.FACE_CONNECTED).build(),
         ))
-        modelGenerator.with(
+        val combinedCondition = CombinedCondition(Operation.AND, listOf(
             outerCondition,
+            ConditionBuilder().term(ConnectingGlassTableBlock.BROKEN, false).build(),
+        ))
+        modelGenerator.with(
+            combinedCondition,
             cornerOuter
                 .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction2]!!)
                 .with(VariantMutator.UV_LOCK.withValue(true))
