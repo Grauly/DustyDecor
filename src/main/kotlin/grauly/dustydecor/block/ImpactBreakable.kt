@@ -3,6 +3,7 @@ package grauly.dustydecor.block
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.packet.ClientboundBlockBreakParticlePayload
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
 import net.minecraft.core.BlockPos
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.Registries
@@ -42,9 +43,9 @@ interface ImpactBreakable {
         if (level !is ServerLevel) return
         val stack = player.getItemInHand(InteractionHand.MAIN_HAND)
         if (stack.has(DataComponents.WEAPON) || stack.has(DataComponents.KINETIC_WEAPON)) {
-            if (canBeBrokenByAttack(state, level, pos, player)) {
-                breakByImpact(level, state, pos)
-            }
+            if (!stack.`is`(ConventionalItemTags.MELEE_WEAPON_TOOLS)) return
+            if (!canBeBrokenByAttack(state, level, pos, player)) return
+            breakByImpact(level, state, pos)
         }
     }
 
