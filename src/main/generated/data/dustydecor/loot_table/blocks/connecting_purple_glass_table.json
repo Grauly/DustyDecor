@@ -5,6 +5,13 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
+          "block": "dustydecor:connecting_purple_glass_table",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "broken": "false"
+          }
+        },
+        {
           "condition": "minecraft:survives_explosion"
         }
       ],
@@ -12,6 +19,28 @@
         {
           "type": "minecraft:item",
           "name": "dustydecor:connecting_purple_glass_table"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "dustydecor:connecting_purple_glass_table",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "broken": "true"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "dustydecor:connecting_glass_table_frame"
         }
       ],
       "rolls": 1.0
