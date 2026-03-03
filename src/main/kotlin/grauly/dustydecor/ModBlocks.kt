@@ -1,7 +1,9 @@
 package grauly.dustydecor
 
 import grauly.dustydecor.block.furniture.ChairBlock
+import grauly.dustydecor.block.furniture.ConnectingBreakableBlock
 import grauly.dustydecor.block.furniture.ConnectingGlassTableBlock
+import grauly.dustydecor.block.furniture.ConnectingGlassTableFrameBlock
 import grauly.dustydecor.block.furniture.GlassTableBlock
 import grauly.dustydecor.block.furniture.GlassTableFrameBlock
 import grauly.dustydecor.block.furniture.StoolBlock
@@ -153,7 +155,7 @@ object ModBlocks {
             .explosionResistance(2.5f)
         ) as GlassTableFrameBlock
 
-    val CONNECTING_GLASS_TABLES: List<ConnectingGlassTableBlock> = GlassUtils.GLASS_ORDER.map {
+    val CONNECTING_GLASS_TABLES: List<ConnectingBreakableBlock> = GlassUtils.GLASS_ORDER.map {
         val index = GlassUtils.GLASS_ORDER.indexOf(it)
         val id = "connecting_${GlassUtils.GLASS_ID_ORDER[index]}_glass_table"
         (registerBlock(
@@ -166,10 +168,10 @@ object ModBlocks {
                 .sound(SoundType.GLASS)
                 .strength(3.5f)
                 .explosionResistance(2.5f)
-        ) as ConnectingGlassTableBlock)
+        ) as ConnectingBreakableBlock)
     }
 
-    val CONNECTING_GLASS_TABLE_FRAME: ConnectingGlassTableBlock = registerBlock(::ConnectingGlassTableBlock,
+    val CONNECTING_GLASS_TABLE_FRAME: ConnectingBreakableBlock = registerBlock(::ConnectingGlassTableFrameBlock,
     "connecting_glass_table_frame",
         Properties.of()
             .noOcclusion()
@@ -178,7 +180,7 @@ object ModBlocks {
             .sound(SoundType.LANTERN)
             .strength(3.5f)
             .explosionResistance(2.5f)
-    ) as ConnectingGlassTableBlock
+    ) as ConnectingBreakableBlock
 
     private fun registerBlock(
         blockFactory: (Properties) -> Block,

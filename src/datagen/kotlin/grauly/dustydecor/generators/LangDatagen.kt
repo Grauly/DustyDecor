@@ -72,6 +72,7 @@ class LangDatagen(
         builder.add(ToolComponents.VENT_LOCK_TOGGLE.translationKey, "Can lock/unlock %s's")
         builder.add(ToolComponents.LAMPS_INVERT.translationKey, "Can invert some lamps")
         builder.add(ToolComponents.SMALL_GLASS_TABLE_STRIP_PANE.translationKey, "Can safely remove the glass pane from small glass tables")
+        builder.add(ToolComponents.LARGE_GLASS_TABLE_STRIP_PANE.translationKey, "Can safely remove the glass pane from large glass tables")
 
         builder.add(tagTranslationKey(ModConventionalItemTags.SCREWDRIVER_TOOLS), "Screwdrivers")
         builder.add(tagTranslationKey(ModItemTags.VOID_GOOP), "Void Goop")

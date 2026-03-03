@@ -1,7 +1,7 @@
 package grauly.dustydecor.generators.block
 
 import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.block.furniture.ConnectingGlassTableBlock
+import grauly.dustydecor.block.furniture.ConnectingBreakableBlock
 import grauly.dustydecor.block.furniture.GranularHorizontalConnectingBlock
 import grauly.dustydecor.block.furniture.HorizontalConnectingBlock
 import grauly.dustydecor.generators.BlockModelDatagen
@@ -22,12 +22,12 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty
 import java.util.*
 
 open class ConnectingGlassTableBlockModel(
-    blocks: List<ConnectingGlassTableBlock>,
+    blocks: List<ConnectingBreakableBlock>,
     replacements: List<Identifier>,
     basePath: String
 ) : ConnectingGlassTableFrameBlockModel(blocks, replacements, basePath) {
     override fun extraBlockSetup(
-        block: ConnectingGlassTableBlock,
+        block: ConnectingBreakableBlock,
         replaceTexture: Identifier,
         generator: BlockModelGenerators,
         modelGenerator: MultiPartGenerator
@@ -59,7 +59,7 @@ open class ConnectingGlassTableBlockModel(
         }
     }
 
-    protected open fun replaceTexture(block: ConnectingGlassTableBlock, targetPath: String, replacement: Identifier, generator: BlockModelGenerators): MultiVariant {
+    protected open fun replaceTexture(block: ConnectingBreakableBlock, targetPath: String, replacement: Identifier, generator: BlockModelGenerators): MultiVariant {
         val variantModelIdentifier =
             Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "$basePath/$targetPath")
         val primarySlot = TextureSlot.create("1")
@@ -127,7 +127,7 @@ open class ConnectingGlassTableBlockModel(
     }
 
     override fun createItem(
-        block: ConnectingGlassTableBlock,
+        block: ConnectingBreakableBlock,
         replaceTexture: Identifier,
         generator: BlockModelGenerators
     ) {

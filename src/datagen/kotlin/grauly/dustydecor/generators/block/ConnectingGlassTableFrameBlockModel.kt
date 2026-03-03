@@ -1,7 +1,7 @@
 package grauly.dustydecor.generators.block
 
 import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.block.furniture.ConnectingGlassTableBlock
+import grauly.dustydecor.block.furniture.ConnectingBreakableBlock
 import grauly.dustydecor.block.furniture.GranularHorizontalConnectingBlock
 import grauly.dustydecor.block.furniture.HorizontalConnectingBlock
 import grauly.dustydecor.block.vacpipe.ConnectionState
@@ -14,7 +14,7 @@ import net.minecraft.resources.Identifier
 import net.minecraft.world.level.block.state.properties.BooleanProperty
 
 open class ConnectingGlassTableFrameBlockModel(
-    private val blocks: List<ConnectingGlassTableBlock>,
+    private val blocks: List<ConnectingBreakableBlock>,
     private val replacements: List<Identifier>,
     val basePath: String
 ) {
@@ -31,13 +31,13 @@ open class ConnectingGlassTableFrameBlockModel(
         }
     }
 
-    fun createTable(block: ConnectingGlassTableBlock, replaceTexture: Identifier, generator: BlockModelGenerators) {
+    fun createTable(block: ConnectingBreakableBlock, replaceTexture: Identifier, generator: BlockModelGenerators) {
         createBlock(block, replaceTexture, generator)
         createItem(block, replaceTexture, generator)
     }
 
     private fun createBlock(
-        block: ConnectingGlassTableBlock,
+        block: ConnectingBreakableBlock,
         replaceTexture: Identifier,
         generator: BlockModelGenerators
     ) {
@@ -90,7 +90,7 @@ open class ConnectingGlassTableFrameBlockModel(
     }
 
     protected open fun extraBlockSetup(
-        block: ConnectingGlassTableBlock,
+        block: ConnectingBreakableBlock,
         replaceTexture: Identifier,
         generator: BlockModelGenerators,
         modelGenerator: MultiPartGenerator
@@ -200,7 +200,7 @@ open class ConnectingGlassTableFrameBlockModel(
     }
 
     protected open fun createItem(
-        block: ConnectingGlassTableBlock,
+        block: ConnectingBreakableBlock,
         replaceTexture: Identifier,
         generator: BlockModelGenerators
     ) {
