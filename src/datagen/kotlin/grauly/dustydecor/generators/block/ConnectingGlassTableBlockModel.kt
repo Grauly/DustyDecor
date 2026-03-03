@@ -39,7 +39,6 @@ open class ConnectingGlassTableBlockModel(
         val edgeOuter = replaceTexture(block, "table_top_edge_outer", replaceTexture, generator)
 
         modelGenerator.with(
-            ConditionBuilder().term(ConnectingGlassTableBlock.BROKEN, false),
             center
         )
         listOf(0,1,2,3).forEach { indexOffset ->
@@ -86,7 +85,6 @@ open class ConnectingGlassTableBlockModel(
         cornerOuter: MultiVariant
     ) {
         val innerCondition = ConditionBuilder()
-            .term(ConnectingGlassTableBlock.BROKEN, false)
             .term(HorizontalConnectingBlock.getPropertyForDirection(direction)!!, HorizontalConnectingBlock.FACE_CONNECTED)
             .term(HorizontalConnectingBlock.getPropertyForDirection(direction2)!!, HorizontalConnectingBlock.FACE_CONNECTED)
             .term(middle, HorizontalConnectingBlock.FACE_CONNECTED)
@@ -101,12 +99,8 @@ open class ConnectingGlassTableBlockModel(
             ConditionBuilder().negatedTerm(HorizontalConnectingBlock.getPropertyForDirection(direction2)!!, HorizontalConnectingBlock.FACE_CONNECTED).build(),
             ConditionBuilder().negatedTerm(middle, HorizontalConnectingBlock.FACE_CONNECTED).build(),
         ))
-        val combinedCondition = CombinedCondition(Operation.AND, listOf(
-            outerCondition,
-            ConditionBuilder().term(ConnectingGlassTableBlock.BROKEN, false).build(),
-        ))
         modelGenerator.with(
-            combinedCondition,
+            outerCondition,
             cornerOuter
                 .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction2]!!)
                 .with(VariantMutator.UV_LOCK.withValue(true))
@@ -124,7 +118,6 @@ open class ConnectingGlassTableBlockModel(
             val connected = state == HorizontalConnectingBlock.FACE_CONNECTED
             modelGenerator.with(
                 ConditionBuilder()
-                    .term(ConnectingGlassTableBlock.BROKEN, false)
                     .term(property, connected),
                 (if (connected) edgeInner else edgeOuter)
                     .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction]!!)

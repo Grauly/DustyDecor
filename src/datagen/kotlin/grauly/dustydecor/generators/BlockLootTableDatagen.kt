@@ -21,30 +21,5 @@ class BlockLootTableDatagen(
 
     override fun generate() {
         BlockDatagenWrapper.entries.filter { it.generateLootTable }.forEach { dropSelf(it.block) }
-
-        ModBlocks.CONNECTING_GLASS_TABLES.forEach {
-            add(
-                it, LootTable.lootTable()
-                    .withPool(
-                        applyExplosionCondition(
-                            it, LootPool.lootPool().`when`(
-                                LootItemBlockStatePropertyCondition.hasBlockStateProperties(it).setProperties(
-                                    StatePropertiesPredicate.Builder.properties()
-                                        .hasProperty(ImpactBreakable.BROKEN, false)
-                                )
-                            ).setRolls(ConstantValue.exactly(1f))
-                        ).add(LootItem.lootTableItem(it))
-                    ).withPool(
-                        applyExplosionCondition(
-                            ModBlocks.CONNECTING_GLASS_TABLE_FRAME, LootPool.lootPool().`when`(
-                                LootItemBlockStatePropertyCondition.hasBlockStateProperties(it).setProperties(
-                                    StatePropertiesPredicate.Builder.properties()
-                                        .hasProperty(ImpactBreakable.BROKEN, true)
-                                )
-                            ).setRolls(ConstantValue.exactly(1f))
-                        ).add(LootItem.lootTableItem(ModBlocks.CONNECTING_GLASS_TABLE_FRAME))
-                    )
-            )
-        }
     }
 }

@@ -13,13 +13,6 @@ import net.minecraft.world.phys.BlockHitResult
 
 class ConnectingGlassTableBlock(properties: Properties) : GranularHorizontalConnectingBlock(properties), ImpactBreakable {
 
-    init {
-        registerDefaultState(
-            defaultBlockState()
-                .setValue(BROKEN, false)
-        )
-    }
-
     override fun onProjectileHit(level: Level, state: BlockState, blockHit: BlockHitResult, projectile: Projectile) {
         super.onProjectileHit(level, state, blockHit, projectile)
         onProjectileImpact(level, state, blockHit, projectile)
@@ -28,14 +21,5 @@ class ConnectingGlassTableBlock(properties: Properties) : GranularHorizontalConn
     override fun attack(state: BlockState, level: Level, pos: BlockPos, player: Player) {
         super.attack(state, level, pos, player)
         onAttacked(state, level, pos, player)
-    }
-
-    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
-        super.createBlockStateDefinition(builder)
-        builder.add(BROKEN)
-    }
-
-    companion object {
-        val BROKEN = ImpactBreakable.BROKEN
     }
 }
