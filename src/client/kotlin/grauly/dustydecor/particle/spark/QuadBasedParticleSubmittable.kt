@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.renderer.SubmitNodeCollector
 import net.minecraft.client.renderer.rendertype.RenderSetup
 import net.minecraft.client.renderer.rendertype.RenderType
-import net.minecraft.client.renderer.state.CameraRenderState
-import net.minecraft.client.renderer.state.ParticleGroupRenderState
+import net.minecraft.client.renderer.state.level.CameraRenderState
+import net.minecraft.client.renderer.state.level.ParticleGroupRenderState
 import net.minecraft.resources.Identifier
 import org.joml.Vector3f
 
