@@ -9,7 +9,7 @@ import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.model.ItemModelUtils
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator
 import net.minecraft.client.data.models.blockstates.PropertyDispatch
-import net.minecraft.client.renderer.block.model.VariantMutator
+import net.minecraft.client.renderer.block.dispatch.VariantMutator
 import net.minecraft.resources.Identifier
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import kotlin.math.floor

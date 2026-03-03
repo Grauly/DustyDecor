@@ -8,8 +8,6 @@ import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.ItemModelGenerators
-import net.minecraft.client.renderer.block.model.Variant
-import net.minecraft.client.renderer.block.model.VariantMutator
 import net.minecraft.client.data.models.MultiVariant
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.Property
@@ -19,6 +17,8 @@ import com.mojang.math.Quadrant
 import grauly.dustydecor.util.GlassUtils
 import net.minecraft.client.data.models.model.ModelLocationUtils
 import net.minecraft.client.data.models.model.TextureMapping.pane
+import net.minecraft.client.renderer.block.dispatch.Variant
+import net.minecraft.client.renderer.block.dispatch.VariantMutator
 import net.minecraft.core.Direction
 import net.minecraft.world.level.block.Blocks
 

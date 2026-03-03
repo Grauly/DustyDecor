@@ -7,9 +7,9 @@ import grauly.dustydecor.block.vent.SideConnectableBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator
-import net.minecraft.client.renderer.block.model.VariantMutator
 import net.minecraft.client.data.models.blockstates.ConditionBuilder
 import net.minecraft.client.data.models.MultiVariant
+import net.minecraft.client.renderer.block.dispatch.VariantMutator
 import net.minecraft.world.level.block.state.properties.Property
 import net.minecraft.resources.Identifier
 

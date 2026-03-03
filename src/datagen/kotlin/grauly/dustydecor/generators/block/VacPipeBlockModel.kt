@@ -12,9 +12,9 @@ import net.minecraft.client.data.models.blockstates.MultiPartGenerator
 import net.minecraft.world.level.block.state.properties.EnumProperty
 import com.mojang.math.Quadrant
 import net.minecraft.client.data.models.blockstates.ConditionBuilder
-import net.minecraft.client.renderer.block.model.VariantMutator
-import net.minecraft.client.renderer.block.model.multipart.CombinedCondition
-import net.minecraft.client.renderer.block.model.multipart.Condition
+import net.minecraft.client.renderer.block.dispatch.VariantMutator
+import net.minecraft.client.renderer.block.dispatch.multipart.CombinedCondition
+import net.minecraft.client.renderer.block.dispatch.multipart.Condition
 import net.minecraft.core.Direction
 
 object VacPipeBlockModel {

@@ -12,10 +12,9 @@ import net.minecraft.client.data.models.blockstates.MultiPartGenerator
 import net.minecraft.client.data.models.model.ModelTemplate
 import net.minecraft.client.data.models.model.TextureMapping
 import net.minecraft.client.data.models.model.TextureSlot
-import net.minecraft.client.renderer.block.model.Material
-import net.minecraft.client.renderer.block.model.VariantMutator
-import net.minecraft.client.renderer.block.model.multipart.CombinedCondition
-import net.minecraft.client.renderer.block.model.multipart.CombinedCondition.Operation
+import net.minecraft.client.renderer.block.dispatch.VariantMutator
+import net.minecraft.client.renderer.block.dispatch.multipart.CombinedCondition
+import net.minecraft.client.resources.model.sprite.Material
 import net.minecraft.core.Direction
 import net.minecraft.resources.Identifier
 import net.minecraft.world.level.block.state.properties.BooleanProperty
@@ -94,11 +93,19 @@ open class ConnectingGlassTableBlockModel(
                 .with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[direction2]!!)
                 .with(VariantMutator.UV_LOCK.withValue(true))
         )
-        val outerCondition = CombinedCondition(Operation.OR, listOf(
-            ConditionBuilder().negatedTerm(HorizontalConnectingBlock.getPropertyForDirection(direction)!!, HorizontalConnectingBlock.FACE_CONNECTED).build(),
-            ConditionBuilder().negatedTerm(HorizontalConnectingBlock.getPropertyForDirection(direction2)!!, HorizontalConnectingBlock.FACE_CONNECTED).build(),
-            ConditionBuilder().negatedTerm(middle, HorizontalConnectingBlock.FACE_CONNECTED).build(),
-        ))
+        val outerCondition = CombinedCondition(
+            CombinedCondition.Operation.OR, listOf(
+                ConditionBuilder().negatedTerm(
+                    HorizontalConnectingBlock.getPropertyForDirection(direction)!!,
+                    HorizontalConnectingBlock.FACE_CONNECTED
+                ).build(),
+                ConditionBuilder().negatedTerm(
+                    HorizontalConnectingBlock.getPropertyForDirection(direction2)!!,
+                    HorizontalConnectingBlock.FACE_CONNECTED
+                ).build(),
+                ConditionBuilder().negatedTerm(middle, HorizontalConnectingBlock.FACE_CONNECTED).build(),
+            )
+        )
         modelGenerator.with(
             outerCondition,
             cornerOuter
