@@ -26,12 +26,16 @@ open class GranularHorizontalConnectingBlock(properties: Properties) : Horizonta
         var workingState = parentState
         for (offset in DIRECTION_PROPERTIES) {
             val offsetPos = pos.offset(offset.first)
-            val offsetState = level.getBlockState(offsetPos)
             workingState = workingState.setValue(
-                offset.second, (offsetState.`is`(this)) == FACE_CONNECTED
+                offset.second, canConnectTo(pos, offsetPos, level)
             )
         }
         return workingState
+    }
+
+    protected open fun canConnectTo(ownPos: BlockPos, connectingPos: BlockPos, level: LevelReader): Boolean {
+        val offsetState = level.getBlockState(connectingPos)
+        return offsetState.`is`(this) == FACE_CONNECTED
     }
 
     override fun mirror(
