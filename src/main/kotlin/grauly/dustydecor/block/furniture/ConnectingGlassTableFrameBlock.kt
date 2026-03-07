@@ -24,6 +24,48 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
 
     init {
         generateCollisionShapes()
+        generateOutlineShapes()
+    }
+
+    private fun generateOutlineShapes() {
+        val base = column(14.0, 0.0, 15.0)
+        for (state in stateDefinition.possibleStates) {
+            if (state != normalizeState(state)) continue
+            OUTLINE_SHAPES[state] = Shapes.or(
+                base,
+                mainDirectionConnection(state, Direction.NORTH),
+                mainDirectionConnection(state, Direction.EAST),
+                mainDirectionConnection(state, Direction.SOUTH),
+                mainDirectionConnection(state, Direction.WEST),
+                diagonalConnection(state, 0),
+                diagonalConnection(state, 1),
+                diagonalConnection(state, 2),
+                diagonalConnection(state, 3),
+            )
+        }
+    }
+
+    private fun diagonalConnection(state: BlockState, indexOffset: Int): VoxelShape {
+        val diagonalConnector = box(0.0, 0.0, 0.0, 1.0, 15.0, 1.0)
+        val directionA = CONNECTION_DIRECTIONS[(indexOffset) % 4]
+        val directionB = CONNECTION_DIRECTIONS[(indexOffset + 1) % 4]
+        val property = DIRECTION_PROPERTIES[(indexOffset * 2 + 1) % 8].second
+        return if (state.getValue(property) == FACE_CONNECTED &&
+            state.getValue(getPropertyForDirection(directionA)!!) == FACE_CONNECTED &&
+            state.getValue(getPropertyForDirection(directionB)!!) == FACE_CONNECTED) {
+            Shapes.rotate(diagonalConnector, ROTATION_MAP[directionB]!!)
+        } else {
+            Shapes.empty()
+        }
+    }
+
+    private fun mainDirectionConnection(state: BlockState, direction: Direction): VoxelShape {
+        val outsideConnector = box(1.0, 0.0, 0.0, 15.0, 15.0, 1.0)
+        return if (state.getValue(getPropertyForDirection(direction)!!) == FACE_CONNECTED) {
+            Shapes.rotate(outsideConnector, ROTATION_MAP[direction]!!)
+        } else {
+            Shapes.empty()
+        }
     }
 
     private fun generateCollisionShapes() {
@@ -100,8 +142,12 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
         return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)
     }
 
-    override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
+    override fun getCollisionShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
         return COLLISION_SHAPES[normalizeState(state)] ?: Shapes.block()
+    }
+
+    override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
+        return OUTLINE_SHAPES[normalizeState(state)] ?: Shapes.block()
     }
 
     override fun onProjectileHit(level: Level, state: BlockState, blockHit: BlockHitResult, projectile: Projectile) {
@@ -171,6 +217,7 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
             box(0.0, 12.0, 1.499, 1.0, 14.0, 1.501, )
         )
         var COLLISION_SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()
+        var OUTLINE_SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()
         val ROTATION_MAP: Map<Direction, OctahedralGroup> = mapOf(
             Direction.NORTH to OctahedralGroup.IDENTITY,
             Direction.EAST to OctahedralGroup.BLOCK_ROT_Y_90,
