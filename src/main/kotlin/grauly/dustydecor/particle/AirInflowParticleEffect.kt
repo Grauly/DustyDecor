@@ -4,14 +4,14 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.ModParticleTypes
 import io.netty.buffer.ByteBuf
-import net.minecraft.network.codec.StreamCodec
+import net.minecraft.core.Direction
 import net.minecraft.core.particles.ParticleOptions
 import net.minecraft.core.particles.ParticleType
-import net.minecraft.core.Direction
+import net.minecraft.network.codec.StreamCodec
 
 class AirInflowParticleEffect(
     val inflowDirection: Direction
-): ParticleOptions {
+) : ParticleOptions {
     override fun getType(): ParticleType<*> = ModParticleTypes.AIR_INFLOW
 
     companion object {

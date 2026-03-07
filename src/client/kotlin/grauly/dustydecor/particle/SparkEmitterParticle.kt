@@ -1,8 +1,8 @@
 package grauly.dustydecor.particle
 
 import grauly.dustydecor.ModParticleTypes
-import net.minecraft.client.particle.NoRenderParticle
 import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.client.particle.NoRenderParticle
 
 class SparkEmitterParticle(
     clientWorld: ClientLevel,

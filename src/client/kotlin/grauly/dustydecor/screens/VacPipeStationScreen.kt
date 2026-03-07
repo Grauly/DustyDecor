@@ -8,18 +8,17 @@ import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Compa
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.REDSTONE_MODE
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.SEND_MODE
 import grauly.dustydecor.screen.VacPipeStationScreenHandler
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
-import net.minecraft.world.entity.player.Inventory
-import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.Items
-import net.minecraft.world.inventory.AbstractContainerMenu
-import net.minecraft.world.inventory.ContainerListener
+import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.ContainerListener
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
 
 abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
     handler: T,
@@ -48,9 +47,11 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
                 GOLEM_MODE -> {
                     golemModeButton.setValue(CopperGolemMode.entries[value])
                 }
+
                 REDSTONE_MODE -> {
                     redstoneModeButton.setValue(RedstoneEmissionMode.entries[value])
                 }
+
                 SEND_MODE -> {
                     sendingModeButton.setValue(SendMode.entries[value])
                 }
@@ -198,28 +199,37 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
         val RECEIVE_TEXTURE: Identifier =
             Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/gui/container/vac_pipe_station_receive.png")
 
-        const val COPPER_GOLEM_MODE_TRANSLATION_KEY: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.copper_golem"
+        const val COPPER_GOLEM_MODE_TRANSLATION_KEY: String =
+            "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.copper_golem"
         const val COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT: String = "$COPPER_GOLEM_MODE_TRANSLATION_KEY.interact"
-        const val COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT_NARRATION: String = "$COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT.narration"
+        const val COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT_NARRATION: String =
+            "$COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT.narration"
         const val COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE: String = "$COPPER_GOLEM_MODE_TRANSLATION_KEY.ignore"
-        const val COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE_NARRATION: String = "$COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE.narration"
+        const val COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE_NARRATION: String =
+            "$COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE.narration"
 
         const val REDSTONE_MODE_TRANSLATION_KEY: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.redstone"
         const val REDSTONE_MODE_TRANSLATION_KEY_ON_SEND: String = "$REDSTONE_MODE_TRANSLATION_KEY.on_send"
-        const val REDSTONE_MODE_TRANSLATION_KEY_ON_SEND_NARRATION: String = "$REDSTONE_MODE_TRANSLATION_KEY_ON_SEND.narration"
+        const val REDSTONE_MODE_TRANSLATION_KEY_ON_SEND_NARRATION: String =
+            "$REDSTONE_MODE_TRANSLATION_KEY_ON_SEND.narration"
         const val REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE: String = "$REDSTONE_MODE_TRANSLATION_KEY.on_arrival"
-        const val REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE_NARRATION: String = "$REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE.narration"
+        const val REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE_NARRATION: String =
+            "$REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE.narration"
         const val REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY: String = "$REDSTONE_MODE_TRANSLATION_KEY.while_empty"
-        const val REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY_NARRATION: String = "$REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY.narration"
+        const val REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY_NARRATION: String =
+            "$REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY.narration"
         const val REDSTONE_MODE_TRANSLATION_KEY_NONE: String = "$REDSTONE_MODE_TRANSLATION_KEY.none"
         const val REDSTONE_MODE_TRANSLATION_KEY_NONE_NARRATION: String = "$REDSTONE_MODE_TRANSLATION_KEY_NONE.narration"
 
         const val SENDING_MODE_TRANSLATION_KEY: String = "screen.${DustyDecorMod.MODID}.vac_pipe_station.mode.sending"
         const val SENDING_MODE_TRANSLATION_KEY_MANUAL: String = "$SENDING_MODE_TRANSLATION_KEY.manual"
-        const val SENDING_MODE_TRANSLATION_KEY_MANUAL_NARRATION: String = "$SENDING_MODE_TRANSLATION_KEY_MANUAL.narration"
+        const val SENDING_MODE_TRANSLATION_KEY_MANUAL_NARRATION: String =
+            "$SENDING_MODE_TRANSLATION_KEY_MANUAL.narration"
         const val SENDING_MODE_TRANSLATION_KEY_REDSTONE: String = "$SENDING_MODE_TRANSLATION_KEY.redston"
-        const val SENDING_MODE_TRANSLATION_KEY_REDSTONE_NARRATION: String = "$SENDING_MODE_TRANSLATION_KEY_REDSTONE.narration"
+        const val SENDING_MODE_TRANSLATION_KEY_REDSTONE_NARRATION: String =
+            "$SENDING_MODE_TRANSLATION_KEY_REDSTONE.narration"
         const val SENDING_MODE_TRANSLATION_KEY_AUTOMATIC: String = "$SENDING_MODE_TRANSLATION_KEY.automatic"
-        const val SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION: String = "$SENDING_MODE_TRANSLATION_KEY_AUTOMATIC.narration"
+        const val SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION: String =
+            "$SENDING_MODE_TRANSLATION_KEY_AUTOMATIC.narration"
     }
 }

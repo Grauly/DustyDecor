@@ -10,8 +10,7 @@ object ModHudElements {
         HudElementRegistry.attachElementAfter(
             VanillaHudElements.MISC_OVERLAYS,
             Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "void_goop_overlay"),
-        ) {
-            context, tick ->
+        ) { context, tick ->
             VoidGoopOverlayRenderer.render(context, tick)
         }
     }

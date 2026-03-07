@@ -16,7 +16,11 @@ object PlaneCrossShape : ShapeDefinition {
             .getPoints()
             .toMutableList()
         points.addAll(
-            BiPlaneShape.getTransformed(Vec3.ZERO, Vec3(1.0, 1.0, 1.0), Quaternionf().fromAxisAngleRad(Vector3f(1f, 0f, 0f), (PI/2).toFloat())).getPoints()
+            BiPlaneShape.getTransformed(
+                Vec3.ZERO,
+                Vec3(1.0, 1.0, 1.0),
+                Quaternionf().fromAxisAngleRad(Vector3f(1f, 0f, 0f), (PI / 2).toFloat())
+            ).getPoints()
         )
         points
     }

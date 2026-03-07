@@ -1,17 +1,17 @@
 package grauly.dustydecor.block.furniture
 
 import grauly.dustydecor.entity.SeatEntity
-import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.entity.player.Player
-import net.minecraft.network.chat.Component
-import net.minecraft.world.InteractionResult
-import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
-import net.minecraft.world.phys.Vec3
+import net.minecraft.network.chat.Component
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.pathfinder.PathComputationType
+import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.world.phys.Vec3
 
 abstract class SittableFurnitureBlock(settings: Properties) : SingleFurnitureBlock(settings), SeatLinkable {
     abstract fun getSitOffset(state: BlockState): Vec3

@@ -6,12 +6,12 @@ import grauly.dustydecor.particle.AirOutflowParticleEffect
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
 import io.netty.buffer.ByteBuf
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes
-import net.minecraft.network.codec.StreamCodec
+import net.minecraft.core.Registry
 import net.minecraft.core.particles.ParticleOptions
 import net.minecraft.core.particles.ParticleType
 import net.minecraft.core.particles.SimpleParticleType
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.core.Registry
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.Identifier
 
 object ModParticleTypes {
@@ -37,15 +37,15 @@ object ModParticleTypes {
         AirOutflowParticleEffect.PACKET_CODEC
     )
 
-    private fun <T: ParticleOptions> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {
+    private fun <T : ParticleOptions> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {
         return registerParticle(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id), type)
     }
 
-    private fun <T: ParticleOptions> registerParticle(id: Identifier, type: ParticleType<T>): ParticleType<T> {
+    private fun <T : ParticleOptions> registerParticle(id: Identifier, type: ParticleType<T>): ParticleType<T> {
         return Registry.register(BuiltInRegistries.PARTICLE_TYPE, id, type)
     }
 
-    private fun <T: ParticleOptions> registerComplex(
+    private fun <T : ParticleOptions> registerComplex(
         id: String,
         mapCodec: MapCodec<T>,
         packetCodec: StreamCodec<ByteBuf, T>,

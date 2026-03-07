@@ -40,7 +40,7 @@ open class ConnectingGlassTableBlockModel(
         modelGenerator.with(
             center
         )
-        listOf(0,1,2,3).forEach { indexOffset ->
+        listOf(0, 1, 2, 3).forEach { indexOffset ->
             topEdge(
                 directions[indexOffset],
                 modelGenerator,
@@ -58,7 +58,12 @@ open class ConnectingGlassTableBlockModel(
         }
     }
 
-    protected open fun replaceTexture(block: ConnectingBreakableBlock, targetPath: String, replacement: Identifier, generator: BlockModelGenerators): MultiVariant {
+    protected open fun replaceTexture(
+        block: ConnectingBreakableBlock,
+        targetPath: String,
+        replacement: Identifier,
+        generator: BlockModelGenerators
+    ): MultiVariant {
         val variantModelIdentifier =
             Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "$basePath/$targetPath")
         val primarySlot = TextureSlot.create("1")
@@ -84,8 +89,14 @@ open class ConnectingGlassTableBlockModel(
         cornerOuter: MultiVariant
     ) {
         val innerCondition = ConditionBuilder()
-            .term(HorizontalConnectingBlock.getPropertyForDirection(direction)!!, HorizontalConnectingBlock.FACE_CONNECTED)
-            .term(HorizontalConnectingBlock.getPropertyForDirection(direction2)!!, HorizontalConnectingBlock.FACE_CONNECTED)
+            .term(
+                HorizontalConnectingBlock.getPropertyForDirection(direction)!!,
+                HorizontalConnectingBlock.FACE_CONNECTED
+            )
+            .term(
+                HorizontalConnectingBlock.getPropertyForDirection(direction2)!!,
+                HorizontalConnectingBlock.FACE_CONNECTED
+            )
             .term(middle, HorizontalConnectingBlock.FACE_CONNECTED)
         modelGenerator.with(
             innerCondition,

@@ -5,35 +5,34 @@ import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
 import grauly.dustydecor.util.ToolUtils
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.EntityBlock
-import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.phys.shapes.CollisionContext
-import net.minecraft.world.level.block.SupportType
-import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.world.level.block.entity.BlockEntityTicker
-import net.minecraft.world.level.block.entity.BlockEntityType
-import net.minecraft.world.level.pathfinder.PathComputationType
-import net.minecraft.world.entity.player.Player
-import net.minecraft.world.item.ItemStack
-import net.minecraft.sounds.SoundSource
-import net.minecraft.world.level.block.state.StateDefinition
-import net.minecraft.world.level.block.state.properties.BooleanProperty
-import net.minecraft.world.level.block.state.properties.EnumProperty
-import net.minecraft.world.InteractionResult
-import net.minecraft.world.InteractionHand
-import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
-import net.minecraft.world.phys.Vec3
+import net.minecraft.sounds.SoundSource
 import net.minecraft.util.RandomSource
-import net.minecraft.world.phys.shapes.VoxelShape
-import net.minecraft.world.phys.shapes.Shapes
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.ScheduledTickAccess
-import kotlin.collections.get
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.EntityBlock
+import net.minecraft.world.level.block.SupportType
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityTicker
+import net.minecraft.world.level.block.entity.BlockEntityType
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.block.state.properties.EnumProperty
+import net.minecraft.world.level.pathfinder.PathComputationType
+import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.world.phys.Vec3
+import net.minecraft.world.phys.shapes.CollisionContext
+import net.minecraft.world.phys.shapes.Shapes
+import net.minecraft.world.phys.shapes.VoxelShape
 
 class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityBlock {
 
@@ -63,7 +62,7 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
         }
     }
 
-    private fun getConnectionsFlippedState(state: BlockState) : BlockState {
+    private fun getConnectionsFlippedState(state: BlockState): BlockState {
         return state
             .setValue(connections[0], state.getValue(connections[1]))
             .setValue(connections[1], state.getValue(connections[0]))
@@ -182,7 +181,12 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
             val offsetPos = pos.relative(connectionDirection.direction)
             val offsetState = world.getBlockState(offsetPos)
             val otherConnection =
-                connections.firstOrNull { offsetState.getValueOrElse(it, ConnectionState.NONE) != ConnectionState.NONE && offsetState.getValue(it).direction!!.opposite == connectionDirection.direction }
+                connections.firstOrNull {
+                    offsetState.getValueOrElse(
+                        it,
+                        ConnectionState.NONE
+                    ) != ConnectionState.NONE && offsetState.getValue(it).direction!!.opposite == connectionDirection.direction
+                }
             if (otherConnection == null) return false
             return tryDisableConnection(offsetPos, offsetState, otherConnection, world, false)
         }
@@ -218,13 +222,18 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
         var workingState = currentState
         if (!isValidConnection(connections[0], world, pos, currentState)) {
             workingState = getConnectionsFlippedState(workingState)
-        } else if(!isValidConnection(connections[1], world, pos, currentState)) {
+        } else if (!isValidConnection(connections[1], world, pos, currentState)) {
             workingState = getConnectionsFlippedState(workingState)
         }
         return workingState
     }
 
-    private fun isValidConnection(connection: EnumProperty<ConnectionState>, world: LevelReader, pos: BlockPos, state: BlockState): Boolean {
+    private fun isValidConnection(
+        connection: EnumProperty<ConnectionState>,
+        world: LevelReader,
+        pos: BlockPos,
+        state: BlockState
+    ): Boolean {
         val connectionState = state.getValue(connection)
         if (connectionState == ConnectionState.NONE) return true
         val connectionDirection = connectionState.direction!!
@@ -236,7 +245,7 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
             return false
         }
         if (otherState.`is`(ModBlocks.VAC_PIPE)) {
-            val otherConnection = connections.first { it != connection}
+            val otherConnection = connections.first { it != connection }
             return otherState.getValue(otherConnection).direction?.opposite == connectionDirection
         }
         return false
@@ -253,19 +262,31 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
         displayLeaks(connections[1], true, state, world, pos)
     }
 
-    private fun displayLeaks(connection: EnumProperty<ConnectionState>, outflow: Boolean, state: BlockState, world: Level, pos: BlockPos) {
+    private fun displayLeaks(
+        connection: EnumProperty<ConnectionState>,
+        outflow: Boolean,
+        state: BlockState,
+        world: Level,
+        pos: BlockPos
+    ) {
         if (!checkLeak(connection, state, world, pos)) return
         VacPipeStationBlock.indicatePipeLeak(world, pos, state.getValue(connection).direction!!, outflow)
     }
 
-    private fun checkLeak(connection: EnumProperty<ConnectionState>, state: BlockState, world: Level, pos: BlockPos): Boolean {
+    private fun checkLeak(
+        connection: EnumProperty<ConnectionState>,
+        state: BlockState,
+        world: Level,
+        pos: BlockPos
+    ): Boolean {
         val connectionState = state.getValue(connection)
         if (connectionState == ConnectionState.NONE) return false
         val connectionDirection = connectionState.direction!!
         val otherPos = pos.relative(connectionDirection)
         val connectedToState = world.getBlockState(otherPos)
         if (isValidConnection(connection, world, pos, state)) return false
-        val notCanFlow = connectedToState.isFaceSturdy(world, otherPos, connectionDirection.opposite, SupportType.CENTER)
+        val notCanFlow =
+            connectedToState.isFaceSturdy(world, otherPos, connectionDirection.opposite, SupportType.CENTER)
         return !notCanFlow
     }
 
@@ -317,7 +338,7 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
         world: Level,
         state: BlockState,
         type: BlockEntityType<T>
-    ): BlockEntityTicker<T>? {
+    ): BlockEntityTicker<T> {
         return BlockEntityTicker { world, pos, state, blockEntity ->
             if (blockEntity !is VacPipeBlockEntity) return@BlockEntityTicker
             blockEntity.tick(world, pos, state)

@@ -4,7 +4,6 @@ import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.block.ImpactBreakable
-import grauly.dustydecor.util.DyeUtils
 import grauly.dustydecor.util.GlassUtils
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.core.BlockPos
@@ -18,10 +17,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.gameevent.GameEvent
-import net.minecraft.world.level.storage.loot.LootParams
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
@@ -42,7 +38,11 @@ class GlassTableBlock(settings: Properties) : RestrictedRotationFurnitureBlock(s
             if (level !is ServerLevel) return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)
             ToolUtils.playToolSound(itemStack, pos, level, player)
             repair(level, state, pos)
-            player.inventory.placeItemBackInInventory(getGlassState(state.block).block.asItem().defaultInstance.copyWithCount(1))
+            player.inventory.placeItemBackInInventory(
+                getGlassState(state.block).block.asItem().defaultInstance.copyWithCount(
+                    1
+                )
+            )
             return InteractionResult.SUCCESS
         }
         return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)

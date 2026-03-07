@@ -12,7 +12,10 @@ object VacPipeStationBlockModel {
     fun get(blockStateModelGenerator: BlockModelGenerators) {
         val creator = MultiVariantGenerator.dispatch(ModBlocks.VAC_PIPE_STATION, MODEL)
         blockStateModelGenerator.blockStateOutput.accept(creator)
-        blockStateModelGenerator.registerSimpleItemModel(ModItems.VAC_PIPE_STATION, Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "block/vac_pipe_station/vac_pipe_station"))
+        blockStateModelGenerator.registerSimpleItemModel(
+            ModItems.VAC_PIPE_STATION,
+            Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "block/vac_pipe_station/vac_pipe_station")
+        )
     }
 
     private val MODEL = BlockModelDatagen.singleVariant("block/vac_pipe_station/vac_pipe_station")

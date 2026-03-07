@@ -9,7 +9,7 @@ class BacksideBeamShape(
     private val smallY: Double,
     private val largeZ: Double,
     private val largeY: Double
-): ShapeDefinition {
+) : ShapeDefinition {
     override fun getPoints(): List<Vec3> = points
 
     override fun getUvs(): List<Vec2> = UVS
@@ -24,10 +24,10 @@ class BacksideBeamShape(
     }
 
     private fun getPointsInternal(): List<Vec3> {
-        val smallUp = Vec3(0.0, smallY/2, 0.0)
-        val bigUp = Vec3(0.0, largeY/2, 0.0)
-        val smallLeft = Vec3(0.0, 0.0, smallZ/2)
-        val bigLeft = Vec3(0.0, 0.0, largeZ/2)
+        val smallUp = Vec3(0.0, smallY / 2, 0.0)
+        val bigUp = Vec3(0.0, largeY / 2, 0.0)
+        val smallLeft = Vec3(0.0, 0.0, smallZ / 2)
+        val bigLeft = Vec3(0.0, 0.0, largeZ / 2)
         val forward = Vec3(length, 0.0, 0.0)
         val points: MutableList<Vec3> = mutableListOf(
             //bottom plane

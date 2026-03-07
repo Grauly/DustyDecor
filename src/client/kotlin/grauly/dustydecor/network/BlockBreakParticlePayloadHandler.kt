@@ -1,6 +1,5 @@
 package grauly.dustydecor.network
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.packet.ClientboundBlockBreakParticlePayload
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 

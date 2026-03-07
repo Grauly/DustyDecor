@@ -8,21 +8,21 @@ import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.item.VacCapsuleItem
 import grauly.dustydecor.util.DyeUtils
 import grauly.dustydecor.util.GlassUtils
-import net.minecraft.world.level.block.Block
+import net.minecraft.core.Registry
 import net.minecraft.core.component.DataComponents
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.core.registries.Registries
+import net.minecraft.resources.Identifier
+import net.minecraft.resources.ResourceKey
+import net.minecraft.util.Unit
 import net.minecraft.world.entity.EquipmentSlotGroup
-import net.minecraft.world.item.component.ItemAttributeModifiers
 import net.minecraft.world.entity.ai.attributes.AttributeModifier
 import net.minecraft.world.entity.ai.attributes.Attributes
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Item.Properties
-import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.core.Registry
-import net.minecraft.resources.ResourceKey
-import net.minecraft.core.registries.Registries
-import net.minecraft.resources.Identifier
-import net.minecraft.util.Unit
+import net.minecraft.world.item.component.ItemAttributeModifiers
+import net.minecraft.world.level.block.Block
 
 object ModItems {
 
@@ -47,15 +47,16 @@ object ModItems {
             .component(ModDataComponentTypes.VOID_GOOP_SIZE, BulkGoopSizeComponent.DEFAULT)
             .attributes(
                 ItemAttributeModifiers.builder()
-                .add(
-                    Attributes.BLOCK_INTERACTION_RANGE,
-                    AttributeModifier(
-                        Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "bulk_goop_place_range"),
-                        2.0,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
-                    ),
-                    EquipmentSlotGroup.MAINHAND
-                ).build())
+                    .add(
+                        Attributes.BLOCK_INTERACTION_RANGE,
+                        AttributeModifier(
+                            Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "bulk_goop_place_range"),
+                            2.0,
+                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                        ),
+                        EquipmentSlotGroup.MAINHAND
+                    ).build()
+            )
     )
     val OUTSIDE_CRYSTAL_SHARD: Item = registerItem(::OutsideCrystalShardItem, "outside_crystal_shard")
     val SCREWDRIVER: Item = registerItem(
@@ -68,8 +69,14 @@ object ModItems {
             .component(ModDataComponentTypes.VENT_COVER_LOCK, ToolComponents.VENT_LOCK_TOGGLE.component)
             .component(ModDataComponentTypes.VAC_TUBE_WINDOW_TOGGLE, ToolComponents.VAC_TUBE_WINDOW_TOGGLE.component)
             .component(ModDataComponentTypes.LAMPS_INVERT, ToolComponents.LAMPS_INVERT.component)
-            .component(ModDataComponentTypes.SMALL_GLASS_TABLE_STRIP_PANE, ToolComponents.SMALL_GLASS_TABLE_STRIP_PANE.component)
-            .component(ModDataComponentTypes.LARGE_GLASS_TABLE_STRIP_PANE, ToolComponents.LARGE_GLASS_TABLE_STRIP_PANE.component)
+            .component(
+                ModDataComponentTypes.SMALL_GLASS_TABLE_STRIP_PANE,
+                ToolComponents.SMALL_GLASS_TABLE_STRIP_PANE.component
+            )
+            .component(
+                ModDataComponentTypes.LARGE_GLASS_TABLE_STRIP_PANE,
+                ToolComponents.LARGE_GLASS_TABLE_STRIP_PANE.component
+            )
     )
     val WRENCH: Item = registerItem(
         ::Item,
@@ -123,7 +130,8 @@ object ModItems {
         val id = "connecting_${GlassUtils.GLASS_ID_ORDER[ModBlocks.CONNECTING_GLASS_TABLES.indexOf(it)]}_glass_table"
         registerBlockItem(it, id)
     }
-    val CONNECTING_GLASS_TABLE_FRAME: Item = registerBlockItem(ModBlocks.CONNECTING_GLASS_TABLE_FRAME, "connecting_glass_table_frame")
+    val CONNECTING_GLASS_TABLE_FRAME: Item =
+        registerBlockItem(ModBlocks.CONNECTING_GLASS_TABLE_FRAME, "connecting_glass_table_frame")
 
     private fun registerItem(
         itemFactory: (Properties) -> Item,

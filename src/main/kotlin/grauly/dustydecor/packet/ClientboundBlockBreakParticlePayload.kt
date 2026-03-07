@@ -1,10 +1,8 @@
 package grauly.dustydecor.packet
 
-import com.mojang.serialization.Codec
 import grauly.dustydecor.DustyDecorMod
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.BlockPos
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
@@ -20,7 +18,7 @@ class ClientboundBlockBreakParticlePayload(val pos: BlockPos, val state: BlockSt
         val ID = CustomPacketPayload.Type<ClientboundBlockBreakParticlePayload>(IDENTIFIER)
         val BLOCK_STATE_CODEC = ByteBufCodecs.idMapper(Block.BLOCK_STATE_REGISTRY)
         val PACKET_CODEC: StreamCodec<ByteBuf, ClientboundBlockBreakParticlePayload> = StreamCodec.composite(
-            BlockPos.STREAM_CODEC, { packet: ClientboundBlockBreakParticlePayload -> packet.pos},
+            BlockPos.STREAM_CODEC, { packet: ClientboundBlockBreakParticlePayload -> packet.pos },
             BLOCK_STATE_CODEC, { packet: ClientboundBlockBreakParticlePayload -> packet.state },
             ::ClientboundBlockBreakParticlePayload
         )

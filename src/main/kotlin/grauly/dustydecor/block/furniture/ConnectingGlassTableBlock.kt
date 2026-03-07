@@ -31,7 +31,11 @@ class ConnectingGlassTableBlock(properties: Properties) : ConnectingBreakableBlo
             if (level !is ServerLevel) return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)
             ToolUtils.playToolSound(itemStack, pos, level, player)
             repair(level, state, pos)
-            player.inventory.placeItemBackInInventory(getPaneState(state.block).block.asItem().defaultInstance.copyWithCount(1))
+            player.inventory.placeItemBackInInventory(
+                getPaneState(state.block).block.asItem().defaultInstance.copyWithCount(
+                    1
+                )
+            )
             return InteractionResult.SUCCESS
         }
         return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)

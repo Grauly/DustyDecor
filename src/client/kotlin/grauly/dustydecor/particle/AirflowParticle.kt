@@ -2,17 +2,13 @@ package grauly.dustydecor.particle
 
 import com.mojang.blaze3d.pipeline.RenderPipeline
 import grauly.dustydecor.DustyDecorMod
-import net.minecraft.client.renderer.RenderPipelines
-import net.minecraft.client.particle.SimpleAnimatedParticle
-import net.minecraft.client.particle.Particle
-import net.minecraft.client.particle.ParticleProvider
-import net.minecraft.client.particle.SpriteSet
 import net.minecraft.client.Camera
 import net.minecraft.client.multiplayer.ClientLevel
-import net.minecraft.client.particle.SingleQuadParticle
+import net.minecraft.client.particle.*
+import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.renderer.state.level.QuadParticleRenderState
-import net.minecraft.resources.Identifier
 import net.minecraft.core.Direction
+import net.minecraft.resources.Identifier
 import net.minecraft.util.RandomSource
 import org.joml.Quaternionf
 import org.joml.Vector3f
@@ -52,7 +48,7 @@ class AirflowParticle(
         rotation: Quaternionf,
         tickProgress: Float
     ) {
-        val offset = Vector3f(4/16f, -3/16f, 0f).rotate(rotation)
+        val offset = Vector3f(4 / 16f, -3 / 16f, 0f).rotate(rotation)
         val cameraPos = camera.position()
         val x1: Float = (x + offset.x - cameraPos.x).toFloat()
         val y1: Float = (y + offset.y - cameraPos.y).toFloat()

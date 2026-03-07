@@ -1,22 +1,21 @@
 package grauly.dustydecor.block.vacpipe
 
-import grauly.dustydecor.block.vacpipe.ConnectionState
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.block.SimpleWaterloggedBlock
-import net.minecraft.world.level.material.FluidState
-import net.minecraft.world.level.material.Fluids
-import net.minecraft.world.item.context.BlockPlaceContext
-import net.minecraft.world.level.block.state.StateDefinition
-import net.minecraft.world.level.block.state.properties.EnumProperty
-import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.world.level.block.Mirror
-import net.minecraft.world.level.block.Rotation
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.util.RandomSource
+import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.ScheduledTickAccess
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Mirror
+import net.minecraft.world.level.block.Rotation
+import net.minecraft.world.level.block.SimpleWaterloggedBlock
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.level.block.state.properties.EnumProperty
+import net.minecraft.world.level.material.FluidState
+import net.minecraft.world.level.material.Fluids
 
 abstract class AbConnectableBlock(settings: Properties) : Block(settings), SimpleWaterloggedBlock {
 
@@ -120,14 +119,14 @@ abstract class AbConnectableBlock(settings: Properties) : Block(settings), Simpl
             val offsetPos = pos.relative(direction)
             if (canConnectTo(world.getBlockState(offsetPos), pos, world, direction)) {
                 if (needsConnecting(world.getBlockState(offsetPos), pos, world, direction)) {
-                    return ConnectionState.Companion.fromDirection(direction)
+                    return ConnectionState.fromDirection(direction)
                 }
                 if (foundDirection == null) {
                     foundDirection = direction
                 }
             }
         }
-        return ConnectionState.Companion.fromDirection(foundDirection)
+        return ConnectionState.fromDirection(foundDirection)
     }
 
     override fun mirror(state: BlockState, mirror: Mirror): BlockState {
@@ -138,7 +137,7 @@ abstract class AbConnectableBlock(settings: Properties) : Block(settings), Simpl
                 returnState =
                     returnState.setValue(
                         connection,
-                        ConnectionState.Companion.fromDirection(mirror.mirror(state.getValue(connection).direction!!))
+                        ConnectionState.fromDirection(mirror.mirror(state.getValue(connection).direction!!))
                     )
             }
         }
@@ -151,7 +150,7 @@ abstract class AbConnectableBlock(settings: Properties) : Block(settings), Simpl
             if (state.getValueOrElse(connection, ConnectionState.NONE) != ConnectionState.NONE) {
                 returnState = returnState.setValue(
                     connection,
-                    ConnectionState.Companion.fromDirection(rotation.rotate(state.getValue(connection).direction!!))
+                    ConnectionState.fromDirection(rotation.rotate(state.getValue(connection).direction!!))
                 )
             }
         }
@@ -164,7 +163,11 @@ abstract class AbConnectableBlock(settings: Properties) : Block(settings), Simpl
     }
 
     override fun getFluidState(state: BlockState): FluidState =
-        if (state.getValueOrElse(BlockStateProperties.WATERLOGGED, false)) Fluids.WATER.getSource(true) else super.getFluidState(state)
+        if (state.getValueOrElse(
+                BlockStateProperties.WATERLOGGED,
+                false
+            )
+        ) Fluids.WATER.getSource(true) else super.getFluidState(state)
 
     companion object {
         val connections: List<EnumProperty<ConnectionState>> = listOf("a", "b", "c", "d", "e", "f")

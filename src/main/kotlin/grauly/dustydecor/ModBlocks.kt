@@ -1,17 +1,7 @@
 package grauly.dustydecor
 
-import grauly.dustydecor.block.furniture.ChairBlock
-import grauly.dustydecor.block.furniture.ConnectingBreakableBlock
-import grauly.dustydecor.block.furniture.ConnectingGlassTableBlock
-import grauly.dustydecor.block.furniture.ConnectingGlassTableFrameBlock
-import grauly.dustydecor.block.furniture.GlassTableBlock
-import grauly.dustydecor.block.furniture.GlassTableFrameBlock
-import grauly.dustydecor.block.furniture.StoolBlock
-import grauly.dustydecor.block.lamp.AlarmCageLampBlock
-import grauly.dustydecor.block.lamp.LightingFixtureBlock
-import grauly.dustydecor.block.lamp.TallCageLampBlock
-import grauly.dustydecor.block.lamp.TubeLampBlock
-import grauly.dustydecor.block.lamp.WideCageLampBlock
+import grauly.dustydecor.block.furniture.*
+import grauly.dustydecor.block.lamp.*
 import grauly.dustydecor.block.vacpipe.VacPipeBlock
 import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
 import grauly.dustydecor.block.vent.VentBlock
@@ -19,16 +9,16 @@ import grauly.dustydecor.block.vent.VentCoverBlock
 import grauly.dustydecor.block.voidgoop.VoidGoopBlock
 import grauly.dustydecor.util.DyeUtils
 import grauly.dustydecor.util.GlassUtils
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.Blocks
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.Registry
-import net.minecraft.resources.ResourceKey
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
+import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.DyeColor
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties
 
 object ModBlocks {
 
@@ -41,9 +31,14 @@ object ModBlocks {
 
     val VENT: Block = registerBlock(::VentBlock, "vent", Properties.ofFullCopy(Blocks.IRON_BLOCK))
     val VENT_COVER: Block =
-        registerBlock(::VentCoverBlock, "vent_cover", Properties.ofFullCopy(Blocks.IRON_TRAPDOOR).randomTicks().noOcclusion())
+        registerBlock(
+            ::VentCoverBlock,
+            "vent_cover",
+            Properties.ofFullCopy(Blocks.IRON_TRAPDOOR).randomTicks().noOcclusion()
+        )
     val VAC_PIPE: Block = registerBlock(::VacPipeBlock, "vac_pipe", Properties.ofFullCopy(Blocks.HOPPER))
-    val VAC_PIPE_STATION: Block = registerBlock(::VacPipeStationBlock, "vac_pipe_station", Properties.ofFullCopy(Blocks.HOPPER))
+    val VAC_PIPE_STATION: Block =
+        registerBlock(::VacPipeStationBlock, "vac_pipe_station", Properties.ofFullCopy(Blocks.HOPPER))
     val VOID_GOOP: Block = registerBlock({ settings -> VoidGoopBlock(1, settings) }, "void_goop")
 
     val TALL_CAGE_LAMPS: List<TallCageLampBlock> = DyeUtils.COLOR_ORDER.map {
@@ -144,7 +139,8 @@ object ModBlocks {
         ) as GlassTableBlock)
     }
 
-    val SMALL_GLASS_TABLE_FRAME: GlassTableFrameBlock = registerBlock(::GlassTableFrameBlock,
+    val SMALL_GLASS_TABLE_FRAME: GlassTableFrameBlock = registerBlock(
+        ::GlassTableFrameBlock,
         "small_glass_table_frame",
         Properties.of()
             .noOcclusion()
@@ -153,7 +149,7 @@ object ModBlocks {
             .sound(SoundType.LANTERN)
             .strength(3.5f)
             .explosionResistance(2.5f)
-        ) as GlassTableFrameBlock
+    ) as GlassTableFrameBlock
 
     val CONNECTING_GLASS_TABLES: List<ConnectingBreakableBlock> = GlassUtils.GLASS_ORDER.map {
         val index = GlassUtils.GLASS_ORDER.indexOf(it)
@@ -171,8 +167,9 @@ object ModBlocks {
         ) as ConnectingBreakableBlock)
     }
 
-    val CONNECTING_GLASS_TABLE_FRAME: ConnectingBreakableBlock = registerBlock(::ConnectingGlassTableFrameBlock,
-    "connecting_glass_table_frame",
+    val CONNECTING_GLASS_TABLE_FRAME: ConnectingBreakableBlock = registerBlock(
+        ::ConnectingGlassTableFrameBlock,
+        "connecting_glass_table_frame",
         Properties.of()
             .noOcclusion()
             .requiresCorrectToolForDrops()
@@ -188,7 +185,8 @@ object ModBlocks {
         settings: Properties = Properties.of(),
         namespace: String = DustyDecorMod.MODID
     ): Block {
-        val key: ResourceKey<Block> = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(namespace, id))
+        val key: ResourceKey<Block> =
+            ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(namespace, id))
         settings.setId(key)
         return Registry.register(BuiltInRegistries.BLOCK, key, blockFactory.invoke(settings))
     }

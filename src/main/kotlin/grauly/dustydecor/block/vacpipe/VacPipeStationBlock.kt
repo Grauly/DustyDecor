@@ -10,35 +10,31 @@ import grauly.dustydecor.util.ToolUtils
 import grauly.dustydecor.util.VoxelShapesUtil
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
-import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.world.entity.player.Player
-import net.minecraft.world.level.material.Fluids
-import net.minecraft.world.item.context.BlockPlaceContext
-import net.minecraft.world.item.ItemStack
-import net.minecraft.server.level.ServerLevel
-import net.minecraft.world.level.block.state.StateDefinition
-import net.minecraft.world.level.block.state.properties.BooleanProperty
-import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.world.InteractionResult
-import net.minecraft.world.InteractionHand
-import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.RandomSource
-import net.minecraft.world.phys.shapes.VoxelShape
-import net.minecraft.world.phys.shapes.Shapes
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
-import net.minecraft.world.level.redstone.Orientation
 import net.minecraft.world.level.ScheduledTickAccess
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.EntityBlock
-import net.minecraft.world.level.block.HorizontalDirectionalBlock
-import net.minecraft.world.level.block.SimpleWaterloggedBlock
-import net.minecraft.world.level.block.SupportType
+import net.minecraft.world.level.block.*
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.material.Fluids
+import net.minecraft.world.level.redstone.Orientation
+import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
+import net.minecraft.world.phys.shapes.Shapes
+import net.minecraft.world.phys.shapes.VoxelShape
 
 class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(settings), SimpleWaterloggedBlock,
     EntityBlock {
@@ -174,7 +170,7 @@ class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(set
         indicateLeak(state, world, pos)
     }
 
-    private fun indicateSending (state: BlockState, world: Level, pos: BlockPos) {
+    private fun indicateSending(state: BlockState, world: Level, pos: BlockPos) {
         val effect =
             if (state.getValue(SENDING)) AirInflowParticleEffect(Direction.UP) else AirOutflowParticleEffect(Direction.DOWN)
         val origin = pos.bottomCenter.add(0.0, 12.0 / 16.0, 0.0)
@@ -245,7 +241,7 @@ class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(set
         fun indicatePipeLeak(world: Level, pos: BlockPos, leakDirection: Direction, outflow: Boolean) {
             val origin = pos.center.add(leakDirection.unitVec3.scale(.5))
             UPDATE_SHAPE_ORDER.filter { it != leakDirection && it != leakDirection.opposite }.forEach { direction ->
-                val offset = origin.add(direction.unitVec3.scale(4.0/16.0))
+                val offset = origin.add(direction.unitVec3.scale(4.0 / 16.0))
                 val effect =
                     if (outflow) AirOutflowParticleEffect(direction) else AirInflowParticleEffect(direction.opposite)
                 world.addParticle(

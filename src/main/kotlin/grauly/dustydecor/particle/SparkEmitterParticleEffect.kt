@@ -5,10 +5,10 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.ModParticleTypes
 import io.netty.buffer.ByteBuf
-import net.minecraft.network.codec.StreamCodec
-import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.core.particles.ParticleOptions
 import net.minecraft.core.particles.ParticleType
+import net.minecraft.network.codec.ByteBufCodecs
+import net.minecraft.network.codec.StreamCodec
 
 class SparkEmitterParticleEffect(val spread: Double, val amount: Int = 6, val block: Boolean = false) :
     ParticleOptions {

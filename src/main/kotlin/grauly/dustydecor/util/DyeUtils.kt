@@ -1,9 +1,8 @@
 package grauly.dustydecor.util
 
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
-import net.minecraft.world.item.Items
 import net.minecraft.world.item.DyeColor
-import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.item.Items
 
 object DyeUtils {
     val COLOR_ORDER = listOf(

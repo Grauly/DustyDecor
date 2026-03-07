@@ -1,9 +1,9 @@
 package grauly.dustydecor.particle
 
+import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.client.particle.Particle
 import net.minecraft.client.particle.ParticleProvider
 import net.minecraft.client.particle.SpriteSet
-import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.util.RandomSource
 
 class SparkEmitterFactory(spriteProvider: SpriteSet) : ParticleProvider<SparkEmitterParticleEffect> {

@@ -53,7 +53,12 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
         return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)
     }
 
-    override fun getCollisionShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
+    override fun getCollisionShape(
+        state: BlockState,
+        level: BlockGetter,
+        pos: BlockPos,
+        context: CollisionContext
+    ): VoxelShape {
         return COLLISION_SHAPES[normalizeState(state)] ?: Shapes.block()
     }
 
@@ -94,7 +99,8 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
         val property = DIRECTION_PROPERTIES[(indexOffset * 2 + 1) % 8].second
         return if (state.getValue(property) == FACE_CONNECTED &&
             state.getValue(getPropertyForDirection(directionA)!!) == FACE_CONNECTED &&
-            state.getValue(getPropertyForDirection(directionB)!!) == FACE_CONNECTED) {
+            state.getValue(getPropertyForDirection(directionB)!!) == FACE_CONNECTED
+        ) {
             Shapes.rotate(diagonalConnector, ROTATION_MAP[directionB]!!)
         } else {
             Shapes.empty()
@@ -128,11 +134,12 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
                 if (connections.first() == connections.last().opposite) {
                     COLLISION_SHAPES[state] = Shapes.rotate(NORTH_FACING_PARALLEL, ROTATION_MAP[connections.first()]!!)
                 } else {
-                    COLLISION_SHAPES[state] = if (connections.first() == Direction.NORTH && connections.last() == Direction.WEST) {
-                        Shapes.rotate(NORTH_EAST_OPEN_CORNER, ROTATION_MAP[connections.last()]!!)
-                    } else {
-                        Shapes.rotate(NORTH_EAST_OPEN_CORNER, ROTATION_MAP[connections.first()]!!)
-                    }
+                    COLLISION_SHAPES[state] =
+                        if (connections.first() == Direction.NORTH && connections.last() == Direction.WEST) {
+                            Shapes.rotate(NORTH_EAST_OPEN_CORNER, ROTATION_MAP[connections.last()]!!)
+                        } else {
+                            Shapes.rotate(NORTH_EAST_OPEN_CORNER, ROTATION_MAP[connections.first()]!!)
+                        }
                 }
             } else if (connectionCount == 1) {
                 val connectionDirection = CONNECTION_DIRECTIONS
@@ -141,10 +148,11 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
             } else if (connectionCount == 0) {
                 COLLISION_SHAPES[state] = FULL_FRAME
             }
-            listOf(0,1,2,3).forEach { indexOffset ->
+            listOf(0, 1, 2, 3).forEach { indexOffset ->
                 if (state.getValue(DIRECTION_PROPERTIES[indexOffset * 2].second) == FACE_CONNECTED &&
                     state.getValue(DIRECTION_PROPERTIES[(indexOffset * 2 + 1) % 8].second) == !FACE_CONNECTED &&
-                    state.getValue(DIRECTION_PROPERTIES[(indexOffset * 2 + 2) % 8].second) == FACE_CONNECTED) {
+                    state.getValue(DIRECTION_PROPERTIES[(indexOffset * 2 + 2) % 8].second) == FACE_CONNECTED
+                ) {
                     COLLISION_SHAPES[state] = Shapes.or(
                         COLLISION_SHAPES[state]!!,
                         Shapes.rotate(INNER_CORNER, ROTATION_MAP[CONNECTION_DIRECTIONS[(indexOffset + 1) % 4]]!!)
@@ -214,7 +222,7 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
             box(1.499, 12.0, 0.0, 1.501, 14.0, 1.0),
             box(0.0, 0.0, 1.0, 1.0, 1.0, 2.0),
             box(0.0, 14.0, 1.0, 1.0, 15.0, 2.0),
-            box(0.0, 12.0, 1.499, 1.0, 14.0, 1.501, )
+            box(0.0, 12.0, 1.499, 1.0, 14.0, 1.501)
         )
         var COLLISION_SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()
         var OUTLINE_SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()

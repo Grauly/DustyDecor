@@ -4,11 +4,11 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModSoundEvents
 import net.fabricmc.fabric.api.client.datagen.v1.builder.SoundTypeBuilder
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricSoundsProvider
-import net.minecraft.data.PackOutput
 import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
+import net.minecraft.resources.Identifier
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
-import net.minecraft.resources.Identifier
 import java.util.concurrent.CompletableFuture
 
 class SoundEventDatagen(
@@ -136,7 +136,11 @@ class SoundEventDatagen(
         exporter: SoundExporter,
         vararg files: String
     ) {
-        fromFiles(event, exporter, *files.asList().map { Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, it) }.toTypedArray())
+        fromFiles(
+            event,
+            exporter,
+            *files.asList().map { Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, it) }.toTypedArray()
+        )
     }
 
     companion object {

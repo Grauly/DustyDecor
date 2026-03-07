@@ -1,18 +1,17 @@
 package grauly.dustydecor.block.vent
 
+import com.mojang.math.Quadrant
 import grauly.dustydecor.ModBlockTags
 import grauly.dustydecor.ModBlocks
-import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.phys.shapes.CollisionContext
-import net.minecraft.world.level.pathfinder.PathComputationType
-import com.mojang.math.Quadrant
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
-import com.mojang.math.OctahedralGroup
-import net.minecraft.world.phys.shapes.VoxelShape
-import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.LevelReader
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.pathfinder.PathComputationType
+import net.minecraft.world.phys.shapes.CollisionContext
+import net.minecraft.world.phys.shapes.Shapes
+import net.minecraft.world.phys.shapes.VoxelShape
 
 class VentBlock(settings: Properties) : SideConnectableBlock(settings.dynamicShape().forceSolidOn()) {
 
@@ -33,7 +32,12 @@ class VentBlock(settings: Properties) : SideConnectableBlock(settings.dynamicSha
         }
     }
 
-    override fun canConnectTo(state: BlockState, pos: BlockPos, world: LevelReader, connectingSide: Direction): Boolean {
+    override fun canConnectTo(
+        state: BlockState,
+        pos: BlockPos,
+        world: LevelReader,
+        connectingSide: Direction
+    ): Boolean {
         if (!state.`is`(ModBlockTags.LARGE_VENT_CONNECTABLE)) return false
         if (state.`is`(ModBlocks.VENT_COVER)) {
             if (state.getValue(VentCoverBlock.COVERS_FACE).opposite != connectingSide) return false

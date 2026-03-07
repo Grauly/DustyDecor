@@ -1,11 +1,11 @@
 package grauly.dustydecor.particle
 
 import grauly.dustydecor.ModParticleTypes
-import net.minecraft.client.particle.NoRenderParticle
 import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.client.particle.NoRenderParticle
 import net.minecraft.core.BlockPos
-import net.minecraft.world.phys.Vec3
 import net.minecraft.util.RandomSource
+import net.minecraft.world.phys.Vec3
 import net.minecraft.world.phys.shapes.VoxelShape
 
 class BlockSparkEmitterParticle(

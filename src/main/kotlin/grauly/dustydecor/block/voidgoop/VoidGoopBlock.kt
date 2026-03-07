@@ -3,12 +3,11 @@ package grauly.dustydecor.block.voidgoop
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.ModItemTags
-import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.item.context.BlockPlaceContext
-import net.minecraft.util.ExtraCodecs
 import net.minecraft.core.BlockPos
+import net.minecraft.util.ExtraCodecs
+import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.BlockGetter
-import net.minecraft.world.level.block.state.BlockBehaviour
+import net.minecraft.world.level.block.state.BlockState
 import java.awt.Color
 
 class VoidGoopBlock(threshold: Int, settings: Properties) : LayerThresholdSpreadingBlock(threshold, settings) {

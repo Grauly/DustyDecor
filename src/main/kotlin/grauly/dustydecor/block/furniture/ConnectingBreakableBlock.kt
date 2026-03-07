@@ -12,7 +12,8 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 
-open class ConnectingBreakableBlock(properties: Properties) : GranularHorizontalConnectingBlock(properties), ImpactBreakable {
+open class ConnectingBreakableBlock(properties: Properties) : GranularHorizontalConnectingBlock(properties),
+    ImpactBreakable {
 
     override fun onProjectileHit(level: Level, state: BlockState, blockHit: BlockHitResult, projectile: Projectile) {
         super.onProjectileHit(level, state, blockHit, projectile)

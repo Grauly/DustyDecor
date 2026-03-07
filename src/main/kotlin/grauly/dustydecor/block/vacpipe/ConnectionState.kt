@@ -1,7 +1,7 @@
 package grauly.dustydecor.block.vacpipe
 
-import net.minecraft.util.StringRepresentable
 import net.minecraft.core.Direction
+import net.minecraft.util.StringRepresentable
 
 enum class ConnectionState(
     val string: String,

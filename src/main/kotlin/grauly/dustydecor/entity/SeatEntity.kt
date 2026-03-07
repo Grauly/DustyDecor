@@ -3,26 +3,31 @@ package grauly.dustydecor.entity
 import com.mojang.serialization.Codec
 import grauly.dustydecor.ModEntities
 import grauly.dustydecor.block.furniture.SeatLinkable
-import net.minecraft.world.entity.Entity
-import net.minecraft.world.entity.EntityType
-import net.minecraft.world.damagesource.DamageSource
+import net.minecraft.core.BlockPos
 import net.minecraft.network.syncher.SynchedEntityData
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.world.level.storage.ValueInput
-import net.minecraft.world.level.storage.ValueOutput
-import net.minecraft.core.BlockPos
+import net.minecraft.world.damagesource.DamageSource
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.Pose
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.entity.vehicle.DismountHelper
 import net.minecraft.world.level.ClipContext
-import net.minecraft.world.phys.AABB
-import net.minecraft.world.phys.Vec3
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.storage.ValueInput
+import net.minecraft.world.level.storage.ValueOutput
+import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.HitResult
+import net.minecraft.world.phys.Vec3
 import kotlin.math.floor
 
-class SeatEntity(private var linkedLocation: BlockPos, private var isLocationLinked: Boolean, type: EntityType<*>, world: Level) : Entity(type, world) {
+class SeatEntity(
+    private var linkedLocation: BlockPos,
+    private var isLocationLinked: Boolean,
+    type: EntityType<*>,
+    world: Level
+) : Entity(type, world) {
 
     constructor(type: EntityType<*>, world: Level) : this(BlockPos.ZERO, false, type, world)
 
@@ -78,13 +83,15 @@ class SeatEntity(private var linkedLocation: BlockPos, private var isLocationLin
         if (passenger !is Player) return defaultDismount(passenger)
         val from = passenger.eyePosition
         val to = passenger.eyePosition.add(passenger.headLookAngle.normalize().scale(2.0))
-        val result = level().clip(ClipContext(
-            from,
-            to,
-            ClipContext.Block.VISUAL,
-            ClipContext.Fluid.NONE,
-            passenger
-        ))
+        val result = level().clip(
+            ClipContext(
+                from,
+                to,
+                ClipContext.Block.VISUAL,
+                ClipContext.Fluid.NONE,
+                passenger
+            )
+        )
         if (result.type == HitResult.Type.MISS) return defaultDismount(passenger)
         if (result.type == HitResult.Type.ENTITY) return defaultDismount(passenger)
         if (result.blockPos.equals(linkedLocation)) return position().add(.0, .001, .0)
@@ -107,7 +114,9 @@ class SeatEntity(private var linkedLocation: BlockPos, private var isLocationLin
         const val LOCATION_LINKED_KEY = "isLocationLinked"
         fun seatEntity(world: Level, pos: BlockPos, offset: Vec3, entity: Entity): SitResult {
             if (world !is ServerLevel) return SitResult(SitResultType.NONE, null)
-            if (world.getEntitiesOfClass(SeatEntity::class.java, AABB(pos), { _ -> true}).isNotEmpty()) return SitResult(SitResultType.OCCUPIED, null)
+            if (world.getEntitiesOfClass(SeatEntity::class.java, AABB(pos), { _ -> true })
+                    .isNotEmpty()
+            ) return SitResult(SitResultType.OCCUPIED, null)
             if (entity.isPassenger) return SitResult(SitResultType.ALREADY_SITTING, null)
             if (entity.position().distanceToSqr(pos.center) >= 4) return SitResult(SitResultType.TOO_FAR, null)
             val seat = createLinked(world, pos, offset, entity)

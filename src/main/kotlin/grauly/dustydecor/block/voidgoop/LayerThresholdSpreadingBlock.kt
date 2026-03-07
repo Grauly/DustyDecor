@@ -2,21 +2,15 @@ package grauly.dustydecor.block.voidgoop
 
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.util.DebugUtils
-import net.minecraft.world.entity.item.FallingBlockEntity
-import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.level.pathfinder.PathComputationType
-import net.minecraft.world.item.context.DirectionalPlaceContext
-import net.minecraft.world.item.context.BlockPlaceContext
-import net.minecraft.world.item.ItemStack
-import net.minecraft.server.level.ServerLevel
-import net.minecraft.world.level.block.state.StateDefinition
-import net.minecraft.world.level.block.state.properties.BooleanProperty
-import net.minecraft.world.level.block.state.properties.IntegerProperty
-import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.RandomSource
-import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.item.FallingBlockEntity
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.context.BlockPlaceContext
+import net.minecraft.world.item.context.DirectionalPlaceContext
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
@@ -26,10 +20,17 @@ import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.FallingBlock
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.block.state.properties.IntegerProperty
+import net.minecraft.world.level.pathfinder.PathComputationType
 import net.minecraft.world.phys.shapes.CollisionContext
+import net.minecraft.world.phys.shapes.VoxelShape
 import kotlin.math.min
 
-abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: BlockBehaviour.Properties) : FallingBlock(settings) {
+abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Properties) :
+    FallingBlock(settings) {
 
     //TODO: add leaf piles
     //TODO: add sand/gravel piles
@@ -85,7 +86,10 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: BlockB
             val ownLayers = state.getValue(LAYERS)
             val mergeLayers = min(MAX_LAYERS - downState.getValue(LAYERS), ownLayers)
             world.setBlockAndUpdate(pos.below(), downState.setValue(LAYERS, downState.getValue(LAYERS) + mergeLayers))
-            val placeState = if (mergeLayers == ownLayers) Blocks.AIR.defaultBlockState() else state.setValue(LAYERS, ownLayers - mergeLayers)
+            val placeState = if (mergeLayers == ownLayers) Blocks.AIR.defaultBlockState() else state.setValue(
+                LAYERS,
+                ownLayers - mergeLayers
+            )
             world.setBlockAndUpdate(pos, placeState)
             return
         }
@@ -186,7 +190,13 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: BlockB
             val offsetPos = pos.relative(entry.key)
             val offsetState = world.getBlockState(offsetPos)
             val workingState = if (offsetState.`is`(this)) {
-                DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} - ${entry.key} -> ${DebugUtils.nameBlockPos(offsetPos)}: $offsetState, ${entry.value}")
+                DustyDecorMod.logger.info(
+                    "${DebugUtils.nameBlockPos(pos)} - ${entry.key} -> ${
+                        DebugUtils.nameBlockPos(
+                            offsetPos
+                        )
+                    }: $offsetState, ${entry.value}"
+                )
                 offsetState.setValue(LAYERS, offsetState.getValue(LAYERS) + entry.value)
             } else {
                 defaultBlockState().setValue(LAYERS, entry.value)
@@ -217,7 +227,13 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: BlockB
         )
         if (!canReplace) return -searchDepth * MAX_LAYERS + MAX_LAYERS
         if (localState.`is`(this)) {
-            DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} (seek $searchDirection): $searchDepth, ${localState.getValue(LAYERS)}")
+            DustyDecorMod.logger.info(
+                "${DebugUtils.nameBlockPos(pos)} (seek $searchDirection): $searchDepth, ${
+                    localState.getValue(
+                        LAYERS
+                    )
+                }"
+            )
             return -searchDepth * MAX_LAYERS + localState.getValue(LAYERS)
         }
         if (!canPlace) {

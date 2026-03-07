@@ -6,13 +6,13 @@ import grauly.dustydecor.ModItems
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import io.netty.buffer.ByteBuf
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
-import net.minecraft.network.codec.StreamCodec
 import net.minecraft.network.codec.ByteBufCodecs
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
-import net.minecraft.server.level.ServerPlayer
 import net.minecraft.resources.Identifier
+import net.minecraft.server.level.ServerPlayer
 
-class UpdateBulkGoopSizeC2SPacket(val slotId: Int, val size: Int): CustomPacketPayload {
+class UpdateBulkGoopSizeC2SPacket(val slotId: Int, val size: Int) : CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = ID
 
     fun handle(context: ServerPlayNetworking.Context) {
@@ -29,8 +29,8 @@ class UpdateBulkGoopSizeC2SPacket(val slotId: Int, val size: Int): CustomPacketP
         val IDENTIFIER: Identifier = Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "update_bulk_goop_size")
         val ID = CustomPacketPayload.Type<UpdateBulkGoopSizeC2SPacket>(IDENTIFIER)
         val PACKET_CODEC: StreamCodec<ByteBuf, UpdateBulkGoopSizeC2SPacket> = StreamCodec.composite(
-            ByteBufCodecs.INT, { packet: UpdateBulkGoopSizeC2SPacket -> packet.slotId},
-            ByteBufCodecs.INT, { packet: UpdateBulkGoopSizeC2SPacket -> packet.size},
+            ByteBufCodecs.INT, { packet: UpdateBulkGoopSizeC2SPacket -> packet.slotId },
+            ByteBufCodecs.INT, { packet: UpdateBulkGoopSizeC2SPacket -> packet.size },
             ::UpdateBulkGoopSizeC2SPacket
         )
     }

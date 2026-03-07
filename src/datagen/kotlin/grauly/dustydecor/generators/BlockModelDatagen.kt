@@ -1,26 +1,25 @@
 package grauly.dustydecor.generators
 
+import com.mojang.math.Quadrant
 import grauly.dustydecor.BlockDatagenWrapper
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.generators.block.*
+import grauly.dustydecor.util.GlassUtils
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.ItemModelGenerators
 import net.minecraft.client.data.models.MultiVariant
-import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.world.level.block.state.properties.Property
-import net.minecraft.resources.Identifier
-import net.minecraft.util.random.WeightedList
-import com.mojang.math.Quadrant
-import grauly.dustydecor.util.GlassUtils
 import net.minecraft.client.data.models.model.ModelLocationUtils
-import net.minecraft.client.data.models.model.TextureMapping.pane
 import net.minecraft.client.renderer.block.dispatch.Variant
 import net.minecraft.client.renderer.block.dispatch.VariantMutator
 import net.minecraft.core.Direction
+import net.minecraft.resources.Identifier
+import net.minecraft.util.random.WeightedList
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.level.block.state.properties.Property
 
 class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(generator) {
 
@@ -30,10 +29,13 @@ class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(gener
         blockStateModelGenerator.createOrientableTrapdoor(ModBlocks.VENT_COVER)
         VentBlockModel.get(blockStateModelGenerator)
         VacPipeBlockModel.get(blockStateModelGenerator)
-        FacingLampModel(ModBlocks.TALL_CAGE_LAMPS,"cage_lamp_tall/cage_lamp_tall").get(blockStateModelGenerator)
-        FacingLampModel(ModBlocks.ALARM_CAGE_LAMPS,"cage_lamp_tall/cage_lamp_tall").get(blockStateModelGenerator)
-        FacingRotationLampModel(ModBlocks.WIDE_CAGE_LAMPS,"cage_lamp_wide/cage_lamp_wide").get(blockStateModelGenerator)
-        FacingRotationLampModel(ModBlocks.TUBE_LAMPS,"tube_lamp/tube_lamp").get(blockStateModelGenerator)
+        FacingLampModel(ModBlocks.TALL_CAGE_LAMPS, "cage_lamp_tall/cage_lamp_tall").get(blockStateModelGenerator)
+        FacingLampModel(ModBlocks.ALARM_CAGE_LAMPS, "cage_lamp_tall/cage_lamp_tall").get(blockStateModelGenerator)
+        FacingRotationLampModel(
+            ModBlocks.WIDE_CAGE_LAMPS,
+            "cage_lamp_wide/cage_lamp_wide"
+        ).get(blockStateModelGenerator)
+        FacingRotationLampModel(ModBlocks.TUBE_LAMPS, "tube_lamp/tube_lamp").get(blockStateModelGenerator)
         VacPipeStationBlockModel.get(blockStateModelGenerator)
         VoidGoopBlockModel.get(blockStateModelGenerator)
         SingleFurnitureBlockModel(ModBlocks.STOOLS, "stool/stool").get(blockStateModelGenerator)
@@ -43,7 +45,9 @@ class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(gener
             GlassUtils.GLASS_ORDER.map { pane -> ModelLocationUtils.getModelLocation(pane) },
             Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "block/glass_table/glass_table")
         ).get(blockStateModelGenerator)
-        SingleFurnitureBlockModel(listOf(ModBlocks.SMALL_GLASS_TABLE_FRAME), "glass_table/glass_table_frame").get(blockStateModelGenerator)
+        SingleFurnitureBlockModel(listOf(ModBlocks.SMALL_GLASS_TABLE_FRAME), "glass_table/glass_table_frame").get(
+            blockStateModelGenerator
+        )
         ConnectingGlassTableBlockModel(
             ModBlocks.CONNECTING_GLASS_TABLES,
             GlassUtils.GLASS_ORDER.map { pane -> ModelLocationUtils.getModelLocation(pane) },

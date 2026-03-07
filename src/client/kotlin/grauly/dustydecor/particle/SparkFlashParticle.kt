@@ -1,7 +1,10 @@
 package grauly.dustydecor.particle
 
-import net.minecraft.client.particle.*
 import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.client.particle.Particle
+import net.minecraft.client.particle.ParticleProvider
+import net.minecraft.client.particle.SimpleAnimatedParticle
+import net.minecraft.client.particle.SpriteSet
 import net.minecraft.core.particles.SimpleParticleType
 import net.minecraft.util.RandomSource
 
@@ -18,7 +21,7 @@ class SparkFlashParticle(
 
     init {
         this.lifetime = 4
-        this.quadSize = 3f/16f * 0.5f
+        this.quadSize = 3f / 16f * 0.5f
 
         this.xd = velocityX
         this.yd = velocityY

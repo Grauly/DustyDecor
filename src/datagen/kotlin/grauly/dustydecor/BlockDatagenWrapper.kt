@@ -4,10 +4,9 @@ import grauly.dustydecor.BlockDatagenWrapper.MinedBy.*
 import grauly.dustydecor.BlockDatagenWrapper.ToolNeed.*
 import grauly.dustydecor.util.DyeUtils
 import grauly.dustydecor.util.GlassUtils
-import net.minecraft.world.level.block.Block
 import net.minecraft.tags.BlockTags
 import net.minecraft.tags.TagKey
-import java.util.Locale
+import net.minecraft.world.level.block.Block
 import java.util.Locale.getDefault
 
 object BlockDatagenWrapper {
@@ -28,7 +27,8 @@ object BlockDatagenWrapper {
         entries.addAll(DyeUtils.COLOR_ORDER.map {
             val lookupValue = DyeUtils.COLOR_ORDER.indexOf(it)
             val colorString =
-                it.getName().split("_").map { s -> s.replaceFirstChar { c -> c.titlecase() } }.reduce { acc, s -> "$acc $s" }
+                it.getName().split("_").map { s -> s.replaceFirstChar { c -> c.titlecase() } }
+                    .reduce { acc, s -> "$acc $s" }
             return@map mutableListOf(
                 DatagenSpec(ModBlocks.TALL_CAGE_LAMPS[lookupValue], "Tall $colorString Cage Lamp", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.WIDE_CAGE_LAMPS[lookupValue], "Wide $colorString Cage Lamp", STONE, PICKAXE),
@@ -43,8 +43,18 @@ object BlockDatagenWrapper {
             val colorString =
                 id.replaceFirstChar { if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString() }
             return@map mutableListOf(
-                DatagenSpec(ModBlocks.SMALL_GLASS_TABLES[lookupValue], "Small $colorString Glass Table", STONE, PICKAXE),
-                DatagenSpec(ModBlocks.CONNECTING_GLASS_TABLES[lookupValue], "Connecting $colorString Glass Table", STONE, PICKAXE),
+                DatagenSpec(
+                    ModBlocks.SMALL_GLASS_TABLES[lookupValue],
+                    "Small $colorString Glass Table",
+                    STONE,
+                    PICKAXE
+                ),
+                DatagenSpec(
+                    ModBlocks.CONNECTING_GLASS_TABLES[lookupValue],
+                    "Connecting $colorString Glass Table",
+                    STONE,
+                    PICKAXE
+                ),
             )
         }.reduce { acc: MutableList<DatagenSpec>, elem: MutableList<DatagenSpec> -> acc.addAll(elem); acc })
     }

@@ -52,7 +52,7 @@ open class ConnectingGlassTableFrameBlockModel(
         val fullCondition = ConditionBuilder()
         directions.forEach {
             fullCondition.term(
-            HorizontalConnectingBlock.getPropertyForDirection(it)!!,
+                HorizontalConnectingBlock.getPropertyForDirection(it)!!,
                 !HorizontalConnectingBlock.FACE_CONNECTED
             )
         }
@@ -94,7 +94,8 @@ open class ConnectingGlassTableFrameBlockModel(
         replaceTexture: Identifier,
         generator: BlockModelGenerators,
         modelGenerator: MultiPartGenerator
-    ) {}
+    ) {
+    }
 
     protected open fun singleSide(
         direction: Direction,
@@ -192,8 +193,14 @@ open class ConnectingGlassTableFrameBlockModel(
     ) {
         modelGenerator.with(
             ConditionBuilder()
-                .term(HorizontalConnectingBlock.getPropertyForDirection(mainDirection)!!, HorizontalConnectingBlock.FACE_CONNECTED)
-                .term(HorizontalConnectingBlock.getPropertyForDirection(secondDirection)!!, HorizontalConnectingBlock.FACE_CONNECTED)
+                .term(
+                    HorizontalConnectingBlock.getPropertyForDirection(mainDirection)!!,
+                    HorizontalConnectingBlock.FACE_CONNECTED
+                )
+                .term(
+                    HorizontalConnectingBlock.getPropertyForDirection(secondDirection)!!,
+                    HorizontalConnectingBlock.FACE_CONNECTED
+                )
                 .term(middleProperty, !HorizontalConnectingBlock.FACE_CONNECTED),
             INNER_LEG.with(BlockModelDatagen.NORTH_FACING_ROTATION_MAP[secondDirection]!!)
         )
@@ -204,10 +211,12 @@ open class ConnectingGlassTableFrameBlockModel(
         replaceTexture: Identifier,
         generator: BlockModelGenerators
     ) {
-        generator.registerSimpleItemModel(block, Identifier.fromNamespaceAndPath(
-            DustyDecorMod.MODID,
-            "$basePath/four_table_frame"
-        ))
+        generator.registerSimpleItemModel(
+            block, Identifier.fromNamespaceAndPath(
+                DustyDecorMod.MODID,
+                "$basePath/four_table_frame"
+            )
+        )
     }
 
     private fun <T> cycleList(list: List<T>): List<T> {

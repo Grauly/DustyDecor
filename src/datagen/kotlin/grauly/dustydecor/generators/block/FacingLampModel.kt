@@ -1,17 +1,17 @@
 package grauly.dustydecor.generators.block
 
 import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.block.lamp.FacingLampBlock
+import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import grauly.dustydecor.util.DyeUtils
 import net.minecraft.client.data.models.BlockModelGenerators
-import net.minecraft.client.data.models.model.ItemModelUtils
-import net.minecraft.client.data.models.blockstates.MultiPartGenerator
 import net.minecraft.client.data.models.blockstates.ConditionBuilder
-import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.resources.Identifier
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator
+import net.minecraft.client.data.models.model.ItemModelUtils
 import net.minecraft.core.Direction
+import net.minecraft.resources.Identifier
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
 open class FacingLampModel(private val lamps: List<FacingLampBlock>, private val lampPrefix: String) {
     fun get(blockStateModelGenerator: BlockModelGenerators) {
@@ -61,7 +61,12 @@ open class FacingLampModel(private val lamps: List<FacingLampBlock>, private val
     protected open fun createItemModel(lamp: FacingLampBlock, blockStateModelGenerator: BlockModelGenerators) {
         val color = DyeUtils.COLOR_ORDER[lamps.indexOf(lamp)].textColor
         val tint = ItemModelUtils.constantTint(color)
-        val model = ItemModelUtils.tintedModel(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "block/${lampPrefix}_inventory"), tint)
+        val model = ItemModelUtils.tintedModel(
+            Identifier.fromNamespaceAndPath(
+                DustyDecorMod.MODID,
+                "block/${lampPrefix}_inventory"
+            ), tint
+        )
         blockStateModelGenerator.itemModelOutput.accept(lamp.asItem(), model)
     }
 

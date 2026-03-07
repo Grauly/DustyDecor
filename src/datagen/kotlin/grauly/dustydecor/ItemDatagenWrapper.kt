@@ -1,8 +1,8 @@
 package grauly.dustydecor
 
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags
-import net.minecraft.world.item.Item
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
 
 object ItemDatagenWrapper {
     val entries: MutableList<DatagenSpec> = mutableListOf()
@@ -19,7 +19,7 @@ object ItemDatagenWrapper {
             listOf(ConventionalItemTags.WRENCH_TOOLS),
             generateBaseModel = true
         )
-        item (
+        item(
             ModItems.VAC_CAPSULE,
             "Vacuum Tube Capsule"
         )

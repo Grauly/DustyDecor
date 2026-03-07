@@ -1,8 +1,8 @@
 package grauly.dustydecor.screens
 
 import grauly.dustydecor.screen.VacPipeSendStationScreenHandler
-import net.minecraft.world.entity.player.Inventory
 import net.minecraft.network.chat.Component
+import net.minecraft.world.entity.player.Inventory
 
 class VacPipeSendStationScreen(
     handler: VacPipeSendStationScreenHandler,

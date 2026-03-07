@@ -1,7 +1,6 @@
 package grauly.dustydecor.block.furniture
 
 import net.minecraft.core.Direction
-import net.minecraft.util.Mth.clamp
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.material.Fluids

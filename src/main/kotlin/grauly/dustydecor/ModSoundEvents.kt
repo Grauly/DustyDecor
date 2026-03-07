@@ -1,9 +1,9 @@
 package grauly.dustydecor
 
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.Registry
-import net.minecraft.sounds.SoundEvent
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.Identifier
+import net.minecraft.sounds.SoundEvent
 
 object ModSoundEvents {
 
@@ -28,7 +28,11 @@ object ModSoundEvents {
 
     private fun registerSound(id: String): SoundEvent {
         val identifier: Identifier = Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id)
-        return Registry.register(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier))
+        return Registry.register(
+            BuiltInRegistries.SOUND_EVENT,
+            identifier,
+            SoundEvent.createVariableRangeEvent(identifier)
+        )
     }
 
     fun init() {

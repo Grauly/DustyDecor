@@ -1,11 +1,11 @@
 package grauly.dustydecor.inventory
 
+import net.minecraft.core.Direction
+import net.minecraft.core.NonNullList
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
-import net.minecraft.core.NonNullList
-import net.minecraft.core.Direction
 
-class SimpleCompactingInventory(slots: Int): SidedSelfCompactingInventory {
+class SimpleCompactingInventory(slots: Int) : SidedSelfCompactingInventory {
     override val items: NonNullList<ItemStack> = NonNullList.withSize(slots, ItemStack.EMPTY)
 
     override fun insertDirections(): Set<Direction> {

@@ -5,11 +5,11 @@ import grauly.dustydecor.ModItems
 import grauly.dustydecor.packet.UpdateBulkGoopSizeC2SPacket
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.ItemSlotMouseAction
 import net.minecraft.client.ScrollWheelHandler
-import net.minecraft.world.item.ItemStack
-import net.minecraft.world.inventory.Slot
+import net.minecraft.client.gui.ItemSlotMouseAction
 import net.minecraft.world.inventory.ContainerInput
+import net.minecraft.world.inventory.Slot
+import net.minecraft.world.item.ItemStack
 import kotlin.math.sign
 
 class BulkGoopSizeTooltipSubmenueHandler(

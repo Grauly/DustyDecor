@@ -46,6 +46,7 @@ open class GranularHorizontalConnectingBlock(properties: Properties) : Horizonta
             Mirror.NONE -> {
                 state
             }
+
             Mirror.LEFT_RIGHT -> {
                 val north = state.getValue(NORTH)
                 val north_east = state.getValue(NORTH_EAST)
@@ -58,6 +59,7 @@ open class GranularHorizontalConnectingBlock(properties: Properties) : Horizonta
                     .setValue(SOUTH_EAST, north_east)
                     .setValue(SOUTH_WEST, north_west)
             }
+
             Mirror.FRONT_BACK -> {
                 val east = state.getValue(EAST)
                 val north_east = state.getValue(NORTH_EAST)
@@ -86,7 +88,10 @@ open class GranularHorizontalConnectingBlock(properties: Properties) : Horizonta
         }
         var workingState = state
         for (i in 0..7) {
-            workingState = workingState.setValue(DIRECTION_PROPERTIES[(i + rotationOffset) % 8].second, state.getValue(DIRECTION_PROPERTIES[i].second))
+            workingState = workingState.setValue(
+                DIRECTION_PROPERTIES[(i + rotationOffset) % 8].second,
+                state.getValue(DIRECTION_PROPERTIES[i].second)
+            )
         }
         return workingState
     }

@@ -6,13 +6,13 @@ import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModDataComponentTypes
 import net.minecraft.core.component.DataComponentGetter
-import net.minecraft.world.item.Item
-import net.minecraft.world.item.component.TooltipProvider
-import net.minecraft.world.item.TooltipFlag
-import net.minecraft.network.chat.Style
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.Style
 import net.minecraft.network.chat.TextColor
 import net.minecraft.util.CommonColors
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.TooltipFlag
+import net.minecraft.world.item.component.TooltipProvider
 import java.util.function.Consumer
 
 data class BulkGoopSizeComponent(var size: Int) : TooltipProvider {

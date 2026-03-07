@@ -1,5 +1,6 @@
 package grauly.dustydecor.generators.block
 
+import com.mojang.math.Quadrant
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.block.vacpipe.AbConnectableBlock
@@ -8,14 +9,13 @@ import grauly.dustydecor.block.vacpipe.VacPipeBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.MultiVariant
-import net.minecraft.client.data.models.blockstates.MultiPartGenerator
-import net.minecraft.world.level.block.state.properties.EnumProperty
-import com.mojang.math.Quadrant
 import net.minecraft.client.data.models.blockstates.ConditionBuilder
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator
 import net.minecraft.client.renderer.block.dispatch.VariantMutator
 import net.minecraft.client.renderer.block.dispatch.multipart.CombinedCondition
 import net.minecraft.client.renderer.block.dispatch.multipart.Condition
 import net.minecraft.core.Direction
+import net.minecraft.world.level.block.state.properties.EnumProperty
 
 object VacPipeBlockModel {
     fun get(blockStateModelGenerator: BlockModelGenerators) {
@@ -84,9 +84,9 @@ object VacPipeBlockModel {
     ) {
         if (aDirection == ConnectionState.NONE) return
         val condition = ConditionBuilder()
-                .term(connection, aDirection)
-                .term(VacPipeBlock.windowMap[connection]!!, true)
-                .term(VacPipeBlock.SHOULD_HAVE_WINDOW, false)
+            .term(connection, aDirection)
+            .term(VacPipeBlock.windowMap[connection]!!, true)
+            .term(VacPipeBlock.SHOULD_HAVE_WINDOW, false)
         creator.with(
             condition,
             VAC_CONNECTOR_WINDOW_ATTACHMENT
@@ -158,16 +158,22 @@ object VacPipeBlockModel {
             .term(AbConnectableBlock.connections[1], bDirection)
             .term(VacPipeBlock.SHOULD_HAVE_WINDOW, shouldHaveWindow)
 
-        val core = if (isReachableViaXRotation(aDirection.direction!!) && isReachableViaXRotation(bDirection.direction!!)) {
-            //x axis = north top core
-            getVacCoreNorthTop(shouldHaveWindow, aDirection.direction!!, bDirection.direction!!)
-        } else if (isReachableViaYRotation(aDirection.direction!!) && isReachableViaYRotation(bDirection.direction!!)) {
-            //y axis = north east core
-            getVacCoreNorthEast(shouldHaveWindow).with(rotatePlanarY(aDirection.direction!!, bDirection.direction!!))
-        } else {
-            //z axis = top east core
-            getVacCoreEastTop(shouldHaveWindow, aDirection.direction!!, bDirection.direction!!)
-        }
+        val core =
+            if (isReachableViaXRotation(aDirection.direction!!) && isReachableViaXRotation(bDirection.direction!!)) {
+                //x axis = north top core
+                getVacCoreNorthTop(shouldHaveWindow, aDirection.direction!!, bDirection.direction!!)
+            } else if (isReachableViaYRotation(aDirection.direction!!) && isReachableViaYRotation(bDirection.direction!!)) {
+                //y axis = north east core
+                getVacCoreNorthEast(shouldHaveWindow).with(
+                    rotatePlanarY(
+                        aDirection.direction!!,
+                        bDirection.direction!!
+                    )
+                )
+            } else {
+                //z axis = top east core
+                getVacCoreEastTop(shouldHaveWindow, aDirection.direction!!, bDirection.direction!!)
+            }
 
         creator.with(
             condition,
@@ -176,7 +182,11 @@ object VacPipeBlockModel {
 
     }
 
-    private fun getVacCoreEastTop(shouldHaveWindow: Boolean, aDirection: Direction, bDirection: Direction): MultiVariant {
+    private fun getVacCoreEastTop(
+        shouldHaveWindow: Boolean,
+        aDirection: Direction,
+        bDirection: Direction
+    ): MultiVariant {
         if (zRotationDirections.indexOf(bDirection) < zRotationDirections.indexOf(aDirection))
             return getVacCoreEastTop(shouldHaveWindow, bDirection, aDirection)
 
@@ -186,7 +196,11 @@ object VacPipeBlockModel {
         return getVacCoreEastTop(shouldHaveWindow, aDirection)
     }
 
-    private fun getVacCoreNorthTop(shouldHaveWindow: Boolean, aDirection: Direction, bDirection: Direction): MultiVariant {
+    private fun getVacCoreNorthTop(
+        shouldHaveWindow: Boolean,
+        aDirection: Direction,
+        bDirection: Direction
+    ): MultiVariant {
         if (xRotationDirections.indexOf(bDirection) < xRotationDirections.indexOf(aDirection)) {
             return getVacCoreNorthTop(shouldHaveWindow, bDirection, aDirection)
         }
@@ -268,6 +282,7 @@ object VacPipeBlockModel {
 
     private fun getVacCoreEastTop(shouldHaveWindow: Boolean, primaryDirection: Direction) =
         getVariant("block/vac_pipe/vac_pipe_east_top_core_${primaryDirection.getName()}", shouldHaveWindow)
+
     private fun getVacCoreNorthTop(shouldHaveWindow: Boolean, primaryDirection: Direction) =
         getVariant("block/vac_pipe/vac_pipe_north_top_core_${primaryDirection.getName()}", shouldHaveWindow)
 

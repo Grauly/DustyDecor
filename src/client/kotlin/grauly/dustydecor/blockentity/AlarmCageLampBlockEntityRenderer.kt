@@ -1,17 +1,17 @@
 package grauly.dustydecor.blockentity
 
+import com.mojang.blaze3d.vertex.PoseStack
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.geometry.AlertBeamsShape
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey
-import net.minecraft.client.renderer.texture.OverlayTexture
+import net.minecraft.client.renderer.SubmitNodeCollector
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer
-import net.minecraft.client.renderer.SubmitNodeCollector
-import com.mojang.blaze3d.vertex.PoseStack
 import net.minecraft.client.renderer.rendertype.RenderTypes
 import net.minecraft.client.renderer.state.level.CameraRenderState
+import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.resources.Identifier
 import net.minecraft.world.phys.Vec2
 import net.minecraft.world.phys.Vec3
@@ -81,7 +81,12 @@ class AlarmCageLampBlockEntityRenderer(
         private val ROTATION_AXIS: RenderStateDataKey<Vec3> = RenderStateDataKey.create<Vec3>()
         private val COLOR: RenderStateDataKey<Int> = RenderStateDataKey.create<Int>()
         private val renderType =
-            RenderTypes.beaconBeam(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "textures/block/cage_lamp_beam.png"), true)
+            RenderTypes.beaconBeam(
+                Identifier.fromNamespaceAndPath(
+                    DustyDecorMod.MODID,
+                    "textures/block/cage_lamp_beam.png"
+                ), true
+            )
     }
 
 }

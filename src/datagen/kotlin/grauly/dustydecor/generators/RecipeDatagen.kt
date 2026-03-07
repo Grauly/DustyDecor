@@ -195,7 +195,8 @@ class RecipeDatagen(
                         )
                 }
                 ModItems.CONNECTING_GLASS_TABLES.forEach {
-                    val pane = GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.CONNECTING_GLASS_TABLES.indexOf(it)]
+                    val pane =
+                        GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.CONNECTING_GLASS_TABLES.indexOf(it)]
                     val recipe = shaped(RecipeCategory.DECORATIONS, it, 1)
                     recipe
                         .group("connecting_glass_tables_from_scratch")
@@ -218,7 +219,8 @@ class RecipeDatagen(
                         )
                 }
                 ModItems.CONNECTING_GLASS_TABLES.forEach {
-                    val pane = GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.CONNECTING_GLASS_TABLES.indexOf(it)]
+                    val pane =
+                        GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }[ModItems.CONNECTING_GLASS_TABLES.indexOf(it)]
                     val recipe = shapeless(RecipeCategory.DECORATIONS, it, 1)
                     recipe
                         .group("connecting_glass_tables_from_frame")

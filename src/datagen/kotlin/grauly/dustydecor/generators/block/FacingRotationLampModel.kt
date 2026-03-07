@@ -5,10 +5,10 @@ import grauly.dustydecor.block.lamp.FacingRotationLampBlock
 import grauly.dustydecor.block.lamp.LightingFixtureBlock
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.models.BlockModelGenerators
-import net.minecraft.client.data.models.blockstates.MultiPartGenerator
 import net.minecraft.client.data.models.blockstates.ConditionBuilder
-import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator
 import net.minecraft.core.Direction
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
 class FacingRotationLampModel(lamps: List<FacingRotationLampBlock>, lampPrefix: String) :
     FacingLampModel(lamps, lampPrefix) {

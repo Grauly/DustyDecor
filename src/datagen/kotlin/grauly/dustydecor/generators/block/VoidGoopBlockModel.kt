@@ -1,14 +1,12 @@
 package grauly.dustydecor.generators.block
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
 import grauly.dustydecor.generators.BlockModelDatagen
 import net.minecraft.client.data.models.BlockModelGenerators
-import net.minecraft.client.data.models.blockstates.PropertyDispatch
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator
+import net.minecraft.client.data.models.blockstates.PropertyDispatch
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.resources.Identifier
 
 object VoidGoopBlockModel {
     fun get(blockStateModelGenerator: BlockModelGenerators) {

@@ -3,11 +3,11 @@ package grauly.dustydecor.event
 import grauly.dustydecor.ModAttachmentTypes
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModDamageTypes
-import net.minecraft.world.effect.MobEffects
-import net.minecraft.server.level.ServerPlayer
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.world.phys.HitResult
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.effect.MobEffects
 import net.minecraft.world.level.ClipContext
+import net.minecraft.world.phys.HitResult
 import kotlin.math.max
 import kotlin.math.min
 
@@ -27,7 +27,7 @@ object VoidGoopLookHandler {
                 } else {
                     max(
                         0f,
-                        value - CONSUMPTION_TICK_INCREMENT * if(player.gameMode.gameModeForPlayer.isSurvival) ATTENUATE_MULTIPLIER else 1f
+                        value - CONSUMPTION_TICK_INCREMENT * if (player.gameMode.gameModeForPlayer.isSurvival) ATTENUATE_MULTIPLIER else 1f
                     )
                 }
             }

@@ -1,25 +1,18 @@
 package grauly.dustydecor.generators
 
-import grauly.dustydecor.BlockDatagenWrapper
-import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.ItemDatagenWrapper
-import grauly.dustydecor.ModConventionalItemTags
-import grauly.dustydecor.ModItemTags
-import grauly.dustydecor.ModSoundEvents
-import grauly.dustydecor.block.furniture.SittableFurnitureBlock
+import grauly.dustydecor.*
 import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ToolComponents
-import grauly.dustydecor.entity.SeatEntity
 import grauly.dustydecor.entity.SitResultType
 import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.screens.VacPipeStationScreen
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
-import net.minecraft.world.item.Item
 import net.minecraft.core.HolderLookup
-import net.minecraft.tags.TagKey
 import net.minecraft.sounds.SoundEvent
+import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
 import java.util.concurrent.CompletableFuture
 
 class LangDatagen(
@@ -71,8 +64,14 @@ class LangDatagen(
         builder.add(ToolComponents.VAC_TUBE_WINDOW_TOGGLE.translationKey, "Can toggle windows on %s's")
         builder.add(ToolComponents.VENT_LOCK_TOGGLE.translationKey, "Can lock/unlock %s's")
         builder.add(ToolComponents.LAMPS_INVERT.translationKey, "Can invert some lamps")
-        builder.add(ToolComponents.SMALL_GLASS_TABLE_STRIP_PANE.translationKey, "Can safely remove the glass pane from small glass tables")
-        builder.add(ToolComponents.LARGE_GLASS_TABLE_STRIP_PANE.translationKey, "Can safely remove the glass pane from large glass tables")
+        builder.add(
+            ToolComponents.SMALL_GLASS_TABLE_STRIP_PANE.translationKey,
+            "Can safely remove the glass pane from small glass tables"
+        )
+        builder.add(
+            ToolComponents.LARGE_GLASS_TABLE_STRIP_PANE.translationKey,
+            "Can safely remove the glass pane from large glass tables"
+        )
 
         builder.add(tagTranslationKey(ModConventionalItemTags.SCREWDRIVER_TOOLS), "Screwdrivers")
         builder.add(tagTranslationKey(ModItemTags.VOID_GOOP), "Void Goop")
@@ -91,25 +90,52 @@ class LangDatagen(
 
         builder.add(VacPipeStationScreen.COPPER_GOLEM_MODE_TRANSLATION_KEY, "Copper Golem Behavior: ")
         builder.add(VacPipeStationScreen.COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT, "Interact")
-        builder.add(VacPipeStationScreen.COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT_NARRATION, "Interact, Copper Golems will supply capsules, or take received ones")
+        builder.add(
+            VacPipeStationScreen.COPPER_GOLEM_MODE_TRANSLATION_KEY_INTERACT_NARRATION,
+            "Interact, Copper Golems will supply capsules, or take received ones"
+        )
         builder.add(VacPipeStationScreen.COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE, "Ignore")
-        builder.add(VacPipeStationScreen.COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE_NARRATION, "Ignore, Copper Golems will not interact with this station")
+        builder.add(
+            VacPipeStationScreen.COPPER_GOLEM_MODE_TRANSLATION_KEY_IGNORE_NARRATION,
+            "Ignore, Copper Golems will not interact with this station"
+        )
         builder.add(VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY, "Redstone Emission: ")
         builder.add(VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE, "On Receive")
-        builder.add(VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE_NARRATION, "On Receive, emits a redstone signal when a capsule arrives")
+        builder.add(
+            VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_ON_RECEIVE_NARRATION,
+            "On Receive, emits a redstone signal when a capsule arrives"
+        )
         builder.add(VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_ON_SEND, "On Send")
-        builder.add(VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_ON_SEND_NARRATION, "On Send, emits a redstone signal when a capsule gets sent")
+        builder.add(
+            VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_ON_SEND_NARRATION,
+            "On Send, emits a redstone signal when a capsule gets sent"
+        )
         builder.add(VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY, "While Empty")
-        builder.add(VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY_NARRATION, "While Empty, emits a redstone signal when no capsule is present")
+        builder.add(
+            VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_WHILE_EMPTY_NARRATION,
+            "While Empty, emits a redstone signal when no capsule is present"
+        )
         builder.add(VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_NONE, "Never")
-        builder.add(VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_NONE_NARRATION, "Never, does not emit a redstone signal")
+        builder.add(
+            VacPipeStationScreen.REDSTONE_MODE_TRANSLATION_KEY_NONE_NARRATION,
+            "Never, does not emit a redstone signal"
+        )
         builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY, "Sending Mode: ")
         builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_MANUAL, "Manual")
-        builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_MANUAL_NARRATION, "Manual, press the GUI button to send a capsule")
+        builder.add(
+            VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_MANUAL_NARRATION,
+            "Manual, press the GUI button to send a capsule"
+        )
         builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_REDSTONE, "Redstone")
-        builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_REDSTONE_NARRATION, "Redstone, send capsules whenever a redstone signal is present")
+        builder.add(
+            VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_REDSTONE_NARRATION,
+            "Redstone, send capsules whenever a redstone signal is present"
+        )
         builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_AUTOMATIC, "Automatic")
-        builder.add(VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION, "Automatic, send a capsule when one is present")
+        builder.add(
+            VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION,
+            "Automatic, send a capsule when one is present"
+        )
 
         builder.add("entity.${DustyDecorMod.MODID}.seat", "Seat")
 
@@ -129,6 +155,6 @@ class LangDatagen(
     }
 
     private fun tagTranslationKey(itemTagKey: TagKey<Item>): String {
-        return "tag.item.${itemTagKey.location.toLanguageKey().replace("/",".")}"
+        return "tag.item.${itemTagKey.location.toLanguageKey().replace("/", ".")}"
     }
 }

@@ -1,14 +1,14 @@
 package grauly.dustydecor
 
 import grauly.dustydecor.entity.SeatEntity
+import net.minecraft.core.Registry
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.core.registries.Registries
+import net.minecraft.resources.Identifier
+import net.minecraft.resources.ResourceKey
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.MobCategory
-import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.core.Registry
-import net.minecraft.resources.ResourceKey
-import net.minecraft.core.registries.Registries
-import net.minecraft.resources.Identifier
 import net.minecraft.world.level.Level
 
 object ModEntities {
@@ -26,11 +26,19 @@ object ModEntities {
         // [Space intentionally left blank]
     }
 
-    private fun <T: Entity> registerEntity(constructor: (EntityType<T>, Level) -> T, id: String, builder: EntityType.Builder<T>): EntityType<T> {
+    private fun <T : Entity> registerEntity(
+        constructor: (EntityType<T>, Level) -> T,
+        id: String,
+        builder: EntityType.Builder<T>
+    ): EntityType<T> {
         return registerEntity(constructor, Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id), builder)
     }
 
-    private fun <T: Entity> registerEntity(constructor: (EntityType<T>, Level) -> T, id: Identifier, builder: EntityType.Builder<T>): EntityType<T> {
+    private fun <T : Entity> registerEntity(
+        constructor: (EntityType<T>, Level) -> T,
+        id: Identifier,
+        builder: EntityType.Builder<T>
+    ): EntityType<T> {
         val registryKey = ResourceKey.create(Registries.ENTITY_TYPE, id)
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, registryKey, builder.build(registryKey))
     }

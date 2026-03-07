@@ -6,13 +6,10 @@ import grauly.dustydecor.util.DyeUtils
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry
 import net.minecraft.client.color.block.BlockTintSource
 import net.minecraft.client.color.block.BlockTintSources
-import net.minecraft.client.renderer.block.BlockAndTintGetter
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.core.BlockPos
 import net.minecraft.world.level.block.state.properties.Property
 import java.awt.Color
-import kotlin.collections.listOf
 
 object ModBlockColors {
     fun init() {

@@ -12,26 +12,26 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.world.item.ItemStack
-import net.minecraft.nbt.CompoundTag
-import net.minecraft.network.protocol.game.ClientGamePacketListener
-import net.minecraft.network.protocol.Packet
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.NonNullList
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.network.protocol.Packet
+import net.minecraft.network.protocol.game.ClientGamePacketListener
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
+import net.minecraft.util.ProblemReporter
+import net.minecraft.world.Containers
+import net.minecraft.world.entity.ItemOwner
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.TagValueOutput
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
-import net.minecraft.util.ProblemReporter
-import net.minecraft.world.entity.ItemOwner
-import net.minecraft.world.Containers
-import net.minecraft.core.NonNullList
-import net.minecraft.core.BlockPos
-import net.minecraft.core.Direction
 import net.minecraft.world.phys.Vec3
-import net.minecraft.world.level.Level
 
 class VacPipeBlockEntity(
     pos: BlockPos,
@@ -47,8 +47,10 @@ class VacPipeBlockEntity(
     }
     private var lastInsertTime = 0L
     var insertHash = 0
+
     @Environment(EnvType.CLIENT)
     var lastInsertHash: Int = 0
+
     @Environment(EnvType.CLIENT)
     var ticksSinceLastChange: Int = 0
 
@@ -74,7 +76,7 @@ class VacPipeBlockEntity(
         if (movedAmount > 0 && targetBe is VacPipeBlockEntity) targetBe.notifyInsert(world)
     }
 
-    override fun getUpdatePacket(): Packet<ClientGamePacketListener>? {
+    override fun getUpdatePacket(): Packet<ClientGamePacketListener> {
         return ClientboundBlockEntityDataPacket.create(this)
     }
 

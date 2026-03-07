@@ -3,25 +3,25 @@ package grauly.dustydecor.block.vent
 import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.util.ToolUtils
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.state.properties.BlockSetType
-import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.block.TrapDoorBlock
-import net.minecraft.world.entity.player.Player
-import net.minecraft.world.item.context.BlockPlaceContext
-import net.minecraft.world.item.ItemStack
-import net.minecraft.server.level.ServerLevel
-import net.minecraft.sounds.SoundSource
-import net.minecraft.world.level.block.state.StateDefinition
-import net.minecraft.world.level.block.state.properties.EnumProperty
-import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.world.InteractionResult
-import net.minecraft.world.InteractionHand
-import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.sounds.SoundSource
 import net.minecraft.util.RandomSource
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.TrapDoorBlock
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BlockSetType
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.level.block.state.properties.EnumProperty
+import net.minecraft.world.phys.BlockHitResult
 
 class VentCoverBlock(settings: Properties) : TrapDoorBlock(BlockSetType.COPPER, settings) {
 
@@ -75,7 +75,8 @@ class VentCoverBlock(settings: Properties) : TrapDoorBlock(BlockSetType.COPPER, 
 
     override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState {
         val directionPlacedAgainst = ctx.clickedFace
-        val checkHand = if (ctx.hand == InteractionHand.MAIN_HAND) InteractionHand.OFF_HAND else InteractionHand.MAIN_HAND
+        val checkHand =
+            if (ctx.hand == InteractionHand.MAIN_HAND) InteractionHand.OFF_HAND else InteractionHand.MAIN_HAND
         val stack = ctx.player?.getItemInHand(checkHand) ?: ItemStack.EMPTY
         val isHoldingScrewdriver = isModifyTool(stack)
         if (isHoldingScrewdriver) {
@@ -104,7 +105,8 @@ class VentCoverBlock(settings: Properties) : TrapDoorBlock(BlockSetType.COPPER, 
 
     override fun isRandomlyTicking(state: BlockState): Boolean {
         return super.isRandomlyTicking(state) && !state.getValueOrElse(POWERED, false) && !state.getValue(
-            BlockStateProperties.LOCKED)
+            BlockStateProperties.LOCKED
+        )
     }
 
     private fun isModifyTool(stack: ItemStack): Boolean = stack.has(ModDataComponentTypes.VENT_COVER_LOCK)
