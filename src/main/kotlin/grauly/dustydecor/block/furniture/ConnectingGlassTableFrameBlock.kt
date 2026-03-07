@@ -36,40 +36,28 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
                 .sum()
             if (connectionCount == 4) {
                 SHAPES[state] = Shapes.empty()
-                continue
-            }
-            if (connectionCount == 3) {
+            } else if (connectionCount == 3) {
                 val connectionDirection = CONNECTION_DIRECTIONS
                     .find { !state.getValue(getPropertyForDirection(it)!!) }
                 SHAPES[state] = Shapes.rotate(FULL_FRAME_PART, ROTATION_MAP[connectionDirection]!!)
-                continue
-            }
-            if (connectionCount == 2) {
+            } else if (connectionCount == 2) {
                 val connections = CONNECTION_DIRECTIONS.filter { state.getValue(getPropertyForDirection(it)!!) }
                 if (connections.first() == connections.last().opposite) {
                     SHAPES[state] = Shapes.rotate(NORTH_FACING_PARALLEL, ROTATION_MAP[connections.first()]!!)
-                    continue
-                }
-                SHAPES[state] = if (connections.first() == Direction.NORTH && connections.last() == Direction.WEST) {
-                     Shapes.rotate(NORTH_EAST_OPEN_CORNER, ROTATION_MAP[connections.last()]!!)
                 } else {
-                    Shapes.rotate(NORTH_EAST_OPEN_CORNER, ROTATION_MAP[connections.first()]!!)
+                    SHAPES[state] = if (connections.first() == Direction.NORTH && connections.last() == Direction.WEST) {
+                        Shapes.rotate(NORTH_EAST_OPEN_CORNER, ROTATION_MAP[connections.last()]!!)
+                    } else {
+                        Shapes.rotate(NORTH_EAST_OPEN_CORNER, ROTATION_MAP[connections.first()]!!)
+                    }
                 }
-                continue
-            }
-            if (connectionCount == 1) {
+            } else if (connectionCount == 1) {
                 val connectionDirection = CONNECTION_DIRECTIONS
                     .find { state.getValue(getPropertyForDirection(it)!!) }
                 SHAPES[state] = Shapes.rotate(NORTH_OPEN_DEAD_END, ROTATION_MAP[connectionDirection]!!)
-                continue
-            }
-            if (connectionCount == 0) {
+            } else if (connectionCount == 0) {
                 SHAPES[state] = FULL_FRAME
-                continue
             }
-        }
-        for (state in stateDefinition.possibleStates) {
-            if (state != normalizeState(state)) continue
             listOf(0,1,2,3).forEach { indexOffset ->
                 if (state.getValue(DIRECTION_PROPERTIES[indexOffset * 2].second) == FACE_CONNECTED &&
                     state.getValue(DIRECTION_PROPERTIES[(indexOffset * 2 + 1) % 8].second) == !FACE_CONNECTED &&
