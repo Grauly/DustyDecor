@@ -12,12 +12,30 @@ import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.world.phys.shapes.CollisionContext
+import net.minecraft.world.phys.shapes.Shapes
+import net.minecraft.world.phys.shapes.VoxelShape
 
 class ConnectingGlassTableBlock(properties: Properties) : ConnectingBreakableBlock(properties) {
+    var collisionShapes: MutableMap<BlockState, VoxelShape> = mutableMapOf()
+    var outlineShapes: MutableMap<BlockState, VoxelShape> = mutableMapOf()
+
+    init {
+        collisionShapes = ConnectingGlassTableShapes.generateCollisionShapes(stateDefinition)
+        collisionShapes.replaceAll { state, shape ->
+            Shapes.or(shape, TABLE_TOP)
+        }
+        outlineShapes = ConnectingGlassTableShapes.generateOutlineShapes(stateDefinition)
+        outlineShapes.replaceAll { state, shape ->
+            Shapes.or(shape, TABLE_TOP)
+        }
+    }
+
     override fun useItemOn(
         itemStack: ItemStack,
         state: BlockState,
@@ -53,5 +71,22 @@ class ConnectingGlassTableBlock(properties: Properties) : ConnectingBreakableBlo
 
     fun getPaneState(block: Block): BlockState {
         return GlassUtils.GLASS_PANE_ORDER[ModBlocks.CONNECTING_GLASS_TABLES.indexOf(block)].defaultBlockState()
+    }
+
+    override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
+        return outlineShapes[ConnectingGlassTableShapes.normalizeState(state)] ?: Shapes.block()
+    }
+
+    override fun getCollisionShape(
+        state: BlockState,
+        level: BlockGetter,
+        pos: BlockPos,
+        context: CollisionContext
+    ): VoxelShape {
+        return collisionShapes[ConnectingGlassTableShapes.normalizeState(state)] ?: Shapes.block()
+    }
+
+    companion object {
+        val TABLE_TOP = column(16.0, 15.0, 16.0)
     }
 }
