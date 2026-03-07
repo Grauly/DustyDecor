@@ -147,7 +147,7 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
                     state.getValue(DIRECTION_PROPERTIES[(indexOffset * 2 + 2) % 8].second) == FACE_CONNECTED) {
                     COLLISION_SHAPES[state] = Shapes.or(
                         COLLISION_SHAPES[state]!!,
-                        Shapes.rotate(INNER_CORNER, ROTATION_MAP[CONNECTION_DIRECTIONS[indexOffset]]!!)
+                        Shapes.rotate(INNER_CORNER, ROTATION_MAP[CONNECTION_DIRECTIONS[(indexOffset + 1) % 4]]!!)
                     )
                 }
             }
