@@ -27,6 +27,48 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
         generateOutlineShapes()
     }
 
+    override fun useItemOn(
+        itemStack: ItemStack,
+        state: BlockState,
+        level: Level,
+        pos: BlockPos,
+        player: Player,
+        hand: InteractionHand,
+        hitResult: BlockHitResult
+    ): InteractionResult {
+        if (GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }.contains(itemStack.item)) {
+            val block = ModBlocks.CONNECTING_GLASS_TABLES[GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }
+                .indexOf(itemStack.item)]
+            val replaceState = replaceBlock(block, level, state, pos)
+            itemStack.consume(1, player)
+            level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos)
+            level.playSound(
+                null,
+                pos,
+                replaceState.soundType.placeSound,
+                SoundSource.BLOCKS
+            )
+            return InteractionResult.SUCCESS
+        }
+        return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)
+    }
+
+    override fun getCollisionShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
+        return COLLISION_SHAPES[normalizeState(state)] ?: Shapes.block()
+    }
+
+    override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
+        return OUTLINE_SHAPES[normalizeState(state)] ?: Shapes.block()
+    }
+
+    override fun onProjectileHit(level: Level, state: BlockState, blockHit: BlockHitResult, projectile: Projectile) {
+        //[Space intentionally left blank]
+    }
+
+    override fun attack(state: BlockState, level: Level, pos: BlockPos, player: Player) {
+        //[Space intentionally left blank]
+    }
+
     private fun generateOutlineShapes() {
         val base = column(14.0, 0.0, 15.0)
         for (state in stateDefinition.possibleStates) {
@@ -114,48 +156,6 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
 
     private fun normalizeState(state: BlockState): BlockState {
         return state.setValue(WATERLOGGED, false)
-    }
-
-    override fun useItemOn(
-        itemStack: ItemStack,
-        state: BlockState,
-        level: Level,
-        pos: BlockPos,
-        player: Player,
-        hand: InteractionHand,
-        hitResult: BlockHitResult
-    ): InteractionResult {
-        if (GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }.contains(itemStack.item)) {
-            val block = ModBlocks.CONNECTING_GLASS_TABLES[GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }
-                .indexOf(itemStack.item)]
-            val replaceState = replaceBlock(block, level, state, pos)
-            itemStack.consume(1, player)
-            level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos)
-            level.playSound(
-                null,
-                pos,
-                replaceState.soundType.placeSound,
-                SoundSource.BLOCKS
-            )
-            return InteractionResult.SUCCESS
-        }
-        return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)
-    }
-
-    override fun getCollisionShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
-        return COLLISION_SHAPES[normalizeState(state)] ?: Shapes.block()
-    }
-
-    override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
-        return OUTLINE_SHAPES[normalizeState(state)] ?: Shapes.block()
-    }
-
-    override fun onProjectileHit(level: Level, state: BlockState, blockHit: BlockHitResult, projectile: Projectile) {
-        //[Space intentionally left blank]
-    }
-
-    override fun attack(state: BlockState, level: Level, pos: BlockPos, player: Player) {
-        //[Space intentionally left blank]
     }
 
     companion object {
