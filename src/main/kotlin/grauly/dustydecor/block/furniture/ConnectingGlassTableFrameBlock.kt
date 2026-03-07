@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.block.state.properties.Property
 import net.minecraft.world.level.gameevent.GameEvent
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
@@ -24,10 +23,10 @@ import net.minecraft.world.phys.shapes.VoxelShape
 class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakableBlock(properties) {
 
     init {
-        generateShapes()
+        generateCollisionShapes()
     }
 
-    private fun generateShapes() {
+    private fun generateCollisionShapes() {
         for (state in stateDefinition.possibleStates) {
             if (state != normalizeState(state)) continue
             val connectionCount = CONNECTION_DIRECTIONS
@@ -35,17 +34,17 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
                 .map { if (state.getValue(it)) 1 else 0 }
                 .sum()
             if (connectionCount == 4) {
-                SHAPES[state] = Shapes.empty()
+                COLLISION_SHAPES[state] = Shapes.empty()
             } else if (connectionCount == 3) {
                 val connectionDirection = CONNECTION_DIRECTIONS
                     .find { !state.getValue(getPropertyForDirection(it)!!) }
-                SHAPES[state] = Shapes.rotate(FULL_FRAME_PART, ROTATION_MAP[connectionDirection]!!)
+                COLLISION_SHAPES[state] = Shapes.rotate(FULL_FRAME_PART, ROTATION_MAP[connectionDirection]!!)
             } else if (connectionCount == 2) {
                 val connections = CONNECTION_DIRECTIONS.filter { state.getValue(getPropertyForDirection(it)!!) }
                 if (connections.first() == connections.last().opposite) {
-                    SHAPES[state] = Shapes.rotate(NORTH_FACING_PARALLEL, ROTATION_MAP[connections.first()]!!)
+                    COLLISION_SHAPES[state] = Shapes.rotate(NORTH_FACING_PARALLEL, ROTATION_MAP[connections.first()]!!)
                 } else {
-                    SHAPES[state] = if (connections.first() == Direction.NORTH && connections.last() == Direction.WEST) {
+                    COLLISION_SHAPES[state] = if (connections.first() == Direction.NORTH && connections.last() == Direction.WEST) {
                         Shapes.rotate(NORTH_EAST_OPEN_CORNER, ROTATION_MAP[connections.last()]!!)
                     } else {
                         Shapes.rotate(NORTH_EAST_OPEN_CORNER, ROTATION_MAP[connections.first()]!!)
@@ -54,16 +53,16 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
             } else if (connectionCount == 1) {
                 val connectionDirection = CONNECTION_DIRECTIONS
                     .find { state.getValue(getPropertyForDirection(it)!!) }
-                SHAPES[state] = Shapes.rotate(NORTH_OPEN_DEAD_END, ROTATION_MAP[connectionDirection]!!)
+                COLLISION_SHAPES[state] = Shapes.rotate(NORTH_OPEN_DEAD_END, ROTATION_MAP[connectionDirection]!!)
             } else if (connectionCount == 0) {
-                SHAPES[state] = FULL_FRAME
+                COLLISION_SHAPES[state] = FULL_FRAME
             }
             listOf(0,1,2,3).forEach { indexOffset ->
                 if (state.getValue(DIRECTION_PROPERTIES[indexOffset * 2].second) == FACE_CONNECTED &&
                     state.getValue(DIRECTION_PROPERTIES[(indexOffset * 2 + 1) % 8].second) == !FACE_CONNECTED &&
                     state.getValue(DIRECTION_PROPERTIES[(indexOffset * 2 + 2) % 8].second) == FACE_CONNECTED) {
-                    SHAPES[state] = Shapes.or(
-                        SHAPES[state]!!,
+                    COLLISION_SHAPES[state] = Shapes.or(
+                        COLLISION_SHAPES[state]!!,
                         Shapes.rotate(INNER_CORNER, ROTATION_MAP[CONNECTION_DIRECTIONS[indexOffset]]!!)
                     )
                 }
@@ -102,8 +101,7 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
     }
 
     override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
-        //generateShapes()
-        return SHAPES[normalizeState(state)] ?: Shapes.block()
+        return COLLISION_SHAPES[normalizeState(state)] ?: Shapes.block()
     }
 
     override fun onProjectileHit(level: Level, state: BlockState, blockHit: BlockHitResult, projectile: Projectile) {
@@ -172,7 +170,7 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
             box(0.0, 14.0, 1.0, 1.0, 15.0, 2.0),
             box(0.0, 12.0, 1.499, 1.0, 14.0, 1.501, )
         )
-        var SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()
+        var COLLISION_SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()
         val ROTATION_MAP: Map<Direction, OctahedralGroup> = mapOf(
             Direction.NORTH to OctahedralGroup.IDENTITY,
             Direction.EAST to OctahedralGroup.BLOCK_ROT_Y_90,
