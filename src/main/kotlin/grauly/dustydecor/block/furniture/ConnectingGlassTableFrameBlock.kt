@@ -1,7 +1,6 @@
 package grauly.dustydecor.block.furniture
 
 import com.mojang.math.OctahedralGroup
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.util.GlassUtils
 import net.minecraft.core.BlockPos
@@ -15,6 +14,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.properties.Property
 import net.minecraft.world.level.gameevent.GameEvent
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
@@ -68,6 +68,19 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
                 continue
             }
         }
+        for (state in stateDefinition.possibleStates) {
+            if (state != normalizeState(state)) continue
+            listOf(0,1,2,3).forEach { indexOffset ->
+                if (state.getValue(DIRECTION_PROPERTIES[indexOffset * 2].second) == FACE_CONNECTED &&
+                    state.getValue(DIRECTION_PROPERTIES[(indexOffset * 2 + 1) % 8].second) == !FACE_CONNECTED &&
+                    state.getValue(DIRECTION_PROPERTIES[(indexOffset * 2 + 2) % 8].second) == FACE_CONNECTED) {
+                    SHAPES[state] = Shapes.or(
+                        SHAPES[state]!!,
+                        Shapes.rotate(INNER_CORNER, ROTATION_MAP[CONNECTION_DIRECTIONS[indexOffset]]!!)
+                    )
+                }
+            }
+        }
     }
 
     private fun normalizeState(state: BlockState): BlockState {
@@ -84,7 +97,8 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
         hitResult: BlockHitResult
     ): InteractionResult {
         if (GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }.contains(itemStack.item)) {
-            val block = ModBlocks.CONNECTING_GLASS_TABLES[GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }.indexOf(itemStack.item)]
+            val block = ModBlocks.CONNECTING_GLASS_TABLES[GlassUtils.GLASS_PANE_ORDER.map { it.asItem() }
+                .indexOf(itemStack.item)]
             val replaceState = replaceBlock(block, level, state, pos)
             itemStack.consume(1, player)
             level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos)
@@ -100,7 +114,7 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
     }
 
     override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
-        generateShapes()
+        //generateShapes()
         return SHAPES[normalizeState(state)] ?: Shapes.block()
     }
 
@@ -136,27 +150,40 @@ class ConnectingGlassTableFrameBlock(properties: Properties) : ConnectingBreakab
             Shapes.rotate(POST, OctahedralGroup.BLOCK_ROT_Y_270),
             INNER_FRAME_PART,
             Shapes.rotate(INNER_FRAME_PART, OctahedralGroup.BLOCK_ROT_Y_90),
-            Shapes.rotate(Shapes.or(
-                INNER_FRAME_PART,
-                Shapes.rotate(INNER_FRAME_PART, OctahedralGroup.BLOCK_ROT_Y_90)
-            ), OctahedralGroup.BLOCK_ROT_Y_180)
+            Shapes.rotate(
+                Shapes.or(
+                    INNER_FRAME_PART,
+                    Shapes.rotate(INNER_FRAME_PART, OctahedralGroup.BLOCK_ROT_Y_90)
+                ), OctahedralGroup.BLOCK_ROT_Y_180
+            )
         )
         val NORTH_OPEN_DEAD_END = Shapes.or(
             Shapes.rotate(POST, OctahedralGroup.BLOCK_ROT_Y_180),
             Shapes.rotate(POST, OctahedralGroup.BLOCK_ROT_Y_270),
             Shapes.rotate(INNER_FRAME_PART, OctahedralGroup.BLOCK_ROT_Y_270),
             OUTER_FRAME_PART,
-            OUTER_FRAME_PART.move(13.0/16.0,0.0,0.0)
+            OUTER_FRAME_PART.move(13.0 / 16.0, 0.0, 0.0)
         )
         val NORTH_EAST_OPEN_CORNER = Shapes.or(
             Shapes.rotate(POST, OctahedralGroup.BLOCK_ROT_Y_270),
-            Shapes.rotate(OUTER_FRAME_PART, OctahedralGroup.BLOCK_ROT_Y_90).move(0.0, 0.0, 13.0/16.0),
+            Shapes.rotate(OUTER_FRAME_PART, OctahedralGroup.BLOCK_ROT_Y_90).move(0.0, 0.0, 13.0 / 16.0),
             OUTER_FRAME_PART,
         )
-        val NORTH_FACING_PARALLEL = Shapes.rotate(Shapes.or(
-            FULL_FRAME_PART,
-            FULL_FRAME_PART.move(0.0,0.0,13.0/16.0)
-        ), OctahedralGroup.BLOCK_ROT_Y_90)
+        val NORTH_FACING_PARALLEL = Shapes.rotate(
+            Shapes.or(
+                FULL_FRAME_PART,
+                FULL_FRAME_PART.move(0.0, 0.0, 13.0 / 16.0)
+            ), OctahedralGroup.BLOCK_ROT_Y_90
+        )
+        val INNER_CORNER = Shapes.or(
+            POST,
+            box(1.0, 0.0, 0.0, 2.0, 1.0, 1.0),
+            box(1.0, 14.0, 0.0, 2.0, 15.0, 1.0),
+            box(1.499, 12.0, 0.0, 1.501, 14.0, 1.0),
+            box(0.0, 0.0, 1.0, 1.0, 1.0, 2.0),
+            box(0.0, 14.0, 1.0, 1.0, 15.0, 2.0),
+            box(0.0, 12.0, 1.499, 1.0, 14.0, 1.501, )
+        )
         var SHAPES: MutableMap<BlockState, VoxelShape> = mutableMapOf()
         val ROTATION_MAP: Map<Direction, OctahedralGroup> = mapOf(
             Direction.NORTH to OctahedralGroup.IDENTITY,
