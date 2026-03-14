@@ -1,6 +1,6 @@
 package grauly.dustydecor.screens
 
-import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractButton
 import net.minecraft.client.gui.components.Tooltip
 import net.minecraft.client.gui.narration.NarratedElementType
@@ -55,13 +55,13 @@ class ImageCyclingButtonWidget<T>(
         }
     }
 
-    override fun renderContents(
-        graphics: GuiGraphics,
+    override fun extractContents(
+        graphics: GuiGraphicsExtractor,
         mouseX: Int,
         mouseY: Int,
         deltaTicks: Float
     ) {
-        this.renderDefaultSprite(graphics)
+        this.extractDefaultSprite(graphics)
         getActiveElement().render(graphics, mouseX, mouseY, deltaTicks, x, y, width, height)
     }
 
@@ -101,7 +101,7 @@ class ImageCyclingButtonWidget<T>(
         val activeNarrationMessage: Component,
     ) {
         abstract fun render(
-            context: GuiGraphics,
+            context: GuiGraphicsExtractor,
             mouseX: Int,
             mouseY: Int,
             deltaTicks: Float,
@@ -119,7 +119,7 @@ class ImageCyclingButtonWidget<T>(
         activeNarrationMessage: Component
     ) : CycleEntry<A>(value, name, activeNarrationMessage) {
         override fun render(
-            context: GuiGraphics,
+            context: GuiGraphicsExtractor,
             mouseX: Int,
             mouseY: Int,
             deltaTicks: Float,
@@ -147,7 +147,7 @@ class ImageCyclingButtonWidget<T>(
         activeNarrationMessage: Component
     ) : CycleEntry<A>(value, name, activeNarrationMessage) {
         override fun render(
-            context: GuiGraphics,
+            context: GuiGraphicsExtractor,
             mouseX: Int,
             mouseY: Int,
             deltaTicks: Float,
@@ -156,7 +156,7 @@ class ImageCyclingButtonWidget<T>(
             width: Int,
             height: Int
         ) {
-            context.renderItem(item, x + 1, y + 1)
+            context.item(item, x + 1, y + 1)
         }
 
     }

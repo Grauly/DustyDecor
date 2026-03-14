@@ -9,7 +9,7 @@ import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Compa
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity.Companion.SEND_MODE
 import grauly.dustydecor.screen.VacPipeStationScreenHandler
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
@@ -173,7 +173,8 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
         sendingModeButton.setValue(menu.getSendingMode())
     }
 
-    override fun renderBg(context: GuiGraphics, deltaTicks: Float, mouseX: Int, mouseY: Int) {
+
+    override fun extractBackground(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         context.blit(
             RenderPipelines.GUI_TEXTURED,
             texture,
@@ -188,9 +189,9 @@ abstract class VacPipeStationScreen<T : VacPipeStationScreenHandler<*>>(
         )
     }
 
-    override fun render(context: GuiGraphics, mouseX: Int, mouseY: Int, deltaTicks: Float) {
-        super.render(context, mouseX, mouseY, deltaTicks)
-        renderTooltip(context, mouseX, mouseY)
+    override fun extractContents(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+        super.extractContents(context, mouseX, mouseY, deltaTicks)
+        extractTooltip(context, mouseX, mouseY)
     }
 
     companion object {
