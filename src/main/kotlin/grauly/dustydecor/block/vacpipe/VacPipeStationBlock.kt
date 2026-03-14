@@ -1,15 +1,15 @@
 package grauly.dustydecor.block.vacpipe
 
 import com.mojang.serialization.MapCodec
+import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModDataComponentTypes
+import grauly.dustydecor.blockentity.vac_station.SendMode
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
 import grauly.dustydecor.particle.AirInflowParticleEffect
 import grauly.dustydecor.particle.AirOutflowParticleEffect
 import grauly.dustydecor.util.ToolUtils
 import grauly.dustydecor.util.VoxelShapesUtil
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
@@ -25,6 +25,8 @@ import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.ScheduledTickAccess
 import net.minecraft.world.level.block.*
 import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityTicker
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
@@ -36,8 +38,7 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
-class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(settings), SimpleWaterloggedBlock,
-    EntityBlock {
+class VacPipeStationBlock(settings: Properties) : BaseEntityBlock(settings), SimpleWaterloggedBlock {
 
     //TODO: do the pipe alignment automatically (find a compromise to stay performant)
     //TODO: add copper golem behaviors
@@ -45,28 +46,9 @@ class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(set
     init {
         registerDefaultState(
             defaultBlockState()
-                .setValue(FACING, Direction.NORTH)
                 .setValue(BlockStateProperties.WATERLOGGED, false)
                 .setValue(SENDING, false)
         )
-    }
-
-    override fun getShape(
-        state: BlockState,
-        world: BlockGetter,
-        pos: BlockPos,
-        context: CollisionContext
-    ): VoxelShape {
-        return SHAPE
-    }
-
-    override fun getCollisionShape(
-        state: BlockState,
-        world: BlockGetter,
-        pos: BlockPos,
-        context: CollisionContext
-    ): VoxelShape {
-        return SHAPE
     }
 
     override fun useWithoutItem(
@@ -132,7 +114,6 @@ class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(set
 
     override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState? {
         return super.getStateForPlacement(ctx)
-            ?.setValue(FACING, ctx.horizontalDirection.opposite)
             ?.setValue(BlockStateProperties.WATERLOGGED, ctx.level.getFluidState(ctx.clickedPos).type == Fluids.WATER)
     }
 
@@ -149,14 +130,27 @@ class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(set
         world.scheduleTick(pos, this, 4)
     }
 
-    override fun tick(state: BlockState, world: ServerLevel, pos: BlockPos, random: RandomSource) {
-        val be = world.getBlockEntity(pos)
+    override fun tick(state: BlockState, level: ServerLevel, pos: BlockPos, random: RandomSource) {
+        val be = level.getBlockEntity(pos)
         if (be !is VacPipeStationBlockEntity) return
-        val offsetPos = pos.relative(Direction.UP)
-        if (!world.getBlockState(offsetPos).`is`(ModBlocks.VAC_PIPE)) return
-        val otherStorage = ItemStorage.SIDED.find(world, pos.relative(Direction.UP), Direction.DOWN) ?: return
-        val ownStorage = be.storage
-        StorageUtil.move(ownStorage, otherStorage, { true }, 1, null)
+        when (be.propertyDelegate.getSendingMode()) {
+            SendMode.ON_REDSTONE -> {
+                be.sendCapsule(level, pos)
+            }
+
+            else -> Unit
+        }
+    }
+
+    override fun <T : BlockEntity> getTicker(
+        level: Level,
+        blockState: BlockState,
+        type: BlockEntityType<T>
+    ): BlockEntityTicker<T>? {
+        return if (level.isClientSide) null
+        else {
+            createTickerHelper(type, ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, VacPipeStationBlockEntity::tick)
+        }
     }
 
     override fun animateTick(
@@ -217,11 +211,29 @@ class VacPipeStationBlock(settings: Properties) : HorizontalDirectionalBlock(set
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         super.createBlockStateDefinition(builder)
-        builder.add(FACING, BlockStateProperties.WATERLOGGED, SENDING)
+        builder.add(BlockStateProperties.WATERLOGGED, SENDING)
     }
 
     override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
         return VacPipeStationBlockEntity(pos, state)
+    }
+
+    override fun getShape(
+        state: BlockState,
+        world: BlockGetter,
+        pos: BlockPos,
+        context: CollisionContext
+    ): VoxelShape {
+        return SHAPE
+    }
+
+    override fun getCollisionShape(
+        state: BlockState,
+        world: BlockGetter,
+        pos: BlockPos,
+        context: CollisionContext
+    ): VoxelShape {
+        return SHAPE
     }
 
     companion object {

@@ -6,6 +6,7 @@ import grauly.dustydecor.component.ToolComponents
 import grauly.dustydecor.entity.SitResultType
 import grauly.dustydecor.item.BulkVoidGoopItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
+import grauly.dustydecor.screens.VacPipeSendStationScreen
 import grauly.dustydecor.screens.VacPipeStationScreen
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
@@ -136,6 +137,7 @@ class LangDatagen(
             VacPipeStationScreen.SENDING_MODE_TRANSLATION_KEY_AUTOMATIC_NARRATION,
             "Automatic, send a capsule when one is present"
         )
+        builder.add(VacPipeSendStationScreen.SEND_BUTTON_TEXT, "Send")
 
         builder.add("entity.${DustyDecorMod.MODID}.seat", "Seat")
 

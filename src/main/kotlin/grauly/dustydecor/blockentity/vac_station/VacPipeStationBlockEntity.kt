@@ -2,10 +2,14 @@ package grauly.dustydecor.blockentity.vac_station
 
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlockEntityTypes
+import grauly.dustydecor.ModBlocks
+import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
 import grauly.dustydecor.block.vacpipe.VacPipeStationBlock.Companion.SENDING
 import grauly.dustydecor.screen.VacPipeReceiveStationScreenHandler
 import grauly.dustydecor.screen.VacPipeSendStationScreenHandler
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.HolderLookup
@@ -15,6 +19,7 @@ import net.minecraft.network.chat.Component
 import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientGamePacketListener
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.ProblemReporter
 import net.minecraft.world.*
 import net.minecraft.world.entity.ItemOwner
@@ -45,6 +50,47 @@ class VacPipeStationBlockEntity(
     val storage: ContainerStorage = ContainerStorage.of(inventory, Direction.UP)
 
     val propertyDelegate = ModeDelegate()
+
+    private fun tick(
+        level: Level,
+        pos: BlockPos,
+        state: BlockState
+    ) {
+        if (level !is ServerLevel) return
+        handleSending(level, pos, state)
+    }
+
+    private fun handleSending(level: ServerLevel, pos: BlockPos, state: BlockState) {
+        if (!state.getValue(SENDING)) return
+        when (propertyDelegate.getSendingMode()) {
+            SendMode.AUTOMATIC -> {
+                if (storage.any { !it.isResourceBlank }) {
+                    sendCapsule(level, pos)
+                }
+            }
+            SendMode.MANUAL -> {
+                if (propertyDelegate.shouldSend()) {
+                    if (storage.any { !it.isResourceBlank }) {
+                        sendCapsule(level, pos)
+                    }
+                    propertyDelegate.setSend(false)
+                }
+            }
+            else -> Unit
+        }
+    }
+
+    fun sendCapsule(level: ServerLevel, pos: BlockPos) {
+        val offsetPos = pos.relative(Direction.UP)
+        if (!level.getBlockState(offsetPos).`is`(ModBlocks.VAC_PIPE)) return
+        val otherStorage = ItemStorage.SIDED.find(level, pos.relative(Direction.UP), Direction.DOWN) ?: return
+        val moved = StorageUtil.move(storage, otherStorage, { true }, 1, null)
+        if (moved != 1L) return
+        //TODO: play sound
+        //TODO: emit event
+        //TODO: emit redstone
+        //if (propertyDelegate.getRedstoneMode() != RedstoneEmissionMode.ON_SEND) return
+    }
 
     fun markDirtyDelegate() {
         setChanged()
@@ -121,6 +167,10 @@ class VacPipeStationBlockEntity(
     override fun getVisualRotationYInDegrees(): Float = 0f
 
     companion object {
+        fun tick(level: Level, pos: BlockPos, state: BlockState, entity: VacPipeStationBlockEntity) {
+            entity.tick(level, pos, state)
+        }
+
         const val GOLEM_MODE_KEY = "golemMode"
         const val REDSTONE_MODE_KEY = "redstoneMode"
         const val SEND_MODE_KEY = "sendingMode"
@@ -133,18 +183,18 @@ class VacPipeStationBlockEntity(
     }
 
     class ModeDelegate : ContainerData {
-        val data = IntArray(3)
+        val data = IntArray(4)
 
         override fun get(index: Int): Int {
             return when (index) {
-                0, 1, 2 -> data[index]
+                0, 1, 2, 3 -> data[index]
                 else -> -1
             }
         }
 
         override fun set(index: Int, value: Int) {
             when (index) {
-                0, 1, 2 -> data[index] = value
+                0, 1, 2, 3 -> data[index] = value
             }
         }
 
@@ -160,6 +210,10 @@ class VacPipeStationBlockEntity(
             return SendMode.entries[get(SEND_MODE)]
         }
 
+        fun shouldSend(): Boolean {
+            return get(3) == 1
+        }
+
         fun setGolemMode(golemMode: CopperGolemMode) {
             set(GOLEM_MODE, golemMode.ordinal)
         }
@@ -170,6 +224,10 @@ class VacPipeStationBlockEntity(
 
         fun setSendingMode(sendingMode: SendMode) {
             set(SEND_MODE, sendingMode.ordinal)
+        }
+
+        fun setSend(send: Boolean) {
+            set(3, if (send) 1 else 0)
         }
 
         override fun getCount(): Int = 4

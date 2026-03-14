@@ -319,6 +319,7 @@
   "screen.dustydecor.vac_pipe_station.mode.sending.manual.narration": "Manual, press the GUI button to send a capsule",
   "screen.dustydecor.vac_pipe_station.mode.sending.redston": "Redstone",
   "screen.dustydecor.vac_pipe_station.mode.sending.redston.narration": "Redstone, send capsules whenever a redstone signal is present",
+  "screen.dustydecor.vap_pipe_station.button.send": "Send",
   "sittable.dustydecor.already_sitting": "Already sitting",
   "sittable.dustydecor.none": "The seat is a lie",
   "sittable.dustydecor.occupied": "Already occupied",
