@@ -179,6 +179,8 @@ object ModBlocks {
             .explosionResistance(2.5f)
     ) as ConnectingBreakableBlock
 
+    val PHONE: SingleFurnitureBlock = registerBlock(::PhoneBlock, "phone", Properties.ofFullCopy(Blocks.RED_TERRACOTTA).noOcclusion()) as SingleFurnitureBlock
+
     private fun registerBlock(
         blockFactory: (Properties) -> Block,
         id: String,

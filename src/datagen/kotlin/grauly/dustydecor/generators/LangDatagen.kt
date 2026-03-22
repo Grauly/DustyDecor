@@ -73,6 +73,7 @@ class LangDatagen(
             ToolComponents.LARGE_GLASS_TABLE_STRIP_PANE.translationKey,
             "Can safely remove the glass pane from large glass tables"
         )
+        builder.add(ToolComponents.PHONE_REPAIR.translationKey, "Can repair phones")
 
         builder.add(tagTranslationKey(ModConventionalItemTags.SCREWDRIVER_TOOLS), "Screwdrivers")
         builder.add(tagTranslationKey(ModItemTags.VOID_GOOP), "Void Goop")

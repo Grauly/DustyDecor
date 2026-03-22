@@ -33,6 +33,8 @@ object ModDataComponentTypes {
         registerComponent(ToolComponents.SMALL_GLASS_TABLE_STRIP_PANE.codec, "small_glass_table_strip_pane")
     val LARGE_GLASS_TABLE_STRIP_PANE: DataComponentType<TooltipProvider> =
         registerComponent(ToolComponents.LARGE_GLASS_TABLE_STRIP_PANE.codec, "large_glass_table_strip_pane")
+    val PHONE_REPAIR: DataComponentType<TooltipProvider> =
+        registerComponent(ToolComponents.PHONE_REPAIR.codec, "phone_repair")
 
 
     private fun <T : Any> registerComponent(

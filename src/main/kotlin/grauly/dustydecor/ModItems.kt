@@ -77,6 +77,7 @@ object ModItems {
                 ModDataComponentTypes.LARGE_GLASS_TABLE_STRIP_PANE,
                 ToolComponents.LARGE_GLASS_TABLE_STRIP_PANE.component
             )
+            .component(ModDataComponentTypes.PHONE_REPAIR, ToolComponents.PHONE_REPAIR.component)
     )
     val WRENCH: Item = registerItem(
         ::Item,
@@ -132,6 +133,8 @@ object ModItems {
     }
     val CONNECTING_GLASS_TABLE_FRAME: Item =
         registerBlockItem(ModBlocks.CONNECTING_GLASS_TABLE_FRAME, "connecting_glass_table_frame")
+
+    val PHONE: Item = registerBlockItem(ModBlocks.PHONE, "phone")
 
     private fun registerItem(
         itemFactory: (Properties) -> Item,

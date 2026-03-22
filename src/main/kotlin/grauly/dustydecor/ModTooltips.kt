@@ -14,5 +14,6 @@ object ModTooltips {
         ItemComponentTooltipProviderRegistry.addFirst(ModDataComponentTypes.VOID_GOOP_SIZE)
         ItemComponentTooltipProviderRegistry.addFirst(ModDataComponentTypes.SMALL_GLASS_TABLE_STRIP_PANE)
         ItemComponentTooltipProviderRegistry.addFirst(ModDataComponentTypes.LARGE_GLASS_TABLE_STRIP_PANE)
+        ItemComponentTooltipProviderRegistry.addFirst(ModDataComponentTypes.PHONE_REPAIR)
     }
 }

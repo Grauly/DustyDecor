@@ -18,6 +18,7 @@ object ModCreativeModeTabs {
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS)
             .register {
                 it.insertAfter(Items.WAXED_OXIDIZED_COPPER_CHEST, ModItems.VAC_PIPE, ModItems.VAC_PIPE_STATION)
+                it.insertAfter(Items.NOTE_BLOCK, ModItems.PHONE)
             }
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COLORED_BLOCKS)
             .register {

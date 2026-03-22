@@ -37,6 +37,8 @@ object ToolComponents {
     val SMALL_GLASS_TABLE_STRIP_PANE = makeToolComponent(tooltip("small_glass_table_strip_pane"))
     val LARGE_GLASS_TABLE_STRIP_PANE = makeToolComponent(tooltip("large_glass_table_strip_pane"))
 
+    val PHONE_REPAIR = makeToolComponent(tooltip("phone_repair"))
+
     fun makeToolComponent(translationKey: String, vararg insertions: Component): ToolComponent {
         val component = Component.translatable(translationKey, *insertions)
             .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(CommonColors.LIGHT_GRAY)))
