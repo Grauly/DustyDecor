@@ -1,8 +1,6 @@
 package grauly.dustydecor.block.furniture
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModDataComponentTypes
-import grauly.dustydecor.ModParticleTypes
 import grauly.dustydecor.block.ImpactBreakable
 import grauly.dustydecor.extensions.spawnParticle
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
@@ -19,11 +17,21 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 
 class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactBreakable {
+
+    init {
+        registerDefaultState(
+            defaultBlockState()
+                .setValue(BROKEN, false)
+                .setValue(RINGING, false)
+                .setValue(ON_HOOK, true)
+        )
+    }
 
     override fun useItemOn(
         itemStack: ItemStack,
@@ -67,11 +75,13 @@ class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactB
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         super.createBlockStateDefinition(builder)
-        builder.add(BROKEN)
+        builder.add(BROKEN, ON_HOOK, RINGING)
     }
 
     companion object {
         val BROKEN = ImpactBreakable.BROKEN
+        val ON_HOOK = BooleanProperty.create("on_hook")
+        val RINGING = BooleanProperty.create("ringing")
         val SHAPE = column(8.0, 0.0, 4.0)
     }
 }

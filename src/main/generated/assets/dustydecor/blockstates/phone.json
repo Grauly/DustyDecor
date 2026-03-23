@@ -1,64 +1,660 @@
 {
-  "variants": {
-    "rotation=0": {
-      "model": "dustydecor:block/phone/phone_0"
+  "multipart": [
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_0"
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "0"
+      }
     },
-    "rotation=1": {
-      "model": "dustydecor:block/phone/phone_1"
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_0"
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "0"
+      }
     },
-    "rotation=10": {
-      "model": "dustydecor:block/phone/phone_2",
-      "y": 180
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_0"
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "0"
+      }
     },
-    "rotation=11": {
-      "model": "dustydecor:block/phone/phone_3",
-      "y": 180
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_0"
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "0"
+      }
     },
-    "rotation=12": {
-      "model": "dustydecor:block/phone/phone_0",
-      "y": 270
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_1"
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "1"
+      }
     },
-    "rotation=13": {
-      "model": "dustydecor:block/phone/phone_1",
-      "y": 270
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_1"
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "1"
+      }
     },
-    "rotation=14": {
-      "model": "dustydecor:block/phone/phone_2",
-      "y": 270
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_1"
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "1"
+      }
     },
-    "rotation=15": {
-      "model": "dustydecor:block/phone/phone_3",
-      "y": 270
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_1"
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "1"
+      }
     },
-    "rotation=2": {
-      "model": "dustydecor:block/phone/phone_2"
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_2"
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "2"
+      }
     },
-    "rotation=3": {
-      "model": "dustydecor:block/phone/phone_3"
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_2"
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "2"
+      }
     },
-    "rotation=4": {
-      "model": "dustydecor:block/phone/phone_0",
-      "y": 90
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_2"
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "2"
+      }
     },
-    "rotation=5": {
-      "model": "dustydecor:block/phone/phone_1",
-      "y": 90
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_2"
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "2"
+      }
     },
-    "rotation=6": {
-      "model": "dustydecor:block/phone/phone_2",
-      "y": 90
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_3"
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "3"
+      }
     },
-    "rotation=7": {
-      "model": "dustydecor:block/phone/phone_3",
-      "y": 90
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_3"
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "3"
+      }
     },
-    "rotation=8": {
-      "model": "dustydecor:block/phone/phone_0",
-      "y": 180
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_3"
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "3"
+      }
     },
-    "rotation=9": {
-      "model": "dustydecor:block/phone/phone_1",
-      "y": 180
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_3"
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_0",
+        "y": 90
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "4"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_0",
+        "y": 90
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "4"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_0",
+        "y": 90
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "4"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_0",
+        "y": 90
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "4"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_1",
+        "y": 90
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "5"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_1",
+        "y": 90
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "5"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_1",
+        "y": 90
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "5"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_1",
+        "y": 90
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "5"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_2",
+        "y": 90
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "6"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_2",
+        "y": 90
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "6"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_2",
+        "y": 90
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "6"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_2",
+        "y": 90
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "6"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_3",
+        "y": 90
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "7"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_3",
+        "y": 90
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "7"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_3",
+        "y": 90
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "7"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_3",
+        "y": 90
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "7"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_0",
+        "y": 180
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "8"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_0",
+        "y": 180
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "8"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_0",
+        "y": 180
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "8"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_0",
+        "y": 180
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "8"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_1",
+        "y": 180
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "9"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_1",
+        "y": 180
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "9"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_1",
+        "y": 180
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "9"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_1",
+        "y": 180
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "9"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_2",
+        "y": 180
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "10"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_2",
+        "y": 180
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "10"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_2",
+        "y": 180
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "10"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_2",
+        "y": 180
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "10"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_3",
+        "y": 180
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "11"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_3",
+        "y": 180
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "11"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_3",
+        "y": 180
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "11"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_3",
+        "y": 180
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "11"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_0",
+        "y": 270
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "12"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_0",
+        "y": 270
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "12"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_0",
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "12"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_0",
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "12"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_1",
+        "y": 270
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "13"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_1",
+        "y": 270
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "13"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_1",
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "13"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_1",
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "13"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_2",
+        "y": 270
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "14"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_2",
+        "y": 270
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "14"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_2",
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "14"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_2",
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "14"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_3",
+        "y": 270
+      },
+      "when": {
+        "broken": "true",
+        "rotation": "15"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone_broken_handset_3",
+        "y": 270
+      },
+      "when": {
+        "broken": "true",
+        "on_hook": "true",
+        "rotation": "15"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_3",
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "rotation": "15"
+      }
+    },
+    {
+      "apply": {
+        "model": "dustydecor:block/phone/phone_handset_3",
+        "y": 270
+      },
+      "when": {
+        "broken": "false",
+        "on_hook": "true",
+        "rotation": "15"
+      }
     }
-  }
+  ]
 }

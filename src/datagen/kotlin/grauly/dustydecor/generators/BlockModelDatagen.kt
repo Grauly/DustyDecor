@@ -58,7 +58,7 @@ class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(gener
             listOf(ModelLocationUtils.getModelLocation(Blocks.BARRIER)),
             "block/connecting_glass_table"
         ).get(blockStateModelGenerator)
-        SingleFurnitureBlockModel(listOf(ModBlocks.PHONE), "phone/phone").get(blockStateModelGenerator)
+        PhoneBlockModel.get(blockStateModelGenerator)
     }
 
 

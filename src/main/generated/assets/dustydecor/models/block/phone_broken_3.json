@@ -1,0 +1,8 @@
+{
+  "parent": "dustydecor:block/phone/phone_3",
+  "textures": {
+    "0": "dustydecor:block/phone_base_broken",
+    "1": "dustydecor:block/phone_handlings_broken",
+    "particle": "dustydecor:block/phone_base_broken"
+  }
+}
