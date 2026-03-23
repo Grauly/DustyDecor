@@ -1,6 +1,5 @@
 package grauly.dustydecor.block.furniture
 
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.block.ImpactBreakable
 import grauly.dustydecor.extensions.spawnParticle
@@ -10,6 +9,7 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundSource
+import net.minecraft.util.RandomSource
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
@@ -54,6 +54,18 @@ class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactB
         }
         return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)
     }
+
+    override fun animateTick(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
+        if (!state.getValue(BROKEN)) return
+        if (random.nextInt(40) != 1) return
+        val centerPos = pos.center
+        level.addParticle(
+            SparkEmitterParticleEffect(0.5, 12, true),
+            centerPos.x, centerPos.y, centerPos.z,
+            0.0, 0.4, 0.0,
+        )
+    }
+
 
     override fun attack(state: BlockState, level: Level, pos: BlockPos, player: Player) {
         super.attack(state, level, pos, player)
