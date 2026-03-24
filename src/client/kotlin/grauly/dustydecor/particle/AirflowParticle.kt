@@ -1,14 +1,10 @@
 package grauly.dustydecor.particle
 
-import com.mojang.blaze3d.pipeline.RenderPipeline
-import grauly.dustydecor.DustyDecorMod
-import net.minecraft.client.Camera
 import net.minecraft.client.multiplayer.ClientLevel
-import net.minecraft.client.particle.*
-import net.minecraft.client.renderer.RenderPipelines
-import net.minecraft.client.renderer.state.level.QuadParticleRenderState
+import net.minecraft.client.particle.Particle
+import net.minecraft.client.particle.ParticleProvider
+import net.minecraft.client.particle.SpriteSet
 import net.minecraft.core.Direction
-import net.minecraft.resources.Identifier
 import net.minecraft.util.RandomSource
 import org.joml.Quaternionf
 import org.joml.Vector3f
@@ -22,39 +18,19 @@ class AirflowParticle(
     private val flowDirection: Direction,
     spriteProvider: SpriteSet,
     upwardsAcceleration: Float
-) : SimpleAnimatedParticle(world, x, y, z, spriteProvider, upwardsAcceleration) {
+) : FixedRotationOffsetParticle(world, x, y, z, spriteProvider, upwardsAcceleration) {
     private val axisRotationRadians: Float = world.random.nextFloat() * 2 * PI.toFloat()
 
     init {
         lifetime = 11
     }
 
-    override fun getLayer(): Layer = RENDER_TYPE
+    override fun getOffset(): Vector3f = Vector3f(4 / 16f, -3 / 16f, 0f)
 
-    override fun extract(
-        submittable: QuadParticleRenderState,
-        camera: Camera,
-        tickProgress: Float
-    ) {
-        val quat = Quaternionf()
+    override fun getRotation(): Quaternionf =
+        Quaternionf()
             .rotateTo(Direction.UP.unitVec3f, flowDirection.opposite.unitVec3f)
             .rotateY(axisRotationRadians)
-        extractRotatedQuad(submittable, camera, quat, tickProgress)
-    }
-
-    override fun extractRotatedQuad(
-        submittable: QuadParticleRenderState,
-        camera: Camera,
-        rotation: Quaternionf,
-        tickProgress: Float
-    ) {
-        val offset = Vector3f(4 / 16f, -3 / 16f, 0f).rotate(rotation)
-        val cameraPos = camera.position()
-        val x1: Float = (x + offset.x - cameraPos.x).toFloat()
-        val y1: Float = (y + offset.y - cameraPos.y).toFloat()
-        val z1: Float = (z + offset.z - cameraPos.z).toFloat()
-        this.extractRotatedQuad(submittable, rotation, x1, y1, z1, tickProgress)
-    }
 
     class InflowFactory(private val spriteProvider: SpriteSet) : ParticleProvider<AirInflowParticleEffect> {
         override fun createParticle(
@@ -89,7 +65,7 @@ class AirflowParticle(
             velocityY: Double,
             velocityZ: Double,
             random: RandomSource
-        ): Particle? {
+        ): Particle {
             return AirflowParticle(
                 world,
                 x, y, z,
@@ -98,16 +74,5 @@ class AirflowParticle(
                 0.0f
             )
         }
-    }
-
-    companion object {
-        val RENDER_TYPE = Layer(
-            false,
-            SingleQuadParticle.Layer.OPAQUE.textureAtlasLocation(),
-            RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)
-                .withCull(false)
-                .withLocation(Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, "opaque_no_cull"))
-                .build()
-        )
     }
 }
