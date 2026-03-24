@@ -3,7 +3,7 @@ package grauly.dustydecor.blockentity.vac_station
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.ModBlocks
-import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
+import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.block.vacpipe.VacPipeStationBlock.Companion.SENDING
 import grauly.dustydecor.screen.VacPipeReceiveStationScreenHandler
 import grauly.dustydecor.screen.VacPipeSendStationScreenHandler
@@ -20,6 +20,7 @@ import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientGamePacketListener
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.sounds.SoundSource
 import net.minecraft.util.ProblemReporter
 import net.minecraft.world.*
 import net.minecraft.world.entity.ItemOwner
@@ -68,6 +69,7 @@ class VacPipeStationBlockEntity(
                     sendCapsule(level, pos)
                 }
             }
+
             SendMode.MANUAL -> {
                 if (propertyDelegate.shouldSend()) {
                     if (storage.any { !it.isResourceBlank }) {
@@ -76,6 +78,7 @@ class VacPipeStationBlockEntity(
                     propertyDelegate.setSend(false)
                 }
             }
+
             else -> Unit
         }
     }
@@ -86,7 +89,12 @@ class VacPipeStationBlockEntity(
         val otherStorage = ItemStorage.SIDED.find(level, pos.relative(Direction.UP), Direction.DOWN) ?: return
         val moved = StorageUtil.move(storage, otherStorage, { true }, 1, null)
         if (moved != 1L) return
-        //TODO: play sound
+        level.playSound(
+            null,
+            pos,
+            ModSoundEvents.BLOCK_VAC_PIPE_SEND_CAPSULE,
+            SoundSource.BLOCKS
+        )
         //TODO: emit event
         //TODO: emit redstone
         //if (propertyDelegate.getRedstoneMode() != RedstoneEmissionMode.ON_SEND) return

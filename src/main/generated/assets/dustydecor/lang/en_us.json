@@ -335,6 +335,7 @@
   "subtitles.dustydecor.block.lighting_fixture.turn_on": "Lighting fixture turns on",
   "subtitles.dustydecor.block.vac_pipe.add_window": "Window added",
   "subtitles.dustydecor.block.vac_pipe.remove_window": "Window removed",
+  "subtitles.dustydecor.block.vac_pipe.send_capsule": "Capsule sent",
   "subtitles.dustydecor.block.vent.lock": "Vent locks",
   "subtitles.dustydecor.block.vent.rattle": "Vent rattles",
   "subtitles.dustydecor.block.vent.unlock": "Vent unlocks",

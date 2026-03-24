@@ -18,6 +18,7 @@ object ModSoundEvents {
     val BLOCK_VENT_RATTLE = registerSound("block.vent.rattle")
     val BLOCK_VAP_PIPE_ADD_WINDOW = registerSound("block.vac_pipe.add_window")
     val BLOCK_VAP_PIPE_REMOVE_WINDOW = registerSound("block.vac_pipe.remove_window")
+    val BLOCK_VAC_PIPE_SEND_CAPSULE = registerSound("block.vac_pipe.send_capsule")
     val BLOCK_LIGHTING_FIXTURE_INVERT = registerSound("block.lighting_fixture.invert")
     val BLOCK_LIGHTING_FIXTURE_REPAIR = registerSound("block.lighting_fixture.repair")
     val BLOCK_LIGHTING_FIXTURE_BREAK = registerSound("block.lighting_fixture.break")

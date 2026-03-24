@@ -44,6 +44,15 @@ class SoundEventDatagen(
             SoundEvents.ITEM_FRAME_REMOVE_ITEM
         )
         fromFiles(
+            ModSoundEvents.BLOCK_VAC_PIPE_SEND_CAPSULE,
+            exporter,
+            "vac_tube_plop1",
+            "vac_tube_plop2",
+            "vac_tube_plop3",
+            "vac_tube_plop4",
+            "vac_tube_plop5",
+        )
+        fromFiles(
             ModSoundEvents.ITEM_WRENCH_USE,
             exporter,
             "wrench1",
