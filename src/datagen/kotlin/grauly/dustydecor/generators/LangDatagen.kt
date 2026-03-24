@@ -36,8 +36,8 @@ class LangDatagen(
         sub(ModSoundEvents.BLOCK_VENT_UNLOCK, "Vent unlocks")
         sub(ModSoundEvents.BLOCK_VENT_RATTLE, "Vent rattles")
 
-        sub(ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW, "Window removed")
-        sub(ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW, "Window added")
+        sub(ModSoundEvents.BLOCK_VAC_PIPE_REMOVE_WINDOW, "Window removed")
+        sub(ModSoundEvents.BLOCK_VAC_PIPE_ADD_WINDOW, "Window added")
         sub(ModSoundEvents.BLOCK_VAC_PIPE_SEND_CAPSULE, "Capsule sent")
 
         sub(ModSoundEvents.ITEM_WRENCH_USE, "Wrench wrenches")

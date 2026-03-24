@@ -131,7 +131,7 @@ class VacPipeBlock(settings: Properties) : AbConnectableBlock(settings), EntityB
             level.playSound(
                 player,
                 pos,
-                if (newWindowState) ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW else ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
+                if (newWindowState) ModSoundEvents.BLOCK_VAC_PIPE_ADD_WINDOW else ModSoundEvents.BLOCK_VAC_PIPE_REMOVE_WINDOW,
                 SoundSource.BLOCKS
             )
         } else if (stack.has(ModDataComponentTypes.VAC_TUBE_EDIT)) {

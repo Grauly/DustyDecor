@@ -34,12 +34,12 @@ class SoundEventDatagen(
             exporter
         )
         multiRedirect(
-            ModSoundEvents.BLOCK_VAP_PIPE_ADD_WINDOW,
+            ModSoundEvents.BLOCK_VAC_PIPE_ADD_WINDOW,
             exporter,
             SoundEvents.ITEM_FRAME_ADD_ITEM
         )
         multiRedirect(
-            ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
+            ModSoundEvents.BLOCK_VAC_PIPE_REMOVE_WINDOW,
             exporter,
             SoundEvents.ITEM_FRAME_REMOVE_ITEM
         )

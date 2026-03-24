@@ -64,7 +64,7 @@ class ConnectingGlassTableBlock(properties: Properties) : ConnectingBreakableBlo
         level.playSound(
             null,
             pos,
-            ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
+            ModSoundEvents.BLOCK_VAC_PIPE_REMOVE_WINDOW,
             SoundSource.BLOCKS
         )
     }

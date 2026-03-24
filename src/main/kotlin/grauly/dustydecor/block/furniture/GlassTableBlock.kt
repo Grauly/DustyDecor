@@ -53,7 +53,7 @@ class GlassTableBlock(settings: Properties) : RestrictedRotationFurnitureBlock(s
         level.playSound(
             null,
             pos,
-            ModSoundEvents.BLOCK_VAP_PIPE_REMOVE_WINDOW,
+            ModSoundEvents.BLOCK_VAC_PIPE_REMOVE_WINDOW,
             SoundSource.BLOCKS
         )
     }
