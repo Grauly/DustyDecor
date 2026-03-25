@@ -40,7 +40,7 @@ abstract class FixedRotationOffsetParticle(
         rotation: Quaternionf,
         tickProgress: Float
     ) {
-        val offset = getOffset().rotate(rotation)
+        val offset = Vector3f(getOffset()).rotate(rotation)
         val cameraPos = camera.position()
         val x1: Float = (x + offset.x - cameraPos.x).toFloat()
         val y1: Float = (y + offset.y - cameraPos.y).toFloat()
