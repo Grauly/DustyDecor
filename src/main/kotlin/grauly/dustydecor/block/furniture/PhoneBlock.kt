@@ -3,6 +3,7 @@ package grauly.dustydecor.block.furniture
 import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.block.ImpactBreakable
 import grauly.dustydecor.extensions.spawnParticle
+import grauly.dustydecor.particle.PhoneRingParticleEffect
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.core.BlockPos
@@ -56,6 +57,22 @@ class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactB
     }
 
     override fun animateTick(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
+        ring(state, level, pos, random)
+        spark(state, level, pos, random)
+    }
+
+    private fun ring(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
+        if (random.nextBoolean()) return
+        if (!state.getValue(RINGING)) return
+        val centerPos = pos.center
+        level.addParticle(
+            PhoneRingParticleEffect(true),
+            centerPos.x, centerPos.y, centerPos.z,
+            0.0, 0.0, 0.0,
+        )
+    }
+
+    private fun spark(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
         if (!state.getValue(BROKEN)) return
         if (random.nextInt(40) != 1) return
         val centerPos = pos.center
