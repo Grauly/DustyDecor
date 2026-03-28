@@ -1,6 +1,7 @@
 package grauly.dustydecor
 
 import grauly.dustydecor.blockentity.AlarmCageLampBlockEntityRenderer
+import grauly.dustydecor.blockentity.PhoneBlockEntityRenderer
 import grauly.dustydecor.blockentity.VacPipeBlockEntityRenderer
 import grauly.dustydecor.blockentity.VacPipeStationBlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers
@@ -11,5 +12,6 @@ object ModBlockEntityRenderers {
         BlockEntityRenderers.register(ModBlockEntityTypes.ALARM_CAGE_LAMP_ENTITY, ::AlarmCageLampBlockEntityRenderer)
         BlockEntityRenderers.register(ModBlockEntityTypes.VAC_PIPE_ENTITY, ::VacPipeBlockEntityRenderer)
         BlockEntityRenderers.register(ModBlockEntityTypes.VAC_PIPE_STATION_ENTITY, ::VacPipeStationBlockEntityRenderer)
+        BlockEntityRenderers.register(ModBlockEntityTypes.PHONE_ENTITY, ::PhoneBlockEntityRenderer)
     }
 }

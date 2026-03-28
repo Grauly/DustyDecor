@@ -2,6 +2,7 @@ package grauly.dustydecor.block.furniture
 
 import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.block.ImpactBreakable
+import grauly.dustydecor.blockentity.PhoneBlockEntity
 import grauly.dustydecor.extensions.spawnParticle
 import grauly.dustydecor.particle.PhoneRingParticleEffect
 import grauly.dustydecor.particle.SparkEmitterParticleEffect
@@ -20,6 +21,8 @@ import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.EntityBlock
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BooleanProperty
@@ -27,7 +30,7 @@ import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 
-class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactBreakable {
+class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactBreakable, EntityBlock {
 
     init {
         registerDefaultState(
@@ -120,6 +123,13 @@ class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactB
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         super.createBlockStateDefinition(builder)
         builder.add(BROKEN, ON_HOOK, RINGING)
+    }
+
+    override fun newBlockEntity(
+        worldPosition: BlockPos,
+        blockState: BlockState
+    ): BlockEntity {
+        return PhoneBlockEntity(worldPosition, blockState)
     }
 
     companion object {

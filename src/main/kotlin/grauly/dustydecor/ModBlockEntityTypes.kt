@@ -1,6 +1,7 @@
 package grauly.dustydecor
 
 import grauly.dustydecor.blockentity.AlarmCageLampBlockEntity
+import grauly.dustydecor.blockentity.PhoneBlockEntity
 import grauly.dustydecor.blockentity.VacPipeBlockEntity
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.block.entity.FabricBlockEntityTypeBuilder
@@ -19,6 +20,8 @@ object ModBlockEntityTypes {
         register("vac_pipe", ::VacPipeBlockEntity, ModBlocks.VAC_PIPE)
     val VAC_PIPE_STATION_ENTITY: BlockEntityType<VacPipeStationBlockEntity> =
         register("vac_pipe_station", ::VacPipeStationBlockEntity, ModBlocks.VAC_PIPE_STATION)
+    val PHONE_ENTITY: BlockEntityType<PhoneBlockEntity> =
+        register("phone", ::PhoneBlockEntity, ModBlocks.PHONE)
 
     private fun <T : BlockEntity> register(
         id: String,
