@@ -3,6 +3,7 @@ package grauly.dustydecor.blockentity
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.block.furniture.SingleFurnitureBlock
+import grauly.dustydecor.particle.PhoneRingParticleEffect
 import net.minecraft.core.BlockPos
 import net.minecraft.world.entity.ItemOwner
 import net.minecraft.world.level.Level
@@ -28,17 +29,29 @@ class PhoneBlockEntity(
 
     companion object {
         fun tick(level: Level, pos: BlockPos, state: BlockState, entity: PhoneBlockEntity) {
+            if (entity.ringTicks % 8 == 0) {
+                level.addParticle(
+                    PhoneRingParticleEffect(
+                        true,
+                        entity.ringTicks % 16 == 0
+                    ),
+                    entity.position().x,
+                    entity.position().y,
+                    entity.position().z,
+                    0.0, 0.0, 0.0
+                )
+            }
             if (entity.ringTicks > 0) entity.ringTicks = max(entity.ringTicks - 1, 0)
             if (entity.ringTicks == 0) {
                 entity.pauseTicks = 3*20
                 entity.ringTicks = -1
             }
-            if (entity.pauseTicks > 0) entity.pauseTicks = max(entity.pauseTicks - 1, 0)
             if (entity.pauseTicks == 0) {
-                entity.ringTicks = 2*20
+                entity.ringTicks = 24
                 entity.pauseTicks = -1
                 //TODO: play sound
             }
+            if (entity.pauseTicks > 0) entity.pauseTicks = max(entity.pauseTicks - 1, 0)
         }
     }
 }

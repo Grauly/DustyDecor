@@ -63,19 +63,7 @@ class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactB
     }
 
     override fun animateTick(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
-        ring(state, level, pos, random)
         spark(state, level, pos, random)
-    }
-
-    private fun ring(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
-        if (random.nextBoolean()) return
-        if (!state.getValue(RINGING)) return
-        val centerPos = pos.center
-        level.addParticle(
-            PhoneRingParticleEffect(true),
-            centerPos.x, centerPos.y, centerPos.z,
-            0.0, 0.0, 0.0,
-        )
     }
 
     private fun spark(state: BlockState, level: Level, pos: BlockPos, random: RandomSource) {
