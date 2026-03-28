@@ -39,6 +39,10 @@ object ItemDatagenWrapper {
             null,
             listOf(ModItemTags.VOID_GOOP)
         )
+        item(
+            ModItems.PHONE_HANDSET,
+            "Phone Handset"
+        )
     }
 
     private fun item(

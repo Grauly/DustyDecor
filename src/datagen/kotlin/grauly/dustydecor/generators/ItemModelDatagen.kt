@@ -14,6 +14,7 @@ class ItemModelDatagen(output: FabricPackOutput) : FabricModelProvider(output) {
             itemModelGenerator.generateFlatItem(it.item, ModelTemplates.FLAT_HANDHELD_ITEM)
         }
         itemModelGenerator.generateSpyglass(ModItems.VAC_CAPSULE)
+        itemModelGenerator.declareCustomModelItem(ModItems.PHONE_HANDSET)
     }
 
     override fun generateBlockStateModels(p0: BlockModelGenerators) {

@@ -135,6 +135,7 @@ object ModItems {
         registerBlockItem(ModBlocks.CONNECTING_GLASS_TABLE_FRAME, "connecting_glass_table_frame")
 
     val PHONE: Item = registerBlockItem(ModBlocks.PHONE, "phone")
+    val PHONE_HANDSET: Item = registerItem(::Item, "phone_handset")
 
     private fun registerItem(
         itemFactory: (Properties) -> Item,
