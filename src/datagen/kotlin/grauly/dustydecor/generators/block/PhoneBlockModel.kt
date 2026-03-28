@@ -64,7 +64,8 @@ object PhoneBlockModel {
                     ConditionBuilder()
                         .term(SingleFurnitureBlock.ROTATION, i)
                         .term(PhoneBlock.BROKEN, broken)
-                        .term(PhoneBlock.ON_HOOK, true),
+                        .term(PhoneBlock.ON_HOOK, true)
+                        .term(PhoneBlock.RINGING, false),
                     (if (broken) brokenHandsetModels[rotationIndex] else handsetModels[rotationIndex])
                         .with(VariantMutator.Y_ROT.withValue(rotationQuadrant))
                 )
