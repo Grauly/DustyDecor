@@ -1,5 +1,6 @@
 package grauly.dustydecor.block.furniture
 
+import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.block.ImpactBreakable
 import grauly.dustydecor.blockentity.PhoneBlockEntity
@@ -23,6 +24,8 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.EntityBlock
 import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityTicker
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BooleanProperty
@@ -130,6 +133,17 @@ class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactB
         blockState: BlockState
     ): BlockEntity {
         return PhoneBlockEntity(worldPosition, blockState)
+    }
+
+    override fun <T : BlockEntity> getTicker(
+        level: Level,
+        blockState: BlockState,
+        type: BlockEntityType<T>
+    ): BlockEntityTicker<T>? {
+        if (type != ModBlockEntityTypes.PHONE_ENTITY) return null
+        return {level: Level, pos: BlockPos, state: BlockState, blockEntity: T ->
+            PhoneBlockEntity.tick(level, pos, state, blockEntity as PhoneBlockEntity)
+        }
     }
 
     companion object {

@@ -14,7 +14,12 @@ import net.minecraft.client.renderer.item.ItemStackRenderState
 import net.minecraft.client.renderer.state.level.CameraRenderState
 import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.world.item.ItemDisplayContext
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.phys.Vec3
+import org.joml.Quaternionf
+import kotlin.math.PI
+import kotlin.math.pow
+import kotlin.math.sin
 
 class PhoneBlockEntityRenderer(
     private val blockRenderContext: BlockEntityRendererProvider.Context
@@ -28,6 +33,9 @@ class PhoneBlockEntityRenderer(
         cameraPosition: Vec3,
         breakProgress: ModelFeatureRenderer.CrumblingOverlay?
     ) {
+        if (HANDSET_STACK == null) {
+            HANDSET_STACK = ModItems.PHONE_HANDSET.defaultInstance
+        }
         super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress)
         val ringing = blockEntity.blockState.getValue(PhoneBlock.RINGING)
         if (!ringing) return
@@ -35,13 +43,16 @@ class PhoneBlockEntityRenderer(
         val itemRenderState = ItemStackRenderState()
         blockRenderContext.itemModelResolver.updateForTopItem(
             itemRenderState,
-            HANDSET_STACK,
+            HANDSET_STACK!!,
             ItemDisplayContext.NONE,
             blockEntity.level,
             blockEntity,
             HashCommon.long2int(blockEntity.blockPos.asLong())
         )
         state.setData(HANDSET_STATE, itemRenderState)
+        state.setData(Y_ROTATION, Math.toRadians(blockEntity.visualRotationYInDegrees.toDouble()).toFloat())
+        state.setData(DELTA, ((blockEntity.ringTicks % blockEntity.ringCycle) + partialTicks) / blockEntity.ringCycle)
+        if (blockEntity.ringTicks < 0) state.setData(DELTA, 0f)
     }
 
     override fun submit(
@@ -51,8 +62,13 @@ class PhoneBlockEntityRenderer(
         camera: CameraRenderState
     ) {
         val handsetRenderState = state.getData(HANDSET_STATE) ?: return
-
+        val mainRotation = Quaternionf().rotateY(state.getData(Y_ROTATION)!!)
+        val ringRotation = Quaternionf().rotateZ((sin(state.getData(DELTA)!! * 2*PI)).toFloat() * 0.01f * PI.toFloat())
         poseStack.pushPose()
+        poseStack.translate(0.5, 0.5, 0.5)
+        poseStack.mulPose(mainRotation)
+        poseStack.translate(0.0, 4.0/16, 2.5/16)
+        poseStack.mulPose(ringRotation)
         handsetRenderState.submit(
             poseStack,
             submitNodeCollector,
@@ -65,6 +81,8 @@ class PhoneBlockEntityRenderer(
 
     companion object {
         val HANDSET_STATE: RenderStateDataKey<ItemStackRenderState> = RenderStateDataKey<ItemStackRenderState>.create()
-        val HANDSET_STACK = ModItems.PHONE_HANDSET.defaultInstance
+        var HANDSET_STACK: ItemStack? = null
+        val Y_ROTATION: RenderStateDataKey<Float> = RenderStateDataKey<Float>.create()
+        val DELTA: RenderStateDataKey<Float> = RenderStateDataKey<Float>.create()
     }
 }
