@@ -18,6 +18,7 @@ import kotlin.math.floor
 
 class PhoneRingParticle(
     private val attached: Boolean,
+    private val flipped: Boolean,
     level: ClientLevel,
     x: Double,
     y: Double,
@@ -38,7 +39,6 @@ class PhoneRingParticle(
     }
 
     private val axisRotationRadians: Float = level.random.nextFloat() * 2 * PI.toFloat()
-    private val flipped = level.random.nextBoolean()
 
     private val baseOffset = Vec3(quadSize.toDouble(), quadSize.toDouble(), 0.0)
     private val baseRotation = Quaternionf().rotateY(axisRotationRadians)
@@ -98,6 +98,7 @@ class PhoneRingParticle(
         ): Particle {
             return PhoneRingParticle(
                 options.attached,
+                options.flipped,
                 level,
                 x, y, z,
                 sprites,
