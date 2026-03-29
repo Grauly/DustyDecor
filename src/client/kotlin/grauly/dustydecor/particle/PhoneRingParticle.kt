@@ -55,14 +55,14 @@ class PhoneRingParticle(
     override fun getRotation(): Quaternionf = baseRotation
 
     override fun extractRotatedQuad(
-        submittable: QuadParticleRenderState,
+        renderState: QuadParticleRenderState,
         camera: Camera,
         rotation: Quaternionf,
         tickProgress: Float
     ) {
 
         if (!attached) {
-            super.extractRotatedQuad(submittable, camera, rotation, tickProgress)
+            super.extractRotatedQuad(renderState, camera, rotation, tickProgress)
             return
         }
 
@@ -75,7 +75,7 @@ class PhoneRingParticle(
         val y1: Float = (y + offset.y - cameraPos.y).toFloat()
         val z1: Float = (z + offset.z - cameraPos.z).toFloat()
         this.extractRotatedQuad(
-            submittable,
+            renderState,
             Quaternionf(attachedRotation).rotateY(if (!flipped) PI.toFloat() else 0f),
             x1,
             y1,
@@ -84,7 +84,7 @@ class PhoneRingParticle(
         )
     }
 
-    class Factory(private val sprites: SpriteSet) : ParticleProvider<PhoneRingParticleOptions> {
+    class Provider(private val sprites: SpriteSet) : ParticleProvider<PhoneRingParticleOptions> {
         override fun createParticle(
             options: PhoneRingParticleOptions,
             level: ClientLevel,
@@ -96,7 +96,7 @@ class PhoneRingParticle(
             zAux: Double,
             random: RandomSource
         ): Particle {
-            return PhoneRingParticleOptions(
+            return PhoneRingParticle(
                 options.attached,
                 options.flipped,
                 level,

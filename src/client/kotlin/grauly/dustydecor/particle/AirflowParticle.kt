@@ -11,15 +11,15 @@ import org.joml.Vector3f
 import kotlin.math.PI
 
 class AirflowParticle(
-    world: ClientLevel,
+    level: ClientLevel,
     x: Double,
     y: Double,
     z: Double,
     private val flowDirection: Direction,
-    spriteProvider: SpriteSet,
+    sprites: SpriteSet,
     upwardsAcceleration: Float
-) : FixedRotationOffsetParticle(world, x, y, z, spriteProvider, upwardsAcceleration) {
-    private val axisRotationRadians: Float = world.random.nextFloat() * 2 * PI.toFloat()
+) : FixedRotationOffsetParticle(level, x, y, z, sprites, upwardsAcceleration) {
+    private val axisRotationRadians: Float = level.random.nextFloat() * 2 * PI.toFloat()
 
     init {
         lifetime = 11
@@ -32,10 +32,10 @@ class AirflowParticle(
             .rotateTo(Direction.UP.unitVec3f, flowDirection.opposite.unitVec3f)
             .rotateY(axisRotationRadians)
 
-    class InflowFactory(private val spriteProvider: SpriteSet) : ParticleProvider<AirInflowParticleOptions> {
+    class InflowProvider(private val sprites: SpriteSet) : ParticleProvider<AirInflowParticleOptions> {
         override fun createParticle(
-            parameters: AirInflowParticleOptions,
-            world: ClientLevel,
+            options: AirInflowParticleOptions,
+            level: ClientLevel,
             x: Double,
             y: Double,
             z: Double,
@@ -45,19 +45,19 @@ class AirflowParticle(
             random: RandomSource
         ): Particle {
             return AirflowParticle(
-                world,
+                level,
                 x, y, z,
-                parameters.inflowDirection.opposite,
-                spriteProvider,
+                options.inflowDirection.opposite,
+                sprites,
                 0.0f
             )
         }
     }
 
-    class OutflowFactory(private val spriteProvider: SpriteSet) : ParticleProvider<AirOutflowParticleOptions> {
+    class OutflowProvider(private val sprites: SpriteSet) : ParticleProvider<AirOutflowParticleOptions> {
         override fun createParticle(
-            parameters: AirOutflowParticleOptions,
-            world: ClientLevel,
+            options: AirOutflowParticleOptions,
+            level: ClientLevel,
             x: Double,
             y: Double,
             z: Double,
@@ -67,10 +67,10 @@ class AirflowParticle(
             random: RandomSource
         ): Particle {
             return AirflowParticle(
-                world,
+                level,
                 x, y, z,
-                parameters.outflowDirection,
-                spriteProvider,
+                options.outflowDirection,
+                sprites,
                 0.0f
             )
         }

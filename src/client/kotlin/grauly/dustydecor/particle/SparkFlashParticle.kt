@@ -9,15 +9,15 @@ import net.minecraft.core.particles.SimpleParticleType
 import net.minecraft.util.RandomSource
 
 class SparkFlashParticle(
-    clientWorld: ClientLevel,
+    level: ClientLevel,
     x: Double,
     y: Double,
     z: Double,
     velocityX: Double,
     velocityY: Double,
     velocityZ: Double,
-    private val spriteProvider: SpriteSet
-) : SimpleAnimatedParticle(clientWorld, x, y, z, spriteProvider, 0.0125f) {
+    sprites: SpriteSet
+) : SimpleAnimatedParticle(level, x, y, z, sprites, 0.0125f) {
 
     init {
         this.lifetime = 4
@@ -30,10 +30,10 @@ class SparkFlashParticle(
 
     override fun getLayer(): Layer = Layer.OPAQUE
 
-    class Factory(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
+    class Provider(private val sprites: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
-            parameters: SimpleParticleType,
-            world: ClientLevel,
+            options: SimpleParticleType,
+            level: ClientLevel,
             x: Double,
             y: Double,
             z: Double,
@@ -41,10 +41,10 @@ class SparkFlashParticle(
             velocityY: Double,
             velocityZ: Double,
             random: RandomSource
-        ): Particle? {
+        ): Particle {
             return SparkFlashParticle(
-                world,
-                x, y, z, velocityX, velocityY, velocityZ, spriteProvider
+                level,
+                x, y, z, velocityX, velocityY, velocityZ, sprites
             )
         }
     }

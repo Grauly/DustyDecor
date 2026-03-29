@@ -10,7 +10,7 @@ import net.minecraft.core.particles.SimpleParticleType
 import net.minecraft.util.RandomSource
 
 class LightFlashParticle(
-    clientWorld: ClientLevel,
+    level: ClientLevel,
     x: Double,
     y: Double,
     z: Double,
@@ -18,7 +18,7 @@ class LightFlashParticle(
     velocityY: Double,
     velocityZ: Double,
     sprite: TextureAtlasSprite
-) : SingleQuadParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ, sprite) {
+) : SingleQuadParticle(level, x, y, z, velocityX, velocityY, velocityZ, sprite) {
     init {
         this.xd = velocityX
         this.yd = velocityY
@@ -30,10 +30,10 @@ class LightFlashParticle(
 
     override fun getLayer(): Layer = Layer.OPAQUE
 
-    class Factory(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
+    class Provider(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
-            parameters: SimpleParticleType,
-            world: ClientLevel,
+            options: SimpleParticleType,
+            level: ClientLevel,
             x: Double,
             y: Double,
             z: Double,
@@ -41,8 +41,8 @@ class LightFlashParticle(
             velocityY: Double,
             velocityZ: Double,
             random: RandomSource
-        ): Particle? {
-            return LightFlashParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.get(random))
+        ): Particle {
+            return LightFlashParticle(level, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.get(random))
         }
     }
 }

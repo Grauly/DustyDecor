@@ -2,7 +2,7 @@ package grauly.dustydecor.geometry
 
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
-import grauly.dustydecor.particle.spark.QuadBasedParticleSubmittable
+import grauly.dustydecor.particle.spark.QuadBasedRenderState
 import net.minecraft.world.phys.Vec2
 import net.minecraft.world.phys.Vec3
 import org.joml.Quaternionf
@@ -57,7 +57,7 @@ interface ShapeDefinition {
         )
     }
 
-    fun submitUniformly(submittable: QuadBasedParticleSubmittable, packedLight: Int, color: Int) {
+    fun submitUniformly(submittable: QuadBasedRenderState, packedLight: Int, color: Int) {
         if (getPoints().size % 4 != 0) throw IllegalStateException("Non Quad Shape cannot be submitted to QuadBasedParticleSubmittable")
         var counter = 0
         for (i in 0..<getPoints().size) {

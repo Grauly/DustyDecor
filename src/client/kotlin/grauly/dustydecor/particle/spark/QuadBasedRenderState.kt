@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.state.level.ParticleGroupRenderState
 import net.minecraft.resources.Identifier
 import org.joml.Vector3f
 
-class QuadBasedParticleSubmittable(
+class QuadBasedRenderState(
     initialBufferSize: Int = 128
 ) : ParticleGroupRenderState {
 

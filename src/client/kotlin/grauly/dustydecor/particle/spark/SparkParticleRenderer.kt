@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.state.level.ParticleGroupRenderState
 import net.minecraft.resources.Identifier
 
-class SparkParticleRenderer(particleManager: ParticleEngine) : ParticleGroup<SparkParticle>(particleManager) {
-    private val submittable = QuadBasedParticleSubmittable()
+class SparkParticleRenderer(particleEngine: ParticleEngine) : ParticleGroup<SparkParticle>(particleEngine) {
+    private val renderState = QuadBasedRenderState()
 
     override fun extractRenderState(
         frustum: Frustum,
@@ -21,8 +21,8 @@ class SparkParticleRenderer(particleManager: ParticleEngine) : ParticleGroup<Spa
             .filter { it is SparkParticle }
             .map { it as SparkParticle }
             .filter { it.intersectsFrustum(frustum) }
-            .forEach { it.render(submittable, camera, tickProgress) }
-        return submittable
+            .forEach { it.render(renderState, camera, tickProgress) }
+        return renderState
     }
 
     companion object {

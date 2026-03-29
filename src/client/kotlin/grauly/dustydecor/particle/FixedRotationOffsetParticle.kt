@@ -21,21 +21,21 @@ abstract class FixedRotationOffsetParticle(
     gravity: Float
 ) : SimpleAnimatedParticle(level, x, y, z, sprites, gravity) {
 
-    override fun getLayer(): Layer = RENDER_TYPE
+    override fun getLayer(): Layer = RENDER_LAYER
 
     abstract fun getOffset(): Vector3f
     abstract fun getRotation(): Quaternionf
 
     override fun extract(
-        submittable: QuadParticleRenderState,
+        renderState: QuadParticleRenderState,
         camera: Camera,
         tickProgress: Float
     ) {
-        extractRotatedQuad(submittable, camera, getRotation(), tickProgress)
+        extractRotatedQuad(renderState, camera, getRotation(), tickProgress)
     }
 
     override fun extractRotatedQuad(
-        submittable: QuadParticleRenderState,
+        renderState: QuadParticleRenderState,
         camera: Camera,
         rotation: Quaternionf,
         tickProgress: Float
@@ -45,11 +45,11 @@ abstract class FixedRotationOffsetParticle(
         val x1: Float = (x + offset.x - cameraPos.x).toFloat()
         val y1: Float = (y + offset.y - cameraPos.y).toFloat()
         val z1: Float = (z + offset.z - cameraPos.z).toFloat()
-        this.extractRotatedQuad(submittable, rotation, x1, y1, z1, tickProgress)
+        this.extractRotatedQuad(renderState, rotation, x1, y1, z1, tickProgress)
     }
 
     companion object {
-        val RENDER_TYPE = Layer(
+        val RENDER_LAYER = Layer(
             false,
             Layer.OPAQUE.textureAtlasLocation(),
             RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)

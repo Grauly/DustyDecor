@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3
 import net.minecraft.world.phys.shapes.VoxelShape
 
 class BlockSparkEmitterParticle(
-    clientWorld: ClientLevel,
+    level: ClientLevel,
     x: Double,
     y: Double,
     z: Double,
@@ -18,7 +18,7 @@ class BlockSparkEmitterParticle(
     private val zDir: Double,
     private val spread: Double,
     private val amount: Int
-) : NoRenderParticle(clientWorld, x, y, z, xDir, yDir, zDir) {
+) : NoRenderParticle(level, x, y, z, xDir, yDir, zDir) {
 
     override fun tick() {
         val pos: BlockPos = BlockPos.containing(x, y, z)

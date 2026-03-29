@@ -31,7 +31,7 @@ import kotlin.math.roundToInt
  * Honestly, without the showcase on the fabricord, I would not have had this idea, so ty :)
  */
 class SparkParticle(
-    clientWorld: ClientLevel,
+    level: ClientLevel,
     x: Double,
     y: Double,
     z: Double,
@@ -43,8 +43,8 @@ class SparkParticle(
     drag: Double = 1.0,
     private val lengthFactor: Float = 4f,
     sparkWidthPixels: Double = 1.0,
-    private val spriteProvider: SpriteSet
-) : Particle(clientWorld, x, y, z, velocityX, velocityY, velocityZ) {
+    private val sprites: SpriteSet
+) : Particle(level, x, y, z, velocityX, velocityY, velocityZ) {
     private var pos: Vec3 = Vec3(x, y, z)
     private var lastPos: Vec3 = pos
     private var lastLastPos: Vec3 = lastPos
@@ -55,7 +55,7 @@ class SparkParticle(
     private var hasSplit = false
     private var lastBouncedBlockPos = BlockPos.ZERO
     private var scale = 1f
-    private var sprite: TextureAtlasSprite = spriteProvider.get(0, lifetime)
+    private var sprite: TextureAtlasSprite = sprites.get(0, lifetime)
 
     init {
         this.gravity = gravity.toFloat()
@@ -70,7 +70,7 @@ class SparkParticle(
             this.remove()
             return
         }
-        sprite = spriteProvider.get(age, lifetime)
+        sprite = sprites.get(age, lifetime)
         lastLastPos = lastPos
         lastPos = pos
         velocity = velocity.scale(friction.toDouble()).add(0.0, -0.04 * gravity, 0.0)
@@ -153,7 +153,7 @@ class SparkParticle(
     }
 
     fun render(
-        submittable: QuadBasedParticleSubmittable,
+        submittable: QuadBasedRenderState,
         camera: Camera,
         tickProgress: Float
     ) {
@@ -185,7 +185,7 @@ class SparkParticle(
     private fun renderParticle(
         from: Vector3f,
         to: Vector3f,
-        submittable: QuadBasedParticleSubmittable,
+        submittable: QuadBasedRenderState,
         tickProgress: Float
     ) {
         val side = Vector3f(to).sub(from).normalize()
@@ -241,10 +241,10 @@ class SparkParticle(
     private fun pixel(i: Double): Double = i / 16.0
     private fun pixel(i: Float): Float = i / 16.0f
 
-    class LargeSparkFactory(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
+    class LargeSparkProvider(private val sprites: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
-            parameters: SimpleParticleType,
-            world: ClientLevel,
+            options: SimpleParticleType,
+            level: ClientLevel,
             x: Double,
             y: Double,
             z: Double,
@@ -252,27 +252,27 @@ class SparkParticle(
             velocityY: Double,
             velocityZ: Double,
             random: RandomSource
-        ): Particle? {
+        ): Particle {
             return SparkParticle(
-                world,
+                level,
                 x,
                 y,
                 z,
                 velocityX,
                 velocityY,
                 velocityZ,
-                randomDoubleBetween(world.random, 2.3, 2.4),
-                world.random.nextInt(10) + 50,
+                randomDoubleBetween(level.random, 2.3, 2.4),
+                level.random.nextInt(10) + 50,
                 lengthFactor = 2.5f,
-                spriteProvider = spriteProvider
+                sprites = sprites
             )
         }
     }
 
-    class SmallSparkFactory(private val spriteProvider: SpriteSet) : ParticleProvider<SimpleParticleType> {
+    class SmallSparkProvider(private val sprites: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
-            parameters: SimpleParticleType,
-            world: ClientLevel,
+            options: SimpleParticleType,
+            level: ClientLevel,
             x: Double,
             y: Double,
             z: Double,
@@ -280,19 +280,19 @@ class SparkParticle(
             velocityY: Double,
             velocityZ: Double,
             random: RandomSource
-        ): Particle? {
+        ): Particle {
             return SparkParticle(
-                world,
+                level,
                 x,
                 y,
                 z,
                 velocityX,
                 velocityY,
                 velocityZ,
-                randomDoubleBetween(world.random, 1.2, 1.3),
-                world.random.nextInt(5) + 25,
+                randomDoubleBetween(level.random, 1.2, 1.3),
+                level.random.nextInt(5) + 25,
                 lengthFactor = 3.5f,
-                spriteProvider = spriteProvider
+                sprites = sprites
             )
         }
     }
