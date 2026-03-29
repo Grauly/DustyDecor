@@ -49,6 +49,11 @@ class LangDatagen(
         sub(ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_ON, "Lighting fixture turns on")
         sub(ModSoundEvents.BLOCK_LIGHTING_FIXTURE_TURN_OFF, "Lighting fixture turns off")
 
+        sub(ModSoundEvents.PHONE_RING_A, "Phone rings")
+        sub(ModSoundEvents.PHONE_RING_B, "Phone rings")
+        sub(ModSoundEvents.PHONE_RING_FAR_A, "Distant Phone rings")
+        sub(ModSoundEvents.PHONE_RING_FAR_B, "Distant Phone rings")
+
         builder.add(
             ToolComponents.VAC_TUBE_EDIT.lines[0],
             "Can edit %s connections:"
