@@ -27,6 +27,11 @@ object ModSoundEvents {
     val ITEM_WRENCH_USE = registerSound("item.wrench.use")
     val ITEM_SCREWDRIVER_USE = registerSound("item.screwdriver.use")
 
+    val PHONE_RING_A = registerSound("block.phone.ring.a")
+    val PHONE_RING_FAR_A = registerSound("block.phone.ring.far.a")
+    val PHONE_RING_B = registerSound("block.phone.ring.b")
+    val PHONE_RING_FAR_B = registerSound("block.phone.ring.far.b")
+
     private fun registerSound(id: String): SoundEvent {
         val identifier: Identifier = Identifier.fromNamespaceAndPath(DustyDecorMod.MODID, id)
         return Registry.register(

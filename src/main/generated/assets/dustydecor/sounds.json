@@ -48,6 +48,42 @@
     ],
     "subtitle": "subtitles.dustydecor.block.lighting_fixture.turn_on"
   },
+  "block.phone.ring.a": {
+    "sounds": [
+      "dustydecor:phone_ring_a0",
+      "dustydecor:phone_ring_a1",
+      "dustydecor:phone_ring_a2",
+      "dustydecor:phone_ring_a3"
+    ],
+    "subtitle": "subtitles.dustydecor.block.phone.ring.a"
+  },
+  "block.phone.ring.b": {
+    "sounds": [
+      "dustydecor:phone_ring_b0",
+      "dustydecor:phone_ring_b1",
+      "dustydecor:phone_ring_b2",
+      "dustydecor:phone_ring_b3"
+    ],
+    "subtitle": "subtitles.dustydecor.block.phone.ring.b"
+  },
+  "block.phone.ring.far.a": {
+    "sounds": [
+      "dustydecor:phone_ring_far_a0",
+      "dustydecor:phone_ring_far_a1",
+      "dustydecor:phone_ring_far_a2",
+      "dustydecor:phone_ring_far_a3"
+    ],
+    "subtitle": "subtitles.dustydecor.block.phone.ring.far.a"
+  },
+  "block.phone.ring.far.b": {
+    "sounds": [
+      "dustydecor:phone_ring_far_b0",
+      "dustydecor:phone_ring_far_b1",
+      "dustydecor:phone_ring_far_b2",
+      "dustydecor:phone_ring_far_b3"
+    ],
+    "subtitle": "subtitles.dustydecor.block.phone.ring.far.b"
+  },
   "block.vac_pipe.add_window": {
     "sounds": [
       {

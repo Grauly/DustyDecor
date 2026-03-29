@@ -97,6 +97,38 @@ class SoundEventDatagen(
             SoundEvents.STONE_BUTTON_CLICK_ON,
             SoundEvents.STONE_BUTTON_CLICK_OFF
         )
+        fromFiles(
+            ModSoundEvents.PHONE_RING_A,
+            exporter,
+            "phone_ring_a0",
+            "phone_ring_a1",
+            "phone_ring_a2",
+            "phone_ring_a3",
+        )
+        fromFiles(
+            ModSoundEvents.PHONE_RING_FAR_A,
+            exporter,
+            "phone_ring_far_a0",
+            "phone_ring_far_a1",
+            "phone_ring_far_a2",
+            "phone_ring_far_a3",
+        )
+        fromFiles(
+            ModSoundEvents.PHONE_RING_B,
+            exporter,
+            "phone_ring_b0",
+            "phone_ring_b1",
+            "phone_ring_b2",
+            "phone_ring_b3",
+        )
+        fromFiles(
+            ModSoundEvents.PHONE_RING_FAR_B,
+            exporter,
+            "phone_ring_far_b0",
+            "phone_ring_far_b1",
+            "phone_ring_far_b2",
+            "phone_ring_far_b3",
+        )
     }
 
     private fun simpleRedirect(
