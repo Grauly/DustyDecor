@@ -2,9 +2,12 @@ package grauly.dustydecor.blockentity
 
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModBlockEntityTypes
+import grauly.dustydecor.ModSoundEvents
+import grauly.dustydecor.block.furniture.PhoneBlock
 import grauly.dustydecor.block.furniture.SingleFurnitureBlock
 import grauly.dustydecor.particle.PhoneRingParticleEffect
 import net.minecraft.core.BlockPos
+import net.minecraft.sounds.SoundSource
 import net.minecraft.world.entity.ItemOwner
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -29,6 +32,12 @@ class PhoneBlockEntity(
 
     companion object {
         fun tick(level: Level, pos: BlockPos, state: BlockState, entity: PhoneBlockEntity) {
+            if (state.getValue(PhoneBlock.RINGING)) {
+                tickRing(level, pos, state, entity)
+            }
+        }
+
+        fun tickRing(level: Level, pos: BlockPos, state: BlockState, entity: PhoneBlockEntity) {
             if (entity.ringTicks % 8 == 0) {
                 level.addParticle(
                     PhoneRingParticleEffect(
@@ -47,9 +56,24 @@ class PhoneBlockEntity(
                 entity.ringTicks = -1
             }
             if (entity.pauseTicks == 0) {
-                entity.ringTicks = 24
+                entity.ringTicks = 40
                 entity.pauseTicks = -1
-                //TODO: play sound
+                level.playSound(
+                    null,
+                    pos,
+                    ModSoundEvents.PHONE_RING_A,
+                    SoundSource.BLOCKS,
+                    1.0f,
+                    1.0f
+                )
+                level.playSound(
+                    null,
+                    pos,
+                    ModSoundEvents.PHONE_RING_FAR_A,
+                    SoundSource.BLOCKS,
+                    3.0f,
+                    1.0f
+                )
             }
             if (entity.pauseTicks > 0) entity.pauseTicks = max(entity.pauseTicks - 1, 0)
         }
