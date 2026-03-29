@@ -58,21 +58,21 @@ class PhoneBlockEntity(
             if (entity.pauseTicks == 0) {
                 entity.ringTicks = 40
                 entity.pauseTicks = -1
-                level.playSound(
-                    null,
+                level.playLocalSound(
                     pos,
                     ModSoundEvents.PHONE_RING_A,
                     SoundSource.BLOCKS,
                     1.0f,
-                    1.0f
+                    1.0f,
+                    false
                 )
-                level.playSound(
-                    null,
+                level.playLocalSound(
                     pos,
                     ModSoundEvents.PHONE_RING_FAR_A,
                     SoundSource.BLOCKS,
                     3.0f,
-                    1.0f
+                    1.0f,
+                    false
                 )
             }
             if (entity.pauseTicks > 0) entity.pauseTicks = max(entity.pauseTicks - 1, 0)
