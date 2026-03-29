@@ -17,7 +17,7 @@ class AirInflowParticleOptions(
     companion object {
         val CODEC: MapCodec<AirInflowParticleOptions> = RecordCodecBuilder.mapCodec {
             it.group(
-                Direction.CODEC.fieldOf("inflowDirection").forGetter { it.inflowDirection }
+                Direction.CODEC.fieldOf("inflow_direction").forGetter { it.inflowDirection }
             ).apply(it, ::AirInflowParticleOptions)
         }
         val PACKET_CODEC: StreamCodec<ByteBuf, AirInflowParticleOptions> = StreamCodec.composite(
