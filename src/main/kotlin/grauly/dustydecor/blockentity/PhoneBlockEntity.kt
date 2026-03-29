@@ -52,7 +52,7 @@ class PhoneBlockEntity(
             }
             if (entity.ringTicks > 0) entity.ringTicks = max(entity.ringTicks - 1, 0)
             if (entity.ringTicks == 0) {
-                entity.pauseTicks = 3*20
+                entity.pauseTicks = 4*20
                 entity.ringTicks = -1
             }
             if (entity.pauseTicks == 0) {
