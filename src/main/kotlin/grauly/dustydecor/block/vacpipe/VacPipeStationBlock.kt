@@ -6,8 +6,8 @@ import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.blockentity.vac_station.SendMode
 import grauly.dustydecor.blockentity.vac_station.VacPipeStationBlockEntity
-import grauly.dustydecor.particle.AirInflowParticleEffect
-import grauly.dustydecor.particle.AirOutflowParticleEffect
+import grauly.dustydecor.particle.AirInflowParticleOptions
+import grauly.dustydecor.particle.AirOutflowParticleOptions
 import grauly.dustydecor.util.ToolUtils
 import grauly.dustydecor.util.VoxelShapesUtil
 import net.minecraft.core.BlockPos
@@ -166,7 +166,7 @@ class VacPipeStationBlock(settings: Properties) : BaseEntityBlock(settings), Sim
 
     private fun indicateSending(state: BlockState, world: Level, pos: BlockPos) {
         val effect =
-            if (state.getValue(SENDING)) AirInflowParticleEffect(Direction.UP) else AirOutflowParticleEffect(Direction.DOWN)
+            if (state.getValue(SENDING)) AirInflowParticleOptions(Direction.UP) else AirOutflowParticleOptions(Direction.DOWN)
         val origin = pos.bottomCenter.add(0.0, 12.0 / 16.0, 0.0)
         for (i in 0..1) {
             world.addParticle(
@@ -193,7 +193,7 @@ class VacPipeStationBlock(settings: Properties) : BaseEntityBlock(settings), Sim
             return
         }
         val topEffect =
-            if (sending) AirOutflowParticleEffect(Direction.UP) else AirInflowParticleEffect(Direction.DOWN)
+            if (sending) AirOutflowParticleOptions(Direction.UP) else AirInflowParticleOptions(Direction.DOWN)
         val topOrigin = pos.relative(Direction.UP).bottomCenter
         for (i in 0..1) {
             world.addParticle(
@@ -255,7 +255,7 @@ class VacPipeStationBlock(settings: Properties) : BaseEntityBlock(settings), Sim
             UPDATE_SHAPE_ORDER.filter { it != leakDirection && it != leakDirection.opposite }.forEach { direction ->
                 val offset = origin.add(direction.unitVec3.scale(4.0 / 16.0))
                 val effect =
-                    if (outflow) AirOutflowParticleEffect(direction) else AirInflowParticleEffect(direction.opposite)
+                    if (outflow) AirOutflowParticleOptions(direction) else AirInflowParticleOptions(direction.opposite)
                 world.addParticle(
                     effect,
                     offset.x, offset.y, offset.z,

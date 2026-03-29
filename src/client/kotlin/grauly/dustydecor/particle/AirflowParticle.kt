@@ -32,9 +32,9 @@ class AirflowParticle(
             .rotateTo(Direction.UP.unitVec3f, flowDirection.opposite.unitVec3f)
             .rotateY(axisRotationRadians)
 
-    class InflowFactory(private val spriteProvider: SpriteSet) : ParticleProvider<AirInflowParticleEffect> {
+    class InflowFactory(private val spriteProvider: SpriteSet) : ParticleProvider<AirInflowParticleOptions> {
         override fun createParticle(
-            parameters: AirInflowParticleEffect,
+            parameters: AirInflowParticleOptions,
             world: ClientLevel,
             x: Double,
             y: Double,
@@ -54,9 +54,9 @@ class AirflowParticle(
         }
     }
 
-    class OutflowFactory(private val spriteProvider: SpriteSet) : ParticleProvider<AirOutflowParticleEffect> {
+    class OutflowFactory(private val spriteProvider: SpriteSet) : ParticleProvider<AirOutflowParticleOptions> {
         override fun createParticle(
-            parameters: AirOutflowParticleEffect,
+            parameters: AirOutflowParticleOptions,
             world: ClientLevel,
             x: Double,
             y: Double,

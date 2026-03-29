@@ -4,7 +4,7 @@ import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.block.ImpactBreakable
 import grauly.dustydecor.extensions.spawnParticle
-import grauly.dustydecor.particle.SparkEmitterParticleEffect
+import grauly.dustydecor.particle.SparkEmitterParticleOptions
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -139,7 +139,7 @@ abstract class LightingFixtureBlock(settings: Properties) : Block(settings), Sim
     protected open fun spark(state: BlockState, pos: BlockPos, level: Level) {
         //TODO: implement sounds
         if (level !is ServerLevel) return
-        val sparkEffect = SparkEmitterParticleEffect(0.1, 12, true)
+        val sparkEffect = SparkEmitterParticleOptions(0.1, 12, true)
         val sparkDirection = state.getValue(BlockStateProperties.FACING)
         level.spawnParticle(sparkEffect, pos.center, sparkDirection.unitVec3, 0.4)
     }

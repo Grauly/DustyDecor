@@ -5,8 +5,7 @@ import grauly.dustydecor.ModDataComponentTypes
 import grauly.dustydecor.block.ImpactBreakable
 import grauly.dustydecor.blockentity.PhoneBlockEntity
 import grauly.dustydecor.extensions.spawnParticle
-import grauly.dustydecor.particle.PhoneRingParticleEffect
-import grauly.dustydecor.particle.SparkEmitterParticleEffect
+import grauly.dustydecor.particle.SparkEmitterParticleOptions
 import grauly.dustydecor.util.ToolUtils
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -71,7 +70,7 @@ class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactB
         if (random.nextInt(40) != 1) return
         val centerPos = pos.center
         level.addParticle(
-            SparkEmitterParticleEffect(0.5, 12, true),
+            SparkEmitterParticleOptions(0.5, 12, true),
             centerPos.x, centerPos.y, centerPos.z,
             0.0, 0.4, 0.0,
         )
@@ -100,7 +99,7 @@ class PhoneBlock(settings: Properties) : SingleFurnitureBlock(settings), ImpactB
 
     override fun playBreakParticleEffect(level: ServerLevel, state: BlockState, pos: BlockPos) {
         level.spawnParticle(
-            SparkEmitterParticleEffect(0.5, 12, true),
+            SparkEmitterParticleOptions(0.5, 12, true),
             pos.center,
             Direction.UP.unitVec3,
             0.3

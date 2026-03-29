@@ -10,25 +10,25 @@ import net.minecraft.core.particles.ParticleType
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 
-class PhoneRingParticleEffect(
+class PhoneRingParticleOptions(
     val attached: Boolean = false,
     val flipped: Boolean = false,
 ) : ParticleOptions {
     override fun getType(): ParticleType<*> = ModParticleTypes.PHONE_RING
 
     companion object {
-        val CODEC: MapCodec<PhoneRingParticleEffect> = RecordCodecBuilder.mapCodec {
+        val CODEC: MapCodec<PhoneRingParticleOptions> = RecordCodecBuilder.mapCodec {
             it.group(
                 Codec.BOOL.fieldOf("attached").forGetter { it.attached },
                 Codec.BOOL.fieldOf("flipped").forGetter { it.flipped },
-            ).apply(it, ::PhoneRingParticleEffect)
+            ).apply(it, ::PhoneRingParticleOptions)
         }
-        val PACKET_CODEC: StreamCodec<ByteBuf, PhoneRingParticleEffect> = StreamCodec.composite(
+        val PACKET_CODEC: StreamCodec<ByteBuf, PhoneRingParticleOptions> = StreamCodec.composite(
             ByteBufCodecs.BOOL,
-            PhoneRingParticleEffect::attached,
+            PhoneRingParticleOptions::attached,
             ByteBufCodecs.BOOL,
-            PhoneRingParticleEffect::flipped,
-            ::PhoneRingParticleEffect
+            PhoneRingParticleOptions::flipped,
+            ::PhoneRingParticleOptions
         )
     }
 }

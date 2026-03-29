@@ -9,21 +9,21 @@ import net.minecraft.core.particles.ParticleOptions
 import net.minecraft.core.particles.ParticleType
 import net.minecraft.network.codec.StreamCodec
 
-class AirInflowParticleEffect(
+class AirInflowParticleOptions(
     val inflowDirection: Direction
 ) : ParticleOptions {
     override fun getType(): ParticleType<*> = ModParticleTypes.AIR_INFLOW
 
     companion object {
-        val CODEC: MapCodec<AirInflowParticleEffect> = RecordCodecBuilder.mapCodec {
+        val CODEC: MapCodec<AirInflowParticleOptions> = RecordCodecBuilder.mapCodec {
             it.group(
                 Direction.CODEC.fieldOf("inflowDirection").forGetter { it.inflowDirection }
-            ).apply(it, ::AirInflowParticleEffect)
+            ).apply(it, ::AirInflowParticleOptions)
         }
-        val PACKET_CODEC: StreamCodec<ByteBuf, AirInflowParticleEffect> = StreamCodec.composite(
+        val PACKET_CODEC: StreamCodec<ByteBuf, AirInflowParticleOptions> = StreamCodec.composite(
             Direction.STREAM_CODEC,
-            AirInflowParticleEffect::inflowDirection,
-            ::AirInflowParticleEffect
+            AirInflowParticleOptions::inflowDirection,
+            ::AirInflowParticleOptions
         )
     }
 }

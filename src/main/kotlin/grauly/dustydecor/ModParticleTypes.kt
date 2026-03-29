@@ -1,10 +1,10 @@
 package grauly.dustydecor
 
 import com.mojang.serialization.MapCodec
-import grauly.dustydecor.particle.AirInflowParticleEffect
-import grauly.dustydecor.particle.AirOutflowParticleEffect
-import grauly.dustydecor.particle.PhoneRingParticleEffect
-import grauly.dustydecor.particle.SparkEmitterParticleEffect
+import grauly.dustydecor.particle.AirInflowParticleOptions
+import grauly.dustydecor.particle.AirOutflowParticleOptions
+import grauly.dustydecor.particle.PhoneRingParticleOptions
+import grauly.dustydecor.particle.SparkEmitterParticleOptions
 import io.netty.buffer.ByteBuf
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes
 import net.minecraft.core.Registry
@@ -22,25 +22,25 @@ object ModParticleTypes {
     val SPARK_FLASH: SimpleParticleType = registerSimple("spark_flash")
     val LIGHT_FLASH: SimpleParticleType = registerSimple("light_flash")
 
-    val SPARK_EMITTER_PARTICLE: ParticleType<SparkEmitterParticleEffect> = registerComplex(
+    val SPARK_EMITTER_PARTICLE: ParticleType<SparkEmitterParticleOptions> = registerComplex(
         "spark_emitter",
-        SparkEmitterParticleEffect.CODEC,
-        SparkEmitterParticleEffect.PACKET_CODEC
+        SparkEmitterParticleOptions.CODEC,
+        SparkEmitterParticleOptions.PACKET_CODEC
     )
-    val AIR_INFLOW: ParticleType<AirInflowParticleEffect> = registerComplex(
+    val AIR_INFLOW: ParticleType<AirInflowParticleOptions> = registerComplex(
         "air_inflow",
-        AirInflowParticleEffect.CODEC,
-        AirInflowParticleEffect.PACKET_CODEC
+        AirInflowParticleOptions.CODEC,
+        AirInflowParticleOptions.PACKET_CODEC
     )
-    val AIR_OUTFLOW: ParticleType<AirOutflowParticleEffect> = registerComplex(
+    val AIR_OUTFLOW: ParticleType<AirOutflowParticleOptions> = registerComplex(
         "air_outflow",
-        AirOutflowParticleEffect.CODEC,
-        AirOutflowParticleEffect.PACKET_CODEC
+        AirOutflowParticleOptions.CODEC,
+        AirOutflowParticleOptions.PACKET_CODEC
     )
-    val PHONE_RING: ParticleType<PhoneRingParticleEffect> = registerComplex(
+    val PHONE_RING: ParticleType<PhoneRingParticleOptions> = registerComplex(
         "phone_ring",
-        PhoneRingParticleEffect.CODEC,
-        PhoneRingParticleEffect.PACKET_CODEC
+        PhoneRingParticleOptions.CODEC,
+        PhoneRingParticleOptions.PACKET_CODEC
     )
 
     private fun <T : ParticleOptions> registerParticle(id: String, type: ParticleType<T>): ParticleType<T> {

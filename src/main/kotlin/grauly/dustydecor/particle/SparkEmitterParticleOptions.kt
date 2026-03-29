@@ -10,26 +10,26 @@ import net.minecraft.core.particles.ParticleType
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 
-class SparkEmitterParticleEffect(val spread: Double, val amount: Int = 6, val block: Boolean = false) :
+class SparkEmitterParticleOptions(val spread: Double, val amount: Int = 6, val block: Boolean = false) :
     ParticleOptions {
     override fun getType(): ParticleType<*> = ModParticleTypes.SPARK_EMITTER_PARTICLE
 
     companion object {
-        val CODEC: MapCodec<SparkEmitterParticleEffect> = RecordCodecBuilder.mapCodec {
+        val CODEC: MapCodec<SparkEmitterParticleOptions> = RecordCodecBuilder.mapCodec {
             it.group(
                 Codec.DOUBLE.fieldOf("spread_radius").forGetter { spark -> spark.spread },
                 Codec.INT.fieldOf("amount").forGetter { spark -> spark.amount },
                 Codec.BOOL.fieldOf("block").forGetter { spark -> spark.block }
-            ).apply(it, ::SparkEmitterParticleEffect)
+            ).apply(it, ::SparkEmitterParticleOptions)
         }
-        val PACKET_CODEC: StreamCodec<ByteBuf, SparkEmitterParticleEffect> = StreamCodec.composite(
+        val PACKET_CODEC: StreamCodec<ByteBuf, SparkEmitterParticleOptions> = StreamCodec.composite(
             ByteBufCodecs.DOUBLE,
             { spark -> spark.spread },
             ByteBufCodecs.INT,
             { spark -> spark.amount },
             ByteBufCodecs.BOOL,
             { spark -> spark.block },
-            ::SparkEmitterParticleEffect
+            ::SparkEmitterParticleOptions
         )
     }
 }

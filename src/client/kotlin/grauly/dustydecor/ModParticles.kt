@@ -2,7 +2,7 @@ package grauly.dustydecor
 
 import grauly.dustydecor.particle.AirflowParticle
 import grauly.dustydecor.particle.LightFlashParticle
-import grauly.dustydecor.particle.PhoneRingParticle
+import grauly.dustydecor.particle.PhoneRingParticleOptions
 import grauly.dustydecor.particle.SparkEmitterFactory
 import grauly.dustydecor.particle.SparkFlashParticle
 import grauly.dustydecor.particle.spark.SparkParticle
@@ -20,6 +20,6 @@ object ModParticles {
         ParticleProviderRegistry.getInstance().register(ModParticleTypes.LIGHT_FLASH, LightFlashParticle::Factory)
         ParticleProviderRegistry.getInstance().register(ModParticleTypes.AIR_INFLOW, AirflowParticle::InflowFactory)
         ParticleProviderRegistry.getInstance().register(ModParticleTypes.AIR_OUTFLOW, AirflowParticle::OutflowFactory)
-        ParticleProviderRegistry.getInstance().register(ModParticleTypes.PHONE_RING, PhoneRingParticle::Factory)
+        ParticleProviderRegistry.getInstance().register(ModParticleTypes.PHONE_RING, PhoneRingParticleOptions::Factory)
     }
 }

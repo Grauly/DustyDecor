@@ -6,9 +6,9 @@ import net.minecraft.client.particle.ParticleProvider
 import net.minecraft.client.particle.SpriteSet
 import net.minecraft.util.RandomSource
 
-class SparkEmitterFactory(spriteProvider: SpriteSet) : ParticleProvider<SparkEmitterParticleEffect> {
+class SparkEmitterFactory(spriteProvider: SpriteSet) : ParticleProvider<SparkEmitterParticleOptions> {
     override fun createParticle(
-        parameters: SparkEmitterParticleEffect,
+        parameters: SparkEmitterParticleOptions,
         world: ClientLevel,
         x: Double,
         y: Double,
@@ -18,7 +18,7 @@ class SparkEmitterFactory(spriteProvider: SpriteSet) : ParticleProvider<SparkEmi
         velocityZ: Double,
         random: RandomSource
     ): Particle {
-        val constructor = if (parameters.block) ::BlockSparkEmitterParticle else ::SparkEmitterParticle
+        val constructor = if (parameters.block) ::BlockSparkEmitterParticle else ::SparkEmitterParticleOptions
         return constructor.invoke(world, x, y, z, velocityX, velocityY, velocityZ, parameters.spread, parameters.amount)
     }
 

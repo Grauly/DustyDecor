@@ -84,9 +84,9 @@ class PhoneRingParticle(
         )
     }
 
-    class Factory(private val sprites: SpriteSet) : ParticleProvider<PhoneRingParticleEffect> {
+    class Factory(private val sprites: SpriteSet) : ParticleProvider<PhoneRingParticleOptions> {
         override fun createParticle(
-            options: PhoneRingParticleEffect,
+            options: PhoneRingParticleOptions,
             level: ClientLevel,
             x: Double,
             y: Double,
@@ -96,7 +96,7 @@ class PhoneRingParticle(
             zAux: Double,
             random: RandomSource
         ): Particle {
-            return PhoneRingParticle(
+            return PhoneRingParticleOptions(
                 options.attached,
                 options.flipped,
                 level,

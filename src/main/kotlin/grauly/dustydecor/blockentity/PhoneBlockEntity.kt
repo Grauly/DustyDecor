@@ -4,7 +4,7 @@ import grauly.dustydecor.ModBlockEntityTypes
 import grauly.dustydecor.ModSoundEvents
 import grauly.dustydecor.block.furniture.PhoneBlock
 import grauly.dustydecor.block.furniture.SingleFurnitureBlock
-import grauly.dustydecor.particle.PhoneRingParticleEffect
+import grauly.dustydecor.particle.PhoneRingParticleOptions
 import net.minecraft.core.BlockPos
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.entity.ItemOwner
@@ -45,7 +45,7 @@ class PhoneBlockEntity(
         fun tickRing(level: Level, pos: BlockPos, state: BlockState, entity: PhoneBlockEntity) {
             if (entity.ringTicks % 8 == 0) {
                 level.addParticle(
-                    PhoneRingParticleEffect(
+                    PhoneRingParticleOptions(
                         true,
                         entity.ringTicks % 16 == 0
                     ),
