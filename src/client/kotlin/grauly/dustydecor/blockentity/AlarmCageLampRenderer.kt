@@ -19,7 +19,7 @@ import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.PI
 
-class AlarmCageLampBlockEntityRenderer(
+class AlarmCageLampRenderer(
     private val blockRenderContext: BlockEntityRendererProvider.Context
 ) : BlockEntityRenderer<AlarmCageLampBlockEntity, BlockEntityRenderState> {
 

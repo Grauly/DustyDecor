@@ -18,10 +18,9 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.phys.Vec3
 import org.joml.Quaternionf
 import kotlin.math.PI
-import kotlin.math.pow
 import kotlin.math.sin
 
-class PhoneBlockEntityRenderer(
+class PhoneRenderer(
     private val blockRenderContext: BlockEntityRendererProvider.Context
 ) : BlockEntityRenderer<PhoneBlockEntity, BlockEntityRenderState> {
     override fun createRenderState(): BlockEntityRenderState = BlockEntityRenderState()

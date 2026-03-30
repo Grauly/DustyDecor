@@ -18,7 +18,7 @@ import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.min
 
-class VacPipeBlockEntityRenderer(
+class VacPipeRenderer(
     private val blockRenderContext: BlockEntityRendererProvider.Context
 ) : BlockEntityRenderer<VacPipeBlockEntity, BlockEntityRenderState> {
     private val itemModelManager = blockRenderContext.itemModelResolver

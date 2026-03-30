@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.world.item.ItemDisplayContext
 import net.minecraft.world.phys.Vec3
 
-class VacPipeStationBlockEntityRenderer(
+class VacPipeStationRenderer(
     private val blockRenderContext: BlockEntityRendererProvider.Context
 ) : BlockEntityRenderer<VacPipeStationBlockEntity, BlockEntityRenderState> {
     private val itemModelManager = blockRenderContext.itemModelResolver
@@ -52,7 +52,6 @@ class VacPipeStationBlockEntityRenderer(
         cameraState: CameraRenderState
     ) {
         val itemRenderState = state.getData(ITEM) ?: return
-        val DISPLAY_CENTER = Vec3(.5, 6 / 16.0, .5)
         matrices.pushPose()
         matrices.translate(DISPLAY_CENTER)
 
@@ -69,5 +68,6 @@ class VacPipeStationBlockEntityRenderer(
 
     companion object {
         val ITEM: RenderStateDataKey<ItemStackRenderState> = RenderStateDataKey<ItemStackRenderState>.create()
+        val DISPLAY_CENTER = Vec3(.5, 6 / 16.0, .5)
     }
 }
