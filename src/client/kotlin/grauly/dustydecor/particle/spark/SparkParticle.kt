@@ -30,7 +30,7 @@ import kotlin.math.roundToInt
  * Implemented with very generous lookups from https://github.com/Enchanted-Games/block-place-particles
  * Honestly, without the showcase on the fabricord, I would not have had this idea, so ty :)
  */
-class SparkParticle(
+open class SparkParticle(
     level: ClientLevel,
     x: Double,
     y: Double,
@@ -38,31 +38,46 @@ class SparkParticle(
     velocityX: Double,
     velocityY: Double,
     velocityZ: Double,
-    gravity: Double,
+    private val gravityVector: Vec3,
     lifetime: Int,
     drag: Double = 1.0,
+    private val bounceFactor: Double = 0.6,
     private val lengthFactor: Float = 4f,
     sparkWidthPixels: Double = 1.0,
     private val sprites: SpriteSet
 ) : Particle(level, x, y, z, velocityX, velocityY, velocityZ) {
-    private var pos: Vec3 = Vec3(x, y, z)
+    protected var pos: Vec3 = Vec3(x, y, z)
     private var lastPos: Vec3 = pos
     private var lastLastPos: Vec3 = lastPos
-    private var velocity: Vec3 = Vec3(velocityX, velocityY, velocityZ)
+    protected var velocity: Vec3 = Vec3(velocityX, velocityY, velocityZ)
 
-    private val bounceFactor = 0.6
     private val sparkWidth: Double = sparkWidthPixels / 16
-    private var hasSplit = false
     private var lastBouncedBlockPos = BlockPos.ZERO
-    private var scale = 1f
-    private var sprite: TextureAtlasSprite = sprites.get(0, lifetime)
+    protected var scale = 1f
+    protected var sprite: TextureAtlasSprite = sprites.get(0, lifetime)
 
     init {
-        this.gravity = gravity.toFloat()
         this.friction = drag.toFloat()
         this.lifetime = lifetime
         scale = 0.9f + random.nextFloat() * 0.2f
     }
+
+    constructor(
+        level: ClientLevel,
+        x: Double,
+        y: Double,
+        z: Double,
+        velocityX: Double,
+        velocityY: Double,
+        velocityZ: Double,
+        gravity: Double,
+        lifetime: Int,
+        drag: Double = 1.0,
+        bounceFactor: Double = 0.6,
+        lengthFactor: Float = 4f,
+        sparkWidthPixels: Double = 1.0,
+        sprites: SpriteSet
+    ): this(level, x, y, z, velocityX, velocityY, velocityZ, Vec3(0.0, -0.04 * gravity, 0.0), lifetime, drag, bounceFactor, lengthFactor, sparkWidthPixels, sprites)
 
     override fun tick() {
         if (this.removed) return
@@ -73,7 +88,7 @@ class SparkParticle(
         sprite = sprites.get(age, lifetime)
         lastLastPos = lastPos
         lastPos = pos
-        velocity = velocity.scale(friction.toDouble()).add(0.0, -0.04 * gravity, 0.0)
+        velocity = velocity.scale(friction.toDouble()).add(gravityVector)
         var prospectivePos = pos.add(velocity)
         val hit = level.clip(
             ClipContext(
@@ -111,40 +126,8 @@ class SparkParticle(
 
     override fun getGroup(): ParticleRenderType = SparkParticleRenderer.textureSheet
 
-    private fun onBounce() {
-        val randomNum = random.nextInt(10)
-        if (randomNum < 2) {
-            level.addParticle(
-                ModParticleTypes.SPARK_FLASH,
-                pos.x,
-                pos.y,
-                pos.z,
-                velocity.x,
-                velocity.y,
-                velocity.z
-            )
-        }
-        if (randomNum < 1) {
-            split()
-        }
-    }
+    protected open fun onBounce() { }
 
-    private fun split() {
-        level.addParticle(ModParticleTypes.SPARK_FLASH, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z)
-        if (!hasSplit) {
-            val velocitySpread = velocity.length() * 0.6
-            hasSplit = true
-            level.addParticle(
-                ModParticleTypes.SMALL_SPARK_PARTICLE,
-                pos.x,
-                pos.y,
-                pos.z,
-                velocity.x * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
-                velocity.y * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
-                velocity.z * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
-            )
-        }
-    }
 
     fun intersectsFrustum(frustum: Frustum): Boolean {
         val posIntersects = frustum.pointInFrustum(pos.x, pos.y, pos.z)
@@ -241,67 +224,4 @@ class SparkParticle(
     private fun pixel(i: Double): Double = i / 16.0
     private fun pixel(i: Float): Float = i / 16.0f
 
-    class LargeSparkProvider(private val sprites: SpriteSet) : ParticleProvider<SimpleParticleType> {
-        override fun createParticle(
-            options: SimpleParticleType,
-            level: ClientLevel,
-            x: Double,
-            y: Double,
-            z: Double,
-            velocityX: Double,
-            velocityY: Double,
-            velocityZ: Double,
-            random: RandomSource
-        ): Particle {
-            return SparkParticle(
-                level,
-                x,
-                y,
-                z,
-                velocityX,
-                velocityY,
-                velocityZ,
-                randomDoubleBetween(level.random, 2.3, 2.4),
-                level.random.nextInt(10) + 50,
-                lengthFactor = 2.5f,
-                sprites = sprites
-            )
-        }
-    }
-
-    class SmallSparkProvider(private val sprites: SpriteSet) : ParticleProvider<SimpleParticleType> {
-        override fun createParticle(
-            options: SimpleParticleType,
-            level: ClientLevel,
-            x: Double,
-            y: Double,
-            z: Double,
-            velocityX: Double,
-            velocityY: Double,
-            velocityZ: Double,
-            random: RandomSource
-        ): Particle {
-            return SparkParticle(
-                level,
-                x,
-                y,
-                z,
-                velocityX,
-                velocityY,
-                velocityZ,
-                randomDoubleBetween(level.random, 1.2, 1.3),
-                level.random.nextInt(5) + 25,
-                lengthFactor = 3.5f,
-                sprites = sprites
-            )
-        }
-    }
-
-    companion object {
-        private fun randomDoubleBetween(random: RandomSource, start: Double, end: Double): Double {
-            val base = random.nextDouble()
-            val diff = end - start
-            return start + (base * diff)
-        }
-    }
 }
