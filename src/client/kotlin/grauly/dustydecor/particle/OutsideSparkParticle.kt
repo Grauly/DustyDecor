@@ -1,6 +1,7 @@
 package grauly.dustydecor.particle
 
 import grauly.dustydecor.ModParticleTypes
+import grauly.dustydecor.particle.MetalSparkParticle.Companion.randomDoubleBetween
 import grauly.dustydecor.particle.spark.SparkParticle
 import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.client.particle.Particle
@@ -8,9 +9,12 @@ import net.minecraft.client.particle.ParticleProvider
 import net.minecraft.client.particle.SpriteSet
 import net.minecraft.core.particles.SimpleParticleType
 import net.minecraft.util.RandomSource
-import kotlin.math.pow
+import net.minecraft.world.phys.Vec3
+import org.joml.Quaternionf
+import kotlin.math.PI
+import kotlin.math.withSign
 
-class MetalSparkParticle(
+class OutsideSparkParticle(
     level: ClientLevel,
     x: Double,
     y: Double,
@@ -18,7 +22,7 @@ class MetalSparkParticle(
     velocityX: Double,
     velocityY: Double,
     velocityZ: Double,
-    gravity: Double,
+    gravityVector: Vec3,
     lifetime: Int,
     drag: Double = 1.0,
     bounceFactor: Double = 0.6,
@@ -33,7 +37,7 @@ class MetalSparkParticle(
     velocityX,
     velocityY,
     velocityZ,
-    gravity,
+    gravityVector,
     lifetime,
     drag,
     bounceFactor,
@@ -41,43 +45,33 @@ class MetalSparkParticle(
     sparkWidthPixels,
     sprites
 ) {
-    private var hasSplit = false
-
     override fun onBounce() {
-        val randomNum = random.nextInt(10)
-        if (randomNum < 2) {
-            level.addParticle(
-                ModParticleTypes.SPARK_FLASH,
-                pos.x,
-                pos.y,
-                pos.z,
-                velocity.x,
-                velocity.y,
-                velocity.z
-            )
-        }
-        if (randomNum < 1) {
-            split()
-        }
+        this.remove()
     }
 
-    fun split() {
-        level.addParticle(ModParticleTypes.SPARK_FLASH, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z)
-        if (!hasSplit) {
-            val velocitySpread = velocity.length() * 0.6
-            hasSplit = true
+    override fun remove() {
+        super.remove()
+        // A really cool hack, from: https://math.stackexchange.com/q/4112622
+        val perpendicular = Vec3(
+            velocity.z.withSign(velocity.x),
+            velocity.z.withSign(velocity.y),
+            -velocity.x.withSign(velocity.z) - velocity.y.withSign(velocity.z)
+        ).toVector3f().normalize(.2f)
+        val rot = Quaternionf().rotateAxis(
+            (PI / 2f).toFloat() + (random.nextFloat() * PI).toFloat(),
+            velocity.x.toFloat(),
+            velocity.y.toFloat(),
+            velocity.z.toFloat()
+        )
+        for (i in 0..3) {
+            perpendicular.rotate(rot)
             level.addParticle(
-                ModParticleTypes.SMALL_SPARK_PARTICLE,
-                pos.x,
-                pos.y,
-                pos.z,
-                velocity.x * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
-                velocity.y * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
-                velocity.z * 0.6f.pow(2) + random.nextFloat() * velocitySpread * 2 - velocitySpread,
+                ModParticleTypes.OUTSIDE_SPARKLET,
+                pos.x, pos.y, pos.z,
+                perpendicular.x.toDouble(), perpendicular.y.toDouble(), perpendicular.z.toDouble()
             )
         }
     }
-
 
     class LargeSparkProvider(private val sprites: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
@@ -91,7 +85,7 @@ class MetalSparkParticle(
             velocityZ: Double,
             random: RandomSource
         ): Particle {
-            return SparkParticle(
+            return OutsideSparkParticle(
                 level,
                 x,
                 y,
@@ -99,7 +93,7 @@ class MetalSparkParticle(
                 velocityX,
                 velocityY,
                 velocityZ,
-                randomDoubleBetween(level.random, 2.3, 2.4),
+                Vec3(0.0, randomDoubleBetween(level.random, 2.3, 2.4) * 0.04, 0.0),
                 level.random.nextInt(10) + 50,
                 lengthFactor = 2.5f,
                 sprites = sprites
@@ -119,7 +113,7 @@ class MetalSparkParticle(
             velocityZ: Double,
             random: RandomSource
         ): Particle {
-            return SparkParticle(
+            return OutsideSparkParticle(
                 level,
                 x,
                 y,
@@ -127,19 +121,11 @@ class MetalSparkParticle(
                 velocityX,
                 velocityY,
                 velocityZ,
-                randomDoubleBetween(level.random, 1.2, 1.3),
+                Vec3(0.0, randomDoubleBetween(level.random, 0.4, 0.5) * 0.04, 0.0),
                 level.random.nextInt(5) + 25,
                 lengthFactor = 3.5f,
                 sprites = sprites
             )
-        }
-    }
-
-    companion object {
-        fun randomDoubleBetween(random: RandomSource, start: Double, end: Double): Double {
-            val base = random.nextDouble()
-            val diff = end - start
-            return start + (base * diff)
         }
     }
 }
