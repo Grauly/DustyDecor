@@ -3,11 +3,10 @@ package grauly.dustydecor
 import grauly.dustydecor.particle.AirflowParticle
 import grauly.dustydecor.particle.LightFlashParticle
 import grauly.dustydecor.particle.MetalSparkParticle
+import grauly.dustydecor.particle.OutsideSparkletParticle
 import grauly.dustydecor.particle.PhoneRingParticle
-import grauly.dustydecor.particle.PhoneRingParticleOptions
 import grauly.dustydecor.particle.SparkEmitterProvider
 import grauly.dustydecor.particle.SparkFlashParticle
-import grauly.dustydecor.particle.spark.SparkParticle
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry
 
 object ModParticles {
@@ -23,5 +22,6 @@ object ModParticles {
         ParticleProviderRegistry.getInstance().register(ModParticleTypes.AIR_INFLOW, AirflowParticle::InflowProvider)
         ParticleProviderRegistry.getInstance().register(ModParticleTypes.AIR_OUTFLOW, AirflowParticle::OutflowProvider)
         ParticleProviderRegistry.getInstance().register(ModParticleTypes.PHONE_RING, PhoneRingParticle::Provider)
+        ParticleProviderRegistry.getInstance().register(ModParticleTypes.OUTSIDE_SPARKLET, OutsideSparkletParticle::Provider)
     }
 }
