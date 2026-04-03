@@ -23,6 +23,7 @@ object ModParticleTypes {
     val LIGHT_FLASH: SimpleParticleType = registerSimple("light_flash")
     val OUTSIDE_SPARK: SimpleParticleType = registerSimple("outside_spark")
     val OUTSIDE_SPARKLET: SimpleParticleType = registerSimple("outside_sparklet")
+    val OUTSIDE_BEAM_FLASH: SimpleParticleType = registerSimple("outside_beam_flash")
 
     val SPARK_EMITTER_PARTICLE: ParticleType<SparkEmitterParticleOptions> = registerComplex(
         "spark_emitter",
