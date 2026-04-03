@@ -23,6 +23,10 @@ class PhoneBlockEntity(
     var ringTicks = -1
     val ringCycle = 4
 
+    fun canRing(): Boolean {
+        return blockState.getValue(PhoneBlock.RINGING) && blockState.getValue(PhoneBlock.ON_HOOK)
+    }
+
     override fun level(): Level = level!!
 
     override fun position(): Vec3 = worldPosition.bottomCenter
@@ -37,7 +41,7 @@ class PhoneBlockEntity(
         val INIT_RANDOM = Random(System.currentTimeMillis())
 
         fun tick(level: Level, pos: BlockPos, state: BlockState, entity: PhoneBlockEntity) {
-            if (state.getValue(PhoneBlock.RINGING)) {
+            if (entity.canRing()) {
                 tickRing(level, pos, state, entity)
             }
         }

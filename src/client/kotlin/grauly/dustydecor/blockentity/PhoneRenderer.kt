@@ -36,8 +36,7 @@ class PhoneRenderer(
             HANDSET_STACK = ModItems.PHONE_HANDSET.defaultInstance
         }
         super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress)
-        val ringing = blockEntity.blockState.getValue(PhoneBlock.RINGING)
-        if (!ringing) return
+        if (!blockEntity.canRing()) return
 
         val itemRenderState = ItemStackRenderState()
         blockRenderContext.itemModelResolver.updateForTopItem(
