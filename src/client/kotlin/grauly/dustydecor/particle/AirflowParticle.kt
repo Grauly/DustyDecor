@@ -1,5 +1,6 @@
 package grauly.dustydecor.particle
 
+import net.minecraft.client.Camera
 import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.client.particle.Particle
 import net.minecraft.client.particle.ParticleProvider
@@ -25,9 +26,9 @@ class AirflowParticle(
         lifetime = 11
     }
 
-    override fun getOffset(): Vector3f = Vector3f(4 / 16f, -3 / 16f, 0f)
+    override fun getOffset(camera: Camera, tickProgress: Float): Vector3f = Vector3f(4 / 16f, -3 / 16f, 0f)
 
-    override fun getRotation(): Quaternionf =
+    override fun getRotation(camera: Camera, tickProgress: Float): Quaternionf =
         Quaternionf()
             .rotateTo(Direction.UP.unitVec3f, flowDirection.opposite.unitVec3f)
             .rotateY(axisRotationRadians)

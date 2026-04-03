@@ -23,15 +23,15 @@ abstract class FixedRotationOffsetParticle(
 
     override fun getLayer(): Layer = RENDER_LAYER
 
-    abstract fun getOffset(): Vector3f
-    abstract fun getRotation(): Quaternionf
+    abstract fun getOffset(camera: Camera, tickProgress: Float): Vector3f
+    abstract fun getRotation(camera: Camera, tickProgress: Float): Quaternionf
 
     override fun extract(
         renderState: QuadParticleRenderState,
         camera: Camera,
         tickProgress: Float
     ) {
-        extractRotatedQuad(renderState, camera, getRotation(), tickProgress)
+        extractRotatedQuad(renderState, camera, getRotation(camera, tickProgress), tickProgress)
     }
 
     override fun extractRotatedQuad(
@@ -40,7 +40,7 @@ abstract class FixedRotationOffsetParticle(
         rotation: Quaternionf,
         tickProgress: Float
     ) {
-        val offset = Vector3f(getOffset()).rotate(rotation)
+        val offset = Vector3f(getOffset(camera, tickProgress)).rotate(rotation)
         val cameraPos = camera.position()
         val x1: Float = (x + offset.x - cameraPos.x).toFloat()
         val y1: Float = (y + offset.y - cameraPos.y).toFloat()

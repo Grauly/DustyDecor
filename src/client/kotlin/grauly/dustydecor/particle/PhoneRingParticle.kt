@@ -51,8 +51,8 @@ class PhoneRingParticle(
         }
     }
 
-    override fun getOffset(): Vector3f = baseOffset.toVector3f()
-    override fun getRotation(): Quaternionf = baseRotation
+    override fun getOffset(camera: Camera, tickProgress: Float): Vector3f = baseOffset.toVector3f()
+    override fun getRotation(camera: Camera, tickProgress: Float): Quaternionf = baseRotation
 
     override fun extractRotatedQuad(
         renderState: QuadParticleRenderState,
