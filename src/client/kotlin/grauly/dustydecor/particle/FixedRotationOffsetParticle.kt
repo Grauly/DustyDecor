@@ -5,6 +5,7 @@ import grauly.dustydecor.DustyDecorMod
 import net.minecraft.client.Camera
 import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.client.particle.SimpleAnimatedParticle
+import net.minecraft.client.particle.SingleQuadParticle
 import net.minecraft.client.particle.SpriteSet
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.renderer.state.level.QuadParticleRenderState
@@ -17,14 +18,24 @@ abstract class FixedRotationOffsetParticle(
     x: Double,
     y: Double,
     z: Double,
-    sprites: SpriteSet,
-    gravity: Float
-) : SimpleAnimatedParticle(level, x, y, z, sprites, gravity) {
+    xa: Double,
+    ya: Double,
+    za: Double,
+    protected val sprites: SpriteSet
+) : SingleQuadParticle(level, x, y, z, xa, ya, za, sprites.first()) {
+    init {
+        setSpriteFromAge(sprites)
+    }
 
     override fun getLayer(): Layer = RENDER_LAYER
 
     abstract fun getOffset(camera: Camera, tickProgress: Float): Vector3f
     abstract fun getRotation(camera: Camera, tickProgress: Float): Quaternionf
+
+    override fun tick() {
+        setSpriteFromAge(sprites)
+        super.tick()
+    }
 
     override fun extract(
         renderState: QuadParticleRenderState,

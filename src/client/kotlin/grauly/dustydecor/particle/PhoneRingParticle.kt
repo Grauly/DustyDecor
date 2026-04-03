@@ -23,19 +23,26 @@ class PhoneRingParticle(
     x: Double,
     y: Double,
     z: Double,
+    xa: Double,
+    ya: Double,
+    za: Double,
     sprites: SpriteSet,
-    gravity: Float
 ) : FixedRotationOffsetParticle(
     level,
     if (attached) floor(x) + 0.5f else x,
     if (attached) floor(y) else y,
     if (attached) floor(z) + 0.5f else z,
+    if (attached) 0.0 else xa,
+    if (attached) 0.0 else ya,
+    if (attached) 0.0 else za,
     sprites,
-    gravity
 ) {
     init {
         lifetime = 16
         quadSize = 0.15f
+        xd = 0.0
+        yd = 0.0
+        zd = 0.0
     }
 
     private val axisRotationRadians: Float = level.random.nextFloat() * 2 * PI.toFloat()
@@ -96,8 +103,8 @@ class PhoneRingParticle(
                 options.flipped,
                 level,
                 x, y, z,
+                xAux, yAux, zAux,
                 sprites,
-                0.0f,
             )
         }
     }

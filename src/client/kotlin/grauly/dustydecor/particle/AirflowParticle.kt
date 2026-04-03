@@ -16,14 +16,19 @@ class AirflowParticle(
     x: Double,
     y: Double,
     z: Double,
+    xa: Double,
+    ya: Double,
+    za: Double,
     private val flowDirection: Direction,
     sprites: SpriteSet,
-    upwardsAcceleration: Float
-) : FixedRotationOffsetParticle(level, x, y, z, sprites, upwardsAcceleration) {
+) : FixedRotationOffsetParticle(level, x, y, z, xa, ya, za, sprites) {
     private val axisRotationRadians: Float = level.random.nextFloat() * 2 * PI.toFloat()
 
     init {
         lifetime = 11
+        xd = 0.0
+        yd = 0.0
+        zd = 0.0
     }
 
     override fun getOffset(camera: Camera, tickProgress: Float): Vector3f = Vector3f(4 / 16f, -3 / 16f, 0f)
@@ -48,9 +53,9 @@ class AirflowParticle(
             return AirflowParticle(
                 level,
                 x, y, z,
+                velocityX, velocityY, velocityZ,
                 options.inflowDirection.opposite,
                 sprites,
-                0.0f
             )
         }
     }
@@ -70,9 +75,9 @@ class AirflowParticle(
             return AirflowParticle(
                 level,
                 x, y, z,
+                velocityX, velocityY, velocityZ,
                 options.outflowDirection,
                 sprites,
-                0.0f
             )
         }
     }
