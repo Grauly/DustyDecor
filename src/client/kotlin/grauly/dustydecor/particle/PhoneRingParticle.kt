@@ -51,7 +51,18 @@ class PhoneRingParticle(
         }
     }
 
-    override fun getOffset(camera: Camera, tickProgress: Float): Vector3f = baseOffset.toVector3f()
+    override fun getOffset(camera: Camera, tickProgress: Float): Vector3f {
+        if (!attached) return baseOffset.toVector3f()
+        return (if (flipped) LEFT_HANDSET_OFFSET else RIGHT_HANDSET_OFFSET)
+            .add(baseOffset.multiply((if (flipped) 1.0 else -1.0), 1.0, 1.0))
+            .toVector3f()
+            .rotate(attachedRotation)
+            .rotate(getFlippedRotation().conjugate())
+    }
+
+    fun getFlippedRotation(): Quaternionf =
+        Quaternionf(attachedRotation).rotateY(if (!flipped) PI.toFloat() else 0f)
+
     override fun getRotation(camera: Camera, tickProgress: Float): Quaternionf = baseRotation
 
     override fun extractRotatedQuad(
@@ -60,26 +71,10 @@ class PhoneRingParticle(
         rotation: Quaternionf,
         tickProgress: Float
     ) {
-
-        if (!attached) {
-            super.extractRotatedQuad(renderState, camera, rotation, tickProgress)
-            return
-        }
-
-        val offset = (if (flipped) LEFT_HANDSET_OFFSET else RIGHT_HANDSET_OFFSET)
-            .add(baseOffset.multiply((if (flipped) 1.0 else -1.0), 1.0, 1.0))
-            .toVector3f()
-            .rotate(attachedRotation)
-        val cameraPos = camera.position()
-        val x1: Float = (x + offset.x - cameraPos.x).toFloat()
-        val y1: Float = (y + offset.y - cameraPos.y).toFloat()
-        val z1: Float = (z + offset.z - cameraPos.z).toFloat()
-        this.extractRotatedQuad(
+        super.extractRotatedQuad(
             renderState,
-            Quaternionf(attachedRotation).rotateY(if (!flipped) PI.toFloat() else 0f),
-            x1,
-            y1,
-            z1,
+            camera,
+            if (!attached) rotation else getFlippedRotation(),
             tickProgress
         )
     }
