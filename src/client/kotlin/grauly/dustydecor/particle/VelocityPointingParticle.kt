@@ -12,8 +12,10 @@ import net.minecraft.core.particles.SimpleParticleType
 import net.minecraft.util.RandomSource
 import net.minecraft.world.phys.Vec3
 import org.joml.Quaternionf
+import org.joml.Vector3f
+import kotlin.math.sign
 
-class OutsideSparkletParticle(
+open class VelocityPointingParticle(
     level: ClientLevel,
     x: Double,
     y: Double,
@@ -21,8 +23,8 @@ class OutsideSparkletParticle(
     xa: Double,
     ya: Double,
     za: Double,
-    private val sprites: SpriteSet,
-) : SingleQuadParticle(level, x, y, z, xa, ya, za, sprites.first()) {
+    sprites: SpriteSet,
+) : FixedRotationOffsetParticle(level, x, y, z, xa, ya, za, sprites) {
     init {
         this.xd = xa
         this.yd = ya
@@ -35,14 +37,20 @@ class OutsideSparkletParticle(
         setSpriteFromAge(sprites)
     }
 
-    override fun getLayer(): Layer = FixedRotationOffsetParticle.RENDER_LAYER
+    override fun getOffset(camera: Camera, tickProgress: Float): Vector3f {
+        return Vector3f(0.0F, 0.0F, 0.0F)
+    }
 
-    override fun extract(particleTypeRenderState: QuadParticleRenderState, camera: Camera, partialTickTime: Float) {
+    override fun getRotation(camera: Camera, tickProgress: Float): Quaternionf {
         val rotation = Quaternionf()
         rotation.rotationTo(Direction.UP.unitVec3f, Vec3(xd, yd, zd).toVector3f())
-        rotation.mul(Quaternionf(0f, camera.rotation().y, 0f, camera.rotation().w))
-        extractRotatedQuad(particleTypeRenderState, camera, rotation, partialTickTime)
+        val cameraRotation = Quaternionf()
+        facingCameraMode.setRotation(cameraRotation, camera, tickProgress)
+        if (sign(yd) < 0) cameraRotation.conjugate()
+        return rotation.mul(cameraRotation)
     }
+
+    override fun getFacingCameraMode(): FacingCameraMode = FacingCameraMode.LOOKAT_Y
 
     class Provider(private val sprites: SpriteSet) : ParticleProvider<SimpleParticleType> {
         override fun createParticle(
@@ -56,13 +64,12 @@ class OutsideSparkletParticle(
             zAux: Double,
             random: RandomSource
         ): Particle {
-            return OutsideSparkletParticle(
+            return VelocityPointingParticle(
                 level,
                 x, y, z,
                 xAux, yAux, zAux,
                 sprites
             )
         }
-
     }
 }
