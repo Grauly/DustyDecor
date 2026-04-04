@@ -91,7 +91,7 @@ class MetalSparkParticle(
             velocityZ: Double,
             random: RandomSource
         ): Particle {
-            return SparkParticle(
+            return MetalSparkParticle(
                 level,
                 x,
                 y,
@@ -119,7 +119,7 @@ class MetalSparkParticle(
             velocityZ: Double,
             random: RandomSource
         ): Particle {
-            return SparkParticle(
+            return MetalSparkParticle(
                 level,
                 x,
                 y,
