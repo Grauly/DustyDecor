@@ -23,6 +23,7 @@ object BlockDatagenWrapper {
                 DatagenSpec(ModBlocks.SMALL_GLASS_TABLE_FRAME, "Small Glass Table Frame", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.CONNECTING_GLASS_TABLE_FRAME, "Connecting Glass Table Frame", STONE, PICKAXE),
                 DatagenSpec(ModBlocks.PHONE, "Phone", STONE, PICKAXE),
+                DatagenSpec(ModBlocks.CRIMSON_SAND, "Crimson Sand", NONE, SHOVEL),
             )
         )
         entries.addAll(DyeUtils.COLOR_ORDER.map {

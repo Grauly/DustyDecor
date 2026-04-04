@@ -137,6 +137,8 @@ object ModItems {
     val PHONE: Item = registerBlockItem(ModBlocks.PHONE, "phone")
     val PHONE_HANDSET: Item = registerItem(::Item, "phone_handset")
 
+    val CRIMSON_SAND: Item = registerBlockItem(ModBlocks.CRIMSON_SAND, "crimson_sand")
+
     private fun registerItem(
         itemFactory: (Properties) -> Item,
         id: String,

@@ -59,6 +59,7 @@ class BlockModelDatagen(generator: FabricPackOutput) : FabricModelProvider(gener
             "block/connecting_glass_table"
         ).get(blockStateModelGenerator)
         PhoneBlockModel.get(blockStateModelGenerator)
+        CrimsonSandBlockModel.get(blockStateModelGenerator)
     }
 
 

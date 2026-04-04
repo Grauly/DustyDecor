@@ -43,6 +43,11 @@ object ItemDatagenWrapper {
             ModItems.PHONE_HANDSET,
             "Phone Handset"
         )
+        item(
+            ModItems.CRIMSON_SAND,
+            null,
+            listOf(ModItemTags.CRIMSON_SAND)
+        )
     }
 
     private fun item(

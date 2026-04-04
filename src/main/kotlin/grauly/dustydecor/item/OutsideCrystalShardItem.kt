@@ -2,7 +2,7 @@ package grauly.dustydecor.item
 
 import grauly.dustydecor.ModBlocks
 import grauly.dustydecor.ModItems
-import grauly.dustydecor.block.voidgoop.LayerThresholdSpreadingBlock
+import grauly.dustydecor.block.layered.LayerThresholdSpreadingBlock
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.Component

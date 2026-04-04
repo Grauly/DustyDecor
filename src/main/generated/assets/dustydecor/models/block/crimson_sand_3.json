@@ -1,0 +1,7 @@
+{
+  "parent": "dustydecor:block/void_goop/void_goop_3",
+  "textures": {
+    "0": "dustydecor:block/crimson_sand",
+    "particle": "dustydecor:block/crimson_sand"
+  }
+}

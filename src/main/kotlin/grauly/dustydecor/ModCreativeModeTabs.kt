@@ -43,6 +43,7 @@ object ModCreativeModeTabs {
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS)
             .register {
                 it.insertAfter(Items.SCULK_SENSOR, ModItems.VOID_GOOP, ModItems.BULK_VOID_GOOP)
+                it.insertAfter(Items.RED_SANDSTONE, ModItems.CRIMSON_SAND)
             }
     }
 }

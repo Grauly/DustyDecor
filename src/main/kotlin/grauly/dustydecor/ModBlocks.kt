@@ -2,11 +2,12 @@ package grauly.dustydecor
 
 import grauly.dustydecor.block.furniture.*
 import grauly.dustydecor.block.lamp.*
+import grauly.dustydecor.block.layered.CrimsonSandBlock
 import grauly.dustydecor.block.vacpipe.VacPipeBlock
 import grauly.dustydecor.block.vacpipe.VacPipeStationBlock
 import grauly.dustydecor.block.vent.VentBlock
 import grauly.dustydecor.block.vent.VentCoverBlock
-import grauly.dustydecor.block.voidgoop.VoidGoopBlock
+import grauly.dustydecor.block.layered.VoidGoopBlock
 import grauly.dustydecor.util.DyeUtils
 import grauly.dustydecor.util.GlassUtils
 import net.minecraft.core.Registry
@@ -14,11 +15,14 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
+import net.minecraft.util.ColorRGBA
 import net.minecraft.world.item.DyeColor
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.SandBlock
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties
+import java.awt.Color
 
 object ModBlocks {
 
@@ -180,6 +184,7 @@ object ModBlocks {
     ) as ConnectingBreakableBlock
 
     val PHONE: SingleFurnitureBlock = registerBlock(::PhoneBlock, "phone", Properties.ofFullCopy(Blocks.RED_TERRACOTTA).noOcclusion()) as SingleFurnitureBlock
+    val CRIMSON_SAND: Block = registerBlock({properties -> CrimsonSandBlock(4, properties)}, "crimson_sand", Properties.ofFullCopy(Blocks.RED_SAND))
 
     private fun registerBlock(
         blockFactory: (Properties) -> Block,
