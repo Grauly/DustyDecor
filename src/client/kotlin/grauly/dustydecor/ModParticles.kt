@@ -4,6 +4,7 @@ import grauly.dustydecor.particle.AirflowParticle
 import grauly.dustydecor.particle.LightFlashParticle
 import grauly.dustydecor.particle.MetalSparkParticle
 import grauly.dustydecor.particle.NonMovingVelocityPointingParticle
+import grauly.dustydecor.particle.OutsideShockwaveParticle
 import grauly.dustydecor.particle.OutsideSparkParticle
 import grauly.dustydecor.particle.VelocityPointingParticle
 import grauly.dustydecor.particle.PhoneRingParticle
@@ -27,5 +28,6 @@ object ModParticles {
         ParticleProviderRegistry.getInstance().register(ModParticleTypes.OUTSIDE_SPARK, OutsideSparkParticle::SmallSparkProvider)
         ParticleProviderRegistry.getInstance().register(ModParticleTypes.OUTSIDE_SPARKLET, VelocityPointingParticle::Provider)
         ParticleProviderRegistry.getInstance().register(ModParticleTypes.OUTSIDE_BEAM_FLASH, NonMovingVelocityPointingParticle::Provider)
+        ParticleProviderRegistry.getInstance().register(ModParticleTypes.OUTSIDE_SHOCKWAVE, OutsideShockwaveParticle::Provider)
     }
 }
