@@ -10,6 +10,7 @@ import net.minecraft.client.particle.SpriteSet
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.renderer.state.level.QuadParticleRenderState
 import net.minecraft.resources.Identifier
+import net.minecraft.util.LightCoordsUtil
 import org.joml.Quaternionf
 import org.joml.Vector3f
 
@@ -26,6 +27,7 @@ abstract class FixedRotationOffsetParticle(
     init {
         setSpriteFromAge(sprites)
     }
+    var glowing = false
 
     override fun getLayer(): Layer = RENDER_LAYER
 
@@ -57,6 +59,11 @@ abstract class FixedRotationOffsetParticle(
         val y1: Float = (y + offset.y - cameraPos.y).toFloat()
         val z1: Float = (z + offset.z - cameraPos.z).toFloat()
         this.extractRotatedQuad(renderState, rotation, x1, y1, z1, tickProgress)
+    }
+
+    override fun getLightCoords(a: Float): Int {
+        if (glowing) return LightCoordsUtil.FULL_BRIGHT
+        return super.getLightCoords(a)
     }
 
     companion object {

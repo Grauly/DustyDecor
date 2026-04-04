@@ -19,9 +19,9 @@ object ModParticles {
         ParticleProviderRegistry.getInstance()
             .register(ModParticleTypes.OUTSIDE_SPARK, OutsideSparkParticle::SmallSparkProvider)
         ParticleProviderRegistry.getInstance()
-            .register(ModParticleTypes.OUTSIDE_SPARKLET, VelocityPointingParticle::Provider)
+            .register(ModParticleTypes.OUTSIDE_SPARKLET, ::OutsideSparkletProvider)
         ParticleProviderRegistry.getInstance()
-            .register(ModParticleTypes.OUTSIDE_BEAM_FLASH, NonMovingVelocityPointingParticle::Provider)
+            .register(ModParticleTypes.OUTSIDE_BEAM_FLASH, ::OutsideBeamFlashParticleProvider)
         ParticleProviderRegistry.getInstance()
             .register(ModParticleTypes.OUTSIDE_SHOCKWAVE, OutsideShockwaveParticle::Provider)
         ParticleProviderRegistry.getInstance().register(

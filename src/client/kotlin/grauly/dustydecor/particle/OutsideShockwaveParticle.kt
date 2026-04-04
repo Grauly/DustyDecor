@@ -56,6 +56,7 @@ class OutsideShockwaveParticle(
                 xAux, yAux, zAux,
                 sprites
             )
+            particle.glowing = true
             return particle
         }
 
