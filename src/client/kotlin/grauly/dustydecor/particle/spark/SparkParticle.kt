@@ -112,11 +112,8 @@ open class SparkParticle(
                 Direction.Axis.Z -> Vec3(1.0, 1.0, -1.0)
                 null -> Vec3(1.0, 1.0, 1.0)
             }
-            val distanceToBounce = hit.location.subtract(pos).length()
             velocity = velocity.multiply(multVector).scale(bounceFactor)
-            val speed = velocity.length()
-            val afterBounceLength = speed - distanceToBounce
-            prospectivePos = hit.location.add(velocity.normalize().scale(afterBounceLength))
+            prospectivePos = hit.location.add(velocity)
             onBounce()
         } else {
             lastBouncedBlockPos = BlockPos.ZERO
