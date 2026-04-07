@@ -52,6 +52,19 @@ class FloodFill(
         layers.add(collectionList)
     }
 
+    /**
+     * Run the flood fill until the abort condition is reached
+     *
+     * @param level The Level this floodfill takes place in
+     * @param predicate A predicate of positions to include
+     * @param abortPredicate The abort condition. NOTE: If not properly specified, this WILL run forever.
+     */
+    fun flood(level: LevelAccessor, predicate: (LevelAccessor, BlockPos, BlockState) -> Boolean, abortPredicate: (FloodFill) -> Boolean = DEFAULT_ABORT) {
+        while (!abortPredicate.invoke(this)) {
+            floodLayer(level, predicate)
+        }
+    }
+
     private fun addIfNotVisited(
         target: MutableList<BlockPos>,
         pos: BlockPos,
@@ -62,5 +75,9 @@ class FloodFill(
         visited.add(pos)
         if (!predicate.invoke(level, pos, level.getBlockState(pos))) return
         target.add(pos)
+    }
+
+    companion object {
+        val DEFAULT_ABORT = { floodFill: FloodFill -> floodFill.layers.size >= 100 || floodFill.layers.last().isEmpty() }
     }
 }
