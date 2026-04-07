@@ -48,6 +48,10 @@ object ItemDatagenWrapper {
             null,
             listOf(ModItemTags.CRIMSON_SAND)
         )
+        item(
+            ModItems.BROOM,
+            "Broom"
+        )
     }
 
     private fun item(

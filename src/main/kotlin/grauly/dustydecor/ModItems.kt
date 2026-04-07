@@ -4,6 +4,7 @@ import grauly.dustydecor.component.BulkGoopSizeComponent
 import grauly.dustydecor.component.ToolComponents
 import grauly.dustydecor.component.ToolUseSoundComponent
 import grauly.dustydecor.item.BulkVoidGoopItem
+import grauly.dustydecor.item.BroomItem
 import grauly.dustydecor.item.OutsideCrystalShardItem
 import grauly.dustydecor.item.VacCapsuleItem
 import grauly.dustydecor.util.DyeUtils
@@ -138,6 +139,7 @@ object ModItems {
     val PHONE_HANDSET: Item = registerItem(::Item, "phone_handset")
 
     val CRIMSON_SAND: Item = registerBlockItem(ModBlocks.CRIMSON_SAND, "crimson_sand")
+    val BROOM: Item = registerItem(::BroomItem, "broom")
 
     private fun registerItem(
         itemFactory: (Properties) -> Item,

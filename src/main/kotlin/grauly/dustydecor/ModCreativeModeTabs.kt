@@ -12,7 +12,7 @@ object ModCreativeModeTabs {
             }
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
             .register {
-                it.insertAfter(Items.BRUSH, ModItems.SCREWDRIVER, ModItems.WRENCH)
+                it.insertAfter(Items.BRUSH, ModItems.BROOM, ModItems.SCREWDRIVER, ModItems.WRENCH)
                 it.insertAfter(Items.PINK_BUNDLE, ModItems.VAC_CAPSULE)
             }
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS)

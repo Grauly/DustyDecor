@@ -14,6 +14,7 @@ import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.data.recipes.RecipeProvider
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
+import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
 import java.util.concurrent.CompletableFuture
 
@@ -58,6 +59,15 @@ class RecipeDatagen(
                     .pattern("ti ")
                     .pattern("b  ")
                     .unlockedBy("has_iron", has(ConventionalItemTags.IRON_INGOTS))
+                    .save(exporter)
+                shaped(RecipeCategory.TOOLS, ModItems.BROOM)
+                    .define('s', ConventionalItemTags.WOODEN_RODS)
+                    .define('f', ConventionalItemTags.FEATHERS)
+                    .define('l', ItemTags.WOODEN_SLABS)
+                    .pattern(" fl")
+                    .pattern(" sf")
+                    .pattern("s  ")
+                    .unlockedBy("has_stick", has(ConventionalItemTags.WOODEN_RODS))
                     .save(exporter)
                 shaped(RecipeCategory.REDSTONE, ModItems.VAC_PIPE, 6)
                     .define('c', ConventionalItemTags.COPPER_INGOTS)

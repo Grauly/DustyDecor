@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "f": "#c:feathers",
+    "l": "#minecraft:wooden_slabs",
+    "s": "#c:rods/wooden"
+  },
+  "pattern": [
+    " fl",
+    " sf",
+    "s  "
+  ],
+  "result": {
+    "id": "dustydecor:broom"
+  }
+}
