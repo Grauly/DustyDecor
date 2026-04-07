@@ -21,7 +21,7 @@ class FloodFill(
     val bias: Vec3i = Vec3i(0, 0, 0),
 ) {
     val layers: ArrayDeque<List<BlockPos>> = ArrayDeque(listOf(listOf(pos)))
-    val visited: MutableSet<BlockPos> = HashSet()
+    val visited: MutableSet<BlockPos> = HashSet(listOf(pos))
 
     val searchPositions: List<Vec3i> = listOf(
         Vec3i(1, 0, 0),
