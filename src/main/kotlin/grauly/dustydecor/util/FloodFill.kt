@@ -44,7 +44,7 @@ class FloodFill(
         val collectionList = mutableListOf<BlockPos>()
         lastElements.forEach { blockPos ->
             val offsetPos = blockPos.offset(bias)
-            addIfNotVisited(collectionList, offsetPos, level, predicate)
+            if (!addIfNotVisited(collectionList, offsetPos, level, predicate)) return@forEach
             searchPositions.forEach { pos ->
                 addIfNotVisited(collectionList, offsetPos.offset(pos), level, predicate)
             }
@@ -70,11 +70,12 @@ class FloodFill(
         pos: BlockPos,
         level: LevelAccessor,
         predicate: (LevelAccessor, BlockPos, BlockState) -> Boolean
-    ) {
-        if (visited.contains(pos)) return
+    ): Boolean {
+        if (visited.contains(pos)) return false
         visited.add(pos)
-        if (!predicate.invoke(level, pos, level.getBlockState(pos))) return
+        if (!predicate.invoke(level, pos, level.getBlockState(pos))) return false
         target.add(pos)
+        return true
     }
 
     companion object {
