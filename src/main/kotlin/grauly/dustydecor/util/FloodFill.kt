@@ -38,15 +38,19 @@ class FloodFill(
      * @param level The Level this iteration runs in
      * @param predicate A predicate of positions to include
      */
-    fun floodLayer(level: LevelAccessor, predicate: (LevelAccessor, BlockPos, BlockState) -> Boolean) {
+    fun floodLayer(
+        level: LevelAccessor,
+        predicate: (LevelAccessor, BlockPos, BlockState) -> Boolean,
+        addCallback: (LevelAccessor, BlockPos, BlockState) -> Unit = DEFAULT_ADD
+    ) {
         if (layers.isEmpty()) return
         val lastElements = layers.last()
         val collectionList = mutableListOf<BlockPos>()
         lastElements.forEach { blockPos ->
             val workingPos = blockPos.offset(bias)
-            if (bias != ZERO_BIAS && !addIfNotVisited(collectionList, workingPos, level, predicate)) return@forEach
+            if (bias != ZERO_BIAS && !addIfNotVisited(collectionList, workingPos, level, predicate, addCallback)) return@forEach
             searchPositions.forEach { searchOffset ->
-                addIfNotVisited(collectionList, workingPos.offset(searchOffset), level, predicate)
+                addIfNotVisited(collectionList, workingPos.offset(searchOffset), level, predicate, addCallback)
             }
         }
         layers.add(collectionList)
@@ -60,9 +64,14 @@ class FloodFill(
      * @param abortPredicate The abort condition. NOTE: It will abort in any case if the last iteration added no new matches
      * By Default stops after 100 iterations
      */
-    fun flood(level: LevelAccessor, predicate: (LevelAccessor, BlockPos, BlockState) -> Boolean, abortPredicate: (FloodFill) -> Boolean = DEFAULT_ABORT) {
+    fun flood(
+        level: LevelAccessor,
+        predicate: (LevelAccessor, BlockPos, BlockState) -> Boolean,
+        abortPredicate: (FloodFill) -> Boolean = DEFAULT_ABORT,
+        addCallback: (LevelAccessor, BlockPos, BlockState) -> Unit = DEFAULT_ADD,
+    ) {
         while (!(abortPredicate.invoke(this) || layers.last().isEmpty())) {
-            floodLayer(level, predicate)
+            floodLayer(level, predicate, addCallback)
         }
     }
 
@@ -70,17 +79,21 @@ class FloodFill(
         target: MutableList<BlockPos>,
         pos: BlockPos,
         level: LevelAccessor,
-        predicate: (LevelAccessor, BlockPos, BlockState) -> Boolean
+        predicate: (LevelAccessor, BlockPos, BlockState) -> Boolean,
+        addCallback: (LevelAccessor, BlockPos, BlockState) -> Unit
     ): Boolean {
         if (visited.contains(pos)) return false
         visited.add(pos)
-        if (!predicate.invoke(level, pos, level.getBlockState(pos))) return false
+        val state = level.getBlockState(pos)
+        if (!predicate.invoke(level, pos, state)) return false
         target.add(pos)
+        addCallback.invoke(level, pos, state)
         return true
     }
 
     companion object {
         val ZERO_BIAS = Vec3i(0, 0, 0)
         val DEFAULT_ABORT = { floodFill: FloodFill -> floodFill.layers.size >= 25 }
+        val DEFAULT_ADD = { level: LevelAccessor, pos: BlockPos, state: BlockState -> }
     }
 }
