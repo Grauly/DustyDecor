@@ -57,10 +57,11 @@ class FloodFill(
      *
      * @param level The Level this floodfill takes place in
      * @param predicate A predicate of positions to include
-     * @param abortPredicate The abort condition. NOTE: If not properly specified, this WILL run forever.
+     * @param abortPredicate The abort condition. NOTE: It will abort in any case if the last iteration added no new matches
+     * By Default stops after 100 iterations
      */
     fun flood(level: LevelAccessor, predicate: (LevelAccessor, BlockPos, BlockState) -> Boolean, abortPredicate: (FloodFill) -> Boolean = DEFAULT_ABORT) {
-        while (!abortPredicate.invoke(this)) {
+        while (!abortPredicate.invoke(this) || !layers.last().isEmpty()) {
             floodLayer(level, predicate)
         }
     }
@@ -80,6 +81,6 @@ class FloodFill(
 
     companion object {
         val ZERO_BIAS = Vec3i(0, 0, 0)
-        val DEFAULT_ABORT = { floodFill: FloodFill -> floodFill.layers.size >= 100 || floodFill.layers.last().isEmpty() }
+        val DEFAULT_ABORT = { floodFill: FloodFill -> floodFill.layers.size >= 100 }
     }
 }
