@@ -2,8 +2,10 @@ package grauly.dustydecor.block.layered
 
 import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.util.DebugUtils
+import grauly.dustydecor.util.FloodFill
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.core.Vec3i
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.RandomSource
 import net.minecraft.world.entity.LivingEntity
@@ -11,10 +13,7 @@ import net.minecraft.world.entity.item.FallingBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.item.context.DirectionalPlaceContext
-import net.minecraft.world.level.BlockGetter
-import net.minecraft.world.level.Level
-import net.minecraft.world.level.LevelReader
-import net.minecraft.world.level.ScheduledTickAccess
+import net.minecraft.world.level.*
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.FallingBlock
@@ -26,6 +25,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty
 import net.minecraft.world.level.pathfinder.PathComputationType
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
+import kotlin.math.max
 import kotlin.math.min
 
 abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Properties) :
@@ -243,6 +243,57 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
             return getSpreadDifferential(pos.below(), searchDirection, world, searchDepth + 1, maxSearchDepth)
         }
         return -searchDepth * MAX_LAYERS
+    }
+
+    fun depositLayers(pos: BlockPos, level: Level, layers: Int, bias: Vec3i = FloodFill.ZERO_BIAS): Int {
+        val floodFill = FloodFill(pos, bias)
+        var foundLayerSpaces = 0
+        floodFill.flood(
+            level,
+            { levelAccess: LevelAccessor, pos: BlockPos, state: BlockState -> canBePut(level, pos, state) },
+            { floodFill -> foundLayerSpaces <= layers },
+            { levelAccess: LevelAccessor, pos: BlockPos, state: BlockState ->
+                foundLayerSpaces += if (!canAssimilateInto(levelAccess, pos, state))
+                    MAX_LAYERS else state.getValue(LAYERS)
+            }
+        )
+        var placedLayers = 0
+        floodFill.layers.forEach { layer ->
+            layer.forEach placeForEach@{ placePos ->
+                val existingState = level.getBlockState(placePos)
+                val maxPlaceableLayers = min(MAX_LAYERS, layers - placedLayers)
+                val layersToPlace = if (canAssimilateInto(level, placePos, existingState)) {
+                    val existingLayers = existingState.getValue(LAYERS)
+                    min(MAX_LAYERS - existingLayers, maxPlaceableLayers)
+                } else {
+                    maxPlaceableLayers
+                }
+                if (canAssimilateInto(level, placePos, existingState)) {
+                    level.setBlockAndUpdate(placePos, existingState.setValue(LAYERS, existingState.getValue(LAYERS) + layersToPlace))
+                } else {
+                    level.setBlockAndUpdate(placePos, defaultBlockState().setValue(LAYERS, layersToPlace))
+                }
+                placedLayers += layersToPlace
+            }
+        }
+        return max(0, layers - foundLayerSpaces)
+    }
+
+    fun canBePut(level: Level, pos: BlockPos, state: BlockState): Boolean {
+        val canPlace = defaultBlockState().canSurvive(level, pos)
+        val canReplace = state.canBeReplaced(
+            DirectionalPlaceContext(
+                level, pos,
+                Direction.DOWN,
+                this.asItem().defaultInstance,
+                Direction.UP
+            )
+        )
+        return canPlace && canReplace
+    }
+
+    open fun canAssimilateInto(levelAccessor: LevelAccessor, pos: BlockPos, state: BlockState): Boolean {
+        return state.`is`(this)
     }
 
     override fun isPathfindable(state: BlockState, type: PathComputationType): Boolean {
