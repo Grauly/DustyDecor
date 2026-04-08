@@ -61,7 +61,7 @@ class FloodFill(
      * By Default stops after 100 iterations
      */
     fun flood(level: LevelAccessor, predicate: (LevelAccessor, BlockPos, BlockState) -> Boolean, abortPredicate: (FloodFill) -> Boolean = DEFAULT_ABORT) {
-        while (!abortPredicate.invoke(this) || !layers.last().isEmpty()) {
+        while (!(abortPredicate.invoke(this) || layers.last().isEmpty())) {
             floodLayer(level, predicate)
         }
     }
@@ -81,6 +81,6 @@ class FloodFill(
 
     companion object {
         val ZERO_BIAS = Vec3i(0, 0, 0)
-        val DEFAULT_ABORT = { floodFill: FloodFill -> floodFill.layers.size >= 100 }
+        val DEFAULT_ABORT = { floodFill: FloodFill -> floodFill.layers.size >= 25 }
     }
 }
