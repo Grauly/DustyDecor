@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState
  */
 class FloodFill(
     val pos: BlockPos,
-    val bias: Vec3i = Vec3i(0, 0, 0),
+    val bias: Vec3i = ZERO_BIAS,
 ) {
     val layers: ArrayDeque<List<BlockPos>> = ArrayDeque(listOf(listOf(pos)))
     val visited: MutableSet<BlockPos> = HashSet(listOf(pos))
@@ -43,10 +43,10 @@ class FloodFill(
         val lastElements = layers.last()
         val collectionList = mutableListOf<BlockPos>()
         lastElements.forEach { blockPos ->
-            val offsetPos = blockPos.offset(bias)
-            if (!addIfNotVisited(collectionList, offsetPos, level, predicate)) return@forEach
-            searchPositions.forEach { pos ->
-                addIfNotVisited(collectionList, offsetPos.offset(pos), level, predicate)
+            val workingPos = blockPos.offset(bias)
+            if (bias != ZERO_BIAS && !addIfNotVisited(collectionList, workingPos, level, predicate)) return@forEach
+            searchPositions.forEach { searchOffset ->
+                addIfNotVisited(collectionList, workingPos.offset(searchOffset), level, predicate)
             }
         }
         layers.add(collectionList)
@@ -79,6 +79,7 @@ class FloodFill(
     }
 
     companion object {
+        val ZERO_BIAS = Vec3i(0, 0, 0)
         val DEFAULT_ABORT = { floodFill: FloodFill -> floodFill.layers.size >= 100 || floodFill.layers.last().isEmpty() }
     }
 }
