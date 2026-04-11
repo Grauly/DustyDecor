@@ -6,6 +6,7 @@ import grauly.dustydecor.util.FloodFill
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.Vec3i
+import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.RandomSource
 import net.minecraft.world.entity.LivingEntity
@@ -25,6 +26,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty
 import net.minecraft.world.level.pathfinder.PathComputationType
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
+import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
 
@@ -251,32 +253,36 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
         floodFill.flood(
             level,
             { levelAccess: LevelAccessor, pos: BlockPos, state: BlockState -> canBePut(level, pos, state) },
-            { floodFill -> foundLayerSpaces <= layers },
+            { floodFill -> foundLayerSpaces >= layers },
             { levelAccess: LevelAccessor, pos: BlockPos, state: BlockState ->
-                foundLayerSpaces += if (!canAssimilateInto(levelAccess, pos, state))
-                    MAX_LAYERS else state.getValue(LAYERS)
+                foundLayerSpaces += placeLayers(level, pos, layers - foundLayerSpaces)
+                level.addParticle(
+                    ParticleTypes.END_ROD,
+                    pos.center.x, pos.center.y, pos.center.z,
+                    0.0, 0.0, 0.0,
+                )
             }
         )
-        var placedLayers = 0
-        floodFill.layers.forEach { layer ->
-            layer.forEach placeForEach@{ placePos ->
-                val existingState = level.getBlockState(placePos)
-                val maxPlaceableLayers = min(MAX_LAYERS, layers - placedLayers)
-                val layersToPlace = if (canAssimilateInto(level, placePos, existingState)) {
-                    val existingLayers = existingState.getValue(LAYERS)
-                    min(MAX_LAYERS - existingLayers, maxPlaceableLayers)
-                } else {
-                    maxPlaceableLayers
-                }
-                if (canAssimilateInto(level, placePos, existingState)) {
-                    level.setBlockAndUpdate(placePos, existingState.setValue(LAYERS, existingState.getValue(LAYERS) + layersToPlace))
-                } else {
-                    level.setBlockAndUpdate(placePos, defaultBlockState().setValue(LAYERS, layersToPlace))
-                }
-                placedLayers += layersToPlace
-            }
+        if (foundLayerSpaces < layers && bias != FloodFill.ZERO_BIAS) {
+            foundLayerSpaces += depositLayers(pos, level, layers - foundLayerSpaces, FloodFill.ZERO_BIAS)
         }
         return max(0, layers - foundLayerSpaces)
+    }
+
+    fun placeLayers(level: Level, pos: BlockPos, layers: Int): Int {
+        if (layers <= 0) return 0
+        val existingState = level.getBlockState(pos)
+        val maxPlaceableLayers = min(MAX_LAYERS, layers)
+        if (canAssimilateInto(level, pos, existingState)) {
+            val existingLayers = existingState.getValue(LAYERS)
+            val placedLayers = min(MAX_LAYERS - existingLayers, maxPlaceableLayers)
+            val placementState = existingState.setValue(LAYERS, placedLayers)
+            level.setBlockAndUpdate(pos, placementState)
+            return placedLayers
+        } else {
+            level.setBlockAndUpdate(pos, defaultBlockState().setValue(LAYERS, maxPlaceableLayers))
+            return maxPlaceableLayers
+        }
     }
 
     fun canBePut(level: Level, pos: BlockPos, state: BlockState): Boolean {

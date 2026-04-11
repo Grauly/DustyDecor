@@ -43,7 +43,7 @@ object ModBlocks {
     val VAC_PIPE: Block = registerBlock(::VacPipeBlock, "vac_pipe", Properties.ofFullCopy(Blocks.HOPPER))
     val VAC_PIPE_STATION: Block =
         registerBlock(::VacPipeStationBlock, "vac_pipe_station", Properties.ofFullCopy(Blocks.HOPPER))
-    val VOID_GOOP: Block = registerBlock({ settings -> VoidGoopBlock(1, settings) }, "void_goop")
+    val VOID_GOOP: VoidGoopBlock = registerBlock({ settings -> VoidGoopBlock(1, settings) }, "void_goop") as VoidGoopBlock
 
     val TALL_CAGE_LAMPS: List<TallCageLampBlock> = DyeUtils.COLOR_ORDER.map {
         val id = "${it.getName()}_tall_cage_lamp"
