@@ -26,7 +26,8 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty
 import net.minecraft.world.level.pathfinder.PathComputationType
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
-import kotlin.math.floor
+import kotlin.math.abs
+import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
 
@@ -273,7 +274,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
         if (layers <= 0) return 0
         val existingState = level.getBlockState(pos)
         val maxPlaceableLayers = min(MAX_LAYERS, layers)
-        if (canAssimilateInto(level, pos, existingState)) {
+        if (canJoinLayers(level, pos, existingState)) {
             val existingLayers = existingState.getValue(LAYERS)
             val placedLayers = min(MAX_LAYERS - existingLayers, maxPlaceableLayers)
             val placementState = existingState.setValue(LAYERS, placedLayers)
@@ -285,20 +286,119 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
         }
     }
 
+    /**
+     * Attempts to deposit layers at the given position.
+     * First searches down, then stacks up.
+     * Stops upon hitting a ceiling.
+     * Will ignore placement conditions on the lowest point.
+     * Does not respect spreading logic.
+     *
+     * @param level The Level this takes place in
+     * @param pos The position to start at
+     * @param layers The amount of layers to add
+     * @param searchRange The maximum amount of blocks to search up/down
+     *
+     * @return The amount of layers that where not placed
+     */
+    fun addLayers(level: Level, pos: BlockPos, layers: Int, searchRange: Int = 16): Int {
+        if (layers <= 0) return 0
+        var workingPos = pos
+        while (canReplaceTarget(level, workingPos, level.getBlockState(workingPos)) && abs(workingPos.y - pos.y) <= searchRange) {
+            workingPos = workingPos.below()
+        }
+        workingPos = workingPos.above()
+        var remainingLayers = layers
+        while (remainingLayers > 0 && abs(workingPos.y - pos.y) <= searchRange) {
+            if (!canReplaceTarget(level, workingPos, level.getBlockState(workingPos))) return remainingLayers
+            val layersToPlace = min(MAX_LAYERS, remainingLayers)
+            val failedToPlace = depositToLayer(level, workingPos, layersToPlace)
+            remainingLayers -= (layersToPlace - failedToPlace)
+            workingPos = workingPos.above()
+        }
+        return remainingLayers
+    }
+
+    /**
+     * Ensures the given pos has at least the given amount of layers.
+     * Builds a pillar up to the given pos.
+     * Will ignore placement conditions on the lowest point.
+     * Does not respect spreading logic.
+     *
+     * @param level The Level this takes place in
+     * @param pos The position to start at
+     * @param layers The amount of layers to enure
+     *
+     * @return The amount of layers added
+     */
+    fun ensureLayers(level: Level, pos: BlockPos, layers: Int): Int {
+        val existingState = level.getBlockState(pos)
+        if (canJoinLayers(level, pos, existingState)) {
+            val existingLayers = existingState.getValue(LAYERS)
+            if (existingLayers >= layers) return 0
+            level.setBlockAndUpdate(pos, existingState.setValue(LAYERS, layers))
+            return layers - existingLayers
+        }
+        level.setBlockAndUpdate(pos, defaultBlockState().setValue(LAYERS, layers))
+        var addedLayers = layers
+        var workingPos = pos.below()
+        while (canReplaceTarget(level, workingPos, level.getBlockState(workingPos))) {
+            val notDeposited = depositToLayer(level, workingPos, MAX_LAYERS)
+            addedLayers += MAX_LAYERS - notDeposited
+            workingPos = workingPos.below()
+        }
+        return addedLayers
+    }
+
+    /**
+     * Attempts to deposit layers at the given position
+     *
+     * @param level The Level this takes place in
+     * @param pos The position to change
+     * @param targetLayers The resulting state will have this (or more) layers
+     * It will have exactly the given amount of layers, if the existing state has <= the amount of layers
+     * It will have more layers if the existing state has > layers.
+     *
+     * @return The amount of layers that where not deposited.
+     * @throws IllegalArgumentException if targetLayers > MAX_LAYERS
+     */
+    fun depositToLayer(level: Level, pos: BlockPos, targetLayers: Int): Int {
+        if (targetLayers > MAX_LAYERS) throw IllegalArgumentException("Attempting to deposit too many layers: $targetLayers > $MAX_LAYERS")
+        val existingState = level.getBlockState(pos)
+        if (!canReplaceTarget(level, pos, existingState)) return targetLayers
+        if (canJoinLayers(level, pos, existingState) && existingState.hasProperty(LAYERS)) {
+            val existingLayers = existingState.getValue(LAYERS)
+            if (existingLayers >= targetLayers) return targetLayers
+            level.setBlockAndUpdate(pos, existingState.setValue(LAYERS, targetLayers))
+            return existingLayers
+        }
+        level.setBlockAndUpdate(pos, defaultBlockState().setValue(LAYERS, targetLayers))
+        return 0
+    }
+
+    /**
+     * @param level The Level this takes place in
+     * @param pos The position to replace
+     * @param state The existing state at that position
+     *
+     * Assumes the canBeReplaced allows self replacement
+     */
+    fun canReplaceTarget(level: Level, pos: BlockPos, state: BlockState): Boolean = state.canBeReplaced(
+        DirectionalPlaceContext(
+            level, pos,
+            Direction.DOWN,
+            this.asItem().defaultInstance,
+            Direction.UP
+        )
+    )
+
+
     fun canBePut(level: Level, pos: BlockPos, state: BlockState): Boolean {
         val canPlace = defaultBlockState().canSurvive(level, pos)
-        val canReplace = state.canBeReplaced(
-            DirectionalPlaceContext(
-                level, pos,
-                Direction.DOWN,
-                this.asItem().defaultInstance,
-                Direction.UP
-            )
-        )
+        val canReplace = canReplaceTarget(level, pos, state)
         return canPlace && canReplace
     }
 
-    open fun canAssimilateInto(levelAccessor: LevelAccessor, pos: BlockPos, state: BlockState): Boolean {
+    open fun canJoinLayers(levelAccessor: LevelAccessor, pos: BlockPos, state: BlockState): Boolean {
         return state.`is`(this)
     }
 
