@@ -22,12 +22,12 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.BooleanProperty
+import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.level.block.state.properties.IntegerProperty
 import net.minecraft.world.level.pathfinder.PathComputationType
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 import kotlin.math.abs
-import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
 
@@ -42,6 +42,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
             defaultBlockState()
                 .setValue(LAYERS, 1)
                 .setValue(FALLING, false)
+                .setValue(VELOCITY, Direction.DOWN)
         )
     }
 
@@ -75,33 +76,33 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
 
     override fun tick(
         state: BlockState,
-        world: ServerLevel,
+        level: ServerLevel,
         pos: BlockPos,
         random: RandomSource
     ) {
-        val downState = world.getBlockState(pos.below())
+        val downState = level.getBlockState(pos.below())
         val canFallThrough = isFree(downState)
-        val canMerge = if (downState.`is`(this)) {
+        val canMerge = if (canJoinLayers(level, pos.below(), downState)) {
             downState.getValue(LAYERS) < MAX_LAYERS
         } else false
         if (canMerge) {
             val ownLayers = state.getValue(LAYERS)
             val mergeLayers = min(MAX_LAYERS - downState.getValue(LAYERS), ownLayers)
-            world.setBlockAndUpdate(pos.below(), downState.setValue(LAYERS, downState.getValue(LAYERS) + mergeLayers))
+            level.setBlockAndUpdate(pos.below(), downState.setValue(LAYERS, downState.getValue(LAYERS) + mergeLayers))
             val placeState = if (mergeLayers == ownLayers) Blocks.AIR.defaultBlockState() else state.setValue(
                 LAYERS,
                 ownLayers - mergeLayers
             )
-            world.setBlockAndUpdate(pos, placeState)
+            level.setBlockAndUpdate(pos, placeState)
             return
         }
-        if (canFallThrough && pos.y >= world.minY) {
-            val fallingBlock = FallingBlockEntity.fall(world, pos, state.setValue(FALLING, true))
+        if (canFallThrough && pos.y >= level.minY) {
+            val fallingBlock = FallingBlockEntity.fall(level, pos, state.setValue(FALLING, true))
             this.falling(fallingBlock)
         }
-        val updatedState = world.getBlockState(pos)
+        val updatedState = level.getBlockState(pos)
         if (updatedState.isAir) return
-        world.setBlockAndUpdate(pos, trySpread(pos, world, updatedState))
+        level.setBlockAndUpdate(pos, trySpread(pos, level, updatedState))
     }
 
     override fun getStateForPlacement(ctx: BlockPlaceContext): BlockState? {
@@ -133,48 +134,35 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
     }
 
     override fun onLand(
-        world: Level,
+        level: Level,
         pos: BlockPos,
         fallingBlockState: BlockState,
         currentStateInPos: BlockState,
         fallingBlockEntity: FallingBlockEntity
     ) {
-        if (!currentStateInPos.`is`(this)) {
-            world.setBlockAndUpdate(pos, fallingBlockState.setValue(FALLING, false))
+        if (!canJoinLayers(level, pos, currentStateInPos)) {
+            level.setBlockAndUpdate(pos, fallingBlockState.setValue(FALLING, false))
             return
         }
-        val layersToIntegrate = fallingBlockState.getValue(LAYERS)
-        val integrateBlockLayers = currentStateInPos.getValue(LAYERS)
-        val totalLayers = layersToIntegrate + integrateBlockLayers
-        if (totalLayers > MAX_LAYERS) {
-
-            val overflowLayers = totalLayers - MAX_LAYERS
-            val overflowPos = pos.above()
-            val overflowState = world.getBlockState(overflowPos)
-            val canPlace = overflowState.canSurvive(world, overflowPos)
-            val canReplace = overflowState.canBeReplaced(
-                DirectionalPlaceContext(
-                    world, overflowPos, Direction.DOWN, this.asItem().defaultInstance, Direction.UP
-                )
-            )
-            if (canPlace && canReplace) {
-                world.setBlockAndUpdate(overflowPos, defaultBlockState().setValue(LAYERS, overflowLayers))
-            }
-        }
-        world.setBlockAndUpdate(
-            pos,
-            currentStateInPos
-                .setValue(LAYERS, min(MAX_LAYERS, totalLayers))
-                .setValue(FALLING, false)
+        val fallingLayers = fallingBlockState.getValue(LAYERS)
+        val velocity = fallingBlockState.getValue(VELOCITY)
+        val failedLayers = addLayers(level, pos, currentStateInPos.getValue(LAYERS))
+        level.setBlockAndUpdate(pos, level.getBlockState(pos)
+            .setValue(VELOCITY, velocity)
+            .setValue(FALLING, false)
         )
+        if (currentStateInPos.getValue(LAYERS) + fallingLayers > MAX_LAYERS && failedLayers == 0) {
+            level.setBlockAndUpdate(pos.above(), level.getBlockState(pos.above()).setValue(VELOCITY, velocity))
+        }
     }
 
-    private fun trySpread(pos: BlockPos, world: ServerLevel, state: BlockState): BlockState {
+    private fun trySpread(pos: BlockPos, level: ServerLevel, state: BlockState): BlockState {
         val layers = state.getValue(LAYERS)
+        val velocity = state.getValue(VELOCITY)
         val spreadTargets: Map<Direction, Int> = Direction.entries.filter { it.axis.isHorizontal }
-            .associateWith { getSpreadDifferential(pos.relative(it), it, world) }
-        if (spreadTargets.all { it.value >= layers }) return state //surrounded by higher/equal blocks
-        if (spreadTargets.all { layers - it.value <= threshold }) return state //none have enough differential
+            .associateWith { getSpreadDifferential(pos.relative(it), it, level) }
+        if (spreadTargets.all { it.value >= layers }) return state.setValue(VELOCITY, Direction.DOWN) //surrounded by higher/equal blocks
+        if (spreadTargets.all { layers - it.value <= threshold }) return state.setValue(VELOCITY, Direction.DOWN) //none have enough differential
         var updatedLayerCount = layers
         val spreadActions: MutableMap<Direction, Int> = mutableMapOf()
         while (updatedLayerCount > 0) {
@@ -183,15 +171,16 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
                 break
             }
             val lowestSpreadTargets = spreadTargets.filterValues { it <= updatedSpreadTargets.values.min() }
-            spreadActions.compute(lowestSpreadTargets.keys.random()) { _, layers ->
+            val spreadDirection = if (lowestSpreadTargets.keys.contains(velocity)) velocity else lowestSpreadTargets.keys.random()
+            spreadActions.compute(spreadDirection) { _, layers ->
                 (layers ?: 0) + 1
             }
             updatedLayerCount -= 1
         }
         spreadActions.filterValues { it != 0 }.forEach { entry ->
             val offsetPos = pos.relative(entry.key)
-            val offsetState = world.getBlockState(offsetPos)
-            val workingState = if (offsetState.`is`(this)) {
+            val offsetState = level.getBlockState(offsetPos)
+            val workingState = if (canJoinLayers(level, offsetPos, offsetState)) {
                 DustyDecorMod.logger.info(
                     "${DebugUtils.nameBlockPos(pos)} - ${entry.key} -> ${
                         DebugUtils.nameBlockPos(
@@ -199,11 +188,15 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
                         )
                     }: $offsetState, ${entry.value}"
                 )
-                offsetState.setValue(LAYERS, offsetState.getValue(LAYERS) + entry.value)
+                offsetState
+                    .setValue(LAYERS, offsetState.getValue(LAYERS) + entry.value)
+                    .setValue(VELOCITY, velocity)
             } else {
-                defaultBlockState().setValue(LAYERS, entry.value)
+                defaultBlockState()
+                    .setValue(LAYERS, entry.value)
+                    .setValue(VELOCITY, velocity)
             }
-            world.setBlockAndUpdate(offsetPos, workingState)
+            level.setBlockAndUpdate(offsetPos, workingState)
         }
         if (updatedLayerCount == 0) return Blocks.AIR.defaultBlockState()
 
@@ -270,6 +263,15 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
         return max(0, layers - foundLayerSpaces)
     }
 
+    /**
+     * Places the given amount of layers
+     *
+     * @param level The Level this takes place in
+     * @param pos The position
+     * @param layers The amount of layers to place
+     *
+     * @return The amount of layers actually placed
+     */
     fun placeLayers(level: Level, pos: BlockPos, layers: Int): Int {
         if (layers <= 0) return 0
         val existingState = level.getBlockState(pos)
@@ -290,29 +292,41 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
      * Attempts to deposit layers at the given position.
      * First searches down, then stacks up.
      * Stops upon hitting a ceiling.
-     * Will ignore placement conditions on the lowest point.
+     * By default, ignores placement conditions on the lowest point.
      * Does not respect spreading logic.
      *
      * @param level The Level this takes place in
      * @param pos The position to start at
      * @param layers The amount of layers to add
      * @param searchRange The maximum amount of blocks to search up/down
+     * @param failOnPlacement If this should fail if the initial placement fails
      *
      * @return The amount of layers that where not placed
      */
-    fun addLayers(level: Level, pos: BlockPos, layers: Int, searchRange: Int = 16): Int {
+    fun addLayers(level: Level, pos: BlockPos, layers: Int, searchRange: Int = 16, failOnPlacement: Boolean = false): Int {
         if (layers <= 0) return 0
         var workingPos = pos
         while (canReplaceTarget(level, workingPos, level.getBlockState(workingPos)) && abs(workingPos.y - pos.y) <= searchRange) {
             workingPos = workingPos.below()
         }
         workingPos = workingPos.above()
+        if (!canBePut(level, workingPos, level.getBlockState(workingPos)) && failOnPlacement) {
+            return layers
+        }
         var remainingLayers = layers
         while (remainingLayers > 0 && abs(workingPos.y - pos.y) <= searchRange) {
             if (!canReplaceTarget(level, workingPos, level.getBlockState(workingPos))) return remainingLayers
             val layersToPlace = min(MAX_LAYERS, remainingLayers)
-            val failedToPlace = depositToLayer(level, workingPos, layersToPlace)
-            remainingLayers -= (layersToPlace - failedToPlace)
+            val existingState = level.getBlockState(workingPos)
+            if (canJoinLayers(level, workingPos, existingState)) {
+                val existingLayers = existingState.getValue(LAYERS)
+                val fillToLayers = min(MAX_LAYERS, existingLayers + layersToPlace)
+                val failedToPlace = depositToLayer(level, workingPos, fillToLayers)
+                remainingLayers -= (fillToLayers - failedToPlace)
+            } else {
+                val failedToPlace = depositToLayer(level, workingPos, layersToPlace)
+                remainingLayers -= (layersToPlace - failedToPlace)
+            }
             workingPos = workingPos.above()
         }
         return remainingLayers
@@ -442,12 +456,15 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         super.createBlockStateDefinition(builder)
-        builder.add(LAYERS, FALLING)
+        builder.add(LAYERS, FALLING, VELOCITY)
     }
 
     companion object {
         val LAYERS: IntegerProperty = BlockStateProperties.LAYERS
         val FALLING: BooleanProperty = BooleanProperty.create("falling")
+        val VELOCITY: EnumProperty<Direction> = EnumProperty.create("velocity", Direction::class.java, listOf(
+            Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH, Direction.DOWN
+        ))
         const val MAX_LAYERS: Int = 8
         val SHAPES: Array<VoxelShape> = boxes(MAX_LAYERS) { layers ->
             column(16.0, 0.0, (layers * 2).toDouble())
