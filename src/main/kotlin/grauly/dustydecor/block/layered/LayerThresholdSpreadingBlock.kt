@@ -156,6 +156,12 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
         }
     }
 
+    open fun onDestroyedByFall(
+        level: Level,
+        pos: BlockPos,
+        fallingBlockState: BlockState,
+    ) { }
+
     private fun trySpread(pos: BlockPos, level: ServerLevel, state: BlockState): BlockState {
         val layers = state.getValue(LAYERS)
         val velocity = state.getValue(VELOCITY)
