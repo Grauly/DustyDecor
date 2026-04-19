@@ -4,9 +4,13 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.ModItemTags
 import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
 import net.minecraft.util.ExtraCodecs
+import net.minecraft.world.entity.item.FallingBlockEntity
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.BlockGetter
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.FallingBlock
 import net.minecraft.world.level.block.state.BlockState
 import java.awt.Color
 
@@ -29,6 +33,27 @@ class VoidGoopBlock(threshold: Int, settings: Properties) : LayerThresholdSpread
             }
         }
         return super.canBeReplaced(state, context)
+    }
+
+    override fun onDestroyedByFall(level: Level, pos: BlockPos, fallingBlockState: BlockState) {
+        val possibleDirections = Direction.entries.filter { it.axis.isHorizontal }.filter { direction ->
+            val offsetPos = pos.relative(direction)
+            isFree(level.getBlockState(offsetPos))
+        }
+        val velocity = fallingBlockState.getValue(VELOCITY)
+        val escapeDirection = if (possibleDirections.contains(velocity)) {
+            velocity
+        } else if(possibleDirections.isEmpty()) {
+            null
+        } else {
+            possibleDirections.random()
+        }
+        if (escapeDirection == null) {
+            //TODO: teleport away
+            return
+        }
+        val entity = FallingBlockEntity.fall(level, pos.relative(escapeDirection), fallingBlockState)
+        falling(entity)
     }
 
     override fun codec(): MapCodec<out VoidGoopBlock> {

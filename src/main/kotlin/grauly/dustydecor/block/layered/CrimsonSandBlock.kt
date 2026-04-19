@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import grauly.dustydecor.ModItemTags
 import net.minecraft.core.BlockPos
 import net.minecraft.util.ExtraCodecs
+import net.minecraft.world.entity.item.FallingBlockEntity
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.block.state.BlockState
@@ -21,6 +22,11 @@ class CrimsonSandBlock(threshold: Int, settings: Properties) : LayerThresholdSpr
             }
         }
         return super.canBeReplaced(state, context)
+    }
+
+    override fun falling(entity: FallingBlockEntity) {
+        super.falling(entity)
+        entity.dropItem = true
     }
 
     override fun codec(): MapCodec<out CrimsonSandBlock> {
