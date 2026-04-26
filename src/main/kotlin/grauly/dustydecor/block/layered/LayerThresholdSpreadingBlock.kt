@@ -1,12 +1,8 @@
 package grauly.dustydecor.block.layered
 
 import grauly.dustydecor.DustyDecorMod
-import grauly.dustydecor.util.DebugUtils
-import grauly.dustydecor.util.FloodFill
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
-import net.minecraft.core.Vec3i
-import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.RandomSource
 import net.minecraft.world.entity.LivingEntity
@@ -28,7 +24,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 import kotlin.math.abs
-import kotlin.math.max
 import kotlin.math.min
 
 abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Properties) :
@@ -187,6 +182,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
             val offsetPos = pos.relative(entry.key)
             val offsetState = level.getBlockState(offsetPos)
             val workingState = if (canJoinLayers(level, offsetPos, offsetState)) {
+/*
                 DustyDecorMod.logger.info(
                     "${DebugUtils.nameBlockPos(pos)} - ${entry.key} -> ${
                         DebugUtils.nameBlockPos(
@@ -194,6 +190,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
                         )
                     }: $offsetState, ${entry.value}"
                 )
+*/
                 offsetState
                     .setValue(LAYERS, offsetState.getValue(LAYERS) + entry.value)
                     .setValue(VELOCITY, velocity)
@@ -228,6 +225,7 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
         )
         if (!canReplace) return -searchDepth * MAX_LAYERS + MAX_LAYERS
         if (localState.`is`(this)) {
+/*
             DustyDecorMod.logger.info(
                 "${DebugUtils.nameBlockPos(pos)} (seek $searchDirection): $searchDepth, ${
                     localState.getValue(
@@ -235,38 +233,17 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
                     )
                 }"
             )
+*/
             return -searchDepth * MAX_LAYERS + localState.getValue(LAYERS)
         }
         if (!canPlace) {
             if (searchDepth >= maxSearchDepth) {
                 return -searchDepth * MAX_LAYERS
             }
-            DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} (seek $searchDirection): $searchDepth, $localState, going down")
+            //DustyDecorMod.logger.info("${DebugUtils.nameBlockPos(pos)} (seek $searchDirection): $searchDepth, $localState, going down")
             return getSpreadDifferential(pos.below(), searchDirection, world, searchDepth + 1, maxSearchDepth)
         }
         return -searchDepth * MAX_LAYERS
-    }
-
-    fun depositLayers(pos: BlockPos, level: Level, layers: Int, bias: Vec3i = FloodFill.ZERO_BIAS): Int {
-        val floodFill = FloodFill(pos, bias)
-        var foundLayerSpaces = 0
-        floodFill.flood(
-            level,
-            { levelAccess: LevelAccessor, pos: BlockPos, state: BlockState -> canBePut(level, pos, state) },
-            { floodFill -> foundLayerSpaces >= layers },
-            { levelAccess: LevelAccessor, pos: BlockPos, state: BlockState ->
-                foundLayerSpaces += placeLayers(level, pos, layers - foundLayerSpaces)
-                level.addParticle(
-                    ParticleTypes.END_ROD,
-                    pos.center.x, pos.center.y, pos.center.z,
-                    0.0, 0.0, 0.0,
-                )
-            }
-        )
-        if (foundLayerSpaces < layers && bias != FloodFill.ZERO_BIAS) {
-            foundLayerSpaces += depositLayers(pos, level, layers - foundLayerSpaces, FloodFill.ZERO_BIAS)
-        }
-        return max(0, layers - foundLayerSpaces)
     }
 
     /**
@@ -398,11 +375,11 @@ abstract class LayerThresholdSpreadingBlock(val threshold: Int, settings: Proper
     /**
      * @param level The Level this takes place in
      * @param pos The position to replace
-     * @param state The existing state at that position
+     * @param existingState The existing state at that position
      *
      * Assumes the canBeReplaced allows self replacement
      */
-    fun canReplaceTarget(level: Level, pos: BlockPos, state: BlockState): Boolean = state.canBeReplaced(
+    fun canReplaceTarget(level: Level, pos: BlockPos, existingState: BlockState): Boolean = existingState.canBeReplaced(
         DirectionalPlaceContext(
             level, pos,
             Direction.DOWN,
