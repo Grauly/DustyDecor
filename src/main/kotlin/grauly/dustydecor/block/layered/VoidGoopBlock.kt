@@ -26,7 +26,7 @@ import net.minecraft.world.phys.Vec3
 import java.awt.Color
 import kotlin.math.sqrt
 
-class VoidGoopBlock(threshold: Int, settings: Properties) : LayerThresholdSpreadingBlock(threshold, settings) {
+class VoidGoopBlock(threshold: Int, settings: Properties) : LayerThresholdSpreadingBlock(threshold, settings.forceSolidOn()) {
 
     //TODO: add gazing interaction (haha, player go splat)
     //TODO: add eye shaped rain splashes
