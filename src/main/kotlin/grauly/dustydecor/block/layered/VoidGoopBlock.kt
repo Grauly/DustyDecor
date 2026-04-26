@@ -2,11 +2,8 @@ package grauly.dustydecor.block.layered
 
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import grauly.dustydecor.DustyDecorMod
 import grauly.dustydecor.ModItemTags
-import grauly.dustydecor.extensions.spawnParticle
 import grauly.dustydecor.mixin.FallingBlockEntityBlockStateAccessorMixin
-import grauly.dustydecor.mixin.FallingBlockEntityLayerThresholdBlockMixins
 import grauly.dustydecor.util.FloodFill
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -21,7 +18,6 @@ import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.phys.Vec3
 import java.awt.Color
 import kotlin.math.sqrt
@@ -60,15 +56,16 @@ class VoidGoopBlock(threshold: Int, settings: Properties) : LayerThresholdSpread
             displayTeleportTrail(level, pos, safeTeleportPosition)
             return
         }
-        val unsafeTeleportPosition = findUnsafeTeleportPosition(level, pos, fallingBlockState.getValue(LAYERS))
+        val unsafeTeleportPosition = findUnsafeTeleportPosition(level, pos, false)
         if (unsafeTeleportPosition != null) {
             falling(respawnFallingEntity(level, unsafeTeleportPosition, fallingBlockState))
             displayTeleportTrail(level, pos, unsafeTeleportPosition)
             return
         }
-        if (level.isInWorldBounds(pos)) {
-            //TODO: implement custom explosion
-        }
+        val levelCeilingTeleportPosition = findLevelCeilingEscapePoint(level, pos)
+        val finalTeleportLocation = findUnsafeTeleportPosition(level, levelCeilingTeleportPosition, true)
+        falling(respawnFallingEntity(level, finalTeleportLocation ?: levelCeilingTeleportPosition, fallingBlockState))
+        displayTeleportTrail(level, pos, finalTeleportLocation ?: levelCeilingTeleportPosition)
     }
 
     fun findEvasionPosition(level: Level, pos: BlockPos, velocity: Direction): BlockPos? {
@@ -101,7 +98,7 @@ class VoidGoopBlock(threshold: Int, settings: Properties) : LayerThresholdSpread
         return null
     }
 
-    fun findUnsafeTeleportPosition(level: Level, origin: BlockPos, layers: Int): BlockPos? {
+    fun findUnsafeTeleportPosition(level: Level, origin: BlockPos, ignoreWorldBounds: Boolean): BlockPos? {
         val random = level.random
         val visited = mutableSetOf<BlockPos>()
         for (i in 0..12000) {
@@ -114,10 +111,16 @@ class VoidGoopBlock(threshold: Int, settings: Properties) : LayerThresholdSpread
             val prospectivePos = origin.offset(offset)
             if (visited.contains(prospectivePos)) continue
             visited.add(prospectivePos)
-            if (!level.isInWorldBounds(prospectivePos)) continue
+            if (!ignoreWorldBounds && !level.isInWorldBounds(prospectivePos)) continue
             if (isFree(level.getBlockState(prospectivePos))) return prospectivePos
         }
         return null
+    }
+
+    fun findLevelCeilingEscapePoint(level: Level, origin: BlockPos): BlockPos {
+        val inWorld = level.worldBorder.isWithinBounds(origin)
+        val workingPos = if (inWorld) origin else level.worldBorder.clampToBounds(origin)
+        return BlockPos(workingPos.x, level.height + 15, workingPos.z)
     }
 
     fun displayTeleportTrail(level: Level, from: BlockPos, to: BlockPos) {
