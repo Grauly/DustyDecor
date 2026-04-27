@@ -107,3 +107,9 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+tasks.register("printVersion") {
+	doLast {
+		println("MOD_VERSION=${project.version}")
+	}
+}
