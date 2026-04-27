@@ -38,9 +38,11 @@ public abstract class FallingBlockEntityLayerThresholdBlockMixins {
     @ModifyExpressionValue(method = "tick", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean notifyBlockOfNonDrop(boolean original) {
         if (!original && blockState.getBlock() instanceof LayerThresholdSpreadingBlock layerThresholdSpreadingBlock) {
+            FallingBlockEntity entity = (FallingBlockEntity) (Object) this;
+            entity.discard(); //Because there is ONE CASE where it does not do that
             layerThresholdSpreadingBlock.onDestroyedByFall(
-                    ((FallingBlockEntity) ((Object) this)).level(),
-                    ((FallingBlockEntity) ((Object) this)).blockPosition(),
+                    entity.level(),
+                    entity.blockPosition(),
                     blockState
                     );
         }
